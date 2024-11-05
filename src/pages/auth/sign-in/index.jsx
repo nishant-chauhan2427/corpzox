@@ -12,6 +12,7 @@ import { DualHeadingTwo } from "../components/dualHeading/dualHeadingTwo";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../../redux/slices/userLoginSlice";
+import { Checkbox } from "../../../components/inputs/checkbox";
 
 export const SignIn = () => {
   const {
@@ -30,98 +31,141 @@ export const SignIn = () => {
 
   const [error, setError] = useState("");
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const onSubmit = (data) => {
-
     const superAdmin = {
-      email: 'superAdmin@gmail.com',
-      password: 'Super@1234'
-    }
+      email: "superAdmin@gmail.com",
+      password: "Super@1234",
+    };
     const manager = {
-      email: 'runwallManager@gmail.com',
-      password: 'Manager@1234'
-    }
+      email: "runwallManager@gmail.com",
+      password: "Manager@1234",
+    };
     // Reset error message
     setError("");
 
-
-
-    if (data.email === superAdmin.email && data.password === superAdmin.password) {
+    if (
+      data.email === superAdmin.email &&
+      data.password === superAdmin.password
+    ) {
       dispatch(setUser(superAdmin));
-      navigate('/lease')
-    } else if (data.email === manager.email && data.password === manager.password) {
+      navigate("/lease");
+    } else if (
+      data.email === manager.email &&
+      data.password === manager.password
+    ) {
       dispatch(setUser(manager));
-      navigate('/lease')
+      navigate("/lease");
     } else {
       setError("Wrong email or password");
     }
-
-  }
+  };
 
   return (
     <>
       <MetaTitle title={"Sign In"} />
-      <section className="w-full min-h-screen flex flex-col items-center justify-center">
-        <img className="py-10 sm:w-52 w-52" src="/public/anacity.svg" alt="Anarock Logo" />
-        <div className="p-5 sm:p-10 w-full sm:max-w-md bg-white flex flex-col justify-center items-center rounded-xl shadow-lg">
-          <div className="w-full flex flex-col gap-6">
-            <DualHeadingTwo
-              containerClassName={"text-center"}
-              heading={"Welcome to Anarock!"}
-              subHeading={"Sign into your account"}
-            />
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              className="flex flex-col gap-3"
-            >
-              <Controller
-                name="email"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    className={"bg-[#f9fafc]"}
-                    label={"Email"}
-                    type={"email"}
-                    placeholder={"Enter your email e.g. johndoe@gmail.com"}
-                    errorContent={errors?.email?.message}
-                    onBlur={() => handleBlur("email")}
-                  />
-                )}
-              // rules={{ required: "Email Address is required" }}
-              />
-              <Controller
-                name="password"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    className={"bg-[#f9fafc]"}
-                    label={"Password"}
-                    type={"password"}
-                    placeholder={"Enter your password e.g. Johndoe@564"}
-                    // errorContent={errors.password}
-                    onBlur={() => handleBlur("password")}
-                  />
-                )}
-              // rules={{ required: "Password is required" }}
-              />
-              <Button
-                type={"submit"}
-                v2={true}
-                mainPrimary={true}
-                className={"mt-2 py-2 w-full rounded-lg"}
-                disabled={!isValid}
-              >
-                Submit
-              </Button>
-              {error && <div className="text-red-500 mt-2 text-center">{error}</div>}
+      <section className="w-full flex flex-row p-3">
+        <div className="md:w-1/2">
+          <img src="/images/auth-main.svg" alt="" />
+        </div>
 
-            </form>
-            {/* Uncomment if needed
+        <div className="w-full   md:w-1/2 min-h-screen flex flex-col  justify-start">
+          <img
+            className="py-10 sm:w-32 w-32"
+            src="public\logo.svg"
+            alt="CORPZO Logo"
+          />
+          <div className="  w-full sm:max-w-md flex flex-col  ">
+            <div className="w-full flex flex-col gap-3">
+              <DualHeadingTwo
+                containerClassName={"text-left"}
+                heading={"Sign In"}
+                subHeading={"Please Sign in to continue to your account."}
+              />
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="flex flex-col gap-3"
+              >
+                <Controller
+                  name="email"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      className={"bg-[#f9fafc]"}
+                      label={"Email"}
+                      type={"email"}
+                      placeholder={"Enter your email e.g. johndoe@gmail.com"}
+                      errorContent={errors?.email?.message}
+                      onBlur={() => handleBlur("email")}
+                    />
+                  )}
+                  // rules={{ required: "Email Address is required" }}
+                />
+                <Controller
+                  name="password"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      className={"bg-[#f9fafc]"}
+                      label={"Password"}
+                      type={"password"}
+                      placeholder={"Enter your password e.g. Johndoe@564"}
+                      // errorContent={errors.password}
+                      onBlur={() => handleBlur("password")}
+                    />
+                  )}
+                  // rules={{ required: "Password is required" }}
+                />
+                <Link className="">Forgot Password?</Link>
+
+                <div className="flex  items-center">
+                  {" "}
+                  <Checkbox /> Keep me Signed in
+                </div>
+                <Button
+                  type={"submit"}
+                  v2={true}
+                  mainPrimary={true}
+                  className={"mt-2 py-2 w-full rounded-lg"}
+                  disabled={!isValid}
+                >
+                  Sign in
+                </Button>
+                <Button
+                  type={"submit"}
+                  v2={true}
+                  mainPrimary={true}
+                  className={"mt-2 py-2 w-full rounded-lg"}
+                  disabled={!isValid}
+                >
+                  Get an OTP on your Phone No.{" "}
+                </Button>
+
+                <div className="flex gap-2 items-center  ">
+                  <div className="border-t w-full "></div>
+                  <p>or</p>
+                  <div className="border-t w-full"></div>
+                </div>
+                <div className="flex items-center justify-center border rounded p-2  text-center ">
+                  <p>Sign in with Google</p>
+                  <img src="" alt="" />
+                </div>
+
+                <div className="text-center flex  justify-center gap-2">
+                  <p>
+                    Need an account?<span className="p-2">Create one</span>
+                  </p>
+                </div>
+                {error && (
+                  <div className="text-red-500 mt-2 text-center">{error}</div>
+                )}
+              </form>
+              {/* Uncomment if needed
             <div className="text-center">
               Don't have an account?{" "}
               <span className="font-bold text-base underline cursor-pointer hover:text-primary hover:no-underline text-primaryBg">
@@ -143,6 +187,7 @@ export const SignIn = () => {
               <FaInstagramSquare color="#884EA7" />
             </div>
             */}
+            </div>
           </div>
         </div>
       </section>
