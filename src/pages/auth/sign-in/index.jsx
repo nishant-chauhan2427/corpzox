@@ -13,6 +13,8 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../../redux/slices/userLoginSlice";
 import { Checkbox } from "../../../components/inputs/checkbox";
+import { ThemeSwitch } from "../../../components/theme/switch";
+import { AuthLayout } from "../../../components/layout/auth";
 
 export const SignIn = () => {
   const {
@@ -34,138 +36,141 @@ export const SignIn = () => {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    const superAdmin = {
-      email: "superAdmin@gmail.com",
-      password: "Super@1234",
-    };
-    const manager = {
-      email: "runwallManager@gmail.com",
-      password: "Manager@1234",
-    };
-    // Reset error message
-    setError("");
+    console.log(data, "data");
+    
+    // const superAdmin = {
+    //   email: "superAdmin@gmail.com",
+    //   password: "Super@1234",
+    // };
+    // const manager = {
+    //   email: "runwallManager@gmail.com",
+    //   password: "Manager@1234",
+    // };
+    // // Reset error message
+    // setError("");
 
-    if (
-      data.email === superAdmin.email &&
-      data.password === superAdmin.password
-    ) {
-      dispatch(setUser(superAdmin));
-      navigate("/lease");
-    } else if (
-      data.email === manager.email &&
-      data.password === manager.password
-    ) {
-      dispatch(setUser(manager));
-      navigate("/lease");
-    } else {
-      setError("Wrong email or password");
-    }
+    // if (
+    //   data.email === superAdmin.email &&
+    //   data.password === superAdmin.password
+    // ) {
+    //   dispatch(setUser(superAdmin));
+    //   navigate("/");
+    // } else if (
+    //   data.email === manager.email &&
+    //   data.password === manager.password
+    // ) {
+    //   dispatch(setUser(manager));
+    //   navigate("/");
+    // } else {
+    //   setError("Wrong email or password");
+    // }
   };
 
   return (
     <>
       <MetaTitle title={"Sign In"} />
-      <section className="w-full flex flex-row p-3">
-        <div className="md:w-1/2">
-          <img src="/images/auth-main.svg" alt="" />
-        </div>
-
-        <div className="w-full   md:w-1/2 min-h-screen flex flex-col  justify-start">
-          <img
-            className="py-10 sm:w-32 w-32"
-            src="public\logo.svg"
-            alt="CORPZO Logo"
-          />
-          <div className="  w-full sm:max-w-md flex flex-col  ">
-            <div className="w-full flex flex-col gap-3">
-              <DualHeadingTwo
-                containerClassName={"text-left"}
-                heading={"Sign In"}
-                subHeading={"Please Sign in to continue to your account."}
-              />
-              <form
-                onSubmit={handleSubmit(onSubmit)}
-                className="flex flex-col gap-3"
-              >
-                <Controller
-                  name="email"
-                  control={control}
-                  defaultValue=""
-                  render={({ field }) => (
-                    <Input
-                      {...field}
-                      className={"bg-[#f9fafc]"}
-                      label={"Email"}
-                      type={"email"}
-                      placeholder={"Enter your email e.g. johndoe@gmail.com"}
-                      errorContent={errors?.email?.message}
-                      onBlur={() => handleBlur("email")}
-                    />
-                  )}
-                  // rules={{ required: "Email Address is required" }}
-                />
-                <Controller
-                  name="password"
-                  control={control}
-                  defaultValue=""
-                  render={({ field }) => (
-                    <Input
-                      {...field}
-                      className={"bg-[#f9fafc]"}
-                      label={"Password"}
-                      type={"password"}
-                      placeholder={"Enter your password e.g. Johndoe@564"}
-                      // errorContent={errors.password}
-                      onBlur={() => handleBlur("password")}
-                    />
-                  )}
-                  // rules={{ required: "Password is required" }}
-                />
-                <Link className="">Forgot Password?</Link>
-
-                <div className="flex  items-center">
-                  {" "}
-                  <Checkbox /> Keep me Signed in
-                </div>
-                <Button
-                  type={"submit"}
-                  v2={true}
-                  mainPrimary={true}
-                  className={"mt-2 py-2 w-full rounded-lg"}
-                  disabled={!isValid}
-                >
-                  Sign in
-                </Button>
-                <Button
-                  type={"submit"}
-                  v2={true}
-                  mainPrimary={true}
-                  className={"mt-2 py-2 w-full rounded-lg"}
-                  disabled={!isValid}
-                >
-                  Get an OTP on your Phone No.{" "}
-                </Button>
-
-                <div className="flex gap-2 items-center  ">
-                  <div className="border-t w-full "></div>
-                  <p>or</p>
-                  <div className="border-t w-full"></div>
-                </div>
-                <div className="flex items-center justify-center border rounded p-2  text-center ">
-                  <p>Sign in with Google</p>
-                  <img src="" alt="" />
-                </div>
-
-                <div className="text-center flex  justify-center gap-2">
-                  <p>
-                    Need an account?<span className="p-2">Create one</span>
-                  </p>
-                </div>
-                {error && (
-                  <div className="text-red-500 mt-2 text-center">{error}</div>
+      <AuthLayout>
+        <img className="sm:w-32 w-36" src="public\logo.svg" alt="CORPZO Logo" />
+        <div className="w-full flex">
+          <div className="w-full flex flex-col">
+            <DualHeadingTwo
+              containerClassName={"text-left pt-5"}
+              heading={"Sign In"}
+              subHeading={"Please Sign in to continue to your account."}
+            />
+            {/* <ThemeSwitch/> */}
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="flex flex-col gap-2"
+            >
+              <Controller
+                name="email"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    label={"Email"}
+                    type={"email"}
+                    placeholder={"Email Id / Phone No."}
+                    className={"border-[#D9D9D9] border"}
+                    errorContent={errors?.email?.message}
+                    onBlur={() => handleBlur("email")}
+                  />
                 )}
-              </form>
-              {/* Uncomment if needed
+                // rules={{ required: "Email Address is required" }}
+              />
+              <Controller
+                name="password"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    label={"Password"}
+                    type={"password"}
+                    className={"border-[#D9D9D9] border"}
+                    placeholder={"Password"}
+                    // errorContent={errors.password}
+                    onBlur={() => handleBlur("password")}
+                  />
+                )}
+                // rules={{ required: "Password is required" }}
+              />
+              <Link className="font-medium text-base text-[#0A1C40]">
+                Forgot Password?
+              </Link>
+
+              <div className="flex items-center font-normal text-base text-[#a5a3a3]">
+                {" "}
+                <Checkbox field /> Keep me Signed in
+              </div>
+              <Button
+                type={"submit"}
+                v2={true}
+                mainPrimary={true}
+                className={
+                  "mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none "
+                }
+                disabled={!isValid}
+              >
+                Sign in
+              </Button>
+              <Button
+                type={"submit"}
+                v2={true}
+                mainPrimary={true}
+                className={
+                  "mt-2 py-2 w-full rounded-lg !text-[#6C6C6C] !border-[#B7B7B7] !bg-white"
+                }
+                disabled={!isValid}
+              >
+                Get an OTP on your Phone No.{" "}
+              </Button>
+
+              <div className="flex gap-2 items-center  ">
+                <div className="border-t w-full border-[#D9D9D9] "></div>
+                <p className="text-base text-[#6E6E6E] font-medium">or</p>
+                <div className="border-t w-full border-[#D9D9D9]"></div>
+              </div>
+              <div className="flex items-center justify-center rounded p-2  text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
+                <p>Sign in with Google</p>
+                <img src="" alt="" />
+              </div>
+
+              <div className="text-center flex  justify-center gap-2 font-normal text-[#6C6C6C]">
+                <p>
+                  Need an account?
+                  <Link className="p-2 text-[#F1359C] font-semibold ">
+                    Create one
+                  </Link>
+                </p>
+              </div>
+              {error && (
+                <div className="text-red-500 mt-2 text-center">{error}</div>
+              )}
+            </form>
+            {/* Uncomment if needed
             <div className="text-center">
               Don't have an account?{" "}
               <span className="font-bold text-base underline cursor-pointer hover:text-primary hover:no-underline text-primaryBg">
@@ -187,10 +192,9 @@ export const SignIn = () => {
               <FaInstagramSquare color="#884EA7" />
             </div>
             */}
-            </div>
           </div>
         </div>
-      </section>
+      </AuthLayout>
     </>
   );
 };

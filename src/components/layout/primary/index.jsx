@@ -8,7 +8,8 @@ import { motion } from "framer-motion";
 export const PrimaryLayout = () => {
   const [collapse, setCollapse] = useState(false);
   const [phoneCollapse, setPhoneCollapse] = useState(true);
-  const sidebarClassName = useSelector((state) => state.theme.sidebarClassName);
+  // const sidebarClassName = useSelector((state) => state.theme.sidebarClassName);
+  const sidebarClassName = "bg-red-500";
   const user = useSelector((state) => state.user.user);
 
   if (!user) {
@@ -41,7 +42,7 @@ export const PrimaryLayout = () => {
           exit={{ left: "-50%", transition: { duration: 0.3 } }}
           className={`${!collapse ? "lg:ps-60" : "w-full ps-16"} ${!phoneCollapse ? "lg:ps-60" : "w-full ps-16"} w-full overflow-hidden`}
         >
-          <motion.div className="page-body bg-pageBodyBg dark:dark:bg-slate-800 px-4">
+          <motion.div className="page-body bg-[#D9D9D9] dark:dark:bg-slate-800 px-4">
             <Outlet context={user} />
           </motion.div>
         </motion.div>

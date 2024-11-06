@@ -29,7 +29,7 @@ export const Button = ({
         } ${outLine && !disabled && !isLoading && "rounded text-primaryText"} ${mainPrimary &&
         !disabled &&
         !isLoading &&
-        "border border-primaryText bg-primaryBg text-white hover:bg-primaryBg hover:bg-opacity-80 hover:border-secondaryBg rounded"
+        "border border-primaryText bg-[#FFD700] text-black hover:bg-[#FFD700] hover:bg-opacity-80 hover:border-secondaryBg rounded"
         } ${gradientBtn &&
         !disabled &&
         !isLoading &&

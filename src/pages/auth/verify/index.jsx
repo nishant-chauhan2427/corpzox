@@ -6,9 +6,11 @@ import { MetaTitle } from "../../../components/metaTitle";
 import { DualHeadingTwo } from "../components/dualHeading/dualHeadingTwo";
 import { CrossButton } from "../../../components/buttons/crossButton";
 import { useDispatch } from "react-redux";
+import { AuthLayout } from "../../../components/layout/auth";
+import { Link } from "react-router-dom";
 
 export const Verify = () => {
-  const [otp, setOtp] = useState(["", "", "", ""]);
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [timer, setTimer] = useState(0);
   const [isResendDisabled, setIsResendDisabled] = useState(false);
   const dispatch = useDispatch();
@@ -107,68 +109,84 @@ export const Verify = () => {
   return (
     <>
       <MetaTitle title={"Verify"} />
-      <CustomAuthLayout subContainerClassName={"max-w-[40rem]"}>
-        <div className="relative w-full p-6 flex flex-col justify-center items-center">
-          <DualHeadingTwo
-            containerClassName={"text-center"}
-            heading={"Enter verification code"}
-            subHeading={
-              isVerification ? (
-                <>
-                  OTP is sent to <strong>{email}</strong>
-                </>
-              ) : (
-                "Enter the verification code sent to your email address."
-              )
-            }
-          />
-          <CrossButton />
-          <form className="w-full sm:w-[50%] mt-12 flex flex-col gap-2">
-            <div className="flex justify-center items-center gap-4">
-              {otp.map((digit, index) => (
-                <input
-                  className={`${
-                    error ? "border-error" : "border-[#B7B7B7]"
-                  } w-[10%] h-12 font-bold border rounded-lg text-center`}
-                  key={index}
-                  type="text"
-                  maxLength="1"
-                  value={digit}
-                  ref={(ref) => (inputRefs.current[index] = ref)}
-                  onChange={(e) => handleChange(index, e.target.value)}
-                  onKeyDown={(e) => handleBackspace(index, e)}
-                  onPaste={index === 0 ? handlePaste : null}
+      <AuthLayout>
+        <img className="sm:w-32 w-36" src="public\logo.svg" alt="CORPZO Logo" />
+        <div className="w-full  flex  ">
+          <div className="w-full flex  ">
+            <div className="flex flex-col  justify-between ">
+              <div>
+                <DualHeadingTwo
+                  containerClassName={"text-left pt-5"}
+                  heading={"Verification Code"}
+                  subHeading={
+                    "We have send you an OTP on your registered mobile no. and Email Id"
+                  }
                 />
-              ))}
-            </div>
-            <div className="h-1">
-              {/* {error && <p className="text-error text-xs">{errorContent}</p>} */}
-            </div>
-            <div className="w-full flex flex-col justify-center items-center">
-              <button
-                className={`text-xs text-primary disabled:text-[#8D8D8D]`}
-                onClick={handleResendOtp}
-                type="button"
-              >
-                {timer > 0 ? (
-                  <p className="text-[#8D8D8D]">
-                    Resend Code <span className="text-primary">00:{timer}</span>{" "}
+                <form className="w-full sm:w-[100%] mt-8 flex flex-col gap-2">
+                  <div className=" w-full flex justify-start items-start gap-4 pb-20 ">
+                    {otp.map((digit, index) => (
+                      <input
+                        className={`${
+                          error ? "border-error" : "border-[#DFEAF2]"
+                        } w-[15%] h-14 font-bold border rounded-lg text-center`}
+                        key={index}
+                        type="text"
+                        maxLength="1"
+                        value={digit}
+                        ref={(ref) => (inputRefs.current[index] = ref)}
+                        onChange={(e) => handleChange(index, e.target.value)}
+                        onKeyDown={(e) => handleBackspace(index, e)}
+                        onPaste={index === 0 ? handlePaste : null}
+                      />
+                    ))}
+                  </div>
+                  <div className="h-1">
+                    {/* {error && <p className="text-error text-xs">{errorContent}</p>} */}
+                  </div>
+                  <div className="w-full flex flex-col justify-center items-center">
+                    <button
+                      className={`text-xs text-primary disabled:text-[#8D8D8D]`}
+                      onClick={handleResendOtp}
+                      type="button"
+                    >
+                      {timer > 0 ? (
+                        <p className="!text-[#969696] font-normal text-sm">
+                          Resend Code{" "}
+                          <span className="!font-semibold text-[#FF2C9C] text-sm">
+                            00:{timer}
+                          </span>{" "}
+                        </p>
+                      ) : (
+                        "Resend Code"
+                      )}
+                    </button>
+                    <Button
+                      type={"submit"}
+                      v2={true}
+                      mainPrimary={true}
+                      className={
+                        "mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none "
+                      }
+                    >
+                      Continue
+                    </Button>
+                  </div>
+                </form>
+              </div>
+              <div>
+                <div className="text-center flex  justify-center gap-2  pt-20 font-normal text-[#6C6C6C]">
+                  <p>
+                    Need an account?
+                    <Link className="p-2 text-[#F1359C] font-semibold ">
+                      Create one
+                    </Link>
                   </p>
-                ) : (
-                  "Resend Code"
-                )}
-              </button>
-              <Button
-                mainPrimary={true}
-                className="bg-gradient-to-r from-[#343299] to-[#5753FF] font-bold w-1/2 mt-4 px-10 py-2 rounded-lg flex items-center justify-center"
-                type={"submit"}
-              >
-                Continue
-              </Button>
+                </div>
+              </div>
             </div>
-          </form>
+          </div>
         </div>
-      </CustomAuthLayout>
+      </AuthLayout>
     </>
   );
 };

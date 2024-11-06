@@ -11,6 +11,8 @@ import { IsLoggedInWrapper } from "./isLoggedInWrapper";
 import { IsRedirectWrapper } from "./isRedirectWrapper";
 import { PrimaryLayout } from "../components/layout/primary";
 import { Dashboard } from "../pages/dashboard";
+import { Signup } from "../pages/auth/sign-up";
+
 
 const router = createBrowserRouter([
   {
@@ -35,10 +37,7 @@ const router = createBrowserRouter([
           //     path: "user-profile",
           //     element: <UserProfile />,
           //   },
-          {
-            path: "change-password",
-            element: <ChangePassword />,
-          },
+          // 
           //   {
           //     path: "notifications",
           //     element: <NotificationDetail />,
@@ -55,8 +54,16 @@ const router = createBrowserRouter([
             element: <SignIn />,
           },
           {
+            path: "sign-up",
+            element: <Signup />,
+          },
+          {
             path: "forgot-password",
             element: <ForgotPassword />,
+          },
+          {
+            path: "change-password",
+            element: <ChangePassword />,
           },
           {
             path: "verify",

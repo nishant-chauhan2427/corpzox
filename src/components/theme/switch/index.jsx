@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { BsSun } from "react-icons/bs";
+import { BsMoon, BsSun } from "react-icons/bs";
 import { BiMoon } from "react-icons/bi";
 import { IconWrapper } from "../../wrappers/icon-wrapper";
-
 
 export const ThemeSwitch = () => {
   const [click, setClick] = useState(false);
@@ -42,13 +41,7 @@ export const ThemeSwitch = () => {
         onClick={handleThemeChange}
         className="header-icon "
       >
-        {click ? (
-          <p>Dark</p>
-          // <SVG className="stroke-icon dark:fill-white" iconId="Sun" />
-        ) : (
-          <p>Dark</p>
-          // <SVG className="stroke-icon" iconId="Moon" />
-        )}
+        {click ? <BsSun /> : <BsMoon />}
       </button>
     </IconWrapper>
   );

@@ -66,8 +66,8 @@ export const Input = ({
 
   return (
     <div className={containerClassName}>
-      <div className="w-full flex flex-col gap-1">
-        <div className="flex items-center gap-1 relative">
+      <div className="w-full flex flex-col ">
+        <div className="flex items-center  relative">
           <label
             className={`${required &&
               "after:content-['*'] after:text-red-500 after:absolute after:-top-1"
@@ -86,8 +86,8 @@ export const Input = ({
         <div className="w-full relative ">
           <input
             {...props}
-            className={`${className} ${errorContent && touched ? "border-error" : "border-[#D6D6D6]"
-              } w-full text-black placeholder:text-[#C4C4C4] placeholder:text-xs p-3 bg-pageBodyBg focus:border-focusInputBorderColor h-49 dark:bg-gray-900 dark:text-white rounded-md shadow-sm`}
+            className={`${className} ${errorContent && touched ? "border-error" : "border-[#D9D9D9]"
+              } w-full text-black placeholder:text-[#9A9A9A] placeholder:font-normal placeholder:text-sm p-3 bg-white focus:border- h-[49px] dark:text-white rounded-md shadow-sm`}
             type={type === "password" ? passwordType : type}
             placeholder={placeholder}
             value={value}

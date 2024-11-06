@@ -77,7 +77,7 @@ export const TagsInput = ({
             />
           )}
         </div>
-        <div className="relative flex items-center gap-1 text-black placeholder:text-[#C4C4C4] placeholder:text-xs p-3 bg-pageBodyBg focus:border-focusInputBorderColor min-h-[49px] dark:bg-gray-900 dark:text-white rounded-md shadow-sm">
+        <div className="relative flex items-center gap-1 text-black placeholder:text-[#C4C4C4] placeholder:text-xs p-3 bg-[#D9D9D9] focus:border-focusInputBorderColor min-h-[49px] dark:bg-gray-900 dark:text-white rounded-md shadow-sm">
           <div className="flex flex-wrap gap-1">
             {tags.map((tag, index) => (
               <div
@@ -95,7 +95,7 @@ export const TagsInput = ({
             ))}
           </div>
           <input
-            className="bg-pageBodyBg dark:bg-gray-900 flex-1 outline-none"
+            className="bg-[#D9D9D9] dark:bg-gray-900 flex-1 outline-none"
             type="text"
             value={inputValue}
             onChange={handleChange}
