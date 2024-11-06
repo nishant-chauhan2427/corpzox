@@ -28,50 +28,68 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
     },
     {
       id: 1,
-      title: "My Data",
+      title: "Business",
       icon: <LuDatabase size={iconSize} />,
-      child: [
-        { title: "Properties", to: "/properties", icon: <GoDotFill /> },
-        { title: "Unit", to: "/unit", icon: <GoDotFill /> },
-        { title: "Lease", to: "/lease/lease-active", icon: <GoDotFill /> },
-      ],
+      to: "/business",
       isPinned: false,
     },
     {
       id: 2,
-      title: "Users",
+      title: "Fundraise",
       icon: <LuUsers size={iconSize} />,
-      child: [
-        { title: "Members", to: "/members", icon: <GoDotFill /> },
-        // { title: "Tenants", to: "/tenants", icon: <GoDotFill /> },
-        // { title: "Owner", to: "/owner", icon: <GoDotFill /> },
-      ],
+      to: "/fundraise",
       isPinned: false,
     },
-    // {
-    //   id: 3,
-    //   title: "Master Setting",
-    //   icon: <LuSettings size={iconSize} />,
-    //   child: [
-    //     { title: "Assign Role", to: "/assign-role", icon: <GoDotFill /> },
-    //     { title: "Companies", to: "/companies", icon: <GoDotFill /> },
-    //   ],
-    //   isPinned: false,
-    // },
+    {
+      id: 3,
+      title: "Investment",
+      icon: <LuUsers size={iconSize} />,
+      to: "/investment",
+      isPinned: false,
+    },
+    {
+      id: 4,
+      title: "Services",
+      icon: <LuUsers size={iconSize} />,
+      to: "/services",
+      isPinned: false,
+    },
+    {
+      id: 5,
+      title: "Payment History",
+      icon: <LuUsers size={iconSize} />,
+      to: "/payment-history",
+      isPinned: false,
+    },
+    {
+      id: 6,
+      title: "Documents",
+      icon: <LuUsers size={iconSize} />,
+      to: "/documents",
+      isPinned: false,
+    },
+    {
+      id: 7,
+      title: "Settings",
+      icon: <LuUsers size={iconSize} />,
+      to: "/settings",
+      isPinned: false,
+    },
+    
   ];
 
-  if (user && user.email == "superAdmin@gmail.com") {
-    initialSidebarItems.push({
-      id: 3,
-      title: "Master Setting",
-      icon: <LuSettings size={iconSize} />,
-      child: [
-        { title: "Assign Role", to: "/assign-role", icon: <GoDotFill /> },
-        { title: "Companies", to: "/companies", icon: <GoDotFill /> },
-      ],
-      isPinned: false,
-    });
-  }
+  // if (user && user.email == "superAdmin@gmail.com") {
+  //   initialSidebarItems.push({
+  //     id: 3,
+  //     title: "Master Setting",
+  //     icon: <LuSettings size={iconSize} />,
+  //     child: [
+  //       { title: "Assign Role", to: "/assign-role", icon: <GoDotFill /> },
+  //       { title: "Companies", to: "/companies", icon: <GoDotFill /> },
+  //     ],
+  //     isPinned: false,
+  //   });
+  // }
 
   const [items, setItems] = useState(initialSidebarItems);
 

@@ -15,14 +15,14 @@ export const Notification = ({ closeButton }) => {
 
   const notificationData = [
     {
-      notificationTitle: "Welcome to Anarock",
+      notificationTitle: "Welcome to Corpzo",
       notification:
         "Please review and sign your lease agreement to secure your new home. We’re excited to have you join us!",
       is_read: 0,
       updated_at: "October 20, 2024",
     },
     {
-      notificationTitle: "Welcome to Anarock",
+      notificationTitle: "Welcome to Corpzo",
       notification:
         "Please review and sign your lease agreement to secure your new home. We’re excited to have you join us!",
       is_read: 1,
@@ -115,7 +115,7 @@ export const Notification = ({ closeButton }) => {
                     Hi {"Mehul"},
                   </h1>
                 </div>
-                <p className="text-sm  dark:text-black">Welcome to Anarock!</p>
+                <p className="text-sm  dark:text-black">Welcome to Corpzo!</p>
                 <div className="pt-2 flex justify-between">
                   <p className="font-normal text-xs text-[#888]"></p>
                   <p className="font-normal text-xs text-[#888]"></p>

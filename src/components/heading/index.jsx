@@ -5,7 +5,7 @@ import { useEffect } from "react";
 // import { FaArdivLeftLong } from "react-icons/fa6";
 
 export const Heading = ({ parent, mainTitle, className, sectionLink }) => {
-  const projectName = "AnaRock";
+  const projectName = "Corpzo";
   useEffect(() => {
     document.title = ` ${mainTitle} - ${projectName}`;
     window.scrollTo(0, 0);

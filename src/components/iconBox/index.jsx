@@ -42,7 +42,7 @@ export const IconBox = ({
         <Link
           to={to}
           className={`px-2 py-2.5 ${
-            pathname == to && "bg-secondaryBg dark:bg-[#392347]"
+            pathname == to && "bg-secondaryBg dark:bg-[#FFD700]"
           }  flex items-center gap-4 text-black dark:text-white`}
           onClick={onClick}
         >
@@ -71,7 +71,7 @@ export const IconBox = ({
         <button
           onClick={handleDropdown}
           className={`${
-            dropdown && "bg-secondaryBg dark:bg-[#392347] "
+            dropdown && "bg-secondaryBg dark:bg-[#FFD700] "
           } w-full px-2 py-2.5 flex items-center justify-between gap-2 `}
         >
           <p className="flex gap-4 dark:text-white">

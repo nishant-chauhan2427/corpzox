@@ -17,7 +17,6 @@ import { useOutsideClick } from "../../utils";
 import { ThemeSwitch } from "../theme/switch";
 import { capitalize } from "../../utils";
 import { Notification } from "../notification";
-
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../../redux/slices/userLoginSlice";
 
@@ -64,15 +63,15 @@ export const Header = ({ className, collapse, setCollapse }) => {
               width={0}
               height={0}
               className="block dark:hidden w-36 h-full"
-              src="/anacity.svg"
-              alt="anacity-logo"
+              src="/logo.svg"
+              alt="corpzo-logo"
             />
             <img
               width={0}
               height={0}
               className="hidden dark:block w-36 h-full"
-              src="/anacity-logo-dark.svg"
-              alt="anacity-logo"
+              src="/logo.svg"
+              alt="corpzo-logo"
             />
             {profile ? (
               <div className="flex justify-end">
