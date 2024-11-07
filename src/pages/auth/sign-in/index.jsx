@@ -117,7 +117,7 @@ export const SignIn = () => {
                 )}
                 // rules={{ required: "Password is required" }}
               />
-              <Link className="font-medium text-base text-[#0A1C40]">
+              <Link to={"/forgot-password"} className="font-medium text-base text-[#0A1C40]">
                 Forgot Password?
               </Link>
 
@@ -161,7 +161,7 @@ export const SignIn = () => {
               <div className="text-center flex  justify-center gap-2 font-normal text-[#6C6C6C]">
                 <p>
                   Need an account?
-                  <Link className="p-2 text-[#F1359C] font-semibold ">
+                  <Link to={"/sign-up"} className="p-2 text-[#F1359C] font-semibold ">
                     Create one
                   </Link>
                 </p>

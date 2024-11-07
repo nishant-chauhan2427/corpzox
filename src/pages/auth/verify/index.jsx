@@ -97,7 +97,7 @@ export const Verify = () => {
       setIsResendDisabled(true);
       const countdown = setTimeout(() => {
         setTimer(timer - 1);
-      }, 1000);
+      }, 1000); 
 
       return () => clearTimeout(countdown);
     }
@@ -177,7 +177,7 @@ export const Verify = () => {
                 <div className="text-center flex  justify-center gap-2  pt-20 font-normal text-[#6C6C6C]">
                   <p>
                     Need an account?
-                    <Link className="p-2 text-[#F1359C] font-semibold ">
+                    <Link to={"/sign-up"} className="p-2 text-[#F1359C] font-semibold ">
                       Create one
                     </Link>
                   </p>

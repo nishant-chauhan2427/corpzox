@@ -10,11 +10,11 @@ export const PrimaryLayout = () => {
   const [phoneCollapse, setPhoneCollapse] = useState(true);
   // const sidebarClassName = useSelector((state) => state.theme.sidebarClassName);
   const sidebarClassName = "bg-red-500";
-  const user = useSelector((state) => state.user.user);
+  // const user = useSelector((state) => state.user.user);
 
-  if (!user) {
-    return <Navigate to="/sign-in" />;
-  }
+  // if (!user) {
+  //   return <Navigate to="/sign-in" />;
+  // }
 
   return (
     <div className="w-full">
@@ -43,7 +43,7 @@ export const PrimaryLayout = () => {
           className={`${!collapse ? "lg:ps-60" : "w-full ps-16"} ${!phoneCollapse ? "lg:ps-60" : "w-full ps-16"} w-full overflow-hidden`}
         >
           <motion.div className="page-body bg-[#D9D9D9] dark:dark:bg-slate-800 px-4">
-            <Outlet context={user} />
+            <Outlet />
           </motion.div>
         </motion.div>
       </div>
