@@ -4,7 +4,6 @@ import HomePage from "../pages/home";
 import { SignIn } from "../pages/auth/sign-in";
 import { Verify } from "../pages/auth/verify";
 import { ForgotPassword } from "../pages/auth/forgot-password";
-import { ChangePassword } from "../pages/auth/change-password";
 import { ErrorComponent } from "../components/error";
 import { AuthWrapper } from "./authWrapper";
 import { IsLoggedInWrapper } from "./isLoggedInWrapper";
@@ -12,7 +11,8 @@ import { IsRedirectWrapper } from "./isRedirectWrapper";
 import { PrimaryLayout } from "../components/layout/primary";
 import { Dashboard } from "../pages/dashboard";
 import { Signup } from "../pages/auth/sign-up";
-
+import { CreateNewPassword } from "../pages/auth/create-new-password";
+import ServicesListing from "../pages/services/listing";
 
 const router = createBrowserRouter([
   {
@@ -32,17 +32,7 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <AuthWrapper />,
-        children: [
-          //   {
-          //     path: "user-profile",
-          //     element: <UserProfile />,
-          //   },
-          // 
-          //   {
-          //     path: "notifications",
-          //     element: <NotificationDetail />,
-          //   },
-        ],
+        children: [],
       },
       //   isLoggedIn route
       {
@@ -62,8 +52,8 @@ const router = createBrowserRouter([
             element: <ForgotPassword />,
           },
           {
-            path: "change-password",
-            element: <ChangePassword />,
+            path: "create-new-password",
+            element: <CreateNewPassword />,
           },
           {
             path: "verify",
@@ -90,6 +80,10 @@ const router = createBrowserRouter([
           {
             path: "dashboard",
             element: <Dashboard />,
+          },
+          {
+            path: "services-listing",
+            element: <ServicesListing />,
           },
         ],
       },

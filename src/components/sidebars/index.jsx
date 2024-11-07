@@ -51,7 +51,7 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
       id: 4,
       title: "Services",
       icon: <LuUsers size={iconSize} />,
-      to: "/services",
+      to: "/services-listing",
       isPinned: false,
     },
     {
