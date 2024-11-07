@@ -32,8 +32,8 @@ module.exports = {
         secondaryText: "var(--text-secondary-color)",
       },
       fontFamily: {
-        sans: ["Inter", "sans-serif"],
-        serif: ["Inter", "serif"],
+        sans: ["Encode Sans", "sans-serif"],
+        serif: ["Encode Sans", "serif"],
       },
       scale: {
         75: "0.75",

@@ -1,6 +1,6 @@
 import { Search } from "../search";
 import { Button } from "../buttons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
 import { FiLogOut } from "react-icons/fi";
 import { headerLinks } from "../../database";
@@ -12,7 +12,7 @@ import { RxArrowRight, RxHamburgerMenu } from "react-icons/rx";
 import { AnimatePresence, motion } from "framer-motion";
 import { IconWrapper } from "../wrappers/icon-wrapper";
 import { IoSettingsOutline } from "react-icons/io5";
-import { useOutsideClick } from "../../utils";
+import { titleCase, useOutsideClick } from "../../utils";
 // import { FullScreenButton } from "../fullScreen";
 import { ThemeSwitch } from "../theme/switch";
 import { capitalize } from "../../utils";
@@ -29,6 +29,8 @@ export const Header = ({ className, collapse, setCollapse }) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
   // To close when someone clicks outside
 
   const signedInMenuPopupRef = useRef();
@@ -54,36 +56,38 @@ export const Header = ({ className, collapse, setCollapse }) => {
     <header
       className={`${
         className && className
-      } bg-headerBg dark:bg-slate-900 px-2 lg:px-4 py-4 z-[1000]`}
+      } bg-[#0A1C40] dark:bg-slate-900 px-2 lg:px-4 py-4 z-[1000]`}
     >
       <div className="relative flex justify-between items-center">
-        <div className="flex items-center gap-6">
-          <Link to={"/"}>
-            <img
-              width={0}
-              height={0}
-              className="block dark:hidden w-36 h-full"
-              src="/logo.svg"
-              alt="corpzo-logo"
-            />
-            <img
-              width={0}
-              height={0}
-              className="hidden dark:block w-36 h-full"
-              src="/logo.svg"
-              alt="corpzo-logo"
-            />
-            {profile ? (
-              <div className="flex justify-end">
-                <h1 className="font-bold text-xs uppercase">
-                  {capitalize(profile.role)}
-                </h1>{" "}
-              </div>
-            ) : (
-              ""
-            )}
-          </Link>
-          {/* <div
+        {/* Left Side Menu */}
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-6">
+            <Link to={"/"}>
+              <img
+                width={0}
+                height={0}
+                className="block dark:hidden w-36 h-full"
+                src="/corpzo_logo.svg"
+                alt="corpzo-logo"
+              />
+              <img
+                width={0}
+                height={0}
+                className="hidden dark:block w-36 h-full"
+                src="/corpzo_logo.svg"
+                alt="corpzo-logo"
+              />
+              {profile ? (
+                <div className="flex justify-end">
+                  <h1 className="font-bold text-xs uppercase">
+                    {capitalize(profile.role)}
+                  </h1>{" "}
+                </div>
+              ) : (
+                ""
+              )}
+            </Link>
+            {/* <div
             className={`${
               collapse ? "flex justify-center items-center" : "pl-2"
             } pb-4`}
@@ -100,28 +104,38 @@ export const Header = ({ className, collapse, setCollapse }) => {
               )}
             </button>
           </div> */}
-          {/* <Search
+            {/* <Search
             label={true}
             placeholder={"Search anything..."}
             isButton={true}
             containerClassName={"hidden xl:flex"}
             inputClassName={"lg:min-w-60 p-2 pl-10 "}
           /> */}
+          </div>
+          {/* Page Heading */}
+          {pathname.includes("dashboard") ? (
+            <h1 className="font-bold text-white text-2xl">Dashboard</h1>
+          ) : (
+            <p></p>
+          )}
+          {/* Search */}
+          <Search placeholder={"Search Business / Services"} containerClassName={"w-1/2 bg-[#3D485F]"} inputClassName={"bg-[#3D485F]"} />
+          {/* Header Links */}
+          <div className="hidden lg:flex items-center gap-4">
+            {headerLinks?.map((data, index) => (
+              <Link
+                className={`${
+                  window.location.pathname.includes(data.url) && "text-primary"
+                } hover:text-primary`}
+                to={data.url}
+                key={index}
+              >
+                {data.label}
+              </Link>
+            ))}
+          </div>
         </div>
-
-        <div className="hidden lg:flex items-center gap-4">
-          {headerLinks?.map((data, index) => (
-            <Link
-              className={`${
-                window.location.pathname.includes(data.url) && "text-primary"
-              } hover:text-primary`}
-              to={data.url}
-              key={index}
-            >
-              {data.label}
-            </Link>
-          ))}
-        </div>
+        {/* Right Side Menu */}
         {signedIn ? (
           <div className="flex items-center gap-4">
             <ThemeSwitch />
