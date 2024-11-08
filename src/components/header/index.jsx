@@ -61,7 +61,8 @@ export const Header = ({ className, collapse, setCollapse }) => {
       <div className="relative flex justify-between items-center">
         {/* Left Side Menu */}
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-6">
+          {/* Logo */}
+          {/* <div className="flex items-center gap-6">
             <Link to={"/"}>
               <img
                 width={0}
@@ -110,8 +111,8 @@ export const Header = ({ className, collapse, setCollapse }) => {
             isButton={true}
             containerClassName={"hidden xl:flex"}
             inputClassName={"lg:min-w-60 p-2 pl-10 "}
-          /> */}
-          </div>
+          /> 
+          </div> */}
           {/* Page Heading */}
           {pathname.includes("dashboard") ? (
             <h1 className="font-bold text-white text-2xl">Dashboard</h1>
@@ -149,12 +150,12 @@ export const Header = ({ className, collapse, setCollapse }) => {
                 <img src="/icons/user.png" alt="" />
                 <div className="flex flex-col items-start gap-1">
                   <h5 className="font-bold text-[#3D3D47] dark:text-white">
-                    {/* {user.email == "superAdmin@gmail.com"
+                    {user.email == "superAdmin@gmail.com"
                       ? "Super Admin"
-                      : "Runwal Manager"} */}
+                      : "Runwal Manager"}
                   </h5>
                   <span className="text-xs text-[#767676]  dark:text-white">
-                    {/* {user.email == "superAdmin@gmail.com" ? "Admin" : "Manager"} */}
+                    {user.email == "superAdmin@gmail.com" ? "Admin" : "Manager"}
                   </span>
                 </div>
               </button>
