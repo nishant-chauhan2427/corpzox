@@ -1,5 +1,6 @@
 @import url("/src/css/theme.css");
 @import url("/src/css/phoneInput.css");
+@import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,100..900;1,100..900&family=Encode+Sans:wght@100..900&display=swap');
 
 ::-webkit-scrollbar {
   width: 0.1em;

@@ -28,13 +28,13 @@ export const PrimaryLayout = () => {
           collapse={collapse}
           setCollapse={setCollapse}
           className={`${sidebarClassName ? sidebarClassName : ""} ${!collapse ? "min-w-60 min-h-screen" : "min-h-screen"
-            } hidden lg:block fixed left-0 p-4 bg-white dark:bg-darkPrimary z-50`}
+            } hidden lg:block fixed top-0 left-0 p-4 z-[1001] bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100`}
         />
         <Sidebar
           collapse={phoneCollapse}
           setCollapse={setPhoneCollapse}
           className={`${sidebarClassName ? sidebarClassName : ""} ${!phoneCollapse ? "min-w-60 min-h-screen" : "min-h-screen"
-            } block lg:hidden fixed left-0 p-4 bg-white dark:bg-darkPrimary z-50`}
+            } block lg:hidden fixed top-0 left-0 p-4 z-[1001] bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100`}
         />
         <motion.div
           initial={{ left: "-50%" }}

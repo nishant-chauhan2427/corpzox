@@ -9,9 +9,9 @@ import { AuthWrapper } from "./authWrapper";
 import { IsLoggedInWrapper } from "./isLoggedInWrapper";
 import { IsRedirectWrapper } from "./isRedirectWrapper";
 import { PrimaryLayout } from "../components/layout/primary";
-import { Dashboard } from "../pages/dashboard";
 import { Signup } from "../pages/auth/sign-up";
 import { CreateNewPassword } from "../pages/auth/create-new-password";
+import Dashboard from "../pages/dashboard";
 import ServicesListing from "../pages/services/listing";
 
 const router = createBrowserRouter([
