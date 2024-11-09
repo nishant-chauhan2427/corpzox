@@ -150,13 +150,13 @@ export const Header = ({ className, collapse, setCollapse }) => {
                 <img src="/icons/user.png" alt="" />
                 <div className="flex flex-col items-start gap-1">
                   <h5 className="font-bold text-[#3D3D47] dark:text-white">
-                    {user.email == "superAdmin@gmail.com"
+                    {/* {user.email == "superAdmin@gmail.com"
                       ? "Super Admin"
-                      : "Runwal Manager"}
+                      : "Runwal Manager"} */}
                   </h5>
-                  <span className="text-xs text-[#767676]  dark:text-white">
+                  {/* <span className="text-xs text-[#767676]  dark:text-white">
                     {user.email == "superAdmin@gmail.com" ? "Admin" : "Manager"}
-                  </span>
+                  </span> */}
                 </div>
               </button>
               <AnimatePresence>
