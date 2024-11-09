@@ -4,9 +4,12 @@ import { IoMdCall } from "react-icons/io";
 import { CiMenuKebab } from "react-icons/ci";
 import { FaPlayCircle } from "react-icons/fa";
 import { Button } from "../../components/buttons/button";
+import { GoTriangleDown } from "react-icons/go";
+import { businessCard, recommednedDetail } from "../../database";
+import { GoDotFill } from "react-icons/go";
+import { serviceProgressUpdateDetail } from "../../database";
 
 import { useState } from "react";
-import { button } from "framer-motion/client";
 
 const Dashboard = () => {
   const [accountShowButton, setAccountShowButton] = useState(false);
@@ -16,7 +19,7 @@ const Dashboard = () => {
   };
   return (
     <>
-      <section>
+      <section className="pb-10">
         {/* Card */}
         <div className="my-2 flex sm:flex-row flex-col gap-4">
           <div className="px-4 py-2 w-fit flex gap-2 bg-white border items-center border-[#DFEAF2] rounded-2xl">
@@ -79,7 +82,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <div className="pt-4">
+        <div className="flex flex-col pt-10 ">
           <div className="flex justify-between gap-4">
             <p className="flex items-center gap-4 font-semibold text-2xl text-[#0A1C40] ">
               Your Business (09){" "}
@@ -89,32 +92,162 @@ const Dashboard = () => {
             </p>
             <Button />
           </div>
-          <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
-            <img src="../../../public/images/no-business.svg  " alt="" />
-            <p className="font-bold  text-xl text-[#000000] ">
-              No Business Created
-            </p>
-            <p className="font-normal text-[#797979]">
-              Create one to start your services
-            </p>
-          </div>
+          {businessCard.length > 0 ? (
+            <div className="grid grid-cols-1 pb-10 sm:grid-cols-2 !rounded-lg  p-4 mt-4 bg-[#F3F7FF] lg:grid-cols-3 gap-4">
+              {businessCard.map((data, index) => (
+                <div className="gap-2 flex flex-col  bg-white rounded-md px-4 py-2">
+                  <div key={index} className="px-2 py-3 flex gap-4">
+                    <img
+                      src="../../../public/images/business-imh.svg"
+                      className=""
+                      alt=""
+                    />
+                    <div className="pt-5">
+                      <p className="font-bold text-xl text-[#171717]">
+                        {data.businessName}
+                      </p>
+                      <p className="text-semibold text-sm text-[#343C6A]">
+                        {data.businesSubTitle}{" "}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-1 w-[100%]">
+                    <div className="flex justify-between">
+                      <p className="font-medium text-base text-[#000000B2] ">
+                        Type:
+                      </p>
+                      <p className="font-semibold text-base text-black">
+                        {data.type}
+                      </p>
+                    </div>
+                    <div className="flex justify-between">
+                      <p className="font-medium text-base text-[#000000B2] ">
+                        Registered Office:
+                      </p>
+                      <p className="font-semibold text-base text-black">
+                        {data.registeredOffice}
+                      </p>
+                    </div>
+                    <div className="flex justify-between">
+                      <p className="font-medium text-base text-[#000000B2] ">
+                        Company Status:
+                      </p>
+                      <p className="font-semibold text-base text-black">
+                        {data.companyStatus}{" "}
+                      </p>
+                    </div>
+                    <div className="flex justify-between">
+                      <p className="font-medium text-base text-[#000000B2] ">
+                        Company Age:{" "}
+                      </p>
+                      <p className="font-semibold text-base text-black">
+                        {data.companyAge}{" "}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
+              <img src="../../../public/images/no-business.svg  " alt="" />
+              <p className="font-bold  text-xl text-[#000000] ">
+                No Business Created
+              </p>
+              <p className="font-normal text-[#797979]">
+                Create one to start your services
+              </p>
+            </div>
+          )}
         </div>
-        <div className="pt-4">
+        <div className="pt-10">
           <div className="flex justify-between gap-4">
             <p className="flex items-center font-semibold gap-4 text-2xl text-[#0A1C40] ">
-              Your Service Progress Updates (09){" "}
+              Recommended Services (09)
               <span>
                 <FaPlayCircle size={20} />
               </span>
             </p>
+            <p className="font-semibold text-lg text-[#606060]">View All</p>
           </div>
-          <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
-            <img src="../../../public/images/service-prgress.svg  " alt="" />
-            <p className="font-bold  text-xl text-[#000000] ">No Services </p>
-            <p className="font-normal text-[#797979]">
-              Create a Business to add your Service{" "}
+
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 !rounded-lg pb-5 mt-4 
+           lg:grid-cols-3 gap-4 bg-white"
+          >
+            {recommednedDetail.map((data, index) => (
+              <div
+                key={index}
+                className="flex items-center bg-[#F3F7FF] gap-2 w-full py-2 px-2 rounded-lg"
+              >
+                <img
+                  src="../../../public/images/recommedned-services-icon.png"
+                  alt=""
+                />
+                <div>
+                  <p className="font-semibold text-xl text-[#171717]">
+                    {data.companyName}{" "}
+                  </p>
+                  <p className="font-semibold text-xs ">
+                    {data.companyDeatil}{" "}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="pt-10">
+          <div className="flex justify-between gap-4 pb-4">
+            <p className="flex items-center font-semibold gap-4 text-2xl text-[#0A1C40] ">
+              Your Service Progress Updates{" "}
+              <span>
+                <FaPlayCircle size={20} />
+              </span>
             </p>
+            <p className="font-semibold text-lg text-[#606060]">View All</p>
           </div>
+          {serviceProgressUpdateDetail.length > 0 ? (
+            <div className="grid grid-rows-1 gap-4">
+              {serviceProgressUpdateDetail.map((data, index) => (
+                <div
+                  key={index}
+                  className="flex justify-between bg-[#F8FAFF] px-4 py-2  rounded-md"
+                >
+                  <div className="flex flex-col gap-2">
+                    <div className="flex  gap-2">
+                      {" "}
+                      <img src="../../../public/images/settings.png" alt="" />
+                      <p className="font-bold text-2xl">{data.name} </p>
+                      <img
+                        src="../../../public/images/errors.png"
+                        width={15}
+                        alt=""
+                      />
+                    </div>
+                    <div className="flex gap-2">
+                      <p className="font-normal text-sm ">{data.detail1} </p>
+                      <p className="font-normal text-sm ">{data.detail2} </p>
+                    </div>
+                  </div>
+                  <div className="flex gap-2 ">
+                    <p className="flex items-center h-8  px-2 py-1 rounded-full font-semibold text-[#037847] bg-[#03784728]">
+                      <GoDotFill />
+                      On Time
+                    </p>
+                    <GoTriangleDown size={30} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
+              <img src="../../../public/images/service-prgress.svg  " alt="" />
+              <p className="font-bold  text-xl text-[#000000] ">No Services </p>
+              <p className="font-normal text-[#797979]">
+                Create a Business to add your Service{" "}
+              </p>
+            </div>
+          )}
         </div>
       </section>
     </>
