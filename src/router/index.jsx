@@ -13,6 +13,8 @@ import { Signup } from "../pages/auth/sign-up";
 import { CreateNewPassword } from "../pages/auth/create-new-password";
 import Dashboard from "../pages/dashboard";
 import ServicesListing from "../pages/services/listing";
+import BusinessListing from "../pages/business/businessListing";
+import BusinessDetail from "../pages/business/businessDetail";
 
 const router = createBrowserRouter([
   {
@@ -84,6 +86,14 @@ const router = createBrowserRouter([
           {
             path: "services-listing",
             element: <ServicesListing />,
+          },
+          {
+            path: "business-listing",
+            element: <BusinessListing />,
+          },
+          {
+            path: "business-detail",
+            element: <BusinessDetail/>,
           },
         ],
       },

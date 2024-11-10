@@ -106,6 +106,14 @@ export const businessCard = [
     companyStatus: "Active",
     companyAge: "4y 11m",
   },
+  {
+    businessName: "Reyan Ventures",
+    businesSubTitle: "Sustainable home electric products",
+    type: "Private Limited",
+    registeredOffice: "Noida, UP",
+    companyStatus: "Active",
+    companyAge: "4y 11m",
+  },
 ];
 
 //  Recommended service detail here
