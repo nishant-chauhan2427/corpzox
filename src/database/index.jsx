@@ -6,7 +6,7 @@ export const headerLinks = [
 ];
 
 // Services listing dummy data
-export const serviceListingData = [
+export const servicesListing = [
   {
     projectName: "Project Office",
     projectDescription:
@@ -50,7 +50,6 @@ export const serviceListingData = [
 ];
 
 // Sidear blogs data
-
 export const insightBlog = [
   {
     title: "How to Maximize Your Business Tax Deductions",
@@ -80,8 +79,7 @@ export const insightBlog = [
 ];
 
 // Businesscard details here
-
-export const businessCard = [
+export const businessListing = [
   {
     businessName: "Reyan Ventures",
     businesSubTitle: "Sustainable home electric products",
@@ -116,9 +114,8 @@ export const businessCard = [
   },
 ];
 
-//  Recommended service detail here
-
-export const recommednedDetail = [
+//  Recommended service listing
+export const recommendedServicesListing = [
   {
     companyName: "Online Company Registration",
     companyDeatil: "Recommended for small and micro business",
@@ -134,7 +131,7 @@ export const recommednedDetail = [
 ];
 
 // Service progress update detail here
-export const serviceProgressUpdateDetail = [
+export const servicesProgress = [
   {
     name: "Service: Private Limited Registration",
     detail1: " Business: CorpZo Ventures Private Limited",

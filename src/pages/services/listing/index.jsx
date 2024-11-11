@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Checkbox } from "../../../components/inputs/checkbox";
 import { CiHeart } from "react-icons/ci";
 import { Button } from "../../../components/buttons";
-import { serviceListingData } from "../../../database";
+import { servicesListing } from "../../../database";
 import { insightBlog } from "../../../database";
 import Insight from "../../../components/insight/insight";
 
@@ -42,7 +42,7 @@ const ServicesListing = () => {
             <>
               {/* Service listing data here  */}
               <div className="grid grid-cols-1  sm:grid-cols-2 xl:grid-cols-2  gap-4">
-                {serviceListingData.map((service, index) => (
+                {servicesListing.map((service, index) => (
                   <div
                     key={index}
                     className="sm:m-3 flex flex-col gap-2 sm:gap-4 justify-between"

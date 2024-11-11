@@ -1,6 +1,6 @@
 import { FaPlayCircle } from "react-icons/fa";
 import { Button } from "../../../components/buttons/button";
-import { businessCard, recommednedDetail } from "../../../database";
+import { businessListing, recommendedServicesListing } from "../../../database";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { Link } from "react-router-dom";
 
@@ -26,9 +26,9 @@ const BusinessListing = () => {
             </Link>
           </div>
         </div>
-        {businessCard.length > 0 ? (
+        {businessListing.length > 0 ? (
           <div className="grid grid-cols-1 pb-10 sm:grid-cols-2 !rounded-lg bg-white p-4 mt-4  lg:grid-cols-3 gap-4">
-            {businessCard.map((data, index) => (
+            {businessListing.map((data, index) => (
               <div>
                 <div className="gap-2 flex flex-col   bg-[#F3F7FF] rounded-md px-4 py-2">
                   <div key={index} className="px-2 py-3 flex gap-4">
