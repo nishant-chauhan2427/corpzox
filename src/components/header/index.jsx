@@ -120,7 +120,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
             <p></p>
           )}
           {/* Search */}
-          <Search placeholder={"Search Business / Services"} containerClassName={"w-1/2 bg-[#3D485F]"} inputClassName={"bg-[#3D485F]"} />
+          <Search placeholder={"Search Business / Services"} containerClassName={"lg:!w-1/2 !bg-[#3D485F] !rounded-full overflow-hidden"} inputClassName={"w-full !bg-[#3D485F] text-white"} />
           {/* Header Links */}
           <div className="hidden lg:flex items-center gap-4">
             {headerLinks?.map((data, index) => (
