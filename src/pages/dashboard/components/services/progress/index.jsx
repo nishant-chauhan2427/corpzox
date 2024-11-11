@@ -1,16 +1,17 @@
 import { GoDotFill, GoTriangleDown } from "react-icons/go";
+import { Link } from "react-router-dom";
 
 export const ServicesProgress = ({ data }) => {
   return (
     <div className="pt-10">
       <div className="flex justify-between gap-4 pb-4">
-        <p className="flex items-center font-semibold gap-4 text-2xl text-[#0A1C40] ">
+        <p className="flex items-center font-semibold gap-4 text-xl text-[#0A1C40] ">
           Your Service Progress Updates
           <span>
-           <img src="/icons/dashboard/take-a-tour.svg" alt="" />
+            <img src="/icons/dashboard/take-a-tour.svg" alt="" />
           </span>
         </p>
-        <p className="font-semibold text-lg text-[#606060]">View All</p>
+        <Link className="font-semibold text-[#606060]">View All</Link>
       </div>
       {data.length > 0 ? (
         <div className="grid grid-rows-1 gap-4">
@@ -19,19 +20,14 @@ export const ServicesProgress = ({ data }) => {
               key={index}
               className="flex justify-between bg-[#F8FAFF] px-4 py-2  rounded-md"
             >
-              <div className="flex flex-col gap-2">
-                <div className="flex  gap-2">
-                  {" "}
-                  <img src="/images/settings.png" alt="" />
-                  <p className="font-bold text-2xl">{data.name} </p>
-                  <img
-                    src="/images/errors.png"
-                    width={15}
-                    alt=""
-                  />
+              <div className="flex flex-col gap-1">
+                <div className="flex gap-2">
+                  <img src="/images/dashboard/service-progress.svg" alt="" />
+                  <p className="font-bold">{data.name} </p>
+                  <img src="/icons/dashboard/service-error.svg" width={15} alt="" />
                 </div>
                 <div className="flex gap-2">
-                  <p className="font-normal text-sm ">{data.detail1} </p>
+                  <h6 className="font-normal text-sm">{data.detail1} </h6>
                   <p className="font-normal text-sm ">{data.detail2} </p>
                 </div>
               </div>

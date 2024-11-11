@@ -118,15 +118,15 @@ export const businessListing = [
 export const recommendedServicesListing = [
   {
     companyName: "Online Company Registration",
-    companyDeatil: "Recommended for small and micro business",
+    companyDetail: "Recommended for small and micro business",
   },
   {
     companyName: "Online Company Registration",
-    companyDeatil: "Recommended for small and micro business",
+    companyDetail: "Recommended for small and micro business",
   },
   {
     companyName: "Online Company Registration",
-    companyDeatil: "Recommended for small and micro business",
+    companyDetail: "Recommended for small and micro business",
   },
 ];
 
@@ -134,20 +134,20 @@ export const recommendedServicesListing = [
 export const servicesProgress = [
   {
     name: "Service: Private Limited Registration",
-    detail1: " Business: CorpZo Ventures Private Limited",
+    detail1: "Business: CorpZo Ventures Private Limited",
     detail2: "Step: Application submission in progress",
     status: "OnTime",
   },
-  
+
   {
     name: "Service: Private Limited Registration",
-    detail1: " Business: CorpZo Ventures Private Limited",
+    detail1: "Business: CorpZo Ventures Private Limited",
     detail2: "Step: Application submission in progress",
     status: "OnTime",
   },
   {
     name: "Service: Private Limited Registration",
-    detail1: " Business: CorpZo Ventures Private Limited",
+    detail1: "Business: CorpZo Ventures Private Limited",
     detail2: "Step: Application submission in progress",
     status: "OnTime",
   },
