@@ -3,7 +3,11 @@ import React from "react";
 const ServiceDetail = () => {
   return (
     <>
-      <section>Service Detail</section>
+      <section>
+
+
+
+      </section>
     </>
   );
 };
