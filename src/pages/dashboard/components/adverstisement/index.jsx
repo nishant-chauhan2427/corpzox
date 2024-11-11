@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ImCross } from "react-icons/im";
+import { Button } from "../../../../components/buttons";
 
 export const Advertisement = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -13,15 +14,17 @@ export const Advertisement = () => {
   return (
     <>
       {isVisible && (
-        <div
-          className={`relative rounded-lg px-5 py-4 bg-[#007AFF] pr-20 bg-[url(public\images\invest-bg-shape.png)] bg-contain bottom-0 right-0 transition-opacity duration-300 ${
-            isFadingOut ? "opacity-0" : "opacity-100"
-          }`}
-        >
-          <p className="text-white font-semibold text-lg ">
-            Looking for an investment?
-          </p>
-          <button className="text-white">Avail CORPZO X</button>
+        <div className="relative min-w-[350px]">
+          <div
+            className={`flex flex-col gap-4 rounded-[18px] px-5 py-4 pr-20 bg-[url("/images/advertisement/advertisement-bg.svg")] bg-no-repeat bg-cover transition-all duration-300 ${
+              isFadingOut ? "opacity-0" : "opacity-100"
+            }`}
+          >
+            <p className="text-white font-semibold text-lg">
+              Looking for an investment?
+            </p>
+            <Button primary={true}>Avail CORPZO X</Button>
+          </div>
           <div
             onClick={handleBannerdisplay}
             className="absolute -right-2 -top-2 cursor-pointer bg-[#FF2323] rounded-full  p-2"

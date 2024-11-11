@@ -1,12 +1,12 @@
 import { ImSpinner2 } from "react-icons/im";
 
 export const Button = ({
+  type,
+  primary,
+  outline,
   simpleLink,
-  outLine,
-  mainPrimary,
   gradientBtn,
   children,
-  type,
   className,
   onClick,
   disabled,
@@ -26,10 +26,10 @@ export const Button = ({
         !disabled &&
         !isLoading &&
         "text-primaryText font-medium  hover:text-gray-700 rounded"
-        } ${outLine && !disabled && !isLoading && "rounded text-primaryText"} ${mainPrimary &&
+        } ${outline && !disabled && !isLoading && "rounded text-primaryText"} ${primary &&
         !disabled &&
         !isLoading &&
-        "border border-primaryText bg-[#FFD700] text-black hover:bg-[#FFD700] hover:bg-opacity-80 hover:border-secondaryBg rounded"
+        "bg-[#FFD700] text-black hover:bg-[#FFD700] hover:bg-opacity-80 rounded"
         } ${gradientBtn &&
         !disabled &&
         !isLoading &&

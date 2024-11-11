@@ -50,15 +50,15 @@ export const Profile = () => {
     +financePercentage
   );
   return (
-    <div className="px-4 py-2 w-fit flex gap-2 bg-white border items-center border-[#DFEAF2] rounded-2xl">
+    <div className="pl-[11px] pr-[33px] py-[17px] w-fit flex gap-4 bg-white border items-center border-[#DFEAF2] rounded-[18px]">
       <div className="w-16 relative">
         <CircularProgressbarWithChildren
           styles={buildStyles({
             textColor: "red",
-            pathColor: "turquoise",
-            trailColor: "gray",
+            pathColor: "#ffd700",
+            trailColor: "#f0f0f0",
           })}
-          value={overallPercentage > 0 ? overallPercentage : 60}
+          value={overallPercentage > 0 ? overallPercentage : 40}
         >
           <div className="w-12 h-12 rounded-full">
             <img
@@ -72,11 +72,10 @@ export const Profile = () => {
           </div> */}
         </CircularProgressbarWithChildren>
       </div>
-      
       <div>
         <p className="font-bold text-2xl">45%</p>
         <p className="font-semibold text-sm text-[#232323]">Mehul</p>
-        <Link className="font-semibold text-[10px] text-[#FF4141]">
+        <Link to={"/profile"} className="font-semibold text-[10px] text-[#FF4141]">
           Complete Your Profile
         </Link>
       </div>

@@ -1,5 +1,3 @@
-import { FaPlayCircle } from "react-icons/fa";
-
 export const RecommendedServices = ({ data }) => {
   return (
     <div className="pt-10">
@@ -7,7 +5,7 @@ export const RecommendedServices = ({ data }) => {
         <p className="flex items-center font-semibold gap-4 text-2xl text-[#0A1C40] ">
           Recommended Services (09)
           <span>
-            <FaPlayCircle size={20} />
+            <img src="/icons/dashboard/take-a-tour.svg" alt="" />
           </span>
         </p>
         <p className="font-semibold text-lg text-[#606060]">View All</p>

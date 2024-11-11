@@ -1,4 +1,3 @@
-import { FaPlayCircle } from "react-icons/fa";
 import { GoDotFill, GoTriangleDown } from "react-icons/go";
 
 export const ServicesProgress = ({ data }) => {
@@ -8,7 +7,7 @@ export const ServicesProgress = ({ data }) => {
         <p className="flex items-center font-semibold gap-4 text-2xl text-[#0A1C40] ">
           Your Service Progress Updates
           <span>
-            <FaPlayCircle size={20} />
+           <img src="/icons/dashboard/take-a-tour.svg" alt="" />
           </span>
         </p>
         <p className="font-semibold text-lg text-[#606060]">View All</p>

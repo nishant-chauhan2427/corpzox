@@ -13,9 +13,9 @@ import { Business } from "./components/business";
 const Dashboard = () => {
   return (
     <>
-      <section className="pb-10">
-        <div className="my-2 justify-between flex sm:flex-row flex-col gap-4">
-          <div className="flex flex-row  gap-4 w-full">
+      <section className="py-6">
+        <div className="my-2 flex flex-col md:flex-row justify-between gap-4">
+          <div className="flex flex-row gap-4 w-full">
             <Profile />
             <AccountManager />
           </div>
