@@ -41,16 +41,16 @@ export const IconBox = ({
       {to ? (
         <Link
           to={to}
-          className={`px-2 py-2.5 ${
-            pathname == to && "bg-secondaryBg dark:bg-[#FFD700]"
-          }  flex items-center gap-4 text-black dark:text-white`}
+          className={`px-2 py-3 ${
+            pathname == to && "bg-[#FFD700] shadow-lg"
+          } rounded-md flex items-center gap-4 text-black`}
           onClick={onClick}
         >
           {/* <img className={`w-5`} src="/icons/home.svg" alt="" /> */}
           {/* <SVG className="stroke-icon" iconId={icon} /> */}
           <span
             className={`${
-              pathname == to ? "text-primaryBg" : "text-black dark:text-white"
+              pathname == to ? "text-black" : "dark:text-white"
             } `}
           >
             {icon && icon}
@@ -59,8 +59,7 @@ export const IconBox = ({
             <span
               className={`${
                 pathname == to
-                  ? "text-primaryText"
-                  : "text-black dark:text-white"
+                ? "font-bold text-black" : "dark:text-white"
               } text-base `}
             >
               {title}
@@ -71,7 +70,7 @@ export const IconBox = ({
         <button
           onClick={handleDropdown}
           className={`${
-            dropdown && "bg-secondaryBg dark:bg-[#FFD700] "
+            dropdown && "bg-[#FFD700] dark:bg-[#FFD700]"
           } w-full px-2 py-2.5 flex items-center justify-between gap-2 `}
         >
           <p className="flex gap-4 dark:text-white">

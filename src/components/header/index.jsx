@@ -56,7 +56,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
     <header
       className={`${
         className && className
-      } bg-[#0A1C40] dark:bg-slate-900 px-2 lg:px-4 py-4 z-[1000]`}
+      } bg-[#0A1C40] dark:bg-slate-900 lg:ps-64 px-2 lg:px-4 py-4 z-[1000]`}
     >
       <div className="relative flex justify-between items-center">
         {/* Left Side Menu */}
