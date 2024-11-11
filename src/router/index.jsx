@@ -13,8 +13,8 @@ import { Signup } from "../pages/auth/sign-up";
 import { CreateNewPassword } from "../pages/auth/create-new-password";
 import Dashboard from "../pages/dashboard";
 import ServicesListing from "../pages/services/listing";
-import BusinessListing from "../pages/business/businessListing";
-import BusinessDetail from "../pages/business/businessDetail";
+import BusinessListing from "../pages/business/listing";
+import BusinessDetail from "../pages/business/detail";
 
 const router = createBrowserRouter([
   {
