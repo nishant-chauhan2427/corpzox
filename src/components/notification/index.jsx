@@ -41,10 +41,10 @@ export const Notification = ({ closeButton }) => {
   useOutsideClick(notificationPopupRef, handleNotification);
 
   return (
-    <>
+    <div className="relative">
       <IconWrapper className={"cursor-pointer"} onClick={handleNotification}>
         <button className="header-icon">
-          <IoMdNotificationsOutline size={iconSize} className="text-xl" />
+          <IoMdNotificationsOutline size={iconSize} className="text-white text-xl" />
         </button>
       </IconWrapper>
       <AnimatePresence>
@@ -54,7 +54,7 @@ export const Notification = ({ closeButton }) => {
             animate={{ scale: 1 }}
             exit={{ scale: 0 }}
             ref={notificationPopupRef}
-            className={`absolute right-0 lg:right-40 top-12 z-10 md:min-w-[20rem] max-w-[20rem] max-h-[80vh] bg-gray-50 dark:bg-[#1E293B] border dark:border-gray-700 rounded-lg shadow divide-y divide-gray-100 dark:divide-gray-600`}
+            className={`absolute right-0 lg:right-4 top-8 z-10 md:min-w-[20rem] max-w-[20rem] max-h-[80vh] bg-gray-50 dark:bg-[#1E293B] border dark:border-gray-700 rounded-lg shadow divide-y divide-gray-100 dark:divide-gray-600`}
           >
             <div className="px-2 py-3">
               <div className="flex justify-between">
@@ -144,6 +144,6 @@ export const Notification = ({ closeButton }) => {
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </div>
   );
 };

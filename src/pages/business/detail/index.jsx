@@ -1,9 +1,8 @@
 import { FaPlayCircle } from "react-icons/fa";
 import { Button } from "../../../components/buttons/button";
-import { businessCard, recommednedDetail } from "../../../database";
+import { servicesProgress } from "../../../database";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { Link } from "react-router-dom";
-import { serviceProgressUpdateDetail } from "../../../database";
 import { GoDotFill, GoTriangleDown } from "react-icons/go";
 
 const BusinessDetail = () => {
@@ -96,16 +95,16 @@ const BusinessDetail = () => {
           <div className="pt-10">
             <div className="flex justify-between gap-4 pb-4">
               <p className="flex items-center font-semibold gap-4 text-2xl text-[#0A1C40] ">
-                Your Service Progress Updates{" "}
+                Your Service Progress Updates
                 <span>
                   <FaPlayCircle size={20} />
                 </span>
               </p>
               <p className="font-semibold text-lg text-[#606060]">View All</p>
             </div>
-            {serviceProgressUpdateDetail.length > 0 ? (
+            {servicesProgress.length > 0 ? (
               <div className="grid grid-rows-1 gap-4">
-                {serviceProgressUpdateDetail.map((data, index) => (
+                {servicesProgress.map((data, index) => (
                   <div
                     key={index}
                     className="flex justify-between bg-[#F8FAFF] px-4 py-2  rounded-md"

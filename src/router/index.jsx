@@ -13,6 +13,7 @@ import { Signup } from "../pages/auth/sign-up";
 import { CreateNewPassword } from "../pages/auth/create-new-password";
 import Dashboard from "../pages/dashboard";
 import ServicesListing from "../pages/services/listing";
+import ServiceDetail from "../pages/services/detail";
 import BusinessListing from "../pages/business/listing";
 import BusinessDetail from "../pages/business/detail";
 
@@ -83,17 +84,35 @@ const router = createBrowserRouter([
             path: "dashboard",
             element: <Dashboard />,
           },
+          // Business
+          {
+            path: "business",
+            children: [
+              {
+                index: true,
+                element: <BusinessListing />,
+              },
+              {
+                path: "create", 
+                element: <BusinessDetail />,
+              },
+              {
+                path: "edit", 
+                element: <BusinessDetail />,
+              },
+              {
+                path: "detail", 
+                element: <BusinessDetail />,
+              },
+            ],
+          },
           {
             path: "services-listing",
             element: <ServicesListing />,
           },
           {
-            path: "business-listing",
-            element: <BusinessListing />,
-          },
-          {
-            path: "business-detail",
-            element: <BusinessDetail/>,
+            path: "services-detail",
+            element: <ServiceDetail />,
           },
         ],
       },

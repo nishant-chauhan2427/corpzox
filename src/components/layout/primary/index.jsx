@@ -28,19 +28,19 @@ export const PrimaryLayout = () => {
           collapse={collapse}
           setCollapse={setCollapse}
           className={`${sidebarClassName ? sidebarClassName : ""} ${!collapse ? "min-w-60 min-h-screen" : "min-h-screen"
-            } hidden lg:block fixed top-0 left-0 p-4 z-[1001] bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100`}
+            } hidden lg:block fixed top-4 left-10 px-8 py-4 z-[1001] bg-gray-600 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100`}
         />
-        <Sidebar
+        {/* <Sidebar
           collapse={phoneCollapse}
           setCollapse={setPhoneCollapse}
           className={`${sidebarClassName ? sidebarClassName : ""} ${!phoneCollapse ? "min-w-60 min-h-screen" : "min-h-screen"
-            } block lg:hidden fixed top-0 left-0 p-4 z-[1001] bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100`}
-        />
+            } block lg:hidden fixed top-4 left-0 px-8 py-4 z-[1001] bg-gray-600 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100`}
+        /> */}
         <motion.div
           initial={{ left: "-50%" }}
           animate={{ left: 0, transition: { duration: 0.3 } }}
           exit={{ left: "-50%", transition: { duration: 0.3 } }}
-          className={`${!collapse ? "lg:ps-60" : "w-full ps-16"} ${!phoneCollapse ? "lg:ps-60" : "w-full ps-16"} w-full overflow-hidden`}
+          className={`lg:ps-60 w-full overflow-hidden`}
         >
           <motion.div className="page-body bg-[#ffffff] dark:dark:bg-slate-800 px-4">
             <Outlet />

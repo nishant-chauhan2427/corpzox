@@ -39,7 +39,11 @@ export const SignIn = () => {
   // const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [checkedCheckbox, setCheckedCheckbox] = useState(false);
 
+  const handleCheckbox = () => {
+    setCheckedCheckbox(!checkedCheckbox);
+  };
   const onSubmit = async(data) => {
     setIsSubmit(true);
     const token = await recaptchaRef.current.executeAsync().then((res) => {
@@ -108,7 +112,7 @@ export const SignIn = () => {
             {/* <ThemeSwitch/> */}
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="flex flex-col gap-2"
+              className="flex flex-col gap-4 pt-5"
             >
               <Controller
                 name="email"
@@ -117,7 +121,7 @@ export const SignIn = () => {
                 render={({ field }) => (
                   <Input
                     {...field}
-                    label={"Email"}
+                    // label={"Email"}
                     type={"email"}
                     placeholder={"Email Id / Phone No."}
                     className={"border-[#D9D9D9] border"}
@@ -134,7 +138,7 @@ export const SignIn = () => {
                 render={({ field }) => (
                   <Input
                     {...field}
-                    label={"Password"}
+                    // label={"Password"}
                     type={"password"}
                     className={"border-[#D9D9D9] border"}
                     placeholder={"Password"}
@@ -144,7 +148,10 @@ export const SignIn = () => {
                 )}
                 // rules={{ required: "Password is required" }}
               />
-              <Link to={"/forgot-password"} className="font-medium text-base text-[#0A1C40]">
+              <Link
+                to={"/forgot-password"}
+                className="font-medium text-base text-[#0A1C40]"
+              >
                 Forgot Password?
               </Link>
               <ReCAPTCHA
@@ -152,14 +159,22 @@ export const SignIn = () => {
                 size="invisible"
                 sitekey={RECAPTCHA_SITE_KEY}
               />
-              <div className="flex items-center font-normal text-base text-[#a5a3a3]">
+              <div
+                onClick={handleCheckbox}
+                className="flex items-center cursor-pointer font-normal text-base text-[#a5a3a3] gap-2"
+              >
                 {" "}
-                <Checkbox field /> Keep me Signed in
+                <Checkbox
+                  checked={checkedCheckbox}
+                  onClick={(e) => e.stopPropagation()}
+                  onChange={handleCheckbox}
+                />{" "}
+                Keep me Signed in
               </div>
               <Button
                 type={"submit"}
                 v2={true}
-                mainPrimary={true}
+                primary={true}
                 className={
                   "mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none "
                 }
@@ -184,15 +199,21 @@ export const SignIn = () => {
                 <p className="text-base text-[#6E6E6E] font-medium">or</p>
                 <div className="border-t w-full border-[#D9D9D9]"></div>
               </div>
+
               <div className="flex items-center justify-center rounded p-2  text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
-                <p>Sign in with Google</p>
+                <p className="flex gap-2">
+                  Sign in with Google <img src="google.svg" alt="" />
+                </p>
                 <img src="" alt="" />
               </div>
 
               <div className="text-center flex  justify-center gap-2 font-normal text-[#6C6C6C]">
                 <p>
                   Need an account?
-                  <Link to={"/sign-up"} className="p-2 text-[#F1359C] font-semibold ">
+                  <Link
+                    to={"/sign-up"}
+                    className="p-2 text-[#F1359C] font-semibold "
+                  >
                     Create one
                   </Link>
                 </p>

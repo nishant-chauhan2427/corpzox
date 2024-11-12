@@ -10,13 +10,13 @@ import { MdOutlineHorizontalRule } from "react-icons/md";
 import { FaFacebookSquare, FaGoogle, FaInstagramSquare } from "react-icons/fa";
 import { DualHeadingTwo } from "../components/dualHeading/dualHeadingTwo";
 import { useEffect, useState } from "react";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../../redux/slices/userLoginSlice";
 import { Checkbox } from "../../../components/inputs/checkbox";
 import { ThemeSwitch } from "../../../components/theme/switch";
 import { AuthLayout } from "../../../components/layout/auth";
 import { PhoneNumberInput } from "../../../components/inputs/phoneInput";
-import {registerUser} from '../../../redux/actions/userAuth-action';
+import { registerUser } from "../../../redux/actions/userAuth-action";
 import toast from "react-hot-toast";
 export const Signup = () => {
   const {
@@ -28,7 +28,11 @@ export const Signup = () => {
     resolver: yupResolver(signUpValidationSchema),
     mode: "onChange",
   });
-  const { isRegistering=false,registeringError,registerMessage } = useSelector((state) => state.auth);
+  const {
+    isRegistering = false,
+    registeringError,
+    registerMessage,
+  } = useSelector((state) => state.auth);
   const handleBlur = async (field) => {
     await trigger(field);
   };
@@ -39,29 +43,29 @@ export const Signup = () => {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    setIsSubmit(true)
-    if(data?.phone){
-      data.countryCode=`+${data.phone.toString().slice(0,2)}`;
-      data.phone=data.phone.toString().slice(2);
+    setIsSubmit(true);
+    if (data?.phone) {
+      data.countryCode = `+${data.phone.toString().slice(0, 2)}`;
+      data.phone = data.phone.toString().slice(2);
     }
-    console.log(data)
+    console.log(data);
     // Reset error message
     setError("");
-    dispatch(registerUser(data))
+    dispatch(registerUser(data));
   };
-  useEffect(()=>{
+  useEffect(() => {
     // console.log(isRegistering,isSubmit,registeringError)
-    if(!isRegistering&&isSubmit){
-      setIsSubmit(false)
-      if(registeringError){
-        toast.error(registeringError)
-      }else{
-        toast.success(registerMessage)
-        navigate('/verify');
+    if (!isRegistering && isSubmit) {
+      setIsSubmit(false);
+      if (registeringError) {
+        toast.error(registeringError);
+      } else {
+        toast.success(registerMessage);
+        navigate("/verify");
       }
     }
     // console.log(isRegistering,isSubmit,registeringError)
-  },[isRegistering])
+  }, [isRegistering]);
   return (
     <>
       <MetaTitle title={"Sign Up"} />
@@ -74,8 +78,11 @@ export const Signup = () => {
               heading={"Sign Up"}
               subHeading={"Welcome to CorpZO. Please sign up here!"}
             />
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col ">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 ">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="flex flex-col gap-2 "
+            >
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-5">
                 <Controller
                   name="firstName"
                   control={control}
@@ -83,7 +90,7 @@ export const Signup = () => {
                   render={({ field }) => (
                     <Input
                       {...field}
-                      label={"First name"}
+                      // label={"First name"}
                       type={"name"}
                       placeholder={"First Name"}
                       className={"border-[#D9D9D9] border"}
@@ -100,7 +107,7 @@ export const Signup = () => {
                   render={({ field }) => (
                     <Input
                       {...field}
-                      label={"Last name"}
+                      // label={"Last name"}
                       type={"name"}
                       placeholder={"Last Name"}
                       className={"border-[#D9D9D9] border"}
@@ -111,14 +118,14 @@ export const Signup = () => {
                   // rules={{ required: "Email Address is required" }}
                 />
               </div>
-              <div>
+              <div className="">
                 <Controller
                   name="phone"
                   control={control}
                   render={({ field }) => (
                     <PhoneNumberInput
                       {...field}
-                      label={"Phone Number"}
+                      // label={"Phone Number"}
                       country={"in"}
                       placeholder={"Phone No."}
                       touched={true}
@@ -127,40 +134,42 @@ export const Signup = () => {
                   )}
                 />
               </div>
-              <Controller
-                name="email"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    label={"Email"}
-                    type={"email"}
-                    placeholder={"Email Id"}
-                    className={"border-[#D9D9D9] border"}
-                    errorContent={errors?.email?.message}
-                    onBlur={() => handleBlur("email")}
-                  />
-                )}
-                // rules={{ required: "Email Address is required" }}
-              />
-              <Controller
-                name="password"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    label={"Password"}
-                    type={"password"}
-                    className={"border-[#D9D9D9] border"}
-                    placeholder={"Password"}
-                    errorContent={errors.password?.message}
-                    onBlur={() => handleBlur("password")}
-                  />
-                )}
-                // rules={{ required: "Password is required" }}
-              />
+              <div className="-mt-2 flex flex-col gap-3">
+                <Controller
+                  name="email"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      label={"Email"}
+                      type={"email"}
+                      placeholder={"Email Id"}
+                      className={"border-[#D9D9D9] border"}
+                      errorContent={errors?.email?.message}
+                      onBlur={() => handleBlur("email")}
+                    />
+                  )}
+                  // rules={{ required: "Email Address is required" }}
+                />
+                <Controller
+                  name="password"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      label={"Password"}
+                      type={"password"}
+                      className={"border-[#D9D9D9] border"}
+                      placeholder={"Password"}
+                      errorContent={errors.password?.message}
+                      onBlur={() => handleBlur("password")}
+                    />
+                  )}
+                  // rules={{ required: "Password is required" }}
+                />
+              </div>
 
               <div className="flex flex-col gap-4 sm:pt-4">
                 <Button
@@ -170,7 +179,7 @@ export const Signup = () => {
                   className={
                     "mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none "
                   }
-                  disabled={!isValid||isSubmit}
+                  disabled={!isValid || isSubmit}
                 >
                   Sign Up
                 </Button>
@@ -179,15 +188,18 @@ export const Signup = () => {
                   <p className="text-base text-[#6E6E6E] font-medium">or</p>
                   <div className="border-t w-full border-[#D9D9D9]"></div>
                 </div>
-                <div className="flex items-center justify-center rounded p-2  text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
-                  <p>Sign in with Google</p>
+                <div className="flex items-center justify-center rounded p-2 gap-2 text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
+                  Sign in with Google <img src="google.svg" alt="" />
                   <img src="" alt="" />
                 </div>
                 <div className="text-center flex  justify-center gap-2 font-normal text-[#6C6C6C]">
                   <p>
                     Allready have an account?
-                    <Link to={"/sign-in"} className="p-2 text-[#F1359C] font-semibold ">
-                     Login
+                    <Link
+                      to={"/sign-in"}
+                      className="p-2 text-[#F1359C] font-semibold "
+                    >
+                      Login
                     </Link>
                   </p>
                 </div>

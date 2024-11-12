@@ -23,6 +23,7 @@
     --button-text-color: #884EA7;
     --text-normal-color: #333333;
     --stroke-color: #cccccc;
+    --button-border-color: #B7B7B7;
   }
   
   [data-theme="dark"] {

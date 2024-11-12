@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   pin: false,
+  servicesMainTab: 0,
 };
 
 const appSlice = createSlice({
@@ -11,9 +12,12 @@ const appSlice = createSlice({
     setPin: (state, action) => {
       state.pin = action.payload;
     },
+    setServicesMainTab: (state, action) => {
+      state.servicesMainTab = action.payload;
+    },
   },
 });
 
-export const { setPin } = appSlice.actions;
+export const { setPin, setServicesMainTab } = appSlice.actions;
 
 export default appSlice.reducer;

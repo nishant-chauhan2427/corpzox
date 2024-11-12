@@ -112,7 +112,7 @@ useEffect(()=>{
       setIsResendDisabled(true);
       const countdown = setTimeout(() => {
         setTimer(timer - 1);
-      }, 1000); 
+      }, 1000);
 
       return () => clearTimeout(countdown);
     }
@@ -178,8 +178,7 @@ useEffect(()=>{
                     </button>
                     <Button
                       type={"submit"}
-                      v2={true}
-                      mainPrimary={true}
+                      primary={true}
                       className={
                         "mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none "
                       }
@@ -191,10 +190,13 @@ useEffect(()=>{
                 </form>
               </div>
               <div>
-                <div className="text-center flex  justify-center gap-2  pt-20 font-normal text-[#6C6C6C]">
+                <div className="text-center flex  justify-center gap-2  sm: pt-20 font-normal text-[#6C6C6C]">
                   <p>
                     Need an account?
-                    <Link to={"/sign-up"} className="p-2 text-[#F1359C] font-semibold ">
+                    <Link
+                      to={"/sign-up"}
+                      className="p-2 text-[#F1359C] font-semibold "
+                    >
                       Create one
                     </Link>
                   </p>
