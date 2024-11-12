@@ -103,55 +103,47 @@ export const CreateNewPassword = () => {
           <DualHeadingTwo
             containerClassName={"text-left pt-5"}
             heading={"Create New Password"}
-            subHeading={
-              "Please enter password."
-            }
+            // subHeading={"Please enter password."}
           />
           <form
             onSubmit={handleSubmit(handleEmailSubmit)}
-            className="flex flex-col gap-2"
+            className="flex flex-col gap-2 pt-3 pb-2"
           >
             <Controller
-                name="password"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    label={"Password"}
-                    type={"password"}
-                    className={"border-[#D9D9D9] border"}
-                    placeholder={"Password"}
-                    // errorContent={errors.password}
-                    onBlur={() => handleBlur("password")}
-                  />
-                )}
-                // rules={{ required: "Password is required" }}
-              />
+              name="password"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  // label={"Password"}
+                  type={"password"}
+                  className={"border-[#D9D9D9] border"}
+                  placeholder={"Password"}
+                  // errorContent={errors.password}
+                  onBlur={() => handleBlur("password")}
+                />
+              )}
+              // rules={{ required: "Password is required" }}
+            />
             <Controller
-                name="password"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    label={"Password"}
-                    type={"password"}
-                    className={"border-[#D9D9D9] border"}
-                    placeholder={"Re-enter Password"}
-                    // errorContent={errors.password}
-                    onBlur={() => handleBlur("password")}
-                  />
-                )}
-                // rules={{ required: "Password is required" }}
-              />
-            <Button
-              type="submit"
-              v2={true}
-              mainPrimary={true}
-              className="mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none"
-              disabled={!isValid}
-            >
+              name="password"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  // label={"Password"}
+                  type={"password"}
+                  className={"border-[#D9D9D9] border"}
+                  placeholder={"Re-enter Password"}
+                  // errorContent={errors.password}
+                  onBlur={() => handleBlur("password")}
+                />
+              )}
+              // rules={{ required: "Password is required" }}
+            />
+            <Button type="submit" primary={true} disabled={!isValid}>
               Continue
             </Button>
             <div className="flex gap-2 items-center  ">
@@ -159,8 +151,8 @@ export const CreateNewPassword = () => {
               <p className="text-base text-[#6E6E6E] font-medium">or</p>
               <div className="border-t w-full border-[#D9D9D9]"></div>
             </div>
-            <div className="flex items-center justify-center rounded p-2  text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
-              <p>Sign in with Google</p>
+            <div className="flex items-center justify-center rounded p-2 gap-2 text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
+              Sign in with Google <img src="google.svg" alt="" />
               <img src="" alt="" />
             </div>
           </form>
