@@ -5,17 +5,21 @@ import { CustomAuthLayout } from "../components/layout";
 import { MetaTitle } from "../../../components/metaTitle";
 import { DualHeadingTwo } from "../components/dualHeading/dualHeadingTwo";
 import { CrossButton } from "../../../components/buttons/crossButton";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { AuthLayout } from "../../../components/layout/auth";
-import { Link } from "react-router-dom";
-
+import { Link,useNavigate } from "react-router-dom";
+import { resendOtp,verifyUser } from "../../../redux/actions/userAuth-action";
+import toast from "react-hot-toast";
 export const Verify = () => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [timer, setTimer] = useState(0);
   const [isResendDisabled, setIsResendDisabled] = useState(false);
+  const [isVerify, setIsVerify] = useState(false);
+  const { isVerifying=false,verifyingError,verifyMessage } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const inputRefs = useRef([]);
-
+  const { profile } = useSelector((state) => state.auth);
   useEffect(() => {
     setTimer(30);
   }, []);
@@ -32,16 +36,27 @@ export const Verify = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const enteredOtp = otp.join("");
-    console.log(enteredOtp);
+    setIsVerify(true)
+    dispatch(verifyUser({otp:enteredOtp,id:profile?.[0]?.id}))
   };
-
+useEffect(()=>{
+ if(isVerify&&!isVerifying){
+  setIsVerify(false);
+  if(verifyingError){
+    toast.error(verifyingError);
+  }else{
+    toast.success(verifyMessage);
+    navigate('/dashboard')
+  }
+ }
+},[isVerifying])
   // Function to handle input change
   const handleChange = (index, value) => {
     if (/^\d$/.test(value)) {
       const newOtp = [...otp];
       newOtp[index] = value;
       setOtp(newOtp);
-      if (value !== "" && index < 4) {
+      if (value !== "" && index < 5) {
         inputRefs.current[index + 1].focus();
       }
     }
@@ -53,7 +68,6 @@ export const Verify = () => {
       const newOtp = [...otp];
       newOtp[index] = ""; // Clear the digit at the current index
       setOtp(newOtp);
-
       if (index > 0) {
         inputRefs.current[index - 1].focus();
       }
@@ -63,9 +77,10 @@ export const Verify = () => {
   const handleResendOtp = (event) => {
     event.preventDefault();
     setTimer(30);
+    console.log(profile)
     dispatch(
       resendOtp({
-        email: email,
+        id: profile?.[0]?.id,
       })
     );
   };
@@ -122,7 +137,7 @@ export const Verify = () => {
                     "We have send you an OTP on your registered mobile no. and Email Id"
                   }
                 />
-                <form className="w-full sm:w-[100%] mt-8 flex flex-col gap-2">
+                <form onSubmit={handleSubmit} className="w-full sm:w-[100%] mt-8 flex flex-col gap-2">
                   <div className=" w-full flex justify-start items-start gap-4 pb-20 ">
                     {otp.map((digit, index) => (
                       <input

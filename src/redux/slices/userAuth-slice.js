@@ -8,9 +8,17 @@ import {
   logOutUser,
   updatePassword,
 } from "../actions/userAuth-action";
+let profile=()=>{
+  try {
+    let info=JSON.parse(localStorage.getItem("userInfo"));  
 
+    return info
+  } catch (error) {
+    return null    
+  }
+}
 const initialState = {
-  profile: localStorage.getItem("userInfo") !== undefined ? JSON.parse(localStorage.getItem("userInfo")) : null,
+  profile: profile() ,//localStorage.getItem("userInfo")!= undefined ? JSON.parse(localStorage.getItem("userInfo")) : null,
   isLoggingIn: false,
   isLoggingOut: false,
   isRegistering: false,
@@ -79,15 +87,16 @@ const authSlice = createSlice({
     //login
     builder.addCase(loginUser.pending, (state, action) => {
       state.isLoggingIn = true;
-    });
-    builder.addCase(loginUser.fulfilled, (state, action) => {
+      state.error=initialState.error;
+      state.loginMessage=initialState.loginMessage;
+    }).addCase(loginUser.fulfilled, (state, action) => {
       state.isLoggingIn = false;
-      state.profile = action.payload.profile;
+      state.profile = action.payload.data;
       state.error = "";
       state.loginMessage = action.payload.message;
-      localStorage.setItem("userInfo", JSON.stringify(action.payload.profile));
-    });
-    builder.addCase(loginUser.rejected, (state, action) => {
+      localStorage.setItem("auth", JSON.stringify(action.payload.data));
+      state.error=initialState.error;
+    }).addCase(loginUser.rejected, (state, action) => {
       state.isLoggingIn = false;
       state.error = action.payload;
     });
@@ -96,15 +105,13 @@ const authSlice = createSlice({
     builder.addCase(logOutUser.pending, (state, action) => {
       state.isLoggingOut = true;
       state.isLogoutSuccess = false;
-    });
-    builder.addCase(logOutUser.fulfilled, (state, action) => {
+    }).addCase(logOutUser.fulfilled, (state, action) => {
       state.isLoggingOut = false;
       localStorage.removeItem("userInfo");
       state.profile = null;
       state.error = "";
       state.isLogoutSuccess = true;
-    });
-    builder.addCase(logOutUser.rejected, (state, action) => {
+    }).addCase(logOutUser.rejected, (state, action) => {
       state.isLoggingIn = false;
       state.error = action.payload;
       state.isLogoutSuccess = false;
@@ -113,16 +120,17 @@ const authSlice = createSlice({
     //register user
     builder.addCase(registerUser.pending, (state, action) => {
       state.isRegistering = true;
-    });
-    builder.addCase(registerUser.fulfilled, (state, action) => {
+    }).addCase(registerUser.fulfilled, (state, action) => {
       state.isRegistering = false;
-      state.profile = action.payload.profile;
+      state.profile = action.payload.data;
       state.isRegisterSuccessfull = true;
       state.registerMessage = action.payload.message;
-      localStorage.setItem("userInfo", JSON.stringify(action.payload.profile));
-    });
-    builder.addCase(registerUser.rejected, (state, action) => {
+      localStorage.setItem("auth", JSON.stringify(action.payload.data));
+      state.registeringError=initialState.registeringError;
+      // localStorage.setItem("userInfo", JSON.stringify(action.payload.profile));
+    }).addCase(registerUser.rejected, (state, action) => {
       state.isRegistering = false;
+      state.registerMessage = initialState.registerMessage;
       state.registeringError = action.payload;
     });
 
@@ -133,12 +141,14 @@ const authSlice = createSlice({
       state.isVerifying = false;
       state.isVerificationSuccessfull = true;
       state.verifyMessage = action.payload.message;
-      if (action.payload?.isVerification) {
-        state.profile = { ...state.profile, isVerified: true };
-        localStorage.setItem("userInfo", JSON.stringify(state.profile));
-      } else {
-        state.resetPasswordUrl = action.payload?.url;
-      }
+      state.profile={...action.payload?.data?.[0],isVerified:true};
+      localStorage.setItem("userInfo", JSON.stringify(state.profile));
+      // if (action.payload?.isVerification) {
+      //   state.profile = { ...state.profile, isVerified: true };
+      //   localStorage.setItem("userInfo", JSON.stringify(state.profile));
+      // } else {
+      //   state.resetPasswordUrl = action.payload?.url;
+      // }
     });
     builder.addCase(verifyUser.rejected, (state, action) => {
       state.isVerifying = false;
