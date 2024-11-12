@@ -112,7 +112,7 @@ export const ForgotPassword = () => {
                 onSubmit={handleOtpSubmit}
                 className="w-full sm:w-[100%] sm:mt-8 flex flex-col gap-2"
               >
-                <div className="w-full flex justify-start items-start gap-4 sm:pb-20">
+                <div className="w-full flex justify-between items-start gap-4 sm:pb-20">
                   {otp.map((digit, index) => (
                     <input
                       className={`${
@@ -149,8 +149,7 @@ export const ForgotPassword = () => {
                   </button>
                   <Button
                     type="submit"
-                    v2={true}
-                    mainPrimary={true}
+                    primary={true}
                     className="mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none"
                   >
                     Continue
@@ -169,7 +168,7 @@ export const ForgotPassword = () => {
               />
               <form
                 onSubmit={handleSubmit(handleEmailSubmit)}
-                className="flex flex-col gap-2"
+                className="flex flex-col gap-2 pt-5"
               >
                 <Controller
                   name="email"
@@ -178,7 +177,7 @@ export const ForgotPassword = () => {
                   render={({ field }) => (
                     <Input
                       {...field}
-                      label={"Email"}
+                      // label={"Email"}
                       type={"email"}
                       placeholder={"Email Id"}
                       className={"border-[#D9D9D9] border"}
@@ -188,8 +187,7 @@ export const ForgotPassword = () => {
                 />
                 <Button
                   type="submit"
-                  v2={true}
-                  mainPrimary={true}
+                  primary={true}
                   className="mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none"
                   disabled={!isValid}
                 >
@@ -200,17 +198,20 @@ export const ForgotPassword = () => {
                   <p className="text-base text-[#6E6E6E] font-medium">or</p>
                   <div className="border-t w-full border-[#D9D9D9]"></div>
                 </div>
-                <div className="flex items-center justify-center rounded p-2  text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
-                  <p>Sign in with Google</p>
+                <div className="flex items-center justify-center rounded p-2 gap-2 text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
+                  Sign in with Google <img src="google.svg" alt="" />
                   <img src="" alt="" />
                 </div>
               </form>
             </div>
           )}
-          <div className="text-center flex justify-center gap-2 pt-20 font-normal text-[#6C6C6C]">
+          <div className="text-center  flex justify-center gap-2 pt-20 font-normal text-[#6C6C6C]">
             <p>
               Need an account?
-              <Link to={"/sign-up"} className="p-2 text-[#F1359C] font-semibold ">
+              <Link
+                to={"/sign-up"}
+                className="p-2 text-[#F1359C] font-semibold "
+              >
                 Create one
               </Link>
             </p>

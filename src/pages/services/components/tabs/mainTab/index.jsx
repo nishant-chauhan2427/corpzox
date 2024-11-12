@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function Maintab() {
+function Maintab({setShowServiceTab}) {
   const [mainactiveTab, setmainActiveTab] = useState(0);
   const mainTabs = [
     { name: "Top Services" },
@@ -18,9 +18,9 @@ function Maintab() {
             className={`sm: ${
               mainactiveTab === index
                 ? "text-[#0A1C40] text-sm font-bold border-b-4 py-1 border-[#F1359C] rounded pr-2 "
-                : "font-normal text-sm pr-2 py-1 text-[#7E7E7E]"
+                : "font-normal text-sm p-2 py-1 text-[#7E7E7E]"
             }`}
-            onClick={() => setmainActiveTab(index)}
+            onClick={() =>{if(index==0){setShowServiceTab(false)}else{setShowServiceTab(true)} setmainActiveTab(index) }}
           >
             {tab.name}
           </button>
