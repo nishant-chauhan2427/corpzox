@@ -84,6 +84,28 @@ const router = createBrowserRouter([
             path: "dashboard",
             element: <Dashboard />,
           },
+          // Business
+          {
+            path: "business",
+            children: [
+              {
+                index: true,
+                element: <BusinessListing />,
+              },
+              {
+                path: "create", 
+                element: <BusinessDetail />,
+              },
+              {
+                path: "edit", 
+                element: <BusinessDetail />,
+              },
+              {
+                path: "detail", 
+                element: <BusinessDetail />,
+              },
+            ],
+          },
           {
             path: "services-listing",
             element: <ServicesListing />,
@@ -91,14 +113,6 @@ const router = createBrowserRouter([
           {
             path: "services-detail",
             element: <ServiceDetail />,
-          },
-          {
-            path: "business-listing",
-            element: <BusinessListing />,
-          },
-          {
-            path: "business-detail",
-            element: <BusinessDetail/>,
           },
         ],
       },

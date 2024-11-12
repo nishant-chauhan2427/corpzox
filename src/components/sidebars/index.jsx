@@ -31,7 +31,7 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
       id: 1,
       title: "Business",
       icon: <img src="/icons/dashboard/business.svg" alt="" />,
-      to: "/business-listing",
+      to: "/business",
       isPinned: false,
     },
     {
