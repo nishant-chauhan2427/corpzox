@@ -6,20 +6,30 @@ import { AuthLayout } from "../../../components/layout/auth";
 import { DualHeadingTwo } from "../components/dualHeading/dualHeadingTwo";
 import { MetaTitle } from "../../../components/metaTitle";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
+import {forgotPasswordSchema} from '../../../validation/authValidatiorSchema';
+import { yupResolver } from "@hookform/resolvers/yup";
+import {resendOtp,verifyUser} from '../../../redux/actions/userAuth-action';
+import toast from "react-hot-toast";//import {updateProfile} from '../../../redux/slices/userAuth-slice';
+import { useNavigate } from "react-router-dom";
 export const ForgotPassword = () => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [timer, setTimer] = useState(30);
   const [isResendDisabled, setIsResendDisabled] = useState(true);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const inputRefs = useRef([]);
   const {
     control,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm();
+  } = useForm({
+    resolver: yupResolver(forgotPasswordSchema),
+    mode: "onChange",
+  });
   const [isOtpScreen, setIsOtpScreen] = useState(false);
-
+  const [isVerify, setIsVerify] = useState(false);
+  const { isVerifying=false,verifyingError,verifyMessage,resendingOtp,profile } = useSelector((state) => state.auth);
   useEffect(() => {
     if (timer === 0) {
       setIsResendDisabled(false);
@@ -31,13 +41,23 @@ export const ForgotPassword = () => {
       return () => clearTimeout(countdown);
     }
   }, [timer]);
-
+  useEffect(()=>{
+    if(isVerify&&!isVerifying){
+     setIsVerify(false);
+     if(verifyingError){
+       toast.error(verifyingError);
+     }else{
+       toast.success(verifyMessage);
+       navigate('/create-new-password')
+     }
+    }
+   },[isVerifying])
   const handleChange = (index, value) => {
     if (/^\d$/.test(value)) {
       const newOtp = [...otp];
       newOtp[index] = value;
       setOtp(newOtp);
-      if (value !== "" && index < 4) {
+      if (value !== "" && index < 5) {
         inputRefs.current[index + 1].focus();
       }
     }
@@ -72,23 +92,29 @@ export const ForgotPassword = () => {
 
   const handleResendOtp = (event) => {
     event.preventDefault();
+    console.log(profile)
     setTimer(30);
     dispatch(
       resendOtp({
-        email: email,
+        id: profile?.[0]?.id,
       })
     );
   };
 
   const handleOtpSubmit = (e) => {
     e.preventDefault();
+    setIsVerify(true);
     const enteredOtp = otp.join("");
     console.log("Entered OTP:", enteredOtp);
     // Add further OTP validation logic here
+    setIsVerify(true)
+    dispatch(verifyUser({otp:enteredOtp,id:profile?.[0]?.id}))
   };
 
   const handleEmailSubmit = (data) => {
     console.log("Submitted Email:", data.email);
+    // dispatch(updateProfile(data));
+    dispatch(resendOtp(data));
     setIsOtpScreen(true);
     setTimer(30);
   };

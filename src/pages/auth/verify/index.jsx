@@ -15,7 +15,7 @@ export const Verify = () => {
   const [timer, setTimer] = useState(0);
   const [isResendDisabled, setIsResendDisabled] = useState(false);
   const [isVerify, setIsVerify] = useState(false);
-  const { isVerifying=false,verifyingError,verifyMessage } = useSelector((state) => state.auth);
+  const { isVerifying=false,verifyingError,verifyMessage,resendingOtp } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const inputRefs = useRef([]);
@@ -163,6 +163,7 @@ useEffect(()=>{
                       className={`text-xs text-primary disabled:text-[#8D8D8D]`}
                       onClick={handleResendOtp}
                       type="button"
+                      disabled={isResendDisabled||resendingOtp}
                     >
                       {timer > 0 ? (
                         <p className="!text-[#969696] font-normal text-sm">
@@ -182,6 +183,7 @@ useEffect(()=>{
                       className={
                         "mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none "
                       }
+                      disabled={isVerify}
                     >
                       Continue
                     </Button>

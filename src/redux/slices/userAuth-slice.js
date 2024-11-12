@@ -82,6 +82,9 @@ const authSlice = createSlice({
       state.isUpdatePasswordSuccessfull = false;
 
     },
+    updateProfile(state,action){
+      state.profile=action.payload
+    }
   },
   extraReducers: (builder) => {
     //login
@@ -161,6 +164,7 @@ const authSlice = createSlice({
     builder.addCase(resendOtp.fulfilled, (state, action) => {
       state.resendingOtp = false;
       state.resendOtpSuccessfull = true;
+      state.profile=action.payload?.data
     });
     builder.addCase(resendOtp.rejected, (state, action) => {
       state.resendingOtp = false;
@@ -205,5 +209,6 @@ export const {
   resetLogoutSuccess,
   resetIsUpdatePasswordSuccessfull,
   removeUpdatePasswordError,
+  updateProfile
 } = authSlice.actions;
 export default authSlice.reducer;

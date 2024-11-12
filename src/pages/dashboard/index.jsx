@@ -9,13 +9,14 @@ import { businessCard, recommednedDetail } from "../../database";
 import { GoDotFill } from "react-icons/go";
 import { serviceProgressUpdateDetail } from "../../database";
 import { ImCross } from "react-icons/im";
-import { useState } from "react";
-
+import { useState,useEffect } from "react";
+import {getUser} from '../../redux/actions/dashboard-action';
+import { useDispatch } from "react-redux";
 const Dashboard = () => {
   const [accountShowButton, setAccountShowButton] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isFadingOut, setIsFadingOut] = useState(false);
-
+  const dispatch = useDispatch();
   const handleBannerdisplay = () => {
     setIsFadingOut(true); // Start fade-out animation
     setIsVisible(false);
@@ -24,6 +25,9 @@ const Dashboard = () => {
   const handleAccountShowBtn = () => {
     setAccountShowButton((previous) => !previous);
   };
+  useEffect(()=>{
+    dispatch(getUser());
+  },[])
   return (
     <>
       <section className="pb-10">

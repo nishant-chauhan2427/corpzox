@@ -60,12 +60,16 @@ export const resendOtp = createAsyncThunk("resendOtp", async (data, { rejectWith
     }
 });
 
-export const resetPassword = createAsyncThunk("resetPassword", async ({ userId, token, password }, { rejectWithValue }) => {
+export const resetPassword = createAsyncThunk("resetPassword", async (payload, { rejectWithValue }) => {
     try {
-        const response = await client.patch(`/user/reset-password/${userId}/${token}`, { password }, {
+        const response = await client.put(`/user/auth/new-password`, payload, {
             withCredentials: true
         });
-        return response.data;
+        if(response?.data?.code=='200'){
+            return response.data;
+        }else{
+            return rejectWithValue(response?.data?.message);            
+        }
     } catch (error) {
         return rejectWithValue(error?.response?.data?.message || error?.message);
     }

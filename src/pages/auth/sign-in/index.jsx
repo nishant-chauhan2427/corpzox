@@ -163,7 +163,7 @@ export const SignIn = () => {
                 className={
                   "mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none "
                 }
-                disabled={!isValid}
+                disabled={!isValid||isSubmit}
               >
                 Sign in
               </Button>
