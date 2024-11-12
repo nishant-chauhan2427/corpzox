@@ -97,7 +97,7 @@ export const Verify = () => {
       setIsResendDisabled(true);
       const countdown = setTimeout(() => {
         setTimer(timer - 1);
-      }, 1000); 
+      }, 1000);
 
       return () => clearTimeout(countdown);
     }
@@ -122,7 +122,7 @@ export const Verify = () => {
                     "We have send you an OTP on your registered mobile no. and Email Id"
                   }
                 />
-                <form className="w-full sm:w-[100%] mt-8 flex flex-col gap-2">
+                <form className="w-full sm:w-[100%] sm:mt-8 flex flex-col gap-2">
                   <div className=" w-full flex justify-start items-start gap-4 pb-20 ">
                     {otp.map((digit, index) => (
                       <input
@@ -162,8 +162,7 @@ export const Verify = () => {
                     </button>
                     <Button
                       type={"submit"}
-                      v2={true}
-                      mainPrimary={true}
+                      primary={true}
                       className={
                         "mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none "
                       }
@@ -174,10 +173,13 @@ export const Verify = () => {
                 </form>
               </div>
               <div>
-                <div className="text-center flex  justify-center gap-2  pt-20 font-normal text-[#6C6C6C]">
+                <div className="text-center flex  justify-center gap-2  sm: pt-20 font-normal text-[#6C6C6C]">
                   <p>
                     Need an account?
-                    <Link to={"/sign-up"} className="p-2 text-[#F1359C] font-semibold ">
+                    <Link
+                      to={"/sign-up"}
+                      className="p-2 text-[#F1359C] font-semibold "
+                    >
                       Create one
                     </Link>
                   </p>

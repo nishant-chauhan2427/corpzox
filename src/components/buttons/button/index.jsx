@@ -26,7 +26,7 @@ export const Button = ({
         !disabled &&
         !isLoading &&
         "text-primaryText font-medium  hover:text-gray-700 rounded"
-        } ${outline && !disabled && !isLoading && "text-primaryText rounded border border-primaryText dark:border-gray-700"} ${primary &&
+        } ${outline && !disabled && !isLoading && "text-primaryText rounded border border-button-border-color dark:border-gray-700"} ${primary &&
         !disabled &&
         !isLoading &&
         "bg-[#FFD700] font-semibold text-black hover:bg-[#FFD700] hover:bg-opacity-80 rounded-[10px]"
