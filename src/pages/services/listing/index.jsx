@@ -13,6 +13,7 @@ const ServicesListing = () => {
   const [mainActiveTab, setMainActiveTab] = useState(0);
   const [categoryActiveTab, setCategoryActiveTab] = useState(0);
   const [showServiceTab, setShowServiceTab] = useState(false);
+  
   return (
     <section className="flex sm:flex-row flex-col gap-4 sm:pt-6 pt-3 bg-white">
       <div className="flex flex-col sm:w-[70%]">
