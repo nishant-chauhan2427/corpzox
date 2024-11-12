@@ -52,11 +52,22 @@ export const Header = ({ className, collapse, setCollapse }) => {
     setCollapse(!collapse);
   };
 
+  function getPageHeading(pathname) {
+    switch (true) {
+      case pathname.includes("dashboard"):
+        return "Dashboard";
+      case pathname.includes("business"):
+        return "Business";
+      default:
+        return "";
+    }
+  }
+  
   return (
     <header
       className={`${
         className && className
-      } bg-[#0A1C40] dark:bg-slate-900 lg:ps-64 px-2 lg:px-4 py-4 z-[1000]`}
+      } bg-[#0A1C40] dark:bg-slate-900 lg:ps-[17rem] px-2 lg:px-4 py-4 z-[1000]`}
     >
       <div className="relative flex justify-between items-center">
         {/* Left Side Menu */}
@@ -105,7 +116,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
               )}
             </button>
           </div> */}
-            {/* <Search
+          {/* <Search
             label={true}
             placeholder={"Search anything..."}
             isButton={true}
@@ -114,13 +125,15 @@ export const Header = ({ className, collapse, setCollapse }) => {
           /> 
           </div> */}
           {/* Page Heading */}
-          {pathname.includes("dashboard") ? (
-            <h1 className="font-bold text-white text-2xl">Dashboard</h1>
-          ) : (
-            <p></p>
-          )}
+          <h1 className="font-bold text-white text-2xl">{getPageHeading(pathname)}</h1>
           {/* Search */}
-          <Search placeholder={"Search Business / Services"} containerClassName={"lg:!w-1/2 !bg-[#3D485F] !rounded-full overflow-hidden"} inputClassName={"w-full !bg-[#3D485F] text-white"} />
+          <Search
+            placeholder={"Search Business / Services"}
+            containerClassName={
+              "w-full lg:!max-w-lg !bg-[#3D485F] !rounded-full overflow-hidden"
+            }
+            inputClassName={"w-full lg:!max-w-lg  !bg-[#3D485F] text-white"}
+          />
           {/* Header Links */}
           <div className="hidden lg:flex items-center gap-4">
             {headerLinks?.map((data, index) => (
@@ -140,6 +153,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
         {signedIn ? (
           <div className="flex items-center gap-4">
             <ThemeSwitch />
+
             {/* <FullScreenButton /> */}
             <Notification />
             <div className="hidden sm:flex relative gap-2">

@@ -41,7 +41,7 @@ export const ThemeSwitch = () => {
         onClick={handleThemeChange}
         className="header-icon "
       >
-        {click ? <BsSun /> : <BsMoon />}
+        {click ? <BsSun className="text-white" /> : <BsMoon className="text-white" />}
       </button>
     </IconWrapper>
   );

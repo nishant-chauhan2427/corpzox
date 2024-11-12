@@ -12,7 +12,7 @@ export const AccountManager = () => {
   };
 
   return (
-    <div className="px-[17px] py-[17px] sm:w-[50%] w-full flex gap-4 bg-white border border-[#DFEAF2] rounded-2xl">
+    <div className="px-[17px] py-[17px] w-full sm:w-auto flex gap-4 bg-white border border-[#DFEAF2] rounded-2xl">
       <div className=" flex items-center">
         <img
           className="w-20 h-20 rounded-full "
@@ -21,11 +21,11 @@ export const AccountManager = () => {
         />
       </div>
       <div>
-        <p className="font-semibold text-[10px] text-[#FF4141]">
+        <p className="ps-0.5 font-semibold text-[10px] text-[#FF4141]">
           Account Manager
         </p>
-        <p className="font-semibold text-lg text-[#232323]">Ashutosh Gupta</p>
-        <div className="flex gap-2">
+        <p className="-mt-1 font-semibold text-lg text-[#232323]">Ashutosh Gupta</p>
+        <div className="pt-2 flex gap-2">
           <div className="bg-[#D9D9D9] rounded-full px-1 py-1">
             <BiSolidMessageRounded />
           </div>

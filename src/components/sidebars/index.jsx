@@ -31,7 +31,7 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
       id: 1,
       title: "Business",
       icon: <img src="/icons/dashboard/business.svg" alt="" />,
-      to: "/business",
+      to: "/business-listing",
       isPinned: false,
     },
     {
@@ -121,11 +121,11 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
     <AnimatePresence>
       <motion.div
         initial={{ left: "-50%" }}
-        animate={{ left: 0, transition: { duration: 0.3 } }}
+        animate={{ left: 10, transition: { duration: 0.3 } }}
         exit={{ left: "-50%", transition: { duration: 0.3 } }}
         className={`${
           className ? className : ""
-        } shadow-xl dark:dark:bg-slate-900`}
+        } shadow-xl dark:bg-slate-900`}
       >
         {/* <div
           className={`${

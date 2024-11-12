@@ -19,7 +19,7 @@ const Dashboard = () => {
             <Profile />
             <AccountManager />
           </div>
-          <Advertisement />
+          {/* <Advertisement /> */}
         </div>
         <Business data={businessListing} />
         <RecommendedServices data={recommendedServicesListing} />
