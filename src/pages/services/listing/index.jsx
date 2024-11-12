@@ -10,19 +10,25 @@ import { servicesListing } from "../../../database";
 import Filtertab from "../../../pages/services/components/tabs/filterTab";
 
 const ServicesListing = () => {
-  const [mainactiveTab, setmainActiveTab] = useState(0);
-  const [categoryactiveTab, setcategoryActiveTab] = useState(0);
+  const [mainActiveTab, setMainActiveTab] = useState(0);
+  const [categoryActiveTab, setCategoryActiveTab] = useState(0);
   const [showServiceTab, setShowServiceTab] = useState(false);
   return (
     <section className="flex sm:flex-row flex-col gap-4 sm:pt-6 pt-3 bg-white">
       <div className="flex flex-col sm:w-[70%]">
         <div className="flex justify-center flex-col">
-          <Maintab setShowServiceTab={setShowServiceTab}/>
-          {showServiceTab?<><p className="font-bold  text-[20px] leading-6 text-[#0A1C40]">
-            Service Category
-          </p>
-          <Filtertab /></>:""}
-          {mainactiveTab === 0 && (
+          <Maintab setShowServiceTab={setShowServiceTab} />
+          {showServiceTab ? (
+            <>
+              <p className="font-bold  text-[20px] leading-6 text-[#0A1C40]">
+                Service Category
+              </p>
+              <Filtertab />
+            </>
+          ) : (
+            ""
+          )}
+          {mainActiveTab === 0 && (
             <>
               <ServicesCard data={servicesListing} />
               <div className="mt-10 flex justify-center">
