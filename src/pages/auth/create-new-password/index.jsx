@@ -5,20 +5,29 @@ import { Controller, useForm } from "react-hook-form";
 import { AuthLayout } from "../../../components/layout/auth";
 import { DualHeadingTwo } from "../components/dualHeading/dualHeadingTwo";
 import { MetaTitle } from "../../../components/metaTitle";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-
+import { Link ,useNavigate} from "react-router-dom";
+import { useDispatch ,useSelector} from "react-redux";
+import {createNewPasswordSchema} from '../../../validation/authValidatiorSchema';
+import { yupResolver } from "@hookform/resolvers/yup";
+import { resetPassword } from "../../../redux/actions/userAuth-action";
+import toast from "react-hot-toast";
 export const CreateNewPassword = () => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [timer, setTimer] = useState(30);
   const [isResendDisabled, setIsResendDisabled] = useState(true);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const inputRefs = useRef([]);
+  const [isVerify, setIsVerify] = useState(false);
+  const { changingPassword=false,changedPasswordMessage,changingPasswordError,profile } = useSelector((state) => state.auth);
   const {
     control,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm();
+  } = useForm({
+    resolver: yupResolver(createNewPasswordSchema),
+    mode: "onChange",
+  });
   const [isOtpScreen, setIsOtpScreen] = useState(false);
 
   useEffect(() => {
@@ -32,7 +41,17 @@ export const CreateNewPassword = () => {
       return () => clearTimeout(countdown);
     }
   }, [timer]);
-
+  useEffect(()=>{
+    if(isVerify&&!changingPassword){
+     setIsVerify(false);
+     if(changingPasswordError){
+       toast.error(changingPasswordError);
+     }else{
+       toast.success(changingPasswordError);
+       navigate('/sign-in')
+     }
+    }
+   },[changingPassword])
   const handleChange = (index, value) => {
     if (/^\d$/.test(value)) {
       const newOtp = [...otp];
@@ -89,9 +108,12 @@ export const CreateNewPassword = () => {
   };
 
   const handleEmailSubmit = (data) => {
-    console.log("Submitted Email:", data.email);
-    setIsOtpScreen(true);
-    setTimer(30);
+    console.log("Submitted Email:", data,profile);
+    setIsVerify(true);
+    dispatch(resetPassword({
+      userId: profile?.userId,
+      newPassword: data.password,
+    }))
   };
 
   return (
@@ -110,40 +132,46 @@ export const CreateNewPassword = () => {
             className="flex flex-col gap-2 pt-3 pb-2"
           >
             <Controller
-              name="password"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <Input
-                  {...field}
-                  // label={"Password"}
-                  type={"password"}
-                  className={"border-[#D9D9D9] border"}
-                  placeholder={"Password"}
-                  // errorContent={errors.password}
-                  onBlur={() => handleBlur("password")}
-                />
-              )}
-              // rules={{ required: "Password is required" }}
-            />
+                name="password"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    label={"Password"}
+                    type={"password"}
+                    className={"border-[#D9D9D9] border"}
+                    placeholder={"Password"}
+                    errorContent={errors.password?.message}
+                    // onBlur={() => handleBlur("password")}
+                  />
+                )}
+                // rules={{ required: "Password is required" }}
+              />
             <Controller
-              name="password"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <Input
-                  {...field}
-                  // label={"Password"}
-                  type={"password"}
-                  className={"border-[#D9D9D9] border"}
-                  placeholder={"Re-enter Password"}
-                  // errorContent={errors.password}
-                  onBlur={() => handleBlur("password")}
-                />
-              )}
-              // rules={{ required: "Password is required" }}
-            />
-            <Button type="submit" primary={true} disabled={!isValid}>
+                name="confirmPassword"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    label={"Confirm Password"}
+                    type={"password"}
+                    className={"border-[#D9D9D9] border"}
+                    placeholder={"Re-enter Password"}
+                    errorContent={errors.confirmPassword?.message}
+                    // onBlur={() => handleBlur("password")}
+                  />
+                )}
+                // rules={{ required: "Password is required" }}
+              />
+            <Button
+              type="submit"
+              v2={true}
+              mainPrimary={true}
+              className="mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none"
+              disabled={!isValid}
+            >
               Continue
             </Button>
             <div className="flex gap-2 items-center  ">

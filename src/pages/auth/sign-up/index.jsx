@@ -4,19 +4,20 @@ import { Input } from "../../../components/inputs";
 import { Button } from "../../../components/buttons";
 import { Heading } from "../../../components/heading";
 import { MetaTitle } from "../../../components/metaTitle";
-// import { signinValidator } from "../../../validation/auth-validator";
+import { signUpValidationSchema } from "../../../validation/authValidatiorSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { MdOutlineHorizontalRule } from "react-icons/md";
 import { FaFacebookSquare, FaGoogle, FaInstagramSquare } from "react-icons/fa";
 import { DualHeadingTwo } from "../components/dualHeading/dualHeadingTwo";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../../redux/slices/userLoginSlice";
 import { Checkbox } from "../../../components/inputs/checkbox";
 import { ThemeSwitch } from "../../../components/theme/switch";
 import { AuthLayout } from "../../../components/layout/auth";
 import { PhoneNumberInput } from "../../../components/inputs/phoneInput";
-
+import { registerUser } from "../../../redux/actions/userAuth-action";
+import toast from "react-hot-toast";
 export const Signup = () => {
   const {
     control,
@@ -24,47 +25,47 @@ export const Signup = () => {
     formState: { errors, isValid },
     trigger,
   } = useForm({
-    // resolver: yupResolver(signinValidator),
+    resolver: yupResolver(signUpValidationSchema),
     mode: "onChange",
   });
-
+  const {
+    isRegistering = false,
+    registeringError,
+    registerMessage,
+  } = useSelector((state) => state.auth);
   const handleBlur = async (field) => {
     await trigger(field);
   };
 
   const [error, setError] = useState("");
+  const [isSubmit, setIsSubmit] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    const superAdmin = {
-      email: "superAdmin@gmail.com",
-      password: "Super@1234",
-    };
-    const manager = {
-      email: "runwallManager@gmail.com",
-      password: "Manager@1234",
-    };
+    setIsSubmit(true);
+    if (data?.phone) {
+      data.countryCode = `+${data.phone.toString().slice(0, 2)}`;
+      data.phone = data.phone.toString().slice(2);
+    }
+    console.log(data);
     // Reset error message
     setError("");
-
-    if (
-      data.email === superAdmin.email &&
-      data.password === superAdmin.password
-    ) {
-      dispatch(setUser(superAdmin));
-      navigate("/");
-    } else if (
-      data.email === manager.email &&
-      data.password === manager.password
-    ) {
-      dispatch(setUser(manager));
-      navigate("/");
-    } else {
-      setError("Wrong email or password");
-    }
+    dispatch(registerUser(data));
   };
-
+  useEffect(() => {
+    // console.log(isRegistering,isSubmit,registeringError)
+    if (!isRegistering && isSubmit) {
+      setIsSubmit(false);
+      if (registeringError) {
+        toast.error(registeringError);
+      } else {
+        toast.success(registerMessage);
+        navigate("/verify");
+      }
+    }
+    // console.log(isRegistering,isSubmit,registeringError)
+  }, [isRegistering]);
   return (
     <>
       <MetaTitle title={"Sign Up"} />
@@ -83,7 +84,7 @@ export const Signup = () => {
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-5">
                 <Controller
-                  name="name"
+                  name="firstName"
                   control={control}
                   defaultValue=""
                   render={({ field }) => (
@@ -93,14 +94,14 @@ export const Signup = () => {
                       type={"name"}
                       placeholder={"First Name"}
                       className={"border-[#D9D9D9] border"}
-                      errorContent={errors?.email?.message}
+                      errorContent={errors?.firstName?.message}
                       onBlur={() => handleBlur("name")}
                     />
                   )}
                   // rules={{ required: "Email Address is required" }}
                 />
                 <Controller
-                  name="name"
+                  name="lastName"
                   control={control}
                   defaultValue=""
                   render={({ field }) => (
@@ -110,7 +111,7 @@ export const Signup = () => {
                       type={"name"}
                       placeholder={"Last Name"}
                       className={"border-[#D9D9D9] border"}
-                      errorContent={errors?.email?.message}
+                      errorContent={errors?.lastName?.message}
                       onBlur={() => handleBlur("name")}
                     />
                   )}
@@ -119,7 +120,7 @@ export const Signup = () => {
               </div>
               <div className="">
                 <Controller
-                  name="company.phoneNumber"
+                  name="phone"
                   control={control}
                   render={({ field }) => (
                     <PhoneNumberInput
@@ -127,7 +128,8 @@ export const Signup = () => {
                       // label={"Phone Number"}
                       country={"in"}
                       placeholder={"Phone No."}
-                      errorContent={errors.company?.phoneNumber?.message}
+                      touched={true}
+                      errorContent={errors?.phoneNumber?.message}
                     />
                   )}
                 />
@@ -140,7 +142,7 @@ export const Signup = () => {
                   render={({ field }) => (
                     <Input
                       {...field}
-                      // label={"Email"}
+                      label={"Email"}
                       type={"email"}
                       placeholder={"Email Id"}
                       className={"border-[#D9D9D9] border"}
@@ -157,19 +159,28 @@ export const Signup = () => {
                   render={({ field }) => (
                     <Input
                       {...field}
-                      // label={"Password"}
+                      label={"Password"}
                       type={"password"}
                       className={"border-[#D9D9D9] border"}
                       placeholder={"Password"}
-                      // errorContent={errors.password}
+                      errorContent={errors.password?.message}
                       onBlur={() => handleBlur("password")}
                     />
                   )}
                   // rules={{ required: "Password is required" }}
                 />
               </div>
+
               <div className="flex flex-col gap-4 sm:pt-4">
-                <Button type={"submit"} primary={true} disabled={!isValid}>
+                <Button
+                  type={"submit"}
+                  v2={true}
+                  mainPrimary={true}
+                  className={
+                    "mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none "
+                  }
+                  disabled={!isValid || isSubmit}
+                >
                   Sign Up
                 </Button>
                 <div className="flex gap-2 items-center  ">

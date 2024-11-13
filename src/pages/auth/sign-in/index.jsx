@@ -1,3 +1,5 @@
+import { useRef, useState,useEffect } from "react";
+import { useDispatch,useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import { Input } from "../../../components/inputs";
@@ -9,13 +11,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { MdOutlineHorizontalRule } from "react-icons/md";
 import { FaFacebookSquare, FaGoogle, FaInstagramSquare } from "react-icons/fa";
 import { DualHeadingTwo } from "../components/dualHeading/dualHeadingTwo";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { setUser } from "../../../redux/slices/userLoginSlice";
+// import { setUser } from "../../../redux/slices/userLoginSlice";
 import { Checkbox } from "../../../components/inputs/checkbox";
-import { ThemeSwitch } from "../../../components/theme/switch";
+// import { ThemeSwitch } from "../../../components/theme/switch";
 import { AuthLayout } from "../../../components/layout/auth";
-
+import {loginUser} from '../../../redux/actions/userAuth-action';
+import ReCAPTCHA from 'react-google-recaptcha';
+import toast from "react-hot-toast";
 export const SignIn = () => {
   const {
     control,
@@ -26,24 +28,36 @@ export const SignIn = () => {
     // resolver: yupResolver(signinValidator),
     mode: "onChange",
   });
-
+  const recaptchaRef=useRef(null);
+  const RECAPTCHA_SITE_KEY = '6LemSE0qAAAAADhn4nN770nVLBJxAGRz_LoFXP6h';
+  const [isSubmit, setIsSubmit] = useState(false);
   const handleBlur = async (field) => {
     await trigger(field);
   };
-
-  const [error, setError] = useState("");
+  const { isLoggingIn=false,error ,loginMessage } = useSelector((state) => state.auth);
+  
+  // const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const [checkedCheckbox, setCheckedCheckbox] = useState(false);
 
   const handleCheckbox = () => {
     setCheckedCheckbox(!checkedCheckbox);
   };
+  const onSubmit = async(data) => {
+    setIsSubmit(true);
+    const token = await recaptchaRef.current.executeAsync().then((res) => {
+      console.log("check response ", res)
 
-  const onSubmit = (data) => {
-    console.log(data, "data");
+      data = {...data, recaptchaToken: res }
+      console.log(data, "data from form")
+      dispatch(loginUser(data))
 
+    })
+    // let newData={...data};
+    // newData.captcha=recaptchaRef.current;
+    // console.log(newData, "data");
+    // dispatch(loginUser(newData))
     // const superAdmin = {
     //   email: "superAdmin@gmail.com",
     //   password: "Super@1234",
@@ -71,7 +85,18 @@ export const SignIn = () => {
     //   setError("Wrong email or password");
     // }
   };
-
+  useEffect(()=>{
+    if(!isLoggingIn&&isSubmit){
+      setIsSubmit(false)
+      if(error){
+        toast.error(error)
+      }else{
+        toast.success(loginMessage)
+        navigate('/verify');
+      }
+    }
+    // console.log(isRegistering,isSubmit,registeringError)
+  },[isLoggingIn])
   return (
     <>
       <MetaTitle title={"Sign In"} />
@@ -129,7 +154,11 @@ export const SignIn = () => {
               >
                 Forgot Password?
               </Link>
-
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                size="invisible"
+                sitekey={RECAPTCHA_SITE_KEY}
+              />
               <div
                 onClick={handleCheckbox}
                 className="flex items-center cursor-pointer font-normal text-base text-[#a5a3a3] gap-2"
@@ -149,13 +178,21 @@ export const SignIn = () => {
                 className={
                   "mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none "
                 }
-                disabled={!isValid}
+                disabled={!isValid||isSubmit}
               >
                 Sign in
               </Button>
-              <Button type={"submit"} outline={true} disabled={!isValid}>
+              {/* <Button
+                type={"submit"}
+                v2={true}
+                mainPrimary={true}
+                className={
+                  "mt-2 py-2 w-full rounded-lg !text-[#6C6C6C] !border-[#B7B7B7] !bg-white"
+                }
+                disabled={!isValid}
+              >
                 Get an OTP on your Phone No.{" "}
-              </Button>
+              </Button> */}
 
               <div className="flex gap-2 items-center  ">
                 <div className="border-t w-full border-[#D9D9D9] "></div>
