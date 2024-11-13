@@ -5,10 +5,8 @@ import ServicesCard from "../../../pages/services/components/services-card";
 import { servicesListing } from "../../../database";
 import Filtertab from "../../../pages/services/components/tabs/filterTab";
 import { useSelector } from "react-redux";
-
 const ServicesListing = () => {
   const { servicesMainTab } = useSelector((state) => state.app);
-  
   return (
     <section className="flex sm:flex-row flex-col gap-4 sm:pt-6 pt-3 bg-white">
       <div className="flex flex-col sm:w-[70%]">
@@ -38,5 +36,4 @@ const ServicesListing = () => {
     </section>
   );
 };
-
 export default ServicesListing;

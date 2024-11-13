@@ -130,7 +130,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
           <Search
             placeholder={"Search Business / Services"}
             containerClassName={
-              "w-full lg:!max-w-lg !bg-[#3D485F] !rounded-full overflow-hidden"
+              "hidden lg:block w-full lg:!max-w-lg !bg-[#3D485F] !rounded-full overflow-hidden"
             }
             inputClassName={"w-full lg:!max-w-lg  !bg-[#3D485F] text-white"}
           />
@@ -321,7 +321,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
                     // disabled={isLoggingOut}
                     // isLoading={isLoggingOut}
                     // onClick={handleLogout}
-                    mainPrimary={true}
+                    primary={true}
                   >
                     Sign Out
                   </Button>

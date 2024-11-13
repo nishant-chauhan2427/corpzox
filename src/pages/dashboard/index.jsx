@@ -36,9 +36,9 @@ const Dashboard = () => {
   const handleAccountShowBtn = () => {
     setAccountShowButton((previous) => !previous);
   };
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(getUser());
-  },[])
+  }, []);
   return (
     <>
       <section className="py-6">

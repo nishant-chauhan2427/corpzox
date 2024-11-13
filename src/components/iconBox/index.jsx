@@ -36,13 +36,15 @@ export const IconBox = ({
 
   const isPathnameInArrayResult = isPathnameInArray(pathname, child);
 
+  // 
+
   return (
     <>
       {to ? (
         <Link
           to={to}
           className={`px-2 py-3 ${
-            pathname == to && "bg-[#FFD700] shadow-lg"
+            pathname.includes(to) && "bg-[#FFD700] shadow-lg"
           } rounded-md flex items-center gap-4 text-black`}
           onClick={onClick}
         >
@@ -50,7 +52,7 @@ export const IconBox = ({
           {/* <SVG className="stroke-icon" iconId={icon} /> */}
           <span
             className={`${
-              pathname == to ? "text-black" : "dark:text-white"
+              pathname.includes(to) ? "text-black" : "dark:text-white"
             } `}
           >
             {icon && icon}
@@ -58,7 +60,7 @@ export const IconBox = ({
           {title && (
             <span
               className={`${
-                pathname == to
+                pathname.includes(to)
                 ? "font-bold text-black" : "dark:text-white"
               } text-base `}
             >
