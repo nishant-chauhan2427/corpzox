@@ -133,22 +133,22 @@ export const recommendedServicesListing = [
 // Service progress update detail here
 export const servicesProgress = [
   {
-    name: "Service: Private Limited Registration",
-    detail1: "Business: CorpZo Ventures Private Limited",
-    detail2: "Step: Application submission in progress",
+    name: "Private Limited Registration",
+    detail1: "CorpZo Ventures Private Limited",
+    detail2: "Application submission in progress",
     status: "OnTime",
   },
 
   {
-    name: "Service: Private Limited Registration",
-    detail1: "Business: CorpZo Ventures Private Limited",
-    detail2: "Step: Application submission in progress",
+    name: "Private Limited Registration",
+    detail1: "CorpZo Ventures Private Limited",
+    detail2: "Application submission in progress",
     status: "OnTime",
   },
   {
-    name: "Service: Private Limited Registration",
-    detail1: "Business: CorpZo Ventures Private Limited",
-    detail2: "Step: Application submission in progress",
+    name: "Private Limited Registration",
+    detail1: "CorpZo Ventures Private Limited",
+    detail2: "Application submission in progress",
     status: "OnTime",
   },
 ];

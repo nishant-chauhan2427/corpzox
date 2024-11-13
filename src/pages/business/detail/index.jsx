@@ -9,7 +9,7 @@ const BusinessDetail = () => {
     <>
       <section className="pb-10">
         <div className="flex flex-col pt-10 gap-4 ">
-          <div className="flex justify-between gap-4 ">
+          <div className="flex flex-col md:flex-row justify-between gap-4 ">
             <div className="flex items-center gap-4 font-semibold text-xl text-[#0A1C40]">
               <Link to={-1}>
                 <span>
@@ -54,7 +54,7 @@ const BusinessDetail = () => {
             </div>
           </div>
           <div>
-            <div className="flex flex-col text-start gap-1 w-[40%]">
+            <div className="flex flex-col text-start gap-1 w-full md:w-[40%]">
               <div className="flex justify-between">
                 <p className="font-medium text-base text-[#000000B2] ">Type:</p>
                 <p className="font-semibold text-base text-black">NBFC</p>
