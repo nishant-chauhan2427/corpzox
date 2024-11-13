@@ -12,9 +12,9 @@ export const PrimaryLayout = () => {
   const sidebarClassName = "bg-red-500";
   // profile = //useSelector((state) => state.auth);
   let userInfo=localStorage.getItem('userInfo');
-  if (!userInfo) {
-    return <Navigate to="/sign-in" />;
-  }
+  // if (!userInfo) {
+  //   return <Navigate to="/sign-in" />;
+  // }
 
   return (
     <div className="w-full">
