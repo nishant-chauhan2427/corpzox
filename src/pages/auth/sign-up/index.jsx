@@ -69,7 +69,7 @@ export const Signup = () => {
     <>
       <MetaTitle title={"Sign Up"} />
       <AuthLayout>
-        <img className="sm:w-32 w-36" src="public\logo.svg" alt="CORPZO Logo" />
+      <img className="sm:w-32 w-36" src="logo.svg" alt="CORPZO Logo" />
         <div className="w-full  flex  ">
           <div className="w-full flex flex-col">
             <DualHeadingTwo
