@@ -55,7 +55,7 @@ export const PhoneNumberInput = ({
             // } w-full border-none`}
             inputClass={`${
               inputClass && inputClass
-            } !w-full h-[49px] border-[#D9D9D9] border rounded-md shadow-sm dark:text-white ${
+            } !w-full h-10 border-[#D9D9D9] border rounded-md shadow-sm dark:text-white ${
               errorContent && touched ? "border-error" : "border-[#D6D6D6]"
             }`}
             searchClass={`${
