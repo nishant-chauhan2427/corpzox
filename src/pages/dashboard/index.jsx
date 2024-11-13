@@ -1,6 +1,16 @@
-import { useState, useEffect } from "react";
-import { getUser } from "../../redux/actions/dashboard-action";
-import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { BiSolidMessageRounded } from "react-icons/bi";
+import { IoMdCall } from "react-icons/io";
+import { CiMenuKebab } from "react-icons/ci";
+import { FaPlayCircle } from "react-icons/fa";
+import { Button } from "../../components/buttons/button";
+import { GoTriangleDown } from "react-icons/go";
+// import { businessCard, recommednedDetail,serviceProgressUpdateDetail } from "../../database";
+import { GoDotFill } from "react-icons/go";
+import { ImCross } from "react-icons/im";
+import { useState,useEffect } from "react";
+import {getUser} from '../../redux/actions/dashboard-action';
+import { useDispatch,useSelector } from "react-redux";
 import {
   businessListing,
   recommendedServicesListing,
@@ -17,6 +27,7 @@ const Dashboard = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [isFadingOut, setIsFadingOut] = useState(false);
   const dispatch = useDispatch();
+  const { user={},manager={} } = useSelector((state) => state.user);
   const handleBannerdisplay = () => {
     setIsFadingOut(true); // Start fade-out animation
     setIsVisible(false);
@@ -33,8 +44,8 @@ const Dashboard = () => {
       <section className="py-6">
         <div className="my-2 flex flex-col md:flex-row justify-between gap-4">
           <div className="flex flex-row gap-4 w-full">
-            <Profile />
-            <AccountManager />
+            <Profile user={user}/>
+            <AccountManager manager={manager}/>
           </div>
           {/* <Advertisement /> */}
         </div>

@@ -18,6 +18,7 @@ import { AuthLayout } from "../../../components/layout/auth";
 import {loginUser} from '../../../redux/actions/userAuth-action';
 import ReCAPTCHA from 'react-google-recaptcha';
 import toast from "react-hot-toast";
+import{signinValidationSchema} from '../../../validation/authValidatiorSchema';
 export const SignIn = () => {
   const {
     control,
@@ -25,7 +26,7 @@ export const SignIn = () => {
     formState: { errors, isValid },
     trigger,
   } = useForm({
-    // resolver: yupResolver(signinValidator),
+    resolver: yupResolver(signinValidationSchema),
     mode: "onChange",
   });
   const recaptchaRef=useRef(null);
@@ -41,8 +42,14 @@ export const SignIn = () => {
   const navigate = useNavigate();
   const [checkedCheckbox, setCheckedCheckbox] = useState(false);
 
-  const handleCheckbox = () => {
+  const handleCheckbox = (e) => {
+    e.preventDefault();
     setCheckedCheckbox(!checkedCheckbox);
+    if(checkedCheckbox){
+      localStorage.removeItem('signedIn');
+    }else{
+      localStorage.setItem('signedIn',true);
+    }
   };
   const onSubmit = async(data) => {
     setIsSubmit(true);
@@ -142,7 +149,7 @@ export const SignIn = () => {
                     type={"password"}
                     className={"border-[#D9D9D9] border"}
                     placeholder={"Password"}
-                    // errorContent={errors.password}
+                    errorContent={errors?.password?.message}
                     onBlur={() => handleBlur("password")}
                   />
                 )}
@@ -178,7 +185,8 @@ export const SignIn = () => {
                 className={
                   "mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none "
                 }
-                disabled={!isValid||isSubmit}
+                disabled={!isValid}
+                isLoading={isSubmit}
               >
                 Sign in
               </Button>

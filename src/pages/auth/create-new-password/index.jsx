@@ -19,7 +19,7 @@ export const CreateNewPassword = () => {
   const navigate = useNavigate();
   const inputRefs = useRef([]);
   const [isVerify, setIsVerify] = useState(false);
-  const { changingPassword=false,changedPasswordMessage,changingPasswordError,profile } = useSelector((state) => state.auth);
+  const { changingPassword=false,changedPasswordMessage,changingPasswordError,profile ,} = useSelector((state) => state.auth);
   const {
     control,
     handleSubmit,
@@ -168,9 +168,10 @@ export const CreateNewPassword = () => {
             <Button
               type="submit"
               v2={true}
-              mainPrimary={true}
+              primary={true}
               className="mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none"
               disabled={!isValid}
+              isLoading={changingPassword}
             >
               Continue
             </Button>

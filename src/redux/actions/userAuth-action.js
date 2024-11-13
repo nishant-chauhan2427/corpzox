@@ -7,7 +7,7 @@ export const loginUser = createAsyncThunk("loginUser", async (authInfo, { reject
         const response = await client.post("/user/auth/login", authInfo, {
             withCredentials: true
         });
-        if(response.data?.code==200){
+        if(response?.data?.code==200||response?.data?.code==201){
             return response.data;
         }else{
             return rejectWithValue(response?.data?.message);            
@@ -23,7 +23,7 @@ export const registerUser = createAsyncThunk("registerUser", async (authInfo, { 
             withCredentials: true
         });
         console.log('user',response?.data)
-        if(response.data.code==200){
+        if(response?.data?.code==200||response?.data?.code==201){
             return response.data;
         }else{
             return rejectWithValue(response?.data?.message );    
@@ -39,7 +39,7 @@ export const verifyUser = createAsyncThunk("verifyUser", async (info, { rejectWi
         const response = await client.post("/user/auth/verify-otp", info, {
             withCredentials: true
         });
-        if(response?.data?.code==200){
+        if(response?.data?.code==200||response?.data?.code==201){
             return response.data;
         }else{
             return rejectWithValue(response?.data?.message);
@@ -65,7 +65,7 @@ export const resetPassword = createAsyncThunk("resetPassword", async (payload, {
         const response = await client.put(`/user/auth/new-password`, payload, {
             withCredentials: true
         });
-        if(response?.data?.code=='200'){
+        if(response?.data?.code==200||response?.data?.code==201){
             return response.data;
         }else{
             return rejectWithValue(response?.data?.message);            

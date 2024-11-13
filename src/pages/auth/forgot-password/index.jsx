@@ -29,7 +29,7 @@ export const ForgotPassword = () => {
   });
   const [isOtpScreen, setIsOtpScreen] = useState(false);
   const [isVerify, setIsVerify] = useState(false);
-  const { isVerifying=false,verifyingError,verifyMessage,resendingOtp,profile } = useSelector((state) => state.auth);
+  const { isVerifying=false,verifyingError,verifyMessage,resendingOtp,profile} = useSelector((state) => state.auth);
   useEffect(() => {
     if (timer === 0) {
       setIsResendDisabled(false);
@@ -47,7 +47,7 @@ export const ForgotPassword = () => {
      if(verifyingError){
        toast.error(verifyingError);
      }else{
-       toast.success(verifyMessage);
+      //  toast.success(verifyMessage);
        navigate('/create-new-password')
      }
     }
@@ -115,9 +115,15 @@ export const ForgotPassword = () => {
     console.log("Submitted Email:", data.email);
     // dispatch(updateProfile(data));
     dispatch(resendOtp(data));
+    // setIsOtpScreen(true);
+    // setTimer(30);
+  };
+  useEffect(()=>{
+   if(!isOtpScreen&&resendingOtp){
     setIsOtpScreen(true);
     setTimer(30);
-  };
+   }
+  },[resendingOtp])
 
   return (
     <>
@@ -177,6 +183,8 @@ export const ForgotPassword = () => {
                     type="submit"
                     primary={true}
                     className="mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none"
+                    disabled={otp?.[otp.length-1]==''}
+                    isLoading={isVerifying}
                   >
                     Continue
                   </Button>
@@ -216,6 +224,7 @@ export const ForgotPassword = () => {
                   primary={true}
                   className="mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none"
                   disabled={!isValid}
+                  isLoading={resendingOtp}
                 >
                   Continue
                 </Button>

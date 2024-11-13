@@ -27,7 +27,7 @@ const userSlice = createSlice({
             // state.isVerificationSuccessfull = true;
             state.error = action.payload.message;
             state.user=action.payload;
-            state.manager=action.payload?.agent_data?.[0]?.manager_data;
+            state.manager=action.payload?.agent_data?.[0]?.manager_data?.[0];
             // state.profile={...action.payload?.data?.[0],isVerified:true};
             // localStorage.setItem("userInfo", JSON.stringify(state.profile));
             // if (action.payload?.isVerification) {
