@@ -1,6 +1,7 @@
 import { ImSpinner2 } from "react-icons/im";
+import { Link } from "react-router-dom";
 
-export const Button = ({
+export const LinkButton = ({
   to,
   type,
   primary,
@@ -17,8 +18,9 @@ export const Button = ({
   ...props
 }) => {
   return (
-    <button
+    <Link
       {...props}
+      to={to}
       type={type}
       disabled={disabled || isLoading}
       onClick={onClick}
@@ -45,6 +47,6 @@ export const Button = ({
       ) : (
         ""
       )}
-    </button>
+    </Link>
   );
 };

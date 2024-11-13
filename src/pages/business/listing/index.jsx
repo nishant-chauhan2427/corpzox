@@ -1,14 +1,14 @@
-import { Link } from "react-router-dom";
 import { IoMdAddCircle } from "react-icons/io";
 import { businessListing } from "../../../database";
 import { Button } from "../../../components/buttons/button";
+import { LinkButton } from "../../../components/link";
 
 const BusinessListing = () => {
   const data = businessListing;
 
   return (
     <div className="flex flex-col pt-10">
-      <div className="flex justify-between gap-4">
+      <div className="flex flex-col md:flex-row justify-between gap-4">
         <p className="flex items-center gap-4 font-semibold text-xl text-[#0A1C40]">
           Your Business (09)
           <span>
@@ -16,10 +16,10 @@ const BusinessListing = () => {
           </span>
         </p>
         <div className="flex items-center gap-2">
-          <Button primary={true} leftIcon={<IoMdAddCircle />}>
+          <LinkButton to={"create"} primary={true} leftIcon={<IoMdAddCircle />}>
             New Business
-          </Button>
-          <Link className="font-semibold text-[#606060]">View all</Link>
+          </LinkButton>
+          <LinkButton className="font-semibold text-[#606060]">View all</LinkButton>
         </div>
       </div>
       {data.length > 0 ? (
@@ -29,7 +29,7 @@ const BusinessListing = () => {
               <div className="flex flex-col gap-2 bg-white rounded-xl p-2">
                 <div key={index} className="flex items-end gap-2">
                   <div className="p-2 bg-[#F3F7FF] rounded-xl flex justify-center items-center">
-                    <img src="images/business-imh.svg" className="" alt="" />
+                    <img src="/images/business-imh.svg" className="" alt="" />
                   </div>
                   <div>
                     <p className="font-bold text-base text-[#171717]">

@@ -52,7 +52,7 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
       id: 4,
       title: "Services",
       icon: <img src="/icons/dashboard/services.svg" alt="" />,
-      to: "/services-listing",
+      to: "/services",
       isPinned: false,
     },
     {
