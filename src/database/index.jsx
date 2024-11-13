@@ -1,4 +1,4 @@
-import { details } from "framer-motion/client";
+import { desc, details } from "framer-motion/client";
 
 export const headerLinks = [
   // { label: "Sign In", url: "/sign-in" },
@@ -150,5 +150,26 @@ export const servicesProgress = [
     detail1: "CorpZo Ventures Private Limited",
     detail2: "Application submission in progress",
     status: "OnTime",
+  },
+];
+
+export const CheckOffer = [
+  {
+    off: "20%",
+    tittle: "20% Off Coupon | Corpzo’s Rewards Program",
+    description:
+      " Denny's is offering 20% off your next visit when you join CorpZO! You will get this coupon within 24-48 hours after signing up...",
+  },
+  {
+    off: "20%",
+    tittle: "20% Off Coupon | Corpzo’s Rewards Program",
+    description:
+      " Denny's is offering 20% off your next visit when you join CorpZO! You will get this coupon within 24-48 hours after signing up...",
+  },
+  {
+    off: "20%",
+    tittle: "20% Off Coupon | Corpzo’s Rewards Program",
+    description:
+      " Denny's is offering 20% off your next visit when you join CorpZO! You will get this coupon within 24-48 hours after signing up...",
   },
 ];
