@@ -5,12 +5,12 @@ import { CiMenuKebab } from "react-icons/ci";
 import { FaPlayCircle } from "react-icons/fa";
 import { Button } from "../../components/buttons/button";
 import { GoTriangleDown } from "react-icons/go";
-import { businessCard, recommednedDetail } from "../../database";
+// import { businessCard, recommednedDetail } from "../../database";
 import { GoDotFill } from "react-icons/go";
-import { serviceProgressUpdateDetail } from "../../database";
+// import { serviceProgressUpdateDetail } from "../../database";
 import { ImCross } from "react-icons/im";
-import { useState,useEffect } from "react";
-import {getUser} from '../../redux/actions/dashboard-action';
+import { useState, useEffect } from "react";
+import { getUser } from "../../redux/actions/dashboard-action";
 import { useDispatch } from "react-redux";
 import {
   businessListing,
@@ -36,9 +36,9 @@ const Dashboard = () => {
   const handleAccountShowBtn = () => {
     setAccountShowButton((previous) => !previous);
   };
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(getUser());
-  },[])
+  }, []);
   return (
     <>
       <section className="py-6">

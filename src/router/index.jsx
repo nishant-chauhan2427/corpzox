@@ -16,6 +16,7 @@ import ServicesListing from "../pages/services/listing";
 import ServiceDetail from "../pages/services/detail";
 import BusinessListing from "../pages/business/listing";
 import BusinessDetail from "../pages/business/detail";
+import MakeAPayment from "../pages/payment/makeAPayment";
 
 const router = createBrowserRouter([
   {
@@ -69,10 +70,10 @@ const router = createBrowserRouter([
         path: "/",
         element: <IsRedirectWrapper />,
         children: [
-          //   {
-          //     path: "verify-email",
-          //     element: <EmailVerification />,
-          //   },
+            // {
+            //   path: "verify-email",
+            //   element: <EmailVerification />,
+            // },
         ],
       },
       // Main Layout Wrapper
@@ -84,7 +85,7 @@ const router = createBrowserRouter([
             path: "dashboard",
             element: <Dashboard />,
           },
-          // Business
+          // Business routes
           {
             path: "business",
             children: [
@@ -93,26 +94,45 @@ const router = createBrowserRouter([
                 element: <BusinessListing />,
               },
               {
-                path: "create", 
+                path: "create",
                 element: <BusinessDetail />,
               },
               {
-                path: "edit", 
+                path: "edit",
                 element: <BusinessDetail />,
               },
               {
-                path: "detail", 
+                path: "detail",
                 element: <BusinessDetail />,
               },
             ],
           },
+          // Services routes
           {
-            path: "services-listing",
-            element: <ServicesListing />,
+            path: "services",
+            children: [
+              {
+                index: true,
+                element: <ServicesListing />,
+              },
+              {
+                path: "create",
+                element: <ServiceDetail />,
+              },
+              {
+                path: "edit",
+                element: <ServiceDetail />,
+              },
+              {
+                path: "detail",
+                element: <ServiceDetail />,
+              },
+            ],
           },
+          // Payment route
           {
-            path: "services-detail",
-            element: <ServiceDetail />,
+            path: "make-a-payment",
+            element: <MakeAPayment />,
           },
         ],
       },
