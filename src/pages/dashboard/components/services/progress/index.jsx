@@ -3,10 +3,14 @@ import { Link } from "react-router-dom";
 import { GoDotFill, GoTriangleDown } from "react-icons/go";
 
 export const ServicesProgress = ({ data }) => {
-  const [servicesDropdown, setServicesDropdown] = useState(false);
+  const [dropdownStates, setDropdownStates] = useState(
+    data.map(() => false) 
+  );
 
-  const handleServiceDropdown = () => {
-    setServicesDropdown(!servicesDropdown);
+  const handleServiceDropdown = (index) => {
+    setDropdownStates((prevState) =>
+      prevState.map((state, i) => (i === index ? !state : state))
+    );
   };
 
   const servicesProgessSteps = [
@@ -41,52 +45,51 @@ export const ServicesProgress = ({ data }) => {
       {data.length > 0 ? (
         <div className="flex flex-col gap-4">
           {data.map((data, index) => (
-            <>
-              <div className="bg-[#F8FAFF] px-4 py-2 rounded-md">
-                <div key={index} className="flex justify-between items-center">
-                  <div className="flex flex-col gap-1">
-                    <div className="flex gap-2">
-                      <img
-                        src="/images/dashboard/service-progress.svg"
-                        alt=""
-                      />
-                      <p className="font-bold">{data.name} </p>
-                      <img
-                        src="/icons/dashboard/service-error.svg"
-                        width={15}
-                        alt=""
-                      />
-                    </div>
-                    <div className="flex gap-2">
-                      <h6 className="font-normal text-sm">
-                        Business: {data.detail1}{" "}
-                      </h6>
-                      <p className="font-normal text-sm ">
-                        Step: {data.detail2}{" "}
-                      </p>
-                    </div>
-                  </div>
+            <div key={index} className="bg-[#F8FAFF] px-4 py-2 rounded-md">
+              <div className="flex justify-between items-center">
+                <div className="flex flex-col gap-1">
                   <div className="flex gap-2">
-                    <p className="flex items-center h-8 px-2 py-0.5 rounded-full font-semibold text-sm text-[#037847] bg-[#03784728]">
-                      <span>
-                        <GoDotFill />
-                      </span>
-                      On Time
-                    </p>
-                    <button key={index} onClick={handleServiceDropdown}>
-                      <GoTriangleDown size={30} />
-                    </button>
+                    <img
+                      src="/images/dashboard/service-progress.svg"
+                      alt=""
+                    />
+                    <p className="font-bold">Service: {data.name} </p>
+                    <img
+                      src="/icons/dashboard/service-error.svg"
+                      width={15}
+                      alt=""
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <h6 className="font-normal text-sm">
+                      Business: {data.detail1}{" "}
+                    </h6>
+                    <p className="font-normal text-sm ">Step: {data.detail2} </p>
                   </div>
                 </div>
-                <Dropdown servicesDropdown={servicesDropdown} servicesProgessSteps={servicesProgessSteps} />
+                <div className="flex gap-2">
+                  <p className="flex items-center h-8 px-2 py-0.5 rounded-full font-semibold text-sm text-[#037847] bg-[#03784728]">
+                    <span>
+                      <GoDotFill />
+                    </span>
+                    On Time
+                  </p>
+                  <button onClick={() => handleServiceDropdown(index)}>
+                    <GoTriangleDown size={30} />
+                  </button>
+                </div>
               </div>
-            </>
+              <Dropdown
+                isOpen={dropdownStates[index]} // Pass the state for this specific dropdown
+                servicesProgessSteps={servicesProgessSteps}
+              />
+            </div>
           ))}
         </div>
       ) : (
         <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
           <img src="/images/service-prgress.svg  " alt="" />
-          <p className="font-bold  text-xl text-[#000000] ">No Services </p>
+          <p className="font-bold text-xl text-[#000000] ">No Services </p>
           <p className="font-normal text-[#797979]">
             Create a Business to add your Service{" "}
           </p>
@@ -96,10 +99,10 @@ export const ServicesProgress = ({ data }) => {
   );
 };
 
-const Dropdown = ({ servicesDropdown, servicesProgessSteps }) => {
+const Dropdown = ({ isOpen, servicesProgessSteps }) => {
   return (
     <>
-      {servicesDropdown && (
+      {isOpen && (
         <div className="p-6">
           <div className="flex justify-between items-center">
             {servicesProgessSteps.map((step, index) => (

@@ -1,14 +1,3 @@
-import { Link } from "react-router-dom";
-import { BiSolidMessageRounded } from "react-icons/bi";
-import { IoMdCall } from "react-icons/io";
-import { CiMenuKebab } from "react-icons/ci";
-import { FaPlayCircle } from "react-icons/fa";
-import { Button } from "../../components/buttons/button";
-import { GoTriangleDown } from "react-icons/go";
-// import { businessCard, recommednedDetail } from "../../database";
-import { GoDotFill } from "react-icons/go";
-// import { serviceProgressUpdateDetail } from "../../database";
-import { ImCross } from "react-icons/im";
 import { useState, useEffect } from "react";
 import { getUser } from "../../redux/actions/dashboard-action";
 import { useDispatch } from "react-redux";
