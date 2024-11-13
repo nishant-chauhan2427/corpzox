@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const client = axios.create({
-    baseURL: "https://www.vayuz.com"
+    baseURL: "https://corpzo.onrender.com/api"
 }, {
     withCredentials: true,
 })

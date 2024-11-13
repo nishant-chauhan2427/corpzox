@@ -10,11 +10,11 @@ export const PrimaryLayout = () => {
   const [phoneCollapse, setPhoneCollapse] = useState(true);
   // const sidebarClassName = useSelector((state) => state.theme.sidebarClassName);
   const sidebarClassName = "bg-red-500";
-  // const user = useSelector((state) => state.user.user);
-
-  // if (!user) {
-  //   return <Navigate to="/sign-in" />;
-  // }
+  // profile = //useSelector((state) => state.auth);
+  let userInfo=localStorage.getItem('userInfo');
+  if (!userInfo) {
+    return <Navigate to="/sign-in" />;
+  }
 
   return (
     <div className="w-full">

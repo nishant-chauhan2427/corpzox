@@ -73,50 +73,12 @@ export const ServicesProgress = ({ data }) => {
                       </span>
                       On Time
                     </p>
-                    <button onClick={handleServiceDropdown}>
+                    <button key={index} onClick={handleServiceDropdown}>
                       <GoTriangleDown size={30} />
                     </button>
                   </div>
                 </div>
-                {servicesDropdown && (
-                  <div className="p-6 bg-gray-100 font-sans">
-                    <div className="flex justify-between items-center">
-                      {servicesProgessSteps.map((step, index) => (
-                        <div
-                          key={index}
-                          className={`flex flex-col items-center relative text-white`}
-                        >
-                          <div
-                            className={`w-fit px-1 py-0.5 rounded ${
-                              step.status === "completed"
-                                ? "bg-green-600"
-                                : step.status === "in-progress"
-                                ? "bg-yellow-600"
-                                : "bg-gray-600"
-                            }`}
-                          >
-                            <p className="font-normal text-[10px]">
-                              {step.label}
-                            </p>
-                          </div>
-                          <div className="w-full h-4">
-
-                          </div>
-                          {step.date && (
-                            <div className="text-[10px] text-gray-500">
-                              {step.date}
-                            </div>
-                          )}
-                          {step.estimated && (
-                            <div className="text-[10px] text-gray-500">
-                              {step.estimated}
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                <Dropdown servicesDropdown={servicesDropdown} servicesProgessSteps={servicesProgessSteps} />
               </div>
             </>
           ))}
@@ -131,5 +93,45 @@ export const ServicesProgress = ({ data }) => {
         </div>
       )}
     </div>
+  );
+};
+
+const Dropdown = ({ servicesDropdown, servicesProgessSteps }) => {
+  return (
+    <>
+      {servicesDropdown && (
+        <div className="p-6">
+          <div className="flex justify-between items-center">
+            {servicesProgessSteps.map((step, index) => (
+              <div
+                key={index}
+                className={`flex flex-col items-center relative text-white`}
+              >
+                <div
+                  className={`w-fit px-1 py-0.5 rounded ${
+                    step.status === "completed"
+                      ? "bg-green-600"
+                      : step.status === "in-progress"
+                      ? "bg-yellow-600"
+                      : "bg-gray-600"
+                  }`}
+                >
+                  <p className="font-normal text-[10px]">{step.label}</p>
+                </div>
+                <div className="w-full h-4 bg-gray-300"></div>
+                {step.date && (
+                  <div className="text-[10px] text-gray-500">{step.date}</div>
+                )}
+                {step.estimated && (
+                  <div className="text-[10px] text-gray-500">
+                    {step.estimated}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
