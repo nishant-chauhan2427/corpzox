@@ -321,7 +321,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
                     // disabled={isLoggingOut}
                     // isLoading={isLoggingOut}
                     // onClick={handleLogout}
-                    mainPrimary={true}
+                    primary={true}
                   >
                     Sign Out
                   </Button>

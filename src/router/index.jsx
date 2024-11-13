@@ -71,10 +71,10 @@ const router = createBrowserRouter([
         path: "/",
         element: <IsRedirectWrapper />,
         children: [
-            // {
-            //   path: "verify-email",
-            //   element: <EmailVerification />,
-            // },
+          // {
+          //   path: "verify-email",
+          //   element: <EmailVerification />,
+          // },
         ],
       },
       // Main Layout Wrapper
@@ -132,8 +132,17 @@ const router = createBrowserRouter([
           },
           // Payment route
           {
-            path: "make-a-payment",
-            element: <MakeAPayment />,
+            path: "payment",
+            children: [
+              {
+                index: true,
+                element: <MakeAPayment />,
+              },
+              {
+                path: "create",
+                element: <MakeAPayment />,
+              },
+            ],
           },
         ],
       },
