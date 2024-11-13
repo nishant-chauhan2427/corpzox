@@ -125,7 +125,7 @@ useEffect(()=>{
     <>
       <MetaTitle title={"Verify"} />
       <AuthLayout>
-        <img className="sm:w-32 w-36" src="public\logo.svg" alt="CORPZO Logo" />
+        <img className="sm:w-32 w-36" src="logo.svg" alt="CORPZO Logo" />
         <div className="w-full  flex  ">
           <div className="w-full flex  ">
             <div className="flex flex-col  justify-between ">
