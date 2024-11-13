@@ -4,13 +4,13 @@ import { CiMenuKebab } from "react-icons/ci";
 import { IoMdCall } from "react-icons/io";
 import { Link } from "react-router-dom";
 
-export const AccountManager = () => {
+export const AccountManager = ({manager}) => {
   const [accountShowButton, setAccountShowButton] = useState(false);
 
   const handleAccountShowBtn = () => {
     setAccountShowButton((previous) => !previous);
   };
-
+console.log(manager,'manager')
   return (
     <div className="px-[17px] py-[17px] w-full sm:w-auto flex gap-4 bg-white border border-[#DFEAF2] rounded-2xl">
       <div className=" flex items-center">
@@ -22,9 +22,9 @@ export const AccountManager = () => {
       </div>
       <div>
         <p className="ps-0.5 font-semibold text-[10px] text-[#FF4141]">
-          Account Manager
+          {manager?.role?.toUpperCase()}
         </p>
-        <p className="-mt-1 font-semibold text-lg text-[#232323]">Ashutosh Gupta</p>
+        <p className="-mt-1 font-semibold text-lg text-[#232323]">{manager?.name}</p>
         <div className="pt-2 flex gap-2">
           <div className="bg-[#D9D9D9] rounded-full px-1 py-1">
             <BiSolidMessageRounded />

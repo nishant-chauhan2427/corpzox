@@ -11,7 +11,7 @@ export const getUser = createAsyncThunk("getUser", async (authInfo, { rejectWith
             },
           });
         console.log(response);
-        if(response.data?.code==200){
+        if(response?.data?.code==200||response?.data?.code==201){
             return response.data?.data?.[0];
         }else{
             return rejectWithValue(response?.data?.message);            
