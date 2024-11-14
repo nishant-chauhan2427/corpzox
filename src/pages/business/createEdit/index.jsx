@@ -10,6 +10,7 @@ import { AddressDetails } from "./components/address";
 import { FinancialDetails } from "./components/financial";
 import { KYCDetails } from "./components/kyc";
 import { FundingDetails } from "./components/funding";
+import { createBusiness } from "../../../redux/slices/businessSlice";
 
 const CreateBusiness = () => {
   const { id } = useParams();
@@ -32,7 +33,9 @@ const CreateBusiness = () => {
 
   const onSubmit = (data) => {
     console.log(data, "data before transfomation");
+    dispatch(createBusiness(data))
   };
+
   return (
     <div>
       {/* <BusinessListing /> */}

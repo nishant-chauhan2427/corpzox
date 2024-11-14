@@ -57,7 +57,7 @@ export const Input = ({
       }
     }
     e.target.value = newValue;
-    console.log(isNumeric, newValue, "fds");
+    
     onChange(e);
   };
 
