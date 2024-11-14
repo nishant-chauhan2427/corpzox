@@ -58,6 +58,18 @@ export const Header = ({ className, collapse, setCollapse }) => {
         return "Dashboard";
       case pathname.includes("business"):
         return "Business";
+      case pathname.includes("fundraise"):
+        return "Fundraise";
+      case pathname.includes("investment"):
+        return "Investment";
+      case pathname.includes("services"):
+        return "Services";
+      case pathname.includes("payment"):
+        return "Payment";
+      case pathname.includes("document"):
+        return "Document";
+      case pathname.includes("settings"):
+        return "Settings";
       default:
         return "";
     }
