@@ -6,13 +6,33 @@ import ServicesCard from "../../../pages/services/components/services-card";
 import { servicesListing } from "../../../database";
 import Filtertab from "../../../pages/services/components/tabs/filterTab";
 import { useSelector,useDispatch } from "react-redux";
-import {getUserServicesCatagory} from '../../../redux/actions/servicesListing-action';
+import { useLocation } from "react-router-dom";
+import {getUserServicesCatagory,getUserServicesSubCatagory,getUserServices} from '../../../redux/actions/servicesListing-action';
 const ServicesListing = () => {
   const dispatch =useDispatch();
   const { servicesMainTab } = useSelector((state) => state.app);
+  const { category,subCategory,page,limit,list} = useSelector((state) => state.service);
+  const location=useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const searchValue = queryParams.get('search');
   useEffect(()=>{
     dispatch(getUserServicesCatagory({}));
   },[])
+  useEffect(()=>{
+    dispatch(getUserServicesSubCatagory({categoryId:category?.selectedCategory?.categoryId}));
+  },[category.selectedCategory])
+  useEffect(()=>{
+    if(category?.selectedCategory&&subCategory?.selectedSubCategory){
+      dispatch(getUserServices({categoryId:category?.selectedCategory?._id
+        ,subCategoryId:subCategory?.selectedSubCategory?._id
+        ,page,limit}));
+    }
+  },[category.selectedCategory,subCategory.selectedSubCategory])
+  useEffect(()=>{
+      dispatch(getUserServices({categoryId:category?.selectedCategory?._id
+        ,subCategoryId:subCategory?.selectedSubCategory?._id
+        ,page,limit,query:searchValue}));
+  },[searchValue])
   return (
     <section className="flex sm:flex-row flex-col gap-4 sm:pt-6 pt-3 bg-white">
       <div className="flex flex-col sm:w-[70%]">
@@ -24,11 +44,11 @@ const ServicesListing = () => {
                 Service Category
               </p>
               <Filtertab />
-              <ServicesCard data={servicesListing} />
+              <ServicesCard data={list} />
             </>
           ) : (
             <>
-              <ServicesCard data={servicesListing} />
+              <ServicesCard />
               <div className="mt-10 flex justify-center">
                 <Button primary={true}>Load More </Button>
               </div>

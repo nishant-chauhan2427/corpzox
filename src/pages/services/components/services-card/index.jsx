@@ -2,6 +2,7 @@ import React from "react";
 import { Checkbox } from "../../../../components/inputs/checkbox";
 import { CiHeart } from "react-icons/ci";
 import { Button } from "../../../../components/buttons";
+import { useSelector } from "react-redux";
 
 function ServicesCard({ data }) {
   return (
@@ -13,11 +14,11 @@ function ServicesCard({ data }) {
             className="sm:m-3 flex flex-col gap-2 sm:gap-4 justify-between"
           >
             <div className="flex justify-between">
-              <p className="font-bold text-[#0A1C40]">{service.projectName}</p>
+              <p className="font-bold text-[#0A1C40]">{service.name}</p>
               <Checkbox />
             </div>
             <p className="text-base leading-[22px] font-normal text-[#7C7C7C]">
-              {service.projectDescription}
+              {service.details}
             </p>
             <div className="flex flex-col gap-1 pt-1">
               <div className="flex justify-between sm:w-4/5">
@@ -25,7 +26,7 @@ function ServicesCard({ data }) {
                   Estimated Time
                 </p>
                 <p className="font-bold text-[12px] text-[#000000]">
-                  {service.estimatedTime}
+                  {service.duration}
                 </p>
               </div>
               <div className="flex justify-between sm:w-4/5">
@@ -33,13 +34,13 @@ function ServicesCard({ data }) {
                   Min Requirement
                 </p>
                 <p className="font-bold text-[12px] text-[#000000]">
-                  {service.minRequirement}
+                  {service?.minRequirement||'_ _'}
                 </p>
               </div>
               <div className="flex justify-between sm:w-4/5">
                 <p className="font-semibold text-sm text-[#7E7E7E]">Price</p>
                 <p className="font-bold text-[12px] text-[#000000]">
-                  {service.price}
+                  {service.cost}
                 </p>
               </div>
             </div>
