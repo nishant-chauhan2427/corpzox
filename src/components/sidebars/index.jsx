@@ -1,20 +1,11 @@
 import { IconBox } from "../iconBox";
 import { GoDotFill } from "react-icons/go";
 import { AnimatePresence, motion } from "framer-motion";
-// import "./sidebar.scss";
 import { useState } from "react";
-import {
-  LuAlignJustify,
-  LuDatabase,
-  LuHome,
-  LuPanelLeftClose,
-  LuSettings,
-  LuUsers,
-} from "react-icons/lu";
-
 import { useSelector } from "react-redux";
 import { iconSize } from "../../utils";
 import { Link } from "react-router-dom";
+import { AccountManager } from "../../pages/dashboard/components/accountManager";
 
 export const Sidebar = ({ className, collapse, setCollapse }) => {
   const user = useSelector((state) => state.user.user);
@@ -59,7 +50,7 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
       id: 5,
       title: "Payment History",
       icon: <img src="/icons/dashboard/payment-history.svg" alt="" />,
-      to: "/payment-history",
+      to: "/payment/history",
       isPinned: false,
     },
     {
@@ -123,9 +114,7 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
         initial={{ left: "-50%" }}
         animate={{ left: 10, transition: { duration: 0.3 } }}
         exit={{ left: "-50%", transition: { duration: 0.3 } }}
-        className={`${
-          className ? className : ""
-        } shadow-xl dark:bg-slate-900`}
+        className={`${className ? className : ""} shadow-xl dark:bg-slate-900`}
       >
         {/* <div
           className={`${
@@ -186,21 +175,29 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
             </button>
           </div> */}
         </div>
-        {items?.map((item, index) => (
-          <IconBox
-            containerClassName="px-4 py-2"
-            titleClassName={
-              item.to == null && "font-semibold text-primary uppercase"
-            }
-            key={index}
-            to={item.to}
-            icon={item.icon}
-            title={!collapse ? item.title : ""}
-            child={item.child}
-            setPin={() => handlePinToggle(item.title)}
-            collapse={collapse}
-          />
-        ))}
+        <div className="h-[80vh] overflow-y-auto">
+          <div className="px-8 py-4">
+            {items?.map((item, index) => (
+              <IconBox
+                containerClassName="px-4 py-2"
+                titleClassName={
+                  item.to == null && "font-semibold text-primary uppercase"
+                }
+                key={index}
+                to={item.to}
+                icon={item.icon}
+                title={!collapse ? item.title : ""}
+                child={item.child}
+                setPin={() => handlePinToggle(item.title)}
+                collapse={collapse}
+              />
+            ))}
+          </div>
+          <div className="px-2">
+            {/*  */}
+            <AccountManager />
+          </div>
+        </div>
       </motion.div>
     </AnimatePresence>
   );

@@ -22,9 +22,9 @@ console.log(manager,'manager')
       </div>
       <div>
         <p className="ps-0.5 font-semibold text-[10px] text-[#FF4141]">
-          {manager?.role?.toUpperCase()}
+          {manager?.role?.toUpperCase() ? manager?.role?.toUpperCase() : "Manager Role"}
         </p>
-        <p className="-mt-1 font-semibold text-lg text-[#232323]">{manager?.name}</p>
+        <p className="-mt-1 font-semibold text-lg text-[#232323]">{manager?.name ? manager?.name : "Manager Name"}</p>
         <div className="pt-2 flex gap-2">
           <div className="bg-[#D9D9D9] rounded-full px-1 py-1">
             <BiSolidMessageRounded />

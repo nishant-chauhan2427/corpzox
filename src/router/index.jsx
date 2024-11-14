@@ -20,6 +20,10 @@ import MakeAPayment from "../pages/payment/makeAPayment";
 import CreateBusiness from "../pages/business/createEdit";
 import SelectBusiness from "../pages/payment/selectBusiness";
 import BusinessPreview from "../pages/business/preview";
+import FundraiseListing from "../pages/fundraise/listing";
+import InvestmentListing from "../pages/investment/listing";
+import DocumentsListing from "../pages/documents/listing";
+import ChangePassword from "../pages/settings/changePassword";
 
 const router = createBrowserRouter([
   {
@@ -148,6 +152,54 @@ const router = createBrowserRouter([
                 path: "create",
                 element: <SelectBusiness />,
               },
+              {
+                path: "history",
+                element: <MakeAPayment />,
+              },
+            ],
+          },
+          // Fundraise route
+          {
+            path: "fundraise",
+            children: [
+              {
+                index: true,
+                element: <FundraiseListing />,
+              },
+              
+            ],
+          },
+          // Investment route
+          {
+            path: "investment",
+            children: [
+              {
+                index: true,
+                element: <InvestmentListing />,
+              },
+              
+            ],
+          },
+          // Documents route
+          {
+            path: "documents",
+            children: [
+              {
+                index: true,
+                element: <DocumentsListing />,
+              },
+              
+            ],
+          },
+          // Settings route
+          {
+            path: "settings",
+            children: [
+              {
+                index: true,
+                element: <ChangePassword />,
+              },
+              
             ],
           },
         ],
