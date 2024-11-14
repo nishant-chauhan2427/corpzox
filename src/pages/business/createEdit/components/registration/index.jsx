@@ -1,110 +1,220 @@
 import { Controller } from "react-hook-form";
 import { Input } from "../../../../../components/inputs";
 import { Selector } from "../../../../../components/select";
-import { PhoneNumberInput } from "../../../../../components/inputs/phoneInput";
 
-export const RegistraionDetails = ({ control, errors }) => {
-  const statusOption = [
+export const RegistrationDetails = ({ control, errors }) => {
+  const roleOption = [
     { label: "Active", value: 1 },
     { label: "Inactive", value: 0 },
   ];
 
-  const genderOption = [
-    { label: "Male", value: "male" },
-    { label: "Female", value: "female" },
-    { label: "Others", value: "others" },
+  const fundingOption = [
+    { label: "Funded", value: "funded" },
+    { label: "Bootstrap", value: "bootstrap" },
   ];
 
-  return (
-    <>
-      <h5 className="my-4 font-semibold text-xl text-[#4D4D4F] dark:text-gray-200">
-      Detailed Business Registration Details
-      </h5>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-        <Controller
-          name={`fullName`}
-          control={control}
-          render={({ field }) => (
-            <Input
-              {...field}
-              label={`Full Name`}
-              placeholder={`Enter your name`}
-              errorContent={errors.fullName?.message}
-              onChange={(e) => {
-                const value = e.target.value
-                  ?.replace(/\s+/g, " ")
-                  .replace(/[^A-Za-z\s]/g, ""); // Only allows letters and spaces
-                handleChange("fullName", value.slice(0, 30)); // Limits to 30 characters
-              }}
-              required={true}
-            />
-          )}
-        />
+  const industryOption = [
+    { label: "Technology", value: "tech" },
+    { label: "Finance", value: "finance" },
+    { label: "Healthcare", value: "healthcare" },
+    { label: "Retail", value: "retail" },
+    { label: "Education", value: "education" },
+    { label: "Manufacturing", value: "manufacturing" },
+    { label: "Entertainment", value: "entertainment" },
+    { label: "Construction", value: "construction" },
+    { label: "Transportation", value: "transportation" },
+    { label: "Other", value: "other" },
+  ];
 
-        <Controller
-          name="email"
-          control={control}
-          render={({ field }) => (
-            <Input
-              {...field}
-              type={"email"}
-              label={"Email ID"}
-              placeholder={"Enter Email"}
-              errorContent={errors.email?.message}
-              required={true}
-            />
-          )}
-        />
-        <Controller
-          name="phoneNumber"
-          control={control}
-          render={({ field }) => (
-            <PhoneNumberInput
-              {...field}
-              label={"Mobile No"}
-              country={"in"}
-              errorContent={errors.phoneNumber?.message}
-              required={true}
-            />
-          )}
-        />
-      <Controller
-            name="gender"
+  const subIndustryOption = {
+    tech: [
+      { label: "Software", value: "software" },
+      { label: "Hardware", value: "hardware" },
+      { label: "AI & ML", value: "ai_ml" },
+      { label: "Cybersecurity", value: "cybersecurity" },
+      { label: "Cloud Computing", value: "cloud_computing" },
+      { label: "Other", value: "other" },
+    ],
+    finance: [
+      { label: "Banking", value: "banking" },
+      { label: "Insurance", value: "insurance" },
+      { label: "Investment", value: "investment" },
+      { label: "Fintech", value: "fintech" },
+      { label: "Other", value: "other" },
+    ],
+    healthcare: [
+      { label: "Medical Devices", value: "medical_devices" },
+      { label: "Pharmaceuticals", value: "pharmaceuticals" },
+      { label: "Health IT", value: "health_it" },
+      { label: "Biotechnology", value: "biotech" },
+      { label: "Other", value: "other" },
+    ],
+  };
+
+  return (
+    <div className="w-full">
+      <div>
+        <h5 className="font-semibold text-base text-[#4D4D4F] dark:text-gray-200">
+          Detailed Business Registration Details
+        </h5>
+        <p className="text-xs">
+          Provide the necessary details to add your own business.
+        </p>
+      </div>
+      <div className="w-full pt-4 flex flex-col md:flex-row gap-4">
+        <div className="w-full grid grid-cols-1 gap-4">
+          <Controller
+            name={`businessType`}
             control={control}
             render={({ field }) => (
-              <Selector
+              <Input
                 {...field}
-                label={"Gender"}
-                placeholder={"Select Gender"}
-                errorContent={errors.status?.message}
-                options={genderOption}
+                label={`Business Type`}
+                placeholder={`Enter your business type`}
+                errorContent={errors.businessType?.message}
                 required={true}
               />
             )}
           />
-        <Controller
-          name="dob"
-          control={control}
-          render={({ field }) => {
-            // Calculate the minimum date (100 years ago)
-            const minDate = new Date();
-            minDate.setFullYear(minDate.getFullYear() - 100);
-            const minDateString = minDate.toISOString().split("T")[0];
-
-            return (
+          <Controller
+            name={`businessName`}
+            control={control}
+            render={({ field }) => (
               <Input
                 {...field}
-                label={`Founded Date`}
-                type={"date"}
-                placeholder={"Enter DOB"}
-                min={minDateString} // Set the minimum date
-                max={new Date().toISOString().split("T")[0]} // Maximum is today
-                errorContent={errors.dob?.message}
+                label={`Business Name`}
+                placeholder={`Enter your business name`}
+                errorContent={errors.businessName?.message}
+                required={true}
               />
-            );
-          }}
-        />
+            )}
+          />
+          <Controller
+            name={`cinNo`}
+            control={control}
+            render={({ field }) => (
+              <Input
+                {...field}
+                label={`CIN No.`}
+                placeholder={`Enter your CIN number`}
+                errorContent={errors.cinNo?.message}
+                required={true}
+              />
+            )}
+          />
+          <Controller
+            name="role"
+            control={control}
+            render={({ field }) => (
+              <Selector
+                {...field}
+                label={"Role"}
+                placeholder={"Select role of the company"}
+                errorContent={errors.role?.message}
+                options={roleOption}
+                required={true}
+              />
+            )}
+          />
+
+          <Controller
+            name="yearOfEstablishment"
+            control={control}
+            render={({ field }) => {
+              const minDate = new Date();
+              minDate.setFullYear(minDate.getFullYear() - 100);
+              const minDateString = minDate.toISOString().split("T")[0];
+
+              return (
+                <Input
+                  {...field}
+                  label={`Year of Establishment`}
+                  type={"date"}
+                  placeholder={"Enter DOF"}
+                  min={minDateString} // Set the minimum date
+                  max={new Date().toISOString().split("T")[0]} // Maximum is today
+                  errorContent={errors.yearOfEstablishment?.message}
+                />
+              );
+            }}
+          />
+        </div>
+        <div className="w-full grid grid-cols-1 gap-4">
+          <Controller
+            name={`headquarterLocation`}
+            control={control}
+            render={({ field }) => (
+              <Input
+                {...field}
+                label={`Headquarter Location`}
+                placeholder={`Enter your headquarter location`}
+                errorContent={errors.headquarterLocation?.message}
+                required={true}
+              />
+            )}
+          />
+          <Controller
+            name={`industryType`}
+            control={control}
+            render={({ field }) => (
+              <Selector
+                {...field}
+                label={"Industry Type"}
+                placeholder={"Select industry type"}
+                errorContent={errors.industryType?.message}
+                options={industryOption}
+                required={true}
+              />
+            )}
+          />
+          <Controller
+            name={`subIndustryType`}
+            control={control}
+            render={({ field, value }) => {
+              const selectedIndustry = value?.industryType;
+              const subIndustryOptions =
+                subIndustryOption[selectedIndustry] || [];
+              return (
+                <Selector
+                  {...field}
+                  label={"Sub Industry Type"}
+                  placeholder={"Select sub industry type"}
+                  errorContent={errors.subIndustryType?.message}
+                  options={subIndustryOptions}
+                  required={true}
+                />
+              );
+            }}
+          />
+          <Controller
+            name="companySize"
+            control={control}
+            render={({ field }) => (
+              <Input
+                {...field}
+                label={`Size of the company`}
+                placeholder={`Enter size of the company`}
+                errorContent={errors.companySize?.message}
+                required={true}
+              />
+            )}
+          />
+          <Controller
+            name="isFunded"
+            control={control}
+            render={({ field }) => (
+              <Selector
+                {...field}
+                label={"Funding Status"}
+                placeholder={"Select funding status"}
+                errorContent={errors.isFunded?.message}
+                options={fundingOption}
+                required={true}
+              />
+            )}
+          />
+        </div>
       </div>
-    </>
+    </div>
   );
 };

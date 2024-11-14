@@ -16,7 +16,7 @@ export const RecommendedServices = ({ data ,total}) => {
         className="grid grid-cols-1 sm:grid-cols-2 !rounded-lg pb-5 mt-4 
      lg:grid-cols-3 gap-4 bg-white"
       >
-        {data.slice(0, 3).map((data, index) => (
+        {data?.slice(0, 3).map((data, index) => (
           <button
             key={index}
             className="flex justify-between items-center bg-[#F3F7FF] gap-2 w-full p-2 rounded-lg"
