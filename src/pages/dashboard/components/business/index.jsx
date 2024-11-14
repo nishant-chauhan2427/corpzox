@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 import { Button } from "../../../../components/buttons";
 import { IoMdAddCircle } from "react-icons/io";
-
-export const Business = ({ data }) => {
+import {calculateAge} from '../../../../utils/index';
+export const Business = ({ data=[] ,total}) => {
   return (
     <div className="flex flex-col pt-10">
       <div className="flex justify-between gap-4">
         <p className="flex items-center gap-4 font-semibold text-xl text-[#0A1C40]">
-          Your Business (09)
+          Your Business ({total})
           <span>
             <img src="/icons/dashboard/take-a-tour.svg" alt="" />
           </span>
@@ -28,7 +28,7 @@ export const Business = ({ data }) => {
                   </div>
                   <div>
                     <p className="font-bold text-base text-[#171717]">
-                      {data.businessName}
+                      {data?.businessName}
                     </p>
                     <p className="font-semibold text-[11px] text-[#343C6A]">
                       {data.businesSubTitle}{" "}
@@ -36,10 +36,10 @@ export const Business = ({ data }) => {
                   </div>
                 </div>
                 <div className="flex flex-col gap-1 w-[100%]">
-                  {labelValue("Type:", data.type)}
-                  {labelValue("Registered Office:", data.registeredOffice)}
-                  {labelValue("Company Status:", data.companyStatus)}
-                  {labelValue("Company Age:", data.companyAge)}
+                  {labelValue("Type:", data?.typeOfBusiness)}
+                  {labelValue("Registered Office:", (data?.businessAddressCity&&data?.businessAddressState)?`${data?.businessAddressCity},${data?.businessAddressState}`:(data?.businessAddressCity)?(data?.businessAddressCity):(data?.businessAddressState))}
+                  {labelValue("Company Status:", (data?.active)?"Active":"In Active")}
+                  {labelValue("Company Age:", (data?.yearOfStablish)?`${calculateAge(data?.yearOfStablish)}`:null)}
                 </div>
               </div>
               <div className="flex justify-between items-center gap-2 pt-5">
@@ -53,7 +53,7 @@ export const Business = ({ data }) => {
                   <div className="flex gap-1 items-center">
                     <img src="images/settinn-icon.svg" width={20} alt="" />
                     <p className="font-bold text-[10px] text-[#007453]">
-                      2 ACTIVE SERVICES
+                      {data?.totalService} ACTIVE SERVICES
                     </p>
                   </div>
                 </div>

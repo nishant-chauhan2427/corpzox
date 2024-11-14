@@ -1,12 +1,18 @@
+import { useEffect } from "react";
 import { Button } from "../../../components/buttons";
 import Insight from "../../../components/insight/insight";
 import { MainTab } from "../../../pages/services/components/tabs/mainTab";
 import ServicesCard from "../../../pages/services/listing/components/services-card";
 import { servicesListing } from "../../../database";
 import Filtertab from "../../../pages/services/components/tabs/filterTab";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+import {getUserServicesCatagory} from '../../../redux/actions/servicesListing-action';
 const ServicesListing = () => {
+  const dispatch =useDispatch();
   const { servicesMainTab } = useSelector((state) => state.app);
+  useEffect(()=>{
+    dispatch(getUserServicesCatagory({}));
+  },[])
   return (
     <section className="flex sm:flex-row flex-col gap-4 sm:pt-6 pt-3 bg-white">
       <div className="flex flex-col sm:w-[70%]">

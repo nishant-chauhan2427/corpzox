@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setServicesMainTab } from "../../../../../redux/slices/appSlice";
-
+// import { useSelector } from "react-redux";
 export const MainTab = () => {
   const [mainactiveTab, setmainActiveTab] = useState(0);
 

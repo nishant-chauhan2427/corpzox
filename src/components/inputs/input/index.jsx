@@ -57,7 +57,7 @@ export const Input = ({
       }
     }
     e.target.value = newValue;
-    console.log(isNumeric, newValue, "fds");
+    
     onChange(e);
   };
 
@@ -87,7 +87,7 @@ export const Input = ({
           <input
             {...props}
             className={`${className} ${errorContent && touched ? "border-error" : "border-[#D9D9D9]"
-              } w-full text-black placeholder:text-[#9A9A9A] placeholder:font-normal placeholder:text-sm p-3 bg-white focus:border- h-[49px] dark:text-white rounded-md shadow-sm`}
+              } w-full text-black placeholder:text-[#9A9A9A] placeholder:font-normal placeholder:text-sm p-3 bg-white focus:border- h-10 dark:text-white rounded-md shadow-sm`}
             type={type === "password" ? passwordType : type}
             placeholder={placeholder}
             value={value}

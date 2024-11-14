@@ -1,17 +1,18 @@
-import BusinessListing from "../listing";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useSelector, useDispatch } from "react-redux";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useEffect } from "react";
-import { RegistraionDetails } from "./components/registration";
 import { Button } from "../../../components/buttons";
+import { RegistrationDetails } from "./components/registration";
+import { AddressDetails } from "./components/address";
+import { FinancialDetails } from "./components/financial";
+import { KYCDetails } from "./components/kyc";
+import { FundingDetails } from "./components/funding";
+import { createBusiness } from "../../../redux/slices/businessSlice";
+import { ModalWrapper } from "../../../components/wrappers/modal";
+import { useNavigate } from "react-router-dom";
+import BusinessListing from "../listing";
 
 const CreateBusiness = () => {
-  const { id } = useParams();
-  const { pathname } = useLocation();
-  const isEdit = pathname.includes("edit");
-  const dispatch = useDispatch();
+  const [currentStep, setCurrentStep] = useState(0);
   const navigate = useNavigate();
 
   const {
@@ -21,41 +22,87 @@ const CreateBusiness = () => {
     setValue,
     watch,
   } = useForm({
-    // resolver: yupResolver(),
     mode: "onChange",
     defaultValues: {},
   });
 
   const onSubmit = (data) => {
-    console.log(data, "data before transfomation");
+    console.log(data, "data before transformation");
+    dispatch(createBusiness(data));
   };
+
+  // Step data to render specific components
+  const steps = [
+    <RegistrationDetails
+      setValue={setValue}
+      control={control}
+      errors={errors}
+    />,
+    <AddressDetails setValue={setValue} control={control} errors={errors} />,
+    <FinancialDetails setValue={setValue} control={control} errors={errors} />,
+    <KYCDetails setValue={setValue} control={control} errors={errors} />,
+    <FundingDetails setValue={setValue} control={control} errors={errors} />,
+  ];
+
+  // Handle step navigation
+  const handleNextStep = () => {
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1);
+    } else if (currentStep == 4){
+      navigate("/business/preview")
+    }
+  };
+
+  const handlePrevStep = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
   return (
     <div>
       <BusinessListing />
-      <div className="fixed top-0 left-0 bg-black bg-opacity-20 backdrop-blur-sm w-full h-screen flex justify-center items-center z-[1001]">
-        <div className="relative bg-white bg-opacity-60 backdrop-blur-lg p-6 rounded-3xl">
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="mb-4 flex flex-col gap-4"
-          >
-            <RegistraionDetails
-              setValue={setValue}
-              control={control}
-              errors={errors}
-              isEdit={isEdit}
-            />
+      <ModalWrapper title={"Add Business Details"}>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="px-4 my-2 flex flex-col gap-4"
+        >
+          {/* Progress bar */}
+          <div className="w-full h-2 bg-gray-200 mb-4 rounded-full">
+            <div
+              className="h-2 bg-blue-500 rounded-full"
+              style={{
+                width: `${(currentStep / (steps.length - 1)) * 100}%`,
+              }}
+            ></div>
+          </div>
 
-            <div className="flex justify-end items-center gap-4">
-              <Button onClick={() => navigate(-1)} outLine={true}>
-                Cancel
-              </Button>
-              <Button type={"submit"} mainPrimary={true} disabled={!isValid}>
-                Preview
-              </Button>
-            </div>
-          </form>
-        </div>
-      </div>
+          {/* Step Components */}
+          <div className="p-4 h-[60vh] overflow-y-auto">
+            {steps[currentStep]}
+          </div>
+
+          {/* Navigation Buttons */}
+          <div className="flex justify-between items-center gap-4">
+            <Button
+              type="button"
+              outline={true}
+              onClick={handlePrevStep}
+              disabled={currentStep === 0}
+            >
+              Previous
+            </Button>
+            <Button
+              type="button"
+              primary={true}
+              onClick={handleNextStep}
+              disabled={!isValid}
+            >
+              {currentStep === steps.length - 1 ? "Preview" : "Next"}
+            </Button>
+          </div>
+        </form>
+      </ModalWrapper>
     </div>
   );
 };
