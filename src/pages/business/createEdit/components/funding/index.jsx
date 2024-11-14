@@ -4,12 +4,12 @@ import { Selector } from "../../../../../components/select";
 
 export const FundingDetails = ({ control, errors }) => {
   const isFundingRequiredOption = [
-    { label: "Active", value: 1 },
-    { label: "Inactive", value: 0 },
+    { label: "Yes", value: 1 },
+    { label: "No", value: 0 },
   ];
   const existingBusinessOption = [
-    { label: "Active", value: 1 },
-    { label: "Inactive", value: 0 },
+    // { label: "Active", value: 1 },
+    // { label: "Inactive", value: 0 },
   ];
 
   return (
@@ -26,28 +26,28 @@ export const FundingDetails = ({ control, errors }) => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <Controller
-              name={`isFundingRequired`}
+              name={`fundingRequirement.isFundingRequired`}
               control={control}
               render={({ field }) => (
                 <Selector
                   {...field}
                   label={"Funding Required"}
                   placeholder={"Select existing business"}
-                  errorContent={errors.isFundingRequired?.message}
+                  errorContent={errors.fundingRequirement?.isFundingRequired?.message}
                   options={isFundingRequiredOption}
                   required={true}
                 />
               )}
             />
             <Controller
-              name="existingBusiness"
+              name="fundingRequirement.existingBusiness"
               control={control}
               render={({ field }) => (
                 <Selector
                   {...field}
                   label={"Existing Business"}
                   placeholder={"Select existing business"}
-                  errorContent={errors.existingBusiness?.message}
+                  errorContent={errors.fundingRequirement?.existingBusiness?.message}
                   options={existingBusinessOption}
                   required={true}
                 />

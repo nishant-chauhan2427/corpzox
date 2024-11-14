@@ -1,22 +1,58 @@
 import { Controller } from "react-hook-form";
 import { Input } from "../../../../../components/inputs";
 import { Selector } from "../../../../../components/select";
-import { PhoneNumberInput } from "../../../../../components/inputs/phoneInput";
 
-export const RegistraionDetails = ({ control, errors }) => {
+export const RegistrationDetails = ({ control, errors }) => {
   const roleOption = [
     { label: "Active", value: 1 },
     { label: "Inactive", value: 0 },
   ];
 
-  const genderOption = [
-    { label: "Male", value: "male" },
-    { label: "Female", value: "female" },
-    { label: "Others", value: "others" },
+  const fundingOption = [
+    { label: "Funded", value: "funded" },
+    { label: "Bootstrap", value: "bootstrap" },
   ];
 
+  const industryOption = [
+    { label: "Technology", value: "tech" },
+    { label: "Finance", value: "finance" },
+    { label: "Healthcare", value: "healthcare" },
+    { label: "Retail", value: "retail" },
+    { label: "Education", value: "education" },
+    { label: "Manufacturing", value: "manufacturing" },
+    { label: "Entertainment", value: "entertainment" },
+    { label: "Construction", value: "construction" },
+    { label: "Transportation", value: "transportation" },
+    { label: "Other", value: "other" },
+  ];
+
+  const subIndustryOption = {
+    tech: [
+      { label: "Software", value: "software" },
+      { label: "Hardware", value: "hardware" },
+      { label: "AI & ML", value: "ai_ml" },
+      { label: "Cybersecurity", value: "cybersecurity" },
+      { label: "Cloud Computing", value: "cloud_computing" },
+      { label: "Other", value: "other" },
+    ],
+    finance: [
+      { label: "Banking", value: "banking" },
+      { label: "Insurance", value: "insurance" },
+      { label: "Investment", value: "investment" },
+      { label: "Fintech", value: "fintech" },
+      { label: "Other", value: "other" },
+    ],
+    healthcare: [
+      { label: "Medical Devices", value: "medical_devices" },
+      { label: "Pharmaceuticals", value: "pharmaceuticals" },
+      { label: "Health IT", value: "health_it" },
+      { label: "Biotechnology", value: "biotech" },
+      { label: "Other", value: "other" },
+    ],
+  };
+
   return (
-    <div>
+    <div className="w-full">
       <div>
         <h5 className="mt-4 font-semibold text-base text-[#4D4D4F] dark:text-gray-200">
           Detailed Business Registration Details
@@ -25,61 +61,43 @@ export const RegistraionDetails = ({ control, errors }) => {
           Provide the necessary details to add your own business.
         </p>
       </div>
-      <div className="pt-4 flex flex-col md:flex-row gap-4">
+      <div className="w-full pt-4 flex flex-col md:flex-row gap-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Controller
-            name={`type`}
+            name={`businessType`}
             control={control}
             render={({ field }) => (
               <Input
                 {...field}
                 label={`Business Type`}
                 placeholder={`Enter your business type`}
-                errorContent={errors.businessName?.message}
-                onChange={(e) => {
-                  const value = e.target.value
-                    ?.replace(/\s+/g, " ")
-                    .replace(/[^A-Za-z\s]/g, ""); // Only allows letters and spaces
-                  handleChange("businessName", value.slice(0, 30)); // Limits to 30 characters
-                }}
+                errorContent={errors.businessType?.message}
                 required={true}
               />
             )}
           />
           <Controller
-            name={`name`}
+            name={`businessName`}
             control={control}
             render={({ field }) => (
               <Input
                 {...field}
                 label={`Business Name`}
                 placeholder={`Enter your business name`}
-                errorContent={errors.name?.message}
-                onChange={(e) => {
-                  const value = e.target.value
-                    ?.replace(/\s+/g, " ")
-                    .replace(/[^A-Za-z\s]/g, ""); // Only allows letters and spaces
-                  handleChange("name", value.slice(0, 30)); // Limits to 30 characters
-                }}
+                errorContent={errors.businessName?.message}
                 required={true}
               />
             )}
           />
           <Controller
-            name={`cINNumber`}
+            name={`cinNo`}
             control={control}
             render={({ field }) => (
               <Input
                 {...field}
                 label={`CIN No.`}
                 placeholder={`Enter your CIN number`}
-                errorContent={errors.cINNumber?.message}
-                onChange={(e) => {
-                  const value = e.target.value
-                    ?.replace(/\s+/g, " ")
-                    .replace(/[^A-Za-z\s]/g, ""); // Only allows letters and spaces
-                  handleChange("cINNumber", value.slice(0, 30)); // Limits to 30 characters
-                }}
+                errorContent={errors.cinNo?.message}
                 required={true}
               />
             )}
@@ -99,39 +117,10 @@ export const RegistraionDetails = ({ control, errors }) => {
             )}
           />
 
-          {/* <Controller
-          name="email"
-          control={control}
-          render={({ field }) => (
-            <Input
-              {...field}
-              type={"email"}
-              label={"Email ID"}
-              placeholder={"Enter Email"}
-              errorContent={errors.email?.message}
-              required={true}
-            />
-          )}
-        />
-        <Controller
-          name="phoneNumber"
-          control={control}
-          render={({ field }) => (
-            <PhoneNumberInput
-              {...field}
-              label={"Mobile No"}
-              country={"in"}
-              errorContent={errors.phoneNumber?.message}
-              required={true}
-            />
-          )}
-        /> */}
-
           <Controller
-            name="dof"
+            name="yearOfEstablishment"
             control={control}
             render={({ field }) => {
-              // Calculate the minimum date (100 years ago)
               const minDate = new Date();
               minDate.setFullYear(minDate.getFullYear() - 100);
               const minDateString = minDate.toISOString().split("T")[0];
@@ -144,7 +133,7 @@ export const RegistraionDetails = ({ control, errors }) => {
                   placeholder={"Enter DOF"}
                   min={minDateString} // Set the minimum date
                   max={new Date().toISOString().split("T")[0]} // Maximum is today
-                  errorContent={errors.dof?.message}
+                  errorContent={errors.yearOfEstablishment?.message}
                 />
               );
             }}
@@ -160,118 +149,69 @@ export const RegistraionDetails = ({ control, errors }) => {
                 label={`Headquarter Location`}
                 placeholder={`Enter your headquarter location`}
                 errorContent={errors.headquarterLocation?.message}
-                onChange={(e) => {
-                  const value = e.target.value
-                    ?.replace(/\s+/g, " ")
-                    .replace(/[^A-Za-z\s]/g, ""); // Only allows letters and spaces
-                  handleChange("headquarterLocation", value.slice(0, 30)); // Limits to 30 characters
-                }}
                 required={true}
               />
             )}
           />
           <Controller
-            name={`name`}
-            control={control}
-            render={({ field }) => (
-              <Input
-                {...field}
-                label={`Business Name`}
-                placeholder={`Enter your business name`}
-                errorContent={errors.name?.message}
-                onChange={(e) => {
-                  const value = e.target.value
-                    ?.replace(/\s+/g, " ")
-                    .replace(/[^A-Za-z\s]/g, ""); // Only allows letters and spaces
-                  handleChange("name", value.slice(0, 30)); // Limits to 30 characters
-                }}
-                required={true}
-              />
-            )}
-          />
-          <Controller
-            name={`cINNumber`}
-            control={control}
-            render={({ field }) => (
-              <Input
-                {...field}
-                label={`CIN No.`}
-                placeholder={`Enter your CIN number`}
-                errorContent={errors.cINNumber?.message}
-                onChange={(e) => {
-                  const value = e.target.value
-                    ?.replace(/\s+/g, " ")
-                    .replace(/[^A-Za-z\s]/g, ""); // Only allows letters and spaces
-                  handleChange("cINNumber", value.slice(0, 30)); // Limits to 30 characters
-                }}
-                required={true}
-              />
-            )}
-          />
-          <Controller
-            name="role"
+            name={`industryType`}
             control={control}
             render={({ field }) => (
               <Selector
                 {...field}
-                label={"Role"}
-                placeholder={"Select role of the company"}
-                errorContent={errors.role?.message}
-                options={roleOption}
+                label={"Industry Type"}
+                placeholder={"Select industry type"}
+                errorContent={errors.industryType?.message}
+                options={industryOption}
                 required={true}
               />
             )}
           />
-
-          {/* <Controller
-          name="email"
-          control={control}
-          render={({ field }) => (
-            <Input
-              {...field}
-              type={"email"}
-              label={"Email ID"}
-              placeholder={"Enter Email"}
-              errorContent={errors.email?.message}
-              required={true}
-            />
-          )}
-        />
-        <Controller
-          name="phoneNumber"
-          control={control}
-          render={({ field }) => (
-            <PhoneNumberInput
-              {...field}
-              label={"Mobile No"}
-              country={"in"}
-              errorContent={errors.phoneNumber?.message}
-              required={true}
-            />
-          )}
-        /> */}
-
           <Controller
-            name="dof"
+            name={`subIndustryType`}
             control={control}
-            render={({ field }) => {
-              // Calculate the minimum date (100 years ago)
-              const minDate = new Date();
-              minDate.setFullYear(minDate.getFullYear() - 100);
-              const minDateString = minDate.toISOString().split("T")[0];
-
+            render={({ field, value }) => {
+              const selectedIndustry = value?.industryType;
+              const subIndustryOptions =
+                subIndustryOption[selectedIndustry] || [];
               return (
-                <Input
+                <Selector
                   {...field}
-                  label={`Year of Establishment`}
-                  type={"date"}
-                  placeholder={"Enter DOF"}
-                  min={minDateString} // Set the minimum date
-                  max={new Date().toISOString().split("T")[0]} // Maximum is today
-                  errorContent={errors.dof?.message}
+                  label={"Sub Industry Type"}
+                  placeholder={"Select sub industry type"}
+                  errorContent={errors.subIndustryType?.message}
+                  options={subIndustryOptions}
+                  required={true}
                 />
               );
             }}
+          />
+          <Controller
+            name="companySize"
+            control={control}
+            render={({ field }) => (
+              <Input
+                {...field}
+                label={`Size of the company`}
+                placeholder={`Enter size of the company`}
+                errorContent={errors.companySize?.message}
+                required={true}
+              />
+            )}
+          />
+          <Controller
+            name="isFunded"
+            control={control}
+            render={({ field }) => (
+              <Selector
+                {...field}
+                label={"Funding Status"}
+                placeholder={"Select funding status"}
+                errorContent={errors.isFunded?.message}
+                options={fundingOption}
+                required={true}
+              />
+            )}
           />
         </div>
       </div>

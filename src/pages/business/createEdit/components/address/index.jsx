@@ -29,86 +29,72 @@ export const AddressDetails = ({ control, errors }) => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Controller
-              name={`lineOne`}
+              name={`businessAddress.lineOne`}
               control={control}
               render={({ field }) => (
                 <Input
                   {...field}
                   label={`Line 1`}
                   placeholder={`Line 1`}
-                  errorContent={errors.lineOne?.message}
-                  onChange={(e) => {
-                    const value = e.target.value
-                      ?.replace(/\s+/g, " ")
-                      .replace(/[^A-Za-z\s]/g, ""); // Only allows letters and spaces
-                    handleChange("lineOne", value.slice(0, 30)); // Limits to 30 characters
-                  }}
+                  errorContent={
+                    errors.businessAddress?.lineOne?.message
+                  }
                   required={true}
                 />
               )}
             />
             <Controller
-              name={`lineTwo`}
+              name={`businessAddress.lineTwo`}
               control={control}
               render={({ field }) => (
                 <Input
                   {...field}
                   label={`Line 2`}
                   placeholder={`Line 2`}
-                  errorContent={errors.lineTwo?.message}
-                  onChange={(e) => {
-                    const value = e.target.value
-                      ?.replace(/\s+/g, " ")
-                      .replace(/[^A-Za-z\s]/g, ""); // Only allows letters and spaces
-                    handleChange("lineTwo", value.slice(0, 30)); // Limits to 30 characters
-                  }}
+                  errorContent={
+                    errors.businessAddress?.lineTwo?.message
+                  }
                   required={true}
                 />
               )}
             />
             <Controller
-              name={`pinCode`}
+              name={`businessAddress.pinCode`}
               control={control}
               render={({ field }) => (
                 <Input
                   {...field}
                   label={`PIN Code`}
                   placeholder={`Enter your pincode`}
-                  errorContent={errors.pinCode?.message}
-                  onChange={(e) => {
-                    const value = e.target.value
-                      ?.replace(/\s+/g, " ")
-                      .replace(/[^A-Za-z\s]/g, ""); // Only allows letters and spaces
-                    handleChange("name", value.slice(0, 6)); // Limits to 30 characters
-                  }}
+                  errorContent={errors.businessAddress?.pinCode?.message}
                   required={true}
                 />
               )}
             />
 
             <Controller
-              name="city"
+              name="businessAddress.city"
               control={control}
               render={({ field }) => (
                 <Selector
                   {...field}
                   label={"City"}
                   placeholder={"Select city"}
-                  errorContent={errors.city?.message}
+                  errorContent={errors.businessAddress?.city?.message}
                   options={cityOption}
                   required={true}
                 />
               )}
             />
             <Controller
-              name="state"
+              name="businessAddress.state"
               control={control}
               render={({ field }) => (
                 <Selector
                   {...field}
                   label={"State"}
                   placeholder={"Select state"}
-                  errorContent={errors.state?.message}
+                  errorContent={errors.businessAddress?.state?.message}
                   options={stateOption}
                   required={true}
                 />
@@ -127,86 +113,68 @@ export const AddressDetails = ({ control, errors }) => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Controller
-              name={`lineOne`}
+              name={`communicationAddress.lineOne`}
               control={control}
               render={({ field }) => (
                 <Input
                   {...field}
                   label={`Line 1`}
                   placeholder={`Line 1`}
-                  errorContent={errors.lineOne?.message}
-                  onChange={(e) => {
-                    const value = e.target.value
-                      ?.replace(/\s+/g, " ")
-                      .replace(/[^A-Za-z\s]/g, ""); // Only allows letters and spaces
-                    handleChange("lineOne", value.slice(0, 30)); // Limits to 30 characters
-                  }}
+                  errorContent={errors.communicationAddress?.lineOne?.message}
                   required={true}
                 />
               )}
             />
             <Controller
-              name={`lineTwo`}
+              name={`communicationAddress.lineTwo`}
               control={control}
               render={({ field }) => (
                 <Input
                   {...field}
                   label={`Line 2`}
                   placeholder={`Line 2`}
-                  errorContent={errors.lineTwo?.message}
-                  onChange={(e) => {
-                    const value = e.target.value
-                      ?.replace(/\s+/g, " ")
-                      .replace(/[^A-Za-z\s]/g, ""); // Only allows letters and spaces
-                    handleChange("lineTwo", value.slice(0, 30)); // Limits to 30 characters
-                  }}
+                  errorContent={errors.communicationAddress?.lineTwo?.message}
                   required={true}
                 />
               )}
             />
             <Controller
-              name={`pinCode`}
+              name={`communicationAddress.pinCode`}
               control={control}
               render={({ field }) => (
                 <Input
                   {...field}
                   label={`PIN Code`}
                   placeholder={`Enter your pincode`}
-                  errorContent={errors.pinCode?.message}
-                  onChange={(e) => {
-                    const value = e.target.value
-                      ?.replace(/\s+/g, " ")
-                      .replace(/[^A-Za-z\s]/g, ""); // Only allows letters and spaces
-                    handleChange("name", value.slice(0, 6)); // Limits to 30 characters
-                  }}
+                  errorContent={errors.communicationAddress?.pinCode?.message}
                   required={true}
                 />
               )}
             />
 
             <Controller
-              name="city"
+              name="communicationAddress.city"
               control={control}
               render={({ field }) => (
                 <Selector
                   {...field}
                   label={"City"}
                   placeholder={"Select city"}
-                  errorContent={errors.city?.message}
+                  errorContent={errors.communicationAddress?.city?.message}
                   options={cityOption}
                   required={true}
                 />
               )}
             />
             <Controller
-              name="state"
+              name="communicationAddress.state"
               control={control}
               render={({ field }) => (
                 <Selector
                   {...field}
                   label={"State"}
                   placeholder={"Select state"}
-                  errorContent={errors.state?.message}
+                  errorContent={errors.communicationAddress?.state?.message}
                   options={stateOption}
                   required={true}
                 />

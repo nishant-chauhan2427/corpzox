@@ -7,14 +7,14 @@ const initialState = {
   role: "",
   yearOfEstablishment: "",
   headquarterLocation: "",
-  completeBusinessAddress: {
+  businessAddress: {
     line1: "",
     line2: "",
     pinCode: "",
     city: "",
     state: "",
   },
-  completeCommunicationAddress: {
+  communicationAddress: {
     line1: "",
     line2: "",
     pinCode: "",
