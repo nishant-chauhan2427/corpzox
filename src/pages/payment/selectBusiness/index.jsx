@@ -1,7 +1,6 @@
 import React from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { Link } from "react-router-dom";
-import { RegistraionDetails } from "../../business/createEdit/components/registration";
 import { Controller, useForm } from "react-hook-form";
 import { Input } from "../../../components/inputs";
 
