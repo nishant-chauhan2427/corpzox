@@ -15,7 +15,7 @@ function App() {
       <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
         {/* <ThemeProvider> */}
           <Outlet />
-          {/* <Tooltip id="my-tooltip" /> */}
+          <Tooltip id="my-tooltip" />
           <ScrollToTopButton />
           <Toaster />
           <OnlineStatus />
