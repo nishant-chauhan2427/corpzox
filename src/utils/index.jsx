@@ -15,7 +15,29 @@ export function objectToQueryString(obj) {
   }
   return parts.join("&");
 }
+export function calculateAge(birthDateString) {
+  const birthDate = new Date(birthDateString); // Convert the timestamp to a Date object
+  const currentDate = new Date(); // Get the current date
 
+  // Calculate the difference in years
+  let ageYears = currentDate.getFullYear() - birthDate.getFullYear();
+  
+  // Calculate the difference in months
+  let ageMonths = currentDate.getMonth() - birthDate.getMonth();
+
+  // If the current month is before the birth month or if it's the same month but the day hasn't passed, subtract 1 year
+  if (ageMonths < 0 || (ageMonths === 0 && currentDate.getDate() < birthDate.getDate())) {
+    ageYears--; // Subtract a year if the current date is before the birthday this year
+    ageMonths += 12; // Adjust the months accordingly
+  }
+
+  // If the current day is before the birthday in the current month, adjust the months back by 1
+  if (currentDate.getDate() < birthDate.getDate()) {
+    ageMonths--;
+  }
+
+  return `${ageYears}y ${ageMonths}m`;
+}
 export const capitalize = (word) =>
   `${word?.charAt(0).toUpperCase()}${word?.slice(1)}`;
 

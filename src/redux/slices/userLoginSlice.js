@@ -1,9 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {getUser} from '../actions/dashboard-action';
+import {getUser,getUserBusiness,getUserServices} from '../actions/dashboard-action';
 const initialState = {
     loading:false,
     user: null,
     manager:null,
+    business:{
+        list:[],
+        totalPage:0,
+        page:1,
+        limit:10,
+    },
+    businessLoading:false,
+    businessError:null,
+    service:{
+        list:[],
+        totalPage:0,
+        page:1,
+        limit:10,
+    },
+    serviceLoading:false,
+    servicesError:null,
     error:null,
 };
 
@@ -21,8 +37,7 @@ const userSlice = createSlice({
     extraReducers:(builder)=>{
         builder.addCase(getUser.pending, (state, action) => {
             state.loading = true;
-          });
-          builder.addCase(getUser.fulfilled, (state, action) => {
+          }).addCase(getUser.fulfilled, (state, action) => {
             state.loading = false;
             // state.isVerificationSuccessfull = true;
             state.error = action.payload.message;
@@ -36,11 +51,32 @@ const userSlice = createSlice({
             // } else {
             //   state.resetPasswordUrl = action.payload?.url;
             // }
-          });
-          builder.addCase(getUser.rejected, (state, action) => {
+          }).addCase(getUser.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
           });
+        builder.addCase(getUserBusiness.pending, (state, action) => {
+          state.businessLoading = true;
+        }).addCase(getUserBusiness.fulfilled, (state, action) => {
+          state.businessLoading = false;
+          state.businessError = action.payload.message;
+          state.business.list=action.payload.data;
+          state.business.totalPage=action.payload?.total;
+        }).addCase(getUserBusiness.rejected, (state, action) => {
+          state.businessLoading = false;
+          state.businessError = action.payload;
+        });
+        builder.addCase(getUserServices.pending, (state, action) => {
+          state.serviceLoading = true;
+        }).addCase(getUserServices.fulfilled, (state, action) => {
+          state.serviceLoading = false;
+          state.servicesError = action.payload.message;
+          state.service.list=action.payload.data;
+          state.service.totalPage=action.payload?.total;
+        }).addCase(getUserServices.rejected, (state, action) => {
+          state.serviceLoading = false;
+          state.servicesError = action.payload;
+        });
     }
 });
 

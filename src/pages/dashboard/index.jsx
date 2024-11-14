@@ -9,7 +9,7 @@ import { GoTriangleDown } from "react-icons/go";
 import { GoDotFill } from "react-icons/go";
 import { ImCross } from "react-icons/im";
 import { useState,useEffect } from "react";
-import {getUser} from '../../redux/actions/dashboard-action';
+import {getUser,getUserBusiness,getUserServices} from '../../redux/actions/dashboard-action';
 import { useDispatch,useSelector } from "react-redux";
 import {
   businessListing,
@@ -22,12 +22,13 @@ import { Advertisement } from "./components/adverstisement";
 import { RecommendedServices } from "./components/services/recommended";
 import { ServicesProgress } from "./components/services/progress";
 import { Business } from "./components/business";
+
 const Dashboard = () => {
   const [accountShowButton, setAccountShowButton] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isFadingOut, setIsFadingOut] = useState(false);
   const dispatch = useDispatch();
-  const { user={},manager={} } = useSelector((state) => state.user);
+  const { user={},manager={},business,businessLoading,businessError,service={},serviceLoading,servicesError } = useSelector((state) => state.user);
   const handleBannerdisplay = () => {
     setIsFadingOut(true); // Start fade-out animation
     setIsVisible(false);
@@ -38,7 +39,20 @@ const Dashboard = () => {
   };
   useEffect(() => {
     dispatch(getUser());
+    dispatch(getUserBusiness({}));
+    dispatch(getUserServices({}));
   }, []);
+  // let businessRenderList=(business.list)?business.list.map((data)=>{
+  //   return{
+  //     businessName: data?.businessName,
+  //     businesSubTitle: "Sustainable home electric products",
+  //     type: data?.typeOfBusiness,
+  //     registeredOffice: (data?.businessAddressCity&&data?.businessAddressState)?`${data?.businessAddressCity},${data?.businessAddressState}`:(data?.businessAddressCity)?(data?.businessAddressCity):(data?.businessAddressState),
+  //     companyStatus: (data?.active)?"Active":"In Active",
+  //     companyAge: (data?.yearOfStablish)?`${calculateAge(data?.yearOfStablish)}`:null,
+  //   }
+  // }):[];
+  // console.log('business..........',business,businessRenderList,[...businessListing,...businessRenderList]);
   return (
     <>
       <section className="py-6">
@@ -49,8 +63,8 @@ const Dashboard = () => {
           </div>
           {/* <Advertisement /> */}
         </div>
-        <Business data={businessListing} />
-        <RecommendedServices data={recommendedServicesListing} />
+        <Business data={business?.list} total={business?.totalPage}/>
+        <RecommendedServices data={service?.list}  total={service?.totalPage}/>
         <ServicesProgress data={servicesProgress} />
       </section>
     </>
