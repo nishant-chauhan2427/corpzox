@@ -7,7 +7,6 @@ import { Selector } from "../../../components/select";
 import { Button } from "../../../components/buttons";
 import Businessdetails from "./components/business";
 const SelectBusiness = () => {
-  const [showToolTip, setShowToolTip] = useState(false);
   const {
     handleSubmit,
     control,
@@ -82,21 +81,14 @@ const SelectBusiness = () => {
             <div className="flex flex-col gap-2 ">
               <div className=" flex gap-2  text-base font-normal text-[#0A1C40] ">
                 AADHAR card{" "}
-                <div className="relative">
+                <div>
                   <img
-                    src="../../../../public/images/payment/i - icon.svg"
-                    alt=""
-                    onMouseEnter={() => setShowToolTip(true)}
-                    onMouseLeave={() => setShowToolTip(false)}
+                    src="/images/payment/i - icon.svg"
+                    data-tooltip-id="my-tooltip"
+                    data-tooltip-content={
+                      "The Aadhaar card image should include both front and back sides."
+                    }
                   />
-                  {showToolTip && (
-                    <div className="absolute  w-64 bottom-8">
-                      <p className="font-normal text-xs bg-[#EFECEC] rounded-md px-3 py-4 text-[#0A1C40CC]">
-                        The Aadhaar card image should include both front and
-                        back sides.
-                      </p>
-                    </div>
-                  )}
                 </div>
               </div>
               <div className="flex basis-1/3  gap-5">
@@ -135,7 +127,10 @@ const SelectBusiness = () => {
                 PAN Card{" "}
                 <img
                   src="../../../../public/images/payment/i - icon.svg"
-                  alt=""
+                  data-tooltip-id="my-tooltip"
+                  data-tooltip-content={
+                    "The Aadhaar card image should include both front and back sides."
+                  }
                 />{" "}
               </div>
               <div className="flex basis-1/3 gap-5">
@@ -174,7 +169,10 @@ const SelectBusiness = () => {
                 ADDRESS PROOF{" "}
                 <img
                   src="../../../../public/images/payment/i - icon.svg"
-                  alt=""
+                  data-tooltip-id="my-tooltip"
+                  data-tooltip-content={
+                    "The Aadhaar card image should include both front and back sides."
+                  }
                 />{" "}
               </div>
               <div className="flex basis-1/3 gap-5">
