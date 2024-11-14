@@ -1,7 +1,7 @@
 import React from "react";
-import { Checkbox } from "../../../../components/inputs/checkbox";
+import { Checkbox } from "../../../../../components/inputs/checkbox";
 import { CiHeart } from "react-icons/ci";
-import { Button } from "../../../../components/buttons";
+import { Button } from "../../../../../components/buttons";
 
 function ServicesCard({ data }) {
   return (

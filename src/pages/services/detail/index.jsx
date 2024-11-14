@@ -2,9 +2,9 @@ import React from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { Button } from "../../../components/buttons";
-import Steps from "../../services/components/steps";
-import Details from "../../services/components/details";
-import Pricing from "../../services/components/pricing";
+import Steps from "../../services/detail/components/steps";
+import Details from "../../services/detail/components/details";
+import Pricing from "../../services/detail/components/pricing";
 
 const ServiceDetail = () => {
   return (

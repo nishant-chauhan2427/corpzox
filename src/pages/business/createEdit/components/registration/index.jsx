@@ -18,7 +18,7 @@ export const RegistraionDetails = ({ control, errors }) => {
   return (
     <>
       <h5 className="my-4 font-semibold text-xl text-[#4D4D4F] dark:text-gray-200">
-      Detailed Business Registration Details
+        Detailed Business Registration Details
       </h5>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
         <Controller
@@ -68,20 +68,20 @@ export const RegistraionDetails = ({ control, errors }) => {
             />
           )}
         />
-      <Controller
-            name="gender"
-            control={control}
-            render={({ field }) => (
-              <Selector
-                {...field}
-                label={"Gender"}
-                placeholder={"Select Gender"}
-                errorContent={errors.status?.message}
-                options={genderOption}
-                required={true}
-              />
-            )}
-          />
+        <Controller
+          name="gender"
+          control={control}
+          render={({ field }) => (
+            <Selector
+              {...field}
+              label={"Gender"}
+              placeholder={"Select Gender"}
+              errorContent={errors.status?.message}
+              options={genderOption}
+              required={true}
+            />
+          )}
+        />
         <Controller
           name="dob"
           control={control}

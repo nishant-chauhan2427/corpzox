@@ -1,7 +1,7 @@
 import { Button } from "../../../components/buttons";
 import Insight from "../../../components/insight/insight";
 import { MainTab } from "../../../pages/services/components/tabs/mainTab";
-import ServicesCard from "../../../pages/services/components/services-card";
+import ServicesCard from "../../../pages/services/listing/components/services-card";
 import { servicesListing } from "../../../database";
 import Filtertab from "../../../pages/services/components/tabs/filterTab";
 import { useSelector } from "react-redux";
