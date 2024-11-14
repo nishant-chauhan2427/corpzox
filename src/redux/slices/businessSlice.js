@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  business: {},
   businessType: "",
   businessName: "",
   cinNo: "",
@@ -48,7 +49,7 @@ const businessSlice = createSlice({
         state[section] = { ...state[section], ...data };
       }
     },
-
+    
     // Reset all form fields
     resetBusiness(state, action) {
       return initialState;

@@ -16,9 +16,9 @@ export const AddressDetails = ({ control, errors }) => {
   ];
 
   return (
-    <div>
-      <div className="flex flex-col md:flex-row gap-4">
-        <div>
+    <>
+      <div className="w-full pt-4 flex flex-col md:flex-row md:justify-between gap-4">
+        <div className="w-full">
           <div className="my-4">
             <h5 className="font-semibold text-base text-[#4D4D4F] dark:text-gray-200">
               Complete Business Address
@@ -27,7 +27,7 @@ export const AddressDetails = ({ control, errors }) => {
               Provide the necessary address of your own business.
             </p>
           </div>
-          <div className="grid grid-cols-1 gap-4">
+          <div className="w-full grid grid-cols-1 gap-4">
             <Controller
               name={`businessAddress.lineOne`}
               control={control}
@@ -36,9 +36,7 @@ export const AddressDetails = ({ control, errors }) => {
                   {...field}
                   label={`Line 1`}
                   placeholder={`Line 1`}
-                  errorContent={
-                    errors.businessAddress?.lineOne?.message
-                  }
+                  errorContent={errors.businessAddress?.lineOne?.message}
                   required={true}
                 />
               )}
@@ -51,9 +49,7 @@ export const AddressDetails = ({ control, errors }) => {
                   {...field}
                   label={`Line 2`}
                   placeholder={`Line 2`}
-                  errorContent={
-                    errors.businessAddress?.lineTwo?.message
-                  }
+                  errorContent={errors.businessAddress?.lineTwo?.message}
                   required={true}
                 />
               )}
@@ -102,7 +98,8 @@ export const AddressDetails = ({ control, errors }) => {
             />
           </div>
         </div>
-        <div>
+        <div className="w-1 mx-12 bg-gradient-to-b from-gray-100 via-black to-gray-100"></div>
+        <div className="w-full">
           <div className="my-4">
             <h5 className="font-semibold text-base text-[#4D4D4F] dark:text-gray-200">
               Complete Communication Address
@@ -111,7 +108,7 @@ export const AddressDetails = ({ control, errors }) => {
               Provide the necessary address of your own business.
             </p>
           </div>
-          <div className="grid grid-cols-1 gap-4">
+          <div className="w-full grid grid-cols-1 gap-4">
             <Controller
               name={`communicationAddress.lineOne`}
               control={control}
@@ -183,6 +180,6 @@ export const AddressDetails = ({ control, errors }) => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };

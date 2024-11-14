@@ -18,6 +18,7 @@ import BusinessListing from "../pages/business/listing";
 import BusinessDetail from "../pages/business/detail";
 import MakeAPayment from "../pages/payment/makeAPayment";
 import CreateBusiness from "../pages/business/createEdit";
+import BusinessPreview from "../pages/business/preview";
 
 const router = createBrowserRouter([
   {
@@ -101,6 +102,10 @@ const router = createBrowserRouter([
               {
                 path: "edit",
                 element: <CreateBusiness />,
+              },
+              {
+                path: "preview",
+                element: <BusinessPreview />,
               },
               {
                 path: "detail",
