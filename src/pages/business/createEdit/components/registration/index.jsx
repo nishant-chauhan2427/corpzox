@@ -61,7 +61,7 @@ export const RegistrationDetails = ({ control, errors }) => {
           Provide the necessary details to add your own business.
         </p>
       </div>
-      <div className="w-full pt-4 flex flex-col md:flex-row gap-4">
+      <div className="w-full pt-4 flex flex-col md:flex-row md:justify-between gap-4">
         <div className="w-full grid grid-cols-1 gap-4">
           <Controller
             name={`businessType`}
@@ -139,6 +139,7 @@ export const RegistrationDetails = ({ control, errors }) => {
             }}
           />
         </div>
+        <div className="w-1 mx-12 bg-gradient-to-b from-gray-100 via-black to-gray-100"></div>
         <div className="w-full grid grid-cols-1 gap-4">
           <Controller
             name={`headquarterLocation`}
