@@ -54,7 +54,7 @@ export const RegistrationDetails = ({ control, errors }) => {
   return (
     <div className="w-full">
       <div>
-        <h5 className="mt-4 font-semibold text-base text-[#4D4D4F] dark:text-gray-200">
+        <h5 className="font-semibold text-base text-[#4D4D4F] dark:text-gray-200">
           Detailed Business Registration Details
         </h5>
         <p className="text-xs">
@@ -62,7 +62,7 @@ export const RegistrationDetails = ({ control, errors }) => {
         </p>
       </div>
       <div className="w-full pt-4 flex flex-col md:flex-row gap-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="w-full grid grid-cols-1 gap-4">
           <Controller
             name={`businessType`}
             control={control}
@@ -139,7 +139,7 @@ export const RegistrationDetails = ({ control, errors }) => {
             }}
           />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="w-full grid grid-cols-1 gap-4">
           <Controller
             name={`headquarterLocation`}
             control={control}

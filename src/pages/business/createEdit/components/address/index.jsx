@@ -17,7 +17,7 @@ export const AddressDetails = ({ control, errors }) => {
 
   return (
     <div>
-      <div className="pt-4 flex flex-col md:flex-row gap-4">
+      <div className="flex flex-col md:flex-row gap-4">
         <div>
           <div className="my-4">
             <h5 className="font-semibold text-base text-[#4D4D4F] dark:text-gray-200">
@@ -27,7 +27,7 @@ export const AddressDetails = ({ control, errors }) => {
               Provide the necessary address of your own business.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4">
             <Controller
               name={`businessAddress.lineOne`}
               control={control}
@@ -111,7 +111,7 @@ export const AddressDetails = ({ control, errors }) => {
               Provide the necessary address of your own business.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4">
             <Controller
               name={`communicationAddress.lineOne`}
               control={control}

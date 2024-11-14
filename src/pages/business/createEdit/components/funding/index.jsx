@@ -14,7 +14,7 @@ export const FundingDetails = ({ control, errors }) => {
 
   return (
     <div>
-      <div className="pt-4 flex flex-col md:flex-row gap-4">
+      <div className="flex flex-col md:flex-row gap-4">
         <div>
           <div className="my-4">
             <h5 className="font-semibold text-base text-[#4D4D4F] dark:text-gray-200">
@@ -24,7 +24,7 @@ export const FundingDetails = ({ control, errors }) => {
               Provide the necessary funding detail of your own business.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-4">
             <Controller
               name={`fundingRequirement.isFundingRequired`}
               control={control}
