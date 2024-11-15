@@ -16,7 +16,7 @@ const DocumentsListing = () => {
       files: [
         { name: "Sample Image", url: "/icons/documents/image-sample.svg", type: "image" },
         { name: "Sample Video", url: "/icons/documents/video-sample.mp4", type: "video" },
-        { name: "Sample PDF", url: "/icons/documents/pdf-sample.pdf", type: "pdf" },
+        { name: "Sample PDF", url: "/pdf/documents/sample-pdf.pdf", type: "pdf" },
       ],
     },
   ];
