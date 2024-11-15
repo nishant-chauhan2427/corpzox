@@ -79,7 +79,7 @@ export const Profile = ({user={}}) => {
           <div className="w-12 h-12 rounded-full">
             <img
               className="w-12 h-12 inset-0 rounded-full ltr:absolute ltr:top-1/2 ltr:left-1/2 ltr:-translate-y-1/2 rtl:-translate-y-[31%] ltr:-translate-x-1/2"
-              src="/images/insight-1.jfif"
+              src="/images/insights/insight-user.svg"
               alt="profile-pic"
             />
           </div>
