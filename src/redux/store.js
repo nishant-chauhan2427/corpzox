@@ -8,6 +8,7 @@ import userAuthSlice from "./slices/userAuth-slice";
 import userUtilitySlice from "./slices/utillitySlice";
 import appSlice from "./slices/appSlice";
 import serviceListingSlice from "./slices/serviceListingSlice";
+import businessSlice from './slices/businessSlice';
 import { composeWithDevTools } from "redux-devtools-extension";
 import userSlice from "./slices/userLoginSlice";
 
@@ -23,7 +24,8 @@ const rootReducer = combineReducers({
   auth: userAuthSlice,
   userUtility: userUtilitySlice,
   user: userSlice,
-  service:serviceListingSlice
+  service:serviceListingSlice,
+  business:businessSlice
 });
 
 // Create a persisted reducer

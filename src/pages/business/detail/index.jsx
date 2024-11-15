@@ -1,10 +1,21 @@
 import { Button } from "../../../components/buttons/button";
 import { IoIosArrowRoundBack, IoMdAddCircle } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link,useLocation } from "react-router-dom";
 import { ServicesProgress } from "../../dashboard/components/services/progress";
 import { servicesProgress } from "../../../database";
-
+import { useEffect } from "react";
+import { getBusiness } from "../../../redux/actions/business-action";
+import {useDispatch,useSelector} from 'react-redux'
 const BusinessDetail = () => {
+  const location=useLocation();
+  const dispatch=useDispatch();
+  const {business,loading,error} = useSelector((state) => state.business);
+  const queryParams = new URLSearchParams(location.search);
+  const businessId = queryParams.get('id');
+  useEffect(()=>{
+    dispatch(getBusiness({businessId}))
+  },[businessId])
+  console.log(business,loading,error);
   return (
     <>
       <section className="pb-10">
@@ -46,7 +57,7 @@ const BusinessDetail = () => {
                 </div>
               </div>
               <h3 className="font-semibold text-2xl text-[#171717]">
-                Fastbrigade
+                {business?.name}
               </h3>
               <p className="font-semibold text-base text-[#343C6A]">
                 Business #4
@@ -71,7 +82,7 @@ const BusinessDetail = () => {
                 <p className="font-medium text-base text-[#000000B2] ">
                   Company Status:
                 </p>
-                <p className="font-semibold text-base text-black">Active </p>
+                <p className="font-semibold text-base text-black">{(business?.active)?('Active'):('In Active')}</p>
               </div>
               <div className="flex justify-between">
                 <p className="font-medium text-base text-[#000000B2] ">
@@ -89,14 +100,14 @@ const BusinessDetail = () => {
               <p className="font-medium text-base text-[#000000B2] ">
                 PhoneNo:
               </p>
-              <p className="font-semibold text-base text-black">9113098768</p>
+              <p className="font-semibold text-base text-black">{business?.phone}</p>
             </div>
             <div className="flex justify-between">
               <p className="font-medium text-base text-[#000000B2]">
                 Email Id::
               </p>
               <p className="font-semibold text-base text-black">
-                Fastbrigade@gmail.com
+                {business?.email}
               </p>
             </div>
           </div>

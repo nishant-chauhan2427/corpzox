@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "../../../../components/buttons";
+import { Button } from "../../../../../components/buttons/button";
 
 function index() {
   return (

@@ -1,10 +1,10 @@
 import React from "react";
-import { Checkbox } from "../../../../components/inputs/checkbox";
+import { Checkbox } from "../../../../../components/inputs/checkbox";
 import { CiHeart } from "react-icons/ci";
-import { Button } from "../../../../components/buttons";
+import { Button } from "../../../../../components/buttons";
 import { useSelector } from "react-redux";
 
-function ServicesCard({ data }) {
+function ServicesCard({ data=[] }) {
   return (
     <>
       <div className="grid grid-cols-1 sm:pt-3 pt-5  sm:grid-cols-2 xl:grid-cols-2  gap-4">

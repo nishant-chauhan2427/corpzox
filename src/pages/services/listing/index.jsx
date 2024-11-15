@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Button } from "../../../components/buttons";
 import Insight from "../../../components/insight/insight";
 import { MainTab } from "../../../pages/services/components/tabs/mainTab";
-import ServicesCard from "../../../pages/services/components/services-card";
+import ServicesCard from "../../../pages/services/listing/components/services-card";
 import { servicesListing } from "../../../database";
 import Filtertab from "../../../pages/services/components/tabs/filterTab";
 import { useSelector,useDispatch } from "react-redux";
@@ -48,10 +48,10 @@ const ServicesListing = () => {
             </>
           ) : (
             <>
-              <ServicesCard />
-              <div className="mt-10 flex justify-center">
+              <ServicesCard data={list} />
+              {list&&list.length!=0&&<div className="mt-10 flex justify-center">
                 <Button primary={true}>Load More </Button>
-              </div>
+              </div>}
             </>
           )}
         </div>

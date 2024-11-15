@@ -20,7 +20,7 @@ export const getUser = createAsyncThunk("getUser", async (authInfo, { rejectWith
         return rejectWithValue(error?.response?.data?.message || error?.message);
     }
 });
-export const getUserBusiness = createAsyncThunk("getUserBusiness", async ({page,sort_by,query}, { rejectWithValue }) => {
+export const getUserBusiness = createAsyncThunk("getUserBusiness", async ({page,sort_by='date_desc',query}, { rejectWithValue }) => {
     try {
         let params=new URLSearchParams();
         if(page) params.append('page',page);

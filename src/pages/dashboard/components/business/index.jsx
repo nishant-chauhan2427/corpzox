@@ -14,7 +14,7 @@ export const Business = ({ data=[] ,total}) => {
         </p>
         <div className="flex items-center gap-2">
           <Button primary={true} leftIcon={<IoMdAddCircle />}>New Business</Button>
-          <Link className="font-semibold text-[#606060]">View all</Link>
+          <Link className="font-semibold text-[#606060]" to={'/business'}>View all</Link>
         </div>
       </div>
       {data.length > 0 ? (
