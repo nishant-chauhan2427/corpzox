@@ -64,3 +64,42 @@ export const getUserServices = createAsyncThunk("getUserServices", async ({page,
         return rejectWithValue(error?.response?.data?.message || error?.message);
     }
 });
+export const updateServiceWishlist = createAsyncThunk("updateServiceWishlist", async (wishListData, { rejectWithValue }) => {
+    try {
+        const response = await client.put(`/user/service-wishlist`,wishListData,{
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+            },
+          });
+        console.log(response,'services..');
+        if(response?.data?.code==200||response?.data?.code==201){
+            return response.data;
+        }else{
+            return rejectWithValue(response?.data?.message);            
+        }
+    } catch (error) {
+        return rejectWithValue(error?.response?.data?.message || error?.message);
+    }
+});
+export const removeServiceWishlist = createAsyncThunk("removeServiceWishlist", async (wishListData, { rejectWithValue }) => {
+    try {
+        const response = await client.delete(`/user/service-wishlist`,{
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+            },
+            data:wishListData
+          });
+        if(response?.data?.code==200||response?.data?.code==201){
+            wishListData.message=response?.data?.message;
+            return wishListData;
+        }else{
+            return rejectWithValue(response?.data?.message);            
+        }
+    } catch (error) {
+        return rejectWithValue(error?.response?.data?.message || error?.message);
+    }
+});
