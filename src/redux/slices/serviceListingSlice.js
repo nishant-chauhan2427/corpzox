@@ -30,6 +30,7 @@ const initialState = {
   wishList: {
     loading: false,
     error: null,
+    list:[]
   },
 };
 
@@ -42,6 +43,21 @@ const serviceListingSlice = createSlice({
     },
     setSelectedSubCategory(state, action) {
       state.subCategory.selectedSubCategory = action.payload;
+    },
+    setToggleToCheckedWishlist(state,action){
+      let data=state.wishList.list.filter((service)=>service._id==action.payload._id);
+      if(data?.length!=0){
+        state.wishList.list=state.wishList.list.filter((service)=>service._id!=action.payload._id)
+      }else{
+        state.wishList.list=[...state.wishList.list,action.payload]
+      }
+    },
+    onChangeSelectAllHandler(state,action){
+      if(state.list.length==state.wishList.list.length){
+        state.wishList.list=[]
+      }else{
+        state.wishList.list=state.list
+      }
     },
     // clearUser(state) {
     //     state.user = null;
@@ -133,7 +149,7 @@ const serviceListingSlice = createSlice({
 });
 
 // Export actions
-export const { setSelectedCategory, setSelectedSubCategory } =
+export const { setSelectedCategory, setSelectedSubCategory,setToggleToCheckedWishlist,onChangeSelectAllHandler } =
   serviceListingSlice.actions;
 
 // Export the reducer
