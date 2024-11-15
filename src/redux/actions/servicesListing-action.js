@@ -103,3 +103,22 @@ export const removeServiceWishlist = createAsyncThunk("removeServiceWishlist", a
         return rejectWithValue(error?.response?.data?.message || error?.message);
     }
 });
+export const updateServiceQuickWishlist = createAsyncThunk("updateServiceQuickWishlist", async (wishListData, { rejectWithValue }) => {
+    try {
+        const response = await client.put(`/user/service-quick-wishlist`,wishListData,{
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+            },
+          });
+        console.log(response,'services..');
+        if(response?.data?.code==200||response?.data?.code==201){
+            return response.data;
+        }else{
+            return rejectWithValue(response?.data?.message);            
+        }
+    } catch (error) {
+        return rejectWithValue(error?.response?.data?.message || error?.message);
+    }
+});

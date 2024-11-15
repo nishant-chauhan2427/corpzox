@@ -2,7 +2,7 @@ import React from "react";
 import { Checkbox } from "../../../../../components/inputs/checkbox";
 import { CiHeart } from "react-icons/ci";
 import { Button } from "../../../../../components/buttons";
-function ServicesCard({ data=[] ,onClick=()=>console.log('wishlist clicked')}) {
+function ServicesCard({ data=[] ,onClick=()=>console.log('wishlist clicked'),onCheckedChange=()=>console.log('checked clicked')}) {
   return (
     <>
       <div className="grid grid-cols-1 sm:pt-3 pt-5  sm:grid-cols-2 xl:grid-cols-2  gap-4">
@@ -13,7 +13,7 @@ function ServicesCard({ data=[] ,onClick=()=>console.log('wishlist clicked')}) {
           >
             <div className="flex justify-between">
               <p className="font-bold text-[#0A1C40]">{service.name}</p>
-              <Checkbox />
+              <Checkbox className='service-checkbox' onChange={()=>onCheckedChange(service)}/>
             </div>
             <p className="text-base leading-[22px] font-normal text-[#7C7C7C]">
               {service.details}
