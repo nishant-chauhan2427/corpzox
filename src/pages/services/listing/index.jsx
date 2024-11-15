@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "../../../components/buttons";
 import Insight from "../../../components/insight/insight";
 import { MainTab } from "../../../pages/services/components/tabs/mainTab";
@@ -12,24 +12,33 @@ import {getUserServicesCatagory,getUserServicesSubCatagory,getUserServices,updat
 import {setToggleToCheckedWishlist} from '../../../redux/slices/serviceListingSlice'
 import toast from "react-hot-toast";
 const ServicesListing = () => {
-  const dispatch =useDispatch();
+  const dispatch = useDispatch();
   const { servicesMainTab } = useSelector((state) => state.app);
   const { category,subCategory,page,limit,list,wishList} = useSelector((state) => state.service);
   const location=useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const searchValue = queryParams.get('search');
-  const [isSubmit,setIsSubmit]=useState(false);
-  useEffect(()=>{
+  const searchValue = queryParams.get("search");
+  const [isSubmit, setIsSubmit] = useState(false);
+  useEffect(() => {
     dispatch(getUserServicesCatagory({}));
-  },[])
-  useEffect(()=>{
-    dispatch(getUserServicesSubCatagory({categoryId:category?.selectedCategory?.categoryId}));
-  },[category.selectedCategory])
-  useEffect(()=>{
-    if(category?.selectedCategory&&subCategory?.selectedSubCategory){
-      dispatch(getUserServices({categoryId:category?.selectedCategory?._id
-        ,subCategoryId:subCategory?.selectedSubCategory?._id
-        ,page,limit}));
+  }, []);
+  useEffect(() => {
+    dispatch(
+      getUserServicesSubCatagory({
+        categoryId: category?.selectedCategory?.categoryId,
+      })
+    );
+  }, [category.selectedCategory]);
+  useEffect(() => {
+    if (category?.selectedCategory && subCategory?.selectedSubCategory) {
+      dispatch(
+        getUserServices({
+          categoryId: category?.selectedCategory?._id,
+          subCategoryId: subCategory?.selectedSubCategory?._id,
+          page,
+          limit,
+        })
+      );
     }
   },[category.selectedCategory,subCategory.selectedSubCategory])
   useEffect(()=>{
