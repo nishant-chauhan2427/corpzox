@@ -129,7 +129,7 @@ const MakeAPayment = () => {
 
                             <p className="flex font-medium text-sm text-[#000000]">
                               <img
-                                src="../../../../public/images/payment/coupon.svg"
+                                src="/images/payment/coupon.svg"
                                 alt=""
                               />
                               Coupon Applicable
@@ -154,7 +154,7 @@ const MakeAPayment = () => {
               >
                 <div className="flex flex-col text-center gap-2 py-5 items-center">
                   <img
-                    src="../../../../public/images/payment/payment-failed-icon.svg"
+                    src="/images/payment/payment-failed-icon.svg"
                     alt=""
                     width={100}
                   />
@@ -177,7 +177,7 @@ const MakeAPayment = () => {
               >
                 <div className="flex flex-col text-center gap-2 py-5 items-center">
                   <img
-                    src="../../../../public/images/payment/payment-done.svg"
+                    src="/images/payment/payment-done.svg"
                     alt=""
                     width={100}
                   />

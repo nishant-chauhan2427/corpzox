@@ -16,7 +16,7 @@ console.log(manager,'manager')
       <div className=" flex items-center">
         <img
           className="w-20 h-20 rounded-full "
-          src="../../../public/images/asuthosh-gupta.svg"
+          src="/images/dashboard/asuthosh-gupta.svg"
           alt=""
         />
       </div>

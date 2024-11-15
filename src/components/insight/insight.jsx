@@ -13,7 +13,7 @@ const Insight = () => {
           <div key={index} className="flex gap-2 pt-2">
             <div>
               <img
-                src="/images/insight.jfif"
+                src="/images/insights/insight-dummy.svg"
                 alt="Insight Image"
                 className="rounded h-full w-full"
               />
@@ -32,7 +32,7 @@ const Insight = () => {
               <div className="flex gap-2">
                 <div className="flex">
                   <img
-                    src="/images/insight-1.jfif"
+                    src="/images/insights/insight-dummy.svg"
                     className="w-8 h-8 rounded-full"
                     alt="Author Avatar"
                   />
@@ -60,7 +60,7 @@ const Insight = () => {
           <div key={index} className="flex gap-2 pt-2">
             <div>
               <img
-                src="/images/insight.jfif"
+                src="/images/insights/insight-dummy.svg"
                 alt="Insight Image"
                 className="rounded h-full w-full"
               />

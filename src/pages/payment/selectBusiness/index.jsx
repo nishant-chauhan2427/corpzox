@@ -98,7 +98,7 @@ const SelectBusiness = () => {
                   render={({ field }) => (
                     <div className="flex  gap-2 text-center relative border border-[#00000033] rounded-lg px-8 py-10 ">
                       <img
-                        src="../../../../public/images/payment/upload-icon.svg"
+                        src="/images/payment/upload-icon.svg"
                         alt=""
                       />
                       <label
@@ -126,7 +126,7 @@ const SelectBusiness = () => {
               <div className=" flex gap-2  text-base font-normal text-[#0A1C40] ">
                 PAN Card{" "}
                 <img
-                  src="../../../../public/images/payment/i - icon.svg"
+                  src="/images/payment/i - icon.svg"
                   data-tooltip-id="my-tooltip"
                   data-tooltip-content={
                     "The Aadhaar card image should include both front and back sides."
@@ -140,7 +140,7 @@ const SelectBusiness = () => {
                   render={({ field }) => (
                     <div className="flex  gap-2 text-center relative border border-[#00000033] rounded-lg px-8 py-10 ">
                       <img
-                        src="../../../../public/images/payment/upload-icon.svg"
+                        src="/images/payment/upload-icon.svg"
                         alt=""
                       />
                       <label
@@ -168,7 +168,7 @@ const SelectBusiness = () => {
               <div className=" flex gap-2  text-base font-normal text-[#0A1C40] ">
                 ADDRESS PROOF{" "}
                 <img
-                  src="../../../../public/images/payment/i - icon.svg"
+                  src="/images/payment/i - icon.svg"
                   data-tooltip-id="my-tooltip"
                   data-tooltip-content={
                     "The Aadhaar card image should include both front and back sides."
@@ -182,7 +182,7 @@ const SelectBusiness = () => {
                   render={({ field }) => (
                     <div className="flex  gap-2 text-center relative border border-[#00000033] rounded-lg px-8 py-10 ">
                       <img
-                        src="../../../../public/images/payment/upload-icon.svg"
+                        src="/images/payment/upload-icon.svg"
                         alt=""
                       />
                       <label
