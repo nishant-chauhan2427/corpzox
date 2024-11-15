@@ -2,9 +2,7 @@ import React from "react";
 import { Checkbox } from "../../../../../components/inputs/checkbox";
 import { CiHeart } from "react-icons/ci";
 import { Button } from "../../../../../components/buttons";
-import { useSelector } from "react-redux";
-
-function ServicesCard({ data=[] }) {
+function ServicesCard({ data=[] ,onClick=()=>console.log('wishlist clicked')}) {
   return (
     <>
       <div className="grid grid-cols-1 sm:pt-3 pt-5  sm:grid-cols-2 xl:grid-cols-2  gap-4">
@@ -46,7 +44,7 @@ function ServicesCard({ data=[] }) {
             </div>
             <div className="flex justify-end pt-5 items-end">
               <div className="flex items-center  justify-center gap-2">
-                <CiHeart size={30} color="#777777" />
+                <CiHeart size={30} color={service?.wishlistCount?'#FF0000':"#777777"} onClick={()=>onClick(service)}/>
                 <Button type="submit" primary={true}>
                   Avail It Now
                 </Button>
