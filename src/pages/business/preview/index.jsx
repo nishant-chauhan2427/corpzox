@@ -9,11 +9,9 @@ import toast from "react-hot-toast";
 const BusinessPreview = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const businessType = useSelector((state) => state.business);
+  const business = useSelector((state) => state.business);
 
-  console.log(businessType, "business");
-
-  let business;
+  console.log(business, "business");
 
   // Handle step navigation
   const handleNextStep = () => {

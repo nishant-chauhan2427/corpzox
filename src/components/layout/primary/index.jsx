@@ -27,8 +27,8 @@ export const PrimaryLayout = () => {
         <Sidebar
           collapse={collapse}
           setCollapse={setCollapse}
-          className={`${sidebarClassName ? sidebarClassName : ""} ${!collapse ? "min-w-60 min-h-screen" : "min-h-screen"
-            } hidden lg:block fixed top-4 left-10 px-8 py-4 z-[1001] bg-gray-600 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100`}
+          className={`${sidebarClassName ? sidebarClassName : ""} ${!collapse ? "min-w-60" : ""
+            } hidden lg:block max-w-60 fixed top-4 bottom-4 left-10 z-[1001] bg-gray-600 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100`}
         />
         {/* <Sidebar
           collapse={phoneCollapse}
