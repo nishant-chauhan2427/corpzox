@@ -6,6 +6,7 @@ import { Input } from "../../../components/inputs";
 import { Selector } from "../../../components/select";
 import { Button } from "../../../components/buttons";
 import Businessdetails from "./components/business";
+import Docuemnts from "./components/";
 const SelectBusiness = () => {
   const {
     handleSubmit,
