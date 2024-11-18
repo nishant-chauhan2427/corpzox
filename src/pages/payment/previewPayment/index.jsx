@@ -69,7 +69,6 @@ const PreviewPayment = () => {
             </div>
           ))}
         </div>
-        {/* <DocumentViewer /> */}
         <div className="mt-4 flex gap-2 flex-col">
           <p className="font-medium text-lg  text-[#525252] ">
             Business Description

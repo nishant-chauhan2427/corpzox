@@ -72,6 +72,7 @@ const MakeAPayment = () => {
                     <Input
                       {...field}
                       type={"Coupon"}
+                      label={"Add Coupon Code"}
                       placeholder={"Add Coupon Code"}
                       containerClassName={"w-full"}
                       className={"border-[#D9D9D9] border"}
@@ -128,10 +129,7 @@ const MakeAPayment = () => {
                             </Button>
 
                             <p className="flex font-medium text-sm text-[#000000]">
-                              <img
-                                src="/images/payment/coupon.svg"
-                                alt=""
-                              />
+                              <img src="/images/payment/coupon.svg" alt="" />
                               Coupon Applicable
                             </p>
                           </div>
