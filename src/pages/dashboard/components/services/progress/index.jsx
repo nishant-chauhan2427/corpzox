@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { GoDotFill, GoTriangleDown } from "react-icons/go";
+import { ProgressBar } from "../../../../../components/progressBar";
 
 export const ServicesProgress = ({ data }) => {
-  const [dropdownStates, setDropdownStates] = useState(
-    data.map(() => false) 
-  );
+  const [dropdownStates, setDropdownStates] = useState(data.map(() => false));
 
   const handleServiceDropdown = (index) => {
     setDropdownStates((prevState) =>
@@ -14,18 +13,40 @@ export const ServicesProgress = ({ data }) => {
   };
 
   const servicesProgessSteps = [
-    { label: "Under Review", date: "Mar 12, 2024", status: "completed" },
-    { label: "Service Started", date: "Mar 15, 2024", status: "completed" },
-    { label: "Payment Received", date: "Mar 16, 2024", status: "completed" },
-    { label: "Documents Uploaded", date: "Mar 17, 2024", status: "completed" },
-    { label: "Application Submitted", status: "in-progress" },
     {
-      label: "Application In Progress",
+      step: 1,
+      topLabel: "Under Review",
+      bottomLabel: "Mar 12, 2024",
+      status: "completed",
+    },
+    {
+      step: 2,
+      topLabel: "Service Started",
+      bottomLabel: "Mar 15, 2024",
+      status: "completed",
+    },
+    {
+      step: 3,
+      topLabel: "Payment Received",
+      bottomLabel: "Mar 16, 2024",
+      status: "completed",
+    },
+    {
+      step: 4,
+      topLabel: "Documents Uploaded",
+      bottomLabel: "Mar 17, 2024",
+      status: "completed",
+    },
+    { step: 5, topLabel: "Application Submitted", status: "in-progress" },
+    {
+      step: 6,
+      topLabel: "Application In Progress",
       estimated: "Est: 5-6 Days",
       status: "pending",
     },
     {
-      label: "Service Completed",
+      step: 7,
+      topLabel: "Service Completed",
       estimated: "Est: 1-2 Days",
       status: "pending",
     },
@@ -46,13 +67,10 @@ export const ServicesProgress = ({ data }) => {
         <div className="flex flex-col gap-4">
           {data.map((data, index) => (
             <div key={index} className="bg-[#F8FAFF] px-4 py-2 rounded-md">
-              <div className="flex justify-between items-center">
+              <div className="flex flex-col sm:flex-row items-start justify-between sm:items-center gap-2">
                 <div className="flex flex-col gap-1">
                   <div className="flex gap-2">
-                    <img
-                      src="/images/dashboard/service-progress.svg"
-                      alt=""
-                    />
+                    <img src="/images/dashboard/service-progress.svg" alt="" />
                     <p className="font-bold">Service: {data.name} </p>
                     <img
                       src="/icons/dashboard/service-error.svg"
@@ -64,7 +82,9 @@ export const ServicesProgress = ({ data }) => {
                     <h6 className="font-normal text-sm">
                       Business: {data.detail1}{" "}
                     </h6>
-                    <p className="font-normal text-sm ">Step: {data.detail2} </p>
+                    <p className="font-normal text-sm ">
+                      Step: {data.detail2}{" "}
+                    </p>
                   </div>
                 </div>
                 <div className="flex gap-2">
@@ -74,7 +94,7 @@ export const ServicesProgress = ({ data }) => {
                     </span>
                     On Time
                   </p>
-                  <button onClick={() => handleServiceDropdown(index)}>
+                  <button className={`${dropdownStates === true && "rotate-180"}`} onClick={() => handleServiceDropdown(index)}>
                     <GoTriangleDown size={30} />
                   </button>
                 </div>
@@ -105,7 +125,8 @@ const Dropdown = ({ isOpen, servicesProgessSteps }) => {
       {isOpen && (
         <div className="p-6">
           <div className="flex justify-between items-center">
-            {servicesProgessSteps.map((step, index) => (
+            <ProgressBar steps={servicesProgessSteps} />
+            {/* {servicesProgessSteps.map((step, index) => (
               <div
                 key={index}
                 className={`flex flex-col items-center relative text-white`}
@@ -121,6 +142,7 @@ const Dropdown = ({ isOpen, servicesProgessSteps }) => {
                 >
                   <p className="font-normal text-[10px]">{step.label}</p>
                 </div>
+
                 <div className="w-full h-4 bg-gray-300"></div>
                 {step.date && (
                   <div className="text-[10px] text-gray-500">{step.date}</div>
@@ -131,7 +153,7 @@ const Dropdown = ({ isOpen, servicesProgessSteps }) => {
                   </div>
                 )}
               </div>
-            ))}
+            ))} */}
           </div>
         </div>
       )}

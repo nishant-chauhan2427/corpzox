@@ -8,7 +8,7 @@ import { HiOutlineUser } from "react-icons/hi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { CrossButton } from "../buttons/crossButton";
 import { IoIosArrowDown, IoMdNotificationsOutline } from "react-icons/io";
-import { RxArrowRight, RxHamburgerMenu } from "react-icons/rx";
+import { RxArrowRight, RxCross2, RxHamburgerMenu } from "react-icons/rx";
 import { AnimatePresence, motion } from "framer-motion";
 import { IconWrapper } from "../wrappers/icon-wrapper";
 import { IoSettingsOutline } from "react-icons/io5";
@@ -25,7 +25,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
   const [signedInMenuPopup, setSignedInMenuPopup] = useState(false);
   const [signOutModalOpen, setSignOutModalOpen] = useState(false);
 
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -74,7 +74,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
         return "";
     }
   }
-  
+
   return (
     <header
       className={`${
@@ -85,7 +85,21 @@ export const Header = ({ className, collapse, setCollapse }) => {
         {/* Left Side Menu */}
         <div className="flex items-center gap-4">
           {/* Logo */}
-          {/* <div className="flex items-center gap-6">
+          {/* <div className="flex items-center gap-2">
+           
+            <div
+              className={`${
+                collapse ? "flex justify-center items-center" : "pl-2"
+              } pb-4`}
+            >
+              <button onClick={handleSidebar} className="header-icon">
+                {collapse ? (
+                  <RxCross2 className="text-white"/>
+                ) : (
+                  <RxHamburgerMenu className="text-white" />
+                )}
+              </button>
+            </div>
             <Link to={"/"}>
               <img
                 width={0}
@@ -111,40 +125,22 @@ export const Header = ({ className, collapse, setCollapse }) => {
                 ""
               )}
             </Link>
-            {/* <div
-            className={`${
-              collapse ? "flex justify-center items-center" : "pl-2"
-            } pb-4`}
-          >
-            <button onClick={handleSidebar} className="header-icon">
-              {collapse ? (
-                <img
-                  className={`w-5`}
-                  src="/icons/hamburger-close.svg"
-                  alt=""
-                />
-              ) : (
-                <img className={`w-5`} src="/icons/hamburger.svg" alt="" />
-              )}
-            </button>
-          </div> */}
-          {/* <Search
-            label={true}
-            placeholder={"Search anything..."}
-            isButton={true}
-            containerClassName={"hidden xl:flex"}
-            inputClassName={"lg:min-w-60 p-2 pl-10 "}
-          /> 
+
+          
           </div> */}
           {/* Page Heading */}
-          <h1 className="font-bold text-white text-2xl">{getPageHeading(pathname)}</h1>
+          <h1 className="font-bold text-white text-2xl">
+            {getPageHeading(pathname)}
+          </h1>
           {/* Search */}
           <Search
             placeholder={"Search Business / Services"}
             containerClassName={
-              "hidden lg:block w-full lg:!max-w-lg !bg-[#3D485F] !rounded-full overflow-hidden"
+              "hidden lg:block w-full h-10 lg:!max-w-lg !bg-[#3D485F] !rounded-full overflow-hidden"
             }
-            inputClassName={"w-full lg:!max-w-lg  !bg-[#3D485F] text-white"}
+            inputClassName={
+              "w-full h-10 lg:!max-w-lg  !bg-[#3D485F] text-white"
+            }
           />
           {/* Header Links */}
           <div className="hidden lg:flex items-center gap-4">
@@ -168,23 +164,24 @@ export const Header = ({ className, collapse, setCollapse }) => {
 
             {/* <FullScreenButton /> */}
             <Notification />
-            <div className="hidden sm:flex relative gap-2">
-              <button
-                onClick={() => setSignedInMenuPopup(!signedInMenuPopup)}
-                className="flex items-center gap-2"
-              >
-                <img src="/icons/user.png" alt="" />
-                <div className="flex flex-col items-start gap-1">
-                  <h5 className="font-bold text-[#3D3D47] dark:text-white">
-                    {/* {user.email == "superAdmin@gmail.com"
-                      ? "Super Admin"
-                      : "Runwal Manager"} */}
-                  </h5>
-                  {/* <span className="text-xs text-[#767676]  dark:text-white">
-                    {user.email == "superAdmin@gmail.com" ? "Admin" : "Manager"}
-                  </span> */}
-                </div>
-              </button>
+            <div className="flex relative gap-2">
+              <div className="md:bg-[#3c4962] md:dark:bg-[#22262C] lg:px-2 md:px-2 sm:bg-transparent sm:px-1 py-0.5 flex justify-center items-center rounded-full sm:border sm:border-[#97a3b5]">
+                <button
+                  onClick={() => setSignedInMenuPopup(!signedInMenuPopup)}
+                  className="flex items-center gap-1 sm:gap-2"
+                >
+                  <img src="/images/insights/insight-user.svg" alt="" />
+                  <div className="hidden sm:flex flex-col items-start">
+                    <h5 className="font-semibold text-sm text-white">
+                      {user?.name ? user?.name : "User Name"}
+                    </h5>
+                    <p className="text-[9px] text-white">
+                      {user?.name ? user?.name : "Designation"}
+                    </p>
+                  </div>
+                  <img src="/icons/header/down-arrow.svg" alt="" />
+                </button>
+              </div>
               <AnimatePresence>
                 {signedInMenuPopup && (
                   <motion.div
@@ -192,11 +189,11 @@ export const Header = ({ className, collapse, setCollapse }) => {
                     animate={{ scale: 1 }}
                     exit={{ scale: 0 }}
                     ref={signedInMenuPopupRef}
-                    className="p-4 w-full absolute top-16 right-0 bg-white dark:text-white dark:bg-darkPrimary border border-gray-200 dark:border-gray-700 shadow rounded-md z-10 flex flex-col items-start justify-start gap-2"
+                    className="p-4 sm:w-full fixed sm:absolute top-16 right-0 bg-white dark:text-white dark:bg-darkPrimary border border-gray-200 dark:border-gray-700 shadow rounded-md z-10 flex flex-col items-start justify-start gap-2"
                   >
                     <Link
                       onClick={() => setSignedInMenuPopup(!signedInMenuPopup)}
-                      to={"/user-profile"}
+                      to={"/profile"}
                       className="flex items-center gap-2"
                     >
                       <HiOutlineUser />
@@ -204,7 +201,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
                     </Link>
                     <Link
                       onClick={() => setSignedInMenuPopup(!signedInMenuPopup)}
-                      to={"/change-password"}
+                      to={"/settings"}
                       className="flex items-center gap-2"
                     >
                       <IoSettingsOutline />

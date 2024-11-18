@@ -66,7 +66,7 @@ export const Profile = ({user={}}) => {
     }
   },[user])
   return (
-    <div className="pl-[11px] pr-[33px] py-[17px] w-fit flex gap-4 bg-white border items-center border-[#DFEAF2] rounded-[18px]">
+    <div className="w-full sm:w-fit pl-[11px] pr-[33px] py-[17px] flex gap-4 bg-white border items-center border-[#DFEAF2] rounded-[18px]">
       <div className="w-16 relative">
         <CircularProgressbarWithChildren
           styles={buildStyles({

@@ -9,7 +9,7 @@ export const PrimaryLayout = () => {
   const [collapse, setCollapse] = useState(false);
   const [phoneCollapse, setPhoneCollapse] = useState(true);
   // const sidebarClassName = useSelector((state) => state.theme.sidebarClassName);
-  const sidebarClassName = "bg-red-500";
+  const sidebarClassName = "";
   // profile = //useSelector((state) => state.auth);
   let userInfo=localStorage.getItem('userInfo');
   if (!userInfo) {

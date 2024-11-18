@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { iconSize } from "../../utils";
 import { Link } from "react-router-dom";
 import { AccountManager } from "../../pages/dashboard/components/accountManager";
+import { UpdateProfile } from "./updateProfile";
 
 export const Sidebar = ({ className, collapse, setCollapse }) => {
   const user = useSelector((state) => state.user.user);
@@ -176,7 +177,7 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
           </div> */}
         </div>
         <div className="h-[80vh] overflow-x-hidden overflow-y-auto">
-          <div className="px-8 py-4">
+          <div className="px-4 py-4">
             {items?.map((item, index) => (
               <IconBox
                 containerClassName="px-4 py-2"
@@ -193,9 +194,10 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
               />
             ))}
           </div>
-          <div className="px-2">
+          <div className="px-2 flex flex-col gap-4">
             {/*  */}
-            <AccountManager />
+            <AccountManager sidebar={true} />
+            <UpdateProfile />
           </div>
         </div>
       </motion.div>
