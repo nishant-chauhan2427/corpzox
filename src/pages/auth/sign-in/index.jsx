@@ -136,7 +136,7 @@ export const SignIn = () => {
                     onBlur={() => handleBlur("email")}
                   />
                 )}
-                // rules={{ required: "Email Address is required" }}
+                rules={{ required: "Email Address is required" }}
               />
               <Controller
                 name="password"
@@ -153,7 +153,7 @@ export const SignIn = () => {
                     onBlur={() => handleBlur("password")}
                   />
                 )}
-                // rules={{ required: "Password is required" }}
+                rules={{ required: "Password is required" }}
               />
               <Link
                 to={"/forgot-password"}

@@ -24,7 +24,9 @@ const ProfileCard = () => {
               <img src="/public/images/profile/profile.svg" alt="" />
             </div>
             <div className="flex flex-col gap-4 justify-center">
-              <p className="text-black font-semibold text-base sm:text-xl">Mehul</p>
+              <p className="text-black font-semibold text-base sm:text-xl">
+                Mehul
+              </p>
               <p className="text-[#525252] text-base font-semibold sm:text-lg">
                 Email Id:{" "}
                 <span className="text-black">rahulm.vayuz@gmail.com</span>
@@ -34,11 +36,9 @@ const ProfileCard = () => {
               </p>
             </div>
           </div>
-
           <div>
             <Link to={"edit"}>
-            <Button primary={true}>Edit </Button>
-
+              <Button primary={true}>Edit </Button>
             </Link>
           </div>
         </div>
