@@ -14,7 +14,7 @@ export const Business = ({ data=[] ,total}) => {
         </p>
         <div className="flex items-center gap-2">
           <Button primary={true} leftIcon={<IoMdAddCircle />}>New Business</Button>
-          <Link className="font-semibold text-[#606060]">View all</Link>
+          <Link className="font-semibold text-[#606060]" to={'/business'}>View all</Link>
         </div>
       </div>
       {data.length > 0 ? (
@@ -24,7 +24,7 @@ export const Business = ({ data=[] ,total}) => {
               <div className="flex flex-col gap-2 bg-white rounded-xl p-2">
                 <div key={index} className="flex items-end gap-2">
                   <div className="p-2 bg-[#F3F7FF] rounded-xl flex justify-center items-center">
-                    <img src="images/business-imh.svg" className="" alt="" />
+                    <img src="/images/business/business-logo.svg" className="" alt="" />
                   </div>
                   <div>
                     <p className="font-bold text-base text-[#171717]">
@@ -69,7 +69,7 @@ export const Business = ({ data=[] ,total}) => {
         </div>
       ) : (
         <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
-          <img src="/images/no-business.svg" alt="" />
+          <img src="/images/business/no-business.svg" alt="" />
           <p className="font-bold  text-xl text-[#000000] ">
             No Business Created
           </p>

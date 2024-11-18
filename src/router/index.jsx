@@ -24,6 +24,7 @@ import FundraiseListing from "../pages/fundraise/listing";
 import InvestmentListing from "../pages/investment/listing";
 import DocumentsListing from "../pages/documents/listing";
 import ChangePassword from "../pages/settings/changePassword";
+import PreviewPayment from "../pages/payment/previewPayment";
 
 const router = createBrowserRouter([
   {
@@ -153,8 +154,8 @@ const router = createBrowserRouter([
                 element: <SelectBusiness />,
               },
               {
-                path: "history",
-                element: <MakeAPayment />,
+                path: "preview",
+                element: <PreviewPayment />,
               },
             ],
           },
@@ -166,7 +167,6 @@ const router = createBrowserRouter([
                 index: true,
                 element: <FundraiseListing />,
               },
-              
             ],
           },
           // Investment route
@@ -177,7 +177,6 @@ const router = createBrowserRouter([
                 index: true,
                 element: <InvestmentListing />,
               },
-              
             ],
           },
           // Documents route
@@ -188,7 +187,6 @@ const router = createBrowserRouter([
                 index: true,
                 element: <DocumentsListing />,
               },
-              
             ],
           },
           // Settings route
@@ -199,7 +197,6 @@ const router = createBrowserRouter([
                 index: true,
                 element: <ChangePassword />,
               },
-              
             ],
           },
         ],

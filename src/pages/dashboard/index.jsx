@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { BiSolidMessageRounded } from "react-icons/bi";
 import { IoMdCall } from "react-icons/io";
 import { CiMenuKebab } from "react-icons/ci";
@@ -28,31 +28,27 @@ const Dashboard = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [isFadingOut, setIsFadingOut] = useState(false);
   const dispatch = useDispatch();
+  const location=useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const searchValue = queryParams.get('search');
   const { user={},manager={},business,businessLoading,businessError,service={},serviceLoading,servicesError } = useSelector((state) => state.user);
-  const handleBannerdisplay = () => {
-    setIsFadingOut(true); // Start fade-out animation
-    setIsVisible(false);
-  };
+  // const handleBannerdisplay = () => {
+  //   setIsFadingOut(true); // Start fade-out animation
+  //   setIsVisible(false);
+  // };
 
-  const handleAccountShowBtn = () => {
-    setAccountShowButton((previous) => !previous);
-  };
+  // const handleAccountShowBtn = () => {
+  //   setAccountShowButton((previous) => !previous);
+  // };
   useEffect(() => {
     dispatch(getUser());
     dispatch(getUserBusiness({}));
     dispatch(getUserServices({}));
   }, []);
-  // let businessRenderList=(business.list)?business.list.map((data)=>{
-  //   return{
-  //     businessName: data?.businessName,
-  //     businesSubTitle: "Sustainable home electric products",
-  //     type: data?.typeOfBusiness,
-  //     registeredOffice: (data?.businessAddressCity&&data?.businessAddressState)?`${data?.businessAddressCity},${data?.businessAddressState}`:(data?.businessAddressCity)?(data?.businessAddressCity):(data?.businessAddressState),
-  //     companyStatus: (data?.active)?"Active":"In Active",
-  //     companyAge: (data?.yearOfStablish)?`${calculateAge(data?.yearOfStablish)}`:null,
-  //   }
-  // }):[];
-  // console.log('business..........',business,businessRenderList,[...businessListing,...businessRenderList]);
+  useEffect(()=>{
+      dispatch(getUserBusiness({query:searchValue}));
+      dispatch(getUserServices({query:searchValue}));
+  },[searchValue])
   return (
     <>
       <section className="py-6">

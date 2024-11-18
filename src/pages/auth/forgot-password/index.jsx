@@ -211,7 +211,7 @@ export const ForgotPassword = () => {
                   render={({ field }) => (
                     <Input
                       {...field}
-                      // label={"Email"}
+                      label={"Email"}
                       type={"email"}
                       placeholder={"Email Id"}
                       className={"border-[#D9D9D9] border"}

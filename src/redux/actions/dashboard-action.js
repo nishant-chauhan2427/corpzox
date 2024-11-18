@@ -20,13 +20,13 @@ export const getUser = createAsyncThunk("getUser", async (authInfo, { rejectWith
         return rejectWithValue(error?.response?.data?.message || error?.message);
     }
 });
-export const getUserBusiness = createAsyncThunk("getUserBusiness", async ({page,sort_by,query}, { rejectWithValue }) => {
+export const getUserBusiness = createAsyncThunk("getUserBusiness", async ({page,sort_by='date_desc',query}, { rejectWithValue }) => {
     try {
         let params=new URLSearchParams();
         if(page) params.append('page',page);
         if(sort_by) params.append('sort_by',sort_by);
         if(query) params.append('query',query);
-        const response = await client.get(`/business/user-business-card${params}`,{
+        const response = await client.get(`/business/user-business-card${(params)&&`?${params}`}`,{
             headers: {
               Accept: "application/json",
               "Content-Type": "application/json",
@@ -51,7 +51,7 @@ export const getUserServices = createAsyncThunk("getUserServices", async ({page,
         if(query) params.append('query',query);
         if(categoryId) params.append('categoryId',categoryId);
         if(subCategoryId) params.append('subCategoryId',subCategoryId);
-        const response = await client.get(`/user/service${params}`,{
+        const response = await client.get(`/user/service${(params)&&`?${params}`}`,{
             headers: {
               Accept: "application/json",
               "Content-Type": "application/json",

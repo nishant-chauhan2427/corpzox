@@ -19,7 +19,7 @@ function index() {
             </div>
             <div>
               <img
-                src="../../../../public/services/services-polygon.svg"
+                src="/services/services-polygon.svg"
                 alt=""
               />
             </div>
@@ -35,7 +35,7 @@ function index() {
             </div>
             <div>
               <img
-                src="../../../../public/services/services-polygon.svg"
+                src="/services/services-polygon.svg"
                 alt=""
               />
             </div>

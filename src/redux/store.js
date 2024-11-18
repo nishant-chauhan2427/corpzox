@@ -7,6 +7,8 @@ import storage from "redux-persist/lib/storage"; // defaults to localStorage
 import userAuthSlice from "./slices/userAuth-slice";
 import userUtilitySlice from "./slices/utillitySlice";
 import appSlice from "./slices/appSlice";
+import serviceListingSlice from "./slices/serviceListingSlice";
+import businessSlice from './slices/businessSlice';
 import { composeWithDevTools } from "redux-devtools-extension";
 import userSlice from "./slices/userLoginSlice";
 
@@ -21,7 +23,9 @@ const rootReducer = combineReducers({
   app: appSlice,
   auth: userAuthSlice,
   userUtility: userUtilitySlice,
-  user: userSlice
+  user: userSlice,
+  service:serviceListingSlice,
+  business:businessSlice
 });
 
 // Create a persisted reducer

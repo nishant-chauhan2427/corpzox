@@ -6,7 +6,7 @@ const BusinessListing = () => {
       <div className="gap-2 flex flex-col  bg-white rounded-md px-4 py-2">
         <div key={index} className="px-2 py-3 flex gap-4">
           <img
-            src="../../../public/images/business-imh.svg"
+            src="/images/business/business-logo.svg"
             className=""
             alt=""
           />

@@ -33,6 +33,9 @@ const userSlice = createSlice({
         clearUser(state) {
             state.user = null;
         },
+        setBusinessPage(state,action){
+          state.business.page=action.payload;
+        }
     },
     extraReducers:(builder)=>{
         builder.addCase(getUser.pending, (state, action) => {
@@ -60,7 +63,12 @@ const userSlice = createSlice({
         }).addCase(getUserBusiness.fulfilled, (state, action) => {
           state.businessLoading = false;
           state.businessError = action.payload.message;
-          state.business.list=action.payload.data;
+          // console.log('6',state.business.list,action.payload);
+          // if(state.business.list.length>0){
+          //   state.business.list=[...state.business.list,...action.payload.data];
+          // }else{
+            state.business.list=action.payload.data;
+          // }
           state.business.totalPage=action.payload?.total;
         }).addCase(getUserBusiness.rejected, (state, action) => {
           state.businessLoading = false;
@@ -81,7 +89,7 @@ const userSlice = createSlice({
 });
 
 // Export actions
-export const { setUser, clearUser } = userSlice.actions;
+export const { setUser, clearUser,setBusinessPage } = userSlice.actions;
 
 // Export the reducer
 export default userSlice.reducer;

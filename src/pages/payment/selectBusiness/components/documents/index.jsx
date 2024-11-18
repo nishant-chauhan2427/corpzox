@@ -1,10 +1,10 @@
 import React from "react";
 import { Controller } from "react-hook-form";
 
-const index = () => {
+const index = ({ control, errors }) => {
   return (
     <>
-      <div>
+      <div className="flex gap-4">
         <div className="flex flex-col gap-2 ">
           <div className=" flex gap-2  text-base font-normal text-[#0A1C40] ">
             AADHAR card{" "}

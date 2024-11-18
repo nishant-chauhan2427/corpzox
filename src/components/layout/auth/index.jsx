@@ -3,7 +3,7 @@ import React from "react";
 export const AuthLayout = ({ children }) => {
   return (
     <div className="w-full  flex flex-row md:p-3 p-4 sm:gap-12  ">
-      <div className="md:w-1/2 flex justify-center items-center  bg-[url('/images/auth-main.svg')] bg-cover rounded-2xl">
+      <div className="md:w-1/2 flex justify-center items-center  bg-[url('/images/auth/auth-main.svg')] bg-cover rounded-2xl">
         {/* <img src="/images/auth-main.svg" alt="" /> */}
         {/* h-[calc(100% - 24px)] */}
       </div>

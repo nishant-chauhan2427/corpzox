@@ -175,7 +175,7 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
             </button>
           </div> */}
         </div>
-        <div className="h-[80vh] overflow-y-auto">
+        <div className="h-[80vh] overflow-x-hidden overflow-y-auto">
           <div className="px-8 py-4">
             {items?.map((item, index) => (
               <IconBox

@@ -10,7 +10,7 @@ export const RecommendedServices = ({ data ,total}) => {
             <img src="/icons/dashboard/take-a-tour.svg" alt="" />
           </span>
         </p>
-        <Link className="font-semibold text-[#606060]">View All</Link>
+        <Link className="font-semibold text-[#606060]" to={'/services'}>View All</Link>
       </div>
       <div
         className="grid grid-cols-1 sm:grid-cols-2 !rounded-lg pb-5 mt-4 
