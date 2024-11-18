@@ -25,9 +25,12 @@ import InvestmentListing from "../pages/investment/listing";
 import DocumentsListing from "../pages/documents/listing";
 import ChangePassword from "../pages/settings/changePassword";
 import PreviewPayment from "../pages/payment/previewPayment";
+import DeactivateAccount from "../pages/settings/deactivateAccount";
+import SubscriptionHistory from "../pages/settings/subscriptionHistory";
+import Settings from "../pages/settings";
 import History from "../pages/payment/history";
 import Profile from "../pages/profile";
-import ProfileEdit from "../pages/profile/editProfile"
+import ProfileEdit from "../pages/profile/editProfile";
 
 const router = createBrowserRouter([
   {
@@ -199,10 +202,23 @@ const router = createBrowserRouter([
           // Settings route
           {
             path: "settings",
+            element: <Settings />,
             children: [
               {
                 index: true,
                 element: <ChangePassword />,
+              },
+              {
+                index: "change-password",
+                element: <ChangePassword />,
+              },
+              {
+                path: "deactivate-account",
+                element: <DeactivateAccount />,
+              },
+              {
+                path: "subscription-history",
+                element: <SubscriptionHistory />,
               },
             ],
           },

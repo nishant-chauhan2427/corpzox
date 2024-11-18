@@ -5,17 +5,22 @@ import { CustomAuthLayout } from "../components/layout";
 import { MetaTitle } from "../../../components/metaTitle";
 import { DualHeadingTwo } from "../components/dualHeading/dualHeadingTwo";
 import { CrossButton } from "../../../components/buttons/crossButton";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AuthLayout } from "../../../components/layout/auth";
-import { Link,useNavigate } from "react-router-dom";
-import { resendOtp,verifyUser } from "../../../redux/actions/userAuth-action";
+import { Link, useNavigate } from "react-router-dom";
+import { resendOtp, verifyUser } from "../../../redux/actions/userAuth-action";
 import toast from "react-hot-toast";
 export const Verify = () => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [timer, setTimer] = useState(0);
   const [isResendDisabled, setIsResendDisabled] = useState(false);
   const [isVerify, setIsVerify] = useState(false);
-  const { isVerifying=false,verifyingError,verifyMessage,resendingOtp } = useSelector((state) => state.auth);
+  const {
+    isVerifying = false,
+    verifyingError,
+    verifyMessage,
+    resendingOtp,
+  } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const inputRefs = useRef([]);
@@ -36,20 +41,21 @@ export const Verify = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const enteredOtp = otp.join("");
-    setIsVerify(true)
-    dispatch(verifyUser({otp:enteredOtp,id:profile?.[0]?.id}))
+    setIsVerify(true);
+    dispatch(verifyUser({ otp: enteredOtp, id: profile?.[0]?.id }));
   };
-useEffect(()=>{
- if(isVerify&&!isVerifying){
-  setIsVerify(false);
-  if(verifyingError){
-    toast.error(verifyingError);
-  }else{
-    toast.success(verifyMessage);
-    navigate('/dashboard')
-  }
- }
-},[isVerifying])
+  useEffect(() => {
+    console.log(isVerify,isVerifying)
+    if (isVerify && !isVerifying) {
+      setIsVerify(false);
+      if (verifyingError) {
+        toast.error(verifyingError);
+      } else {
+        toast.success(verifyMessage);
+        navigate("/dashboard");
+      }
+    }
+  }, [isVerifying]);
   // Function to handle input change
   const handleChange = (index, value) => {
     if (/^\d$/.test(value)) {
@@ -77,10 +83,10 @@ useEffect(()=>{
   const handleResendOtp = (event) => {
     event.preventDefault();
     setTimer(30);
-    console.log(profile)
+    console.log(profile);
     dispatch(
       resendOtp({
-        id: profile?.[0]?.id,
+        id: profile?.[0]?.id||profile?.id||profile?.userId,
       })
     );
   };
@@ -106,12 +112,17 @@ useEffect(()=>{
   };
 
   useEffect(() => {
-    if (timer === 0) {
+    if (timer === 0 || timer == "00") {
       setIsResendDisabled(false); // Enable the resend button when the timer reaches 0
     } else if (timer > 0) {
       setIsResendDisabled(true);
       const countdown = setTimeout(() => {
-        setTimer(timer - 1);
+        setTimer(
+          (timer - 1).toLocaleString("en-US", {
+            minimumIntegerDigits: 2,
+            useGrouping: false,
+          })
+        );
       }, 1000);
 
       return () => clearTimeout(countdown);
@@ -137,7 +148,10 @@ useEffect(()=>{
                     "We have send you an OTP on your registered mobile no. and Email Id"
                   }
                 />
-                <form onSubmit={handleSubmit} className="w-full sm:w-[100%] mt-8 flex flex-col gap-2">
+                <form
+                  onSubmit={handleSubmit}
+                  className="w-full sm:w-[100%] mt-8 flex flex-col gap-2"
+                >
                   <div className=" w-full flex justify-start items-start gap-4 pb-20 ">
                     {otp.map((digit, index) => (
                       <input
@@ -163,7 +177,7 @@ useEffect(()=>{
                       className={`text-xs text-primary disabled:text-[#8D8D8D]`}
                       onClick={handleResendOtp}
                       type="button"
-                      disabled={isResendDisabled||resendingOtp}
+                      disabled={isResendDisabled || resendingOtp}
                     >
                       {timer > 0 ? (
                         <p className="!text-[#969696] font-normal text-sm">
@@ -182,7 +196,7 @@ useEffect(()=>{
                       className={
                         "mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none "
                       }
-                      disabled={otp?.[otp.length-1]==''}
+                      disabled={otp?.[otp.length - 1] == ""}
                       isLoading={isVerify}
                     >
                       Continue
