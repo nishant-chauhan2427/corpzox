@@ -19,18 +19,18 @@ const Edit = () => {
   });
   return (
     <>
-      <div className="pb-4 flex gap-4 flex-col">
-        <p className="flex items-center py-6 gap-4 font-semibold text-2xl text-[#0A1C40">
-          <Link>
-            <span>
-              <IoIosArrowRoundBack size={30} />
+      <div className=" flex gap-4 flex-col">
+        <div className="flex items-center py-6 gap-4 font-semibold text-2xl text-[#0A1C40">
+          <Link to={"/profile"}  >
+          <span>
+              <IoIosArrowRoundBack  size={30} />
             </span>
           </Link>
           Edit Profile
-        </p>
-        <div className="flex  drop-shadow-md bg-[#F4F9FF] border px-4 rounded-2xl py-4 border-[#DFEAF2] ">
+        </div>
+        <div className="flex  drop-shadow-md bg-[#F4F9FF] border px-4 rounded-2xl py-10 border-[#DFEAF2] ">
           <div
-            className="flex w-full
+            className="flex sm:flex-row flex-col w-full items-center
            gap-4"
           >
             <div>
@@ -40,48 +40,48 @@ const Edit = () => {
               <p className=" text-[#171717] font-medium text-lg">
                 Basic Details
               </p>
-              <div className="flex gap-4">
-                <div>
-                  <Controller
-                    name="name"
-                    control={control}
-                    defaultValue=""
-                    render={({ field }) => (
-                      <Input
-                        {...field}
-                        label={"First Name"}
-                        type={"name"}
-                        placeholder={"First Name"}
-                        className={"border-[#D9D9D9] border"}
-                        errorContent={errors?.email?.message}
-                        onBlur={() => handleBlur("email")}
-                      />
-                    )}
-                    rules={{ required: "First name is required" }}
-                  />
+              <div className="sm:w-[70%] flex gap-4 flex-col">
+                <div className="flex flex-row gap-4 ">
+                  <div className="w-full">
+                    <Controller
+                      name="name"
+                      control={control}
+                      defaultValue=""
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          label={"First Name"}
+                          type={"name"}
+                          placeholder={"First Name"}
+                          className={"border-[#D9D9D9] border"}
+                          errorContent={errors?.email?.message}
+                          onBlur={() => handleBlur("email")}
+                        />
+                      )}
+                      rules={{ required: "First name is required" }}
+                    />
+                  </div>
+                  <div className="w-full">
+                    <Controller
+                      name="name"
+                      control={control}
+                      defaultValue=""
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          label={"First Name"}
+                          type={"name"}
+                          placeholder={"First Name"}
+                          className={"border-[#D9D9D9] border"}
+                          errorContent={errors?.email?.message}
+                          onBlur={() => handleBlur("email")}
+                        />
+                      )}
+                      rules={{ required: "First name is required" }}
+                    />
+                  </div>
                 </div>
                 <div>
-                  <Controller
-                    name="name"
-                    control={control}
-                    defaultValue=""
-                    render={({ field }) => (
-                      <Input
-                        {...field}
-                        label={"First Name"}
-                        type={"name"}
-                        placeholder={"First Name"}
-                        className={"border-[#D9D9D9] border"}
-                        errorContent={errors?.email?.message}
-                        onBlur={() => handleBlur("email")}
-                      />
-                    )}
-                    rules={{ required: "First name is required" }}
-                  />
-                </div>
-              </div>
-              <div>
-                <div className="w-[50%]">
                   <Controller
                     name="email"
                     control={control}
@@ -92,6 +92,25 @@ const Edit = () => {
                         label={"Email id"}
                         type={"email"}
                         placeholder={"Email id"}
+                        className={"border-[#D9D9D9] border"}
+                        errorContent={errors?.email?.message}
+                        onBlur={() => handleBlur("email")}
+                      />
+                    )}
+                    rules={{ required: "Email is required" }}
+                  />
+                </div>
+                <div>
+                  <Controller
+                    name="email"
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        label={"Business Email id"}
+                        type={"email"}
+                        placeholder={"Business Email id"}
                         className={"border-[#D9D9D9] border"}
                         errorContent={errors?.email?.message}
                         onBlur={() => handleBlur("email")}
