@@ -14,7 +14,7 @@ const Businessdetails = ({ control, errors }) => {
               render={({ field }) => (
                 <Input
                   {...field}
-                  //   label={`Business Name`}
+                  label={`Business Name`}
                   placeholder={`Business Name`}
                   errorContent={errors.businessType?.message}
                   required={true}
@@ -29,7 +29,7 @@ const Businessdetails = ({ control, errors }) => {
               render={({ field }) => (
                 <Input
                   {...field}
-                  //   label={`Business Name`}
+                  label={`Legal Business Name`}
                   placeholder={`Legal Business Name`}
                   errorContent={errors.businessType?.message}
                   required={true}
@@ -44,7 +44,7 @@ const Businessdetails = ({ control, errors }) => {
               render={({ field }) => (
                 <Input
                   {...field}
-                  //   label={`Business Name`}
+                  label={`Business Type/Structure`}
                   placeholder={`Business Type/Structure`}
                   errorContent={errors.businessType?.message}
                   required={true}
@@ -59,7 +59,7 @@ const Businessdetails = ({ control, errors }) => {
               render={({ field }) => (
                 <Input
                   {...field}
-                  //   label={`Business Name`}
+                  label={`Business Industry`}
                   placeholder={`Business Industry`}
                   errorContent={errors.businessType?.message}
                   required={true}
@@ -74,7 +74,7 @@ const Businessdetails = ({ control, errors }) => {
               render={({ field }) => (
                 <Input
                   {...field}
-                  //   label={`Business Name`}
+                  label={`Date of Business Formation`}
                   placeholder={`Date of Business Formation`}
                   errorContent={errors.businessType?.message}
                   required={true}
@@ -89,7 +89,7 @@ const Businessdetails = ({ control, errors }) => {
               render={({ field }) => (
                 <Input
                   {...field}
-                  //   label={`Business Name`}
+                  label={`Business Registration Number`}
                   placeholder={`Business Registration Number`}
                   errorContent={errors.businessType?.message}
                   required={true}
@@ -104,7 +104,7 @@ const Businessdetails = ({ control, errors }) => {
               render={({ field }) => (
                 <Input
                   {...field}
-                  //   label={`Business Name`}
+                  label={`Business Description`}
                   placeholder={` Business Description`}
                   errorContent={errors.businessType?.message}
                   required={true}

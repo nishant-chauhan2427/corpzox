@@ -5,7 +5,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Input } from "../../../components/inputs";
 import { Selector } from "../../../components/select";
 import { Button } from "../../../components/buttons";
-import Businessdetails from "./components/business";
+import BusinessDetails from "./components/business";
 import Documents from ".//components/documents";
 const SelectBusiness = () => {
   const {
@@ -41,12 +41,23 @@ const SelectBusiness = () => {
       point: "Do not upload photocopies.",
     },
     {
-      point:
+      point: 
         "Address proof can be your Aadhaar card, driving license, or electricity bill.",
     },
     {
       point:
         "All documents must be uploaded as PDF files, with a maximum file size of 20KB each.",
+    },
+  ];
+  const previewPdf = [
+    {
+      view: "View",
+    },
+    {
+      view: "View",
+    },
+    {
+      view: "View",
     },
   ];
 
@@ -69,16 +80,33 @@ const SelectBusiness = () => {
               render={({ field }) => (
                 <Selector
                   {...field}
-                  //   label={"Select Business"}
+                  label={"Select Business"}
                   placeholder={"Select Business"}
                   errorContent={errors.industryType?.message}
                   options={selectBusiness}
-                  //   required={true}
+                  // required={true}
                 />
               )}
             />
           </div>
           <Documents control={control} errors={errors} />
+          <div className="grid sm:grid-cols-3 grid-cols-1 gap-4 sm:w-[60%] pt-5">
+            {previewPdf.map((data, index) => (
+              <div
+                key={index}
+                className="flex bg-[#7676801F] pt-12 rounded gap-2  pb-4 py-4 flex-col justify-center items-center"
+              >
+                <img
+                  src="/public/images/payment/pdf-preview.svg"
+                  width={100}
+                  alt=""
+                />
+                <Link className="text-[#007AFF] font-normal text-base underline">
+                  {data.view}
+                </Link>
+              </div>
+            ))}
+          </div>
         </div>
         <div>
           <ul className="list-disc pl-5">
@@ -92,7 +120,7 @@ const SelectBusiness = () => {
             ))}
           </ul>
         </div>
-        <Businessdetails control={control} errors={errors} />
+        <BusinessDetails control={control} errors={errors} />
       </div>
     </>
   );

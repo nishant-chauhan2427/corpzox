@@ -15,10 +15,13 @@ import { DualHeadingTwo } from "../components/dualHeading/dualHeadingTwo";
 import { Checkbox } from "../../../components/inputs/checkbox";
 // import { ThemeSwitch } from "../../../components/theme/switch";
 import { AuthLayout } from "../../../components/layout/auth";
-import {loginUser} from '../../../redux/actions/userAuth-action';
+import {loginUser,thirdPartyLogin} from '../../../redux/actions/userAuth-action';
 import ReCAPTCHA from 'react-google-recaptcha';
 import toast from "react-hot-toast";
 import{signinValidationSchema} from '../../../validation/authValidatiorSchema';
+// import {GoogleLogin} from '@react-oauth/google';
+import { GoogleLogin } from 'react-google-login';
+import {gapi} from 'gapi-script';
 export const SignIn = () => {
   const {
     control,
@@ -35,7 +38,7 @@ export const SignIn = () => {
   const handleBlur = async (field) => {
     await trigger(field);
   };
-  const { isLoggingIn=false,error ,loginMessage } = useSelector((state) => state.auth);
+  const { isLoggingIn=false,error ,loginMessage,profile } = useSelector((state) => state.auth);
   
   // const [error, setError] = useState("");
   const dispatch = useDispatch();
@@ -98,12 +101,33 @@ export const SignIn = () => {
       if(error){
         toast.error(error)
       }else{
-        toast.success(loginMessage)
-        navigate('/verify');
+        // toast.success(loginMessage)
+        if(profile?.source=='GOOGLE'){
+          navigate('/dashboard');
+        }else{
+          navigate('/verify');
+        }
       }
     }
-    // console.log(isRegistering,isSubmit,registeringError)
+    console.log(isLoggingIn,isSubmit,profile);
   },[isLoggingIn])
+  const googleLogin=(data)=>{
+    setIsSubmit(true);
+    dispatch(thirdPartyLogin({
+      "email": data?.profileObj?.email,
+      "name": data?.profileObj?.givenName,
+      "profilePicture": data?.profileObj?.imageUrl
+    }))
+    
+  }
+  useEffect(()=>{
+    gapi.load('client:auth2',()=>{
+      gapi.client.init({
+        clientId:'1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com',
+        scope:''
+      })
+    })
+  })
   return (
     <>
       <MetaTitle title={"Sign In"} />
@@ -207,12 +231,18 @@ export const SignIn = () => {
                 <p className="text-base text-[#6E6E6E] font-medium">or</p>
                 <div className="border-t w-full border-[#D9D9D9]"></div>
               </div>
-
               <div className="flex items-center justify-center rounded p-2  text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
                 <p className="flex gap-2">
-                  Sign in with Google <img src="google.svg" alt="" />
+                  {/* Sign in with Google <img src="google.svg" alt="" /> */}
+                  <GoogleLogin
+                   clientId='1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com'
+                    onSuccess={googleLogin}
+                    onError={()=>console.log('Errors')} 
+                    cookiePolicy={'single_host_origin'}
+                    scope="openid profile email" 
+                  />
                 </p>
-                <img src="" alt="" />
+                {/* <img src="" alt="" /> */}
               </div>
 
               <div className="text-center flex  justify-center gap-2 font-normal text-[#6C6C6C]">

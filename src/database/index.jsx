@@ -173,3 +173,29 @@ export const CheckOffer = [
       " Denny's is offering 20% off your next visit when you join CorpZO! You will get this coupon within 24-48 hours after signing up...",
   },
 ];
+export const previewDetail = [
+  {
+    title: "Your Service",
+    description: "Fractional CFO Services",
+  },
+  {
+    title: "Date of Business Formation",
+    description: "October 1, 2024",
+  },
+  {
+    title: "Amount Paid",
+    description: "₹ 7999",
+  },
+  {
+    title: "Business Name",
+    description: "StartupEase Solutions",
+  },
+  {
+    title: "Legal Business Name",
+    description: "StartupEase Solutions Pvt. Ltd",
+  },
+  {
+    title: "Business Type/Structure",
+    description: "Private Limited Company",
+  },
+];

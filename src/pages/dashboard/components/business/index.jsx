@@ -4,7 +4,7 @@ import { IoMdAddCircle } from "react-icons/io";
 import {calculateAge} from '../../../../utils/index';
 export const Business = ({ data=[] ,total}) => {
   return (
-    <div className="flex flex-col pt-10">
+    <div className="flex flex-col ">
       <div className="flex justify-between gap-4">
         <p className="flex items-center gap-4 font-semibold text-xl text-[#0A1C40]">
           Your Business ({total})

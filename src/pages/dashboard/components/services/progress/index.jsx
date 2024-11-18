@@ -32,7 +32,7 @@ export const ServicesProgress = ({ data }) => {
   ];
 
   return (
-    <div className="pt-10">
+    <div className="">
       <div className="flex justify-between gap-4 pb-4">
         <p className="flex items-center font-semibold gap-4 text-xl text-[#0A1C40] ">
           Your Service Progress Updates

@@ -7,6 +7,7 @@ import {
   resetPassword,
   logOutUser,
   updatePassword,
+  thirdPartyLogin
 } from "../actions/userAuth-action";
 let profile=()=>{
   try {
@@ -103,6 +104,22 @@ const authSlice = createSlice({
       state.isLoggingIn = false;
       state.error = action.payload;
     });
+    builder.addCase(thirdPartyLogin.pending, (state, action) => {
+      state.isLoggingIn = true;
+      state.error=initialState.error;
+      state.loginMessage=initialState.loginMessage;
+    }).addCase(thirdPartyLogin.fulfilled, (state, action) => {
+      state.isLoggingIn = false;
+      state.profile = action.payload.data?.[0];
+      state.error = "";
+      state.loginMessage = action.payload.message;
+      localStorage.setItem("auth", JSON.stringify(action.payload.data));
+      localStorage.setItem("userInfo", JSON.stringify(state.profile));
+      state.error=initialState.error;
+    }).addCase(thirdPartyLogin.rejected, (state, action) => {
+      state.isLoggingIn = false;
+      state.error = action.payload;
+    });
 
     //logout
     builder.addCase(logOutUser.pending, (state, action) => {
@@ -139,47 +156,36 @@ const authSlice = createSlice({
 
     builder.addCase(verifyUser.pending, (state, action) => {
       state.isVerifying = true;
-    });
-    builder.addCase(verifyUser.fulfilled, (state, action) => {
+    }).addCase(verifyUser.fulfilled, (state, action) => {
       state.isVerifying = false;
+      state.verifyingError=initialState.verifyingError;
       state.isVerificationSuccessfull = true;
       state.verifyMessage = action.payload.message;
       state.profile={...action.payload?.data?.[0],isVerified:true};
       localStorage.setItem("userInfo", JSON.stringify(state.profile));
-      // if (action.payload?.isVerification) {
-      //   state.profile = { ...state.profile, isVerified: true };
-      //   localStorage.setItem("userInfo", JSON.stringify(state.profile));
-      // } else {
-      //   state.resetPasswordUrl = action.payload?.url;
-      // }
-    });
-    builder.addCase(verifyUser.rejected, (state, action) => {
+    }).addCase(verifyUser.rejected, (state, action) => {
       state.isVerifying = false;
       state.verifyingError = action.payload;
     });
 
     builder.addCase(resendOtp.pending, (state, action) => {
       state.resendingOtp = true;
-    });
-    builder.addCase(resendOtp.fulfilled, (state, action) => {
+    }).addCase(resendOtp.fulfilled, (state, action) => {
       state.resendingOtp = false;
       state.resendOtpSuccessfull = true;
       state.profile=action.payload?.data
-    });
-    builder.addCase(resendOtp.rejected, (state, action) => {
+    }).addCase(resendOtp.rejected, (state, action) => {
       state.resendingOtp = false;
       state.resendingOtpError = action.payload;
     });
 
     builder.addCase(resetPassword.pending, (state, action) => {
       state.changingPassword = true;
-    });
-    builder.addCase(resetPassword.fulfilled, (state, action) => {
+    }).addCase(resetPassword.fulfilled, (state, action) => {
       state.changingPassword = false;
       state.changePasswordSuccessfull = true;
       state.changedPasswordMessage = action.payload.message;
-    });
-    builder.addCase(resetPassword.rejected, (state, action) => {
+    }).addCase(resetPassword.rejected, (state, action) => {
       state.changingPassword = false;
       state.changingPasswordError = action.payload;
     });
@@ -188,12 +194,10 @@ const authSlice = createSlice({
 
     builder.addCase(updatePassword.pending, (state, action) => {
       state.isUpdatingPassword = true;
-    });
-    builder.addCase(updatePassword.fulfilled, (state, action) => {
+    }).addCase(updatePassword.fulfilled, (state, action) => {
       state.isUpdatingPassword = false;
       state.isUpdatePasswordSuccessfull = true;
-    });
-    builder.addCase(updatePassword.rejected, (state, action) => {
+    }).addCase(updatePassword.rejected, (state, action) => {
       state.isUpdatingPassword = false;
       state.updatePasswordError = action.payload;
     });
