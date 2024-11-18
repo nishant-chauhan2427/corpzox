@@ -31,12 +31,12 @@ export const ForgotPassword = () => {
   const [isVerify, setIsVerify] = useState(false);
   const { isVerifying=false,verifyingError,verifyMessage,resendingOtp,profile} = useSelector((state) => state.auth);
   useEffect(() => {
-    if (timer === 0) {
+    if (timer === 0||timer == '00') {
       setIsResendDisabled(false);
     } else {
       setIsResendDisabled(true);
       const countdown = setTimeout(() => {
-        setTimer(timer - 1);
+        setTimer((timer - 1).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false}));
       }, 1000);
       return () => clearTimeout(countdown);
     }

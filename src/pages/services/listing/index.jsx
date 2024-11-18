@@ -9,7 +9,7 @@ import {SelectAllTabs} from '../components/tabs/selectAllTab/index';
 import { useSelector,useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import {getUserServicesCatagory,getUserServicesSubCatagory,getUserServices,updateServiceWishlist,removeServiceWishlist,updateServiceQuickWishlist} from '../../../redux/actions/servicesListing-action';
-import {setToggleToCheckedWishlist} from '../../../redux/slices/serviceListingSlice'
+import {setToggleToCheckedWishlist,resetService} from '../../../redux/slices/serviceListingSlice'
 import toast from "react-hot-toast";
 const ServicesListing = () => {
   const dispatch = useDispatch();
@@ -20,14 +20,17 @@ const ServicesListing = () => {
   const searchValue = queryParams.get("search");
   const [isSubmit, setIsSubmit] = useState(false);
   useEffect(() => {
+    dispatch(resetService({}));
     dispatch(getUserServicesCatagory({}));
   }, []);
   useEffect(() => {
-    dispatch(
-      getUserServicesSubCatagory({
-        categoryId: category?.selectedCategory?.categoryId,
-      })
-    );
+    if(category?.selectedCategory?.categoryId){
+      dispatch(
+        getUserServicesSubCatagory({
+          categoryId: category?.selectedCategory?.categoryId,
+        })
+      );
+    }
   }, [category.selectedCategory]);
   useEffect(() => {
     if (category?.selectedCategory && subCategory?.selectedSubCategory) {
@@ -37,15 +40,18 @@ const ServicesListing = () => {
           subCategoryId: subCategory?.selectedSubCategory?._id,
           page,
           limit,
+          query:searchValue
         })
       );
     }
-  },[category.selectedCategory,subCategory.selectedSubCategory])
-  useEffect(()=>{
-      dispatch(getUserServices({categoryId:category?.selectedCategory?._id
-        ,subCategoryId:subCategory?.selectedSubCategory?._id
-        ,page,limit,query:searchValue}));
-  },[searchValue])
+  },[category.selectedCategory,subCategory.selectedSubCategory,searchValue])
+  // useEffect(()=>{
+  //   if (category?.selectedCategory && subCategory?.selectedSubCategory) {
+  //     dispatch(getUserServices({categoryId:category?.selectedCategory?._id
+  //       ,subCategoryId:subCategory?.selectedSubCategory?._id
+  //       ,page,limit,query:searchValue}));
+  //   }
+  // },[searchValue])
   useEffect(()=>{
     if(isSubmit&&!wishList?.loading){
       toast.success(wishList?.error)
@@ -87,6 +93,7 @@ const ServicesListing = () => {
             </>
           ) : (
             <>
+              <Filtertab />
               {list.length!=0&&<SelectAllTabs onChangeSelectAllHandler={onChangeSelectAllHandler} onClickAddWishlistHandler={onClickAddWishlistHandler}/>}
               <ServicesCard data={list} onClick={(service)=>onClickWishList(service)}  onCheckedChange={(val)=>onCheckHandler(val)}/>
               {list&&list.length>5&&<div className="mt-10 flex justify-center">

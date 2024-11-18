@@ -60,7 +60,7 @@ export const Signup = () => {
       if (registeringError) {
         toast.error(registeringError);
       } else {
-        toast.success(registerMessage);
+        // toast.success(registerMessage);
         navigate("/verify");
       }
     }
@@ -175,7 +175,7 @@ export const Signup = () => {
                 <Button
                   type={"submit"}
                   v2={true}
-                  mainPrimary={true}
+                  primary={true}
                   className={
                     "mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none "
                   }

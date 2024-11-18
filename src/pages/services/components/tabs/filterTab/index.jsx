@@ -14,7 +14,7 @@ function Filtertab() {
     { name: "Intellectual Property Rights" },
     { name: "Corporate Restructuring" },
   ];
-  
+  console.log(subCategory,'subCategory');
   return (
     <>
       <div className="flex space-x-5  overflow-x-auto scrollbar-hide whitespace-nowrap pb-4 pt-4 ">

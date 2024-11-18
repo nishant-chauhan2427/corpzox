@@ -16,6 +16,20 @@ export const loginUser = createAsyncThunk("loginUser", async (authInfo, { reject
         return rejectWithValue(error?.response?.data?.message || error?.message);
     }
 });
+export const thirdPartyLogin = createAsyncThunk("thirdPartyLogin", async (authInfo, { rejectWithValue }) => {
+    try {
+        const response = await client.post("/user/auth/third-party-login", authInfo, {
+            withCredentials: true
+        });
+        if(response?.data?.code==200||response?.data?.code==201){
+            return response.data;
+        }else{
+            return rejectWithValue(response?.data?.message);            
+        }
+    } catch (error) {
+        return rejectWithValue(error?.response?.data?.message || error?.message);
+    }
+});
 
 export const registerUser = createAsyncThunk("registerUser", async (authInfo, { rejectWithValue }) => {
     try {
@@ -39,6 +53,7 @@ export const verifyUser = createAsyncThunk("verifyUser", async (info, { rejectWi
         const response = await client.post("/user/auth/verify-otp", info, {
             withCredentials: true
         });
+        console.log(response,'verifyUser..',response?.data?.code==200||response?.data?.code==201)
         if(response?.data?.code==200||response?.data?.code==201){
             return response.data;
         }else{
