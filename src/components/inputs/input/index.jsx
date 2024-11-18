@@ -15,15 +15,16 @@ export const Input = ({
   infoContent,
   errorContent,
   autoComplete,
+  leftIcon,
+  rightIcon,
+  labelIcon,
   disabled,
   required,
   containerClassName,
+  labelClassName,
   ...props
 }) => {
   const [passwordType, setPasswordType] = useState("password");
-
-  const arrOfNames = ['name', 'companyName', 'unitNumber', 'intercom', 'tenantType', 'electricityConnection', 'waterConnection']
-  const arrOfNumbers = ['plotArea', 'terraceArea', 'unitNumber', 'superBuiltUpArea', 'noOfWaterInlets', 'noOfPets', 'connectedEBLoad', 'connectedDGLoad', 'documentCount']
 
   const viewPassword = () => {
     setPasswordType(passwordType === "password" ? "text" : "password");
@@ -37,44 +38,22 @@ export const Input = ({
     } else {
       newValue = e.target.value.replace(/\s{2,}/g, " ");
     }
-
-    if (
-      arrOfNames.includes(e.target.name) &&
-      e.target.value.length > 50
-    ) {
-      return;
-    }
-
-    const isNumeric = /^\d*$/.test(newValue);
-
-    if (arrOfNumbers.includes(e.target.name)) {
-      if (newValue.length > 12) {
-        return; // Prevent longer than 12 characters
-      }
-      if (!isNumeric) {
-        e.target.value = ""; // Clear input or handle as needed
-        return;
-      }
-    }
     e.target.value = newValue;
-    
     onChange(e);
   };
 
-
-
-
   return (
     <div className={containerClassName}>
-      <div className="w-full flex flex-col ">
-        <div className="flex items-center  relative">
-          <label
-            className={`${required &&
+      <div className="w-full flex flex-col">
+        <div className="flex items-center relative">
+          {/* <label
+            className={`${
+              required &&
               "after:content-['*'] after:text-red-500 after:absolute after:-top-1"
-              } text-black text-sm dark:text-white`}
+            } text-black text-sm dark:text-white`}
           >
             {label}
-          </label>
+          </label> */}
           {infoContent && (
             <IoInformationCircleOutline
               className="text-primary text-sm focus:outline-none  "
@@ -86,10 +65,11 @@ export const Input = ({
         <div className="w-full relative ">
           <input
             {...props}
-            className={`${className} ${errorContent && touched ? "border-error" : "border-[#D9D9D9]"
-              } w-full text-black placeholder:text-[#9A9A9A] placeholder:font-normal placeholder:text-sm p-3 bg-white focus:border- h-10 dark:text-white rounded-md shadow-sm`}
+            className={`${className} ${
+              errorContent && touched ? "border-error" : "border-[#D9D9D9]"
+            } w-full text-black placeholder:text-[#9A9A9A] placeholder:font-normal placeholder:text-sm p-3 bg-white focus:border- h-10 dark:text-white rounded-md shadow-sm block text-sm text-bee-black dark:text-bee-white bg-bee-paleGray dark:bg-bee-ebonyGem border-1 border-gray-300 appearance-none dark:border-bee-primary dark:focus:border-bee-primary focus:outline-none focus:border-bee-primary peer`}
             type={type === "password" ? passwordType : type}
-            placeholder={placeholder}
+            placeholder={" "}
             value={value}
             onChange={handleChange}
             name={name}
@@ -97,14 +77,26 @@ export const Input = ({
             autoComplete={autoComplete}
             disabled={disabled}
           />
+          <label
+            for={label}
+            className={`${leftIcon ? "mx-3" : "px-2"} ${
+              leftIcon ? "flex justify-center items-center px-2.5" : "px-2"
+            } ${
+              required &&
+              "after:content-['*'] after:text-red-500 after:absolute after:-top-1"
+            } absolute -translate-y-4 scale-75 top-2 origin-[0] rounded-lg text-sm text-gray-400 dark:text-gray-400 duration-300 transform bg-white dark:bg-gray-950 peer-focus:px-2 peer-focus:text-bee-primary peer-focus:dark:text-bee-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-3 + ${labelClassName}`}
+          >
+            <span className="mr-2">{labelIcon}</span>
+            {label}
+          </label>
           {type === "password" && (
             <button
               type="button"
               onClick={viewPassword}
               className={`absolute top-1/2 -translate-y-1/2 right-4`}
-            // ${
-            //   errorContent ? "right-10" : "right-4"
-            // }
+              // ${
+              //   errorContent ? "right-10" : "right-4"
+              // }
             >
               {passwordType === "password" ? (
                 <FaEye className="text-[#858585]" />

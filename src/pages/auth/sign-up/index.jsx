@@ -90,7 +90,7 @@ export const Signup = () => {
                   render={({ field }) => (
                     <Input
                       {...field}
-                      // label={"First name"}
+                      label={"First name"}
                       type={"name"}
                       placeholder={"First Name"}
                       className={"border-[#D9D9D9] border"}
@@ -107,7 +107,7 @@ export const Signup = () => {
                   render={({ field }) => (
                     <Input
                       {...field}
-                      // label={"Last name"}
+                      label={"Last name"}
                       type={"name"}
                       placeholder={"Last Name"}
                       className={"border-[#D9D9D9] border"}
@@ -125,7 +125,7 @@ export const Signup = () => {
                   render={({ field }) => (
                     <PhoneNumberInput
                       {...field}
-                      // label={"Phone Number"}
+                      label={"Phone Number"}
                       country={"in"}
                       placeholder={"Phone No."}
                       touched={true}

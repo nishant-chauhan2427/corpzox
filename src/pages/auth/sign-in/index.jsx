@@ -152,7 +152,7 @@ export const SignIn = () => {
                 render={({ field }) => (
                   <Input
                     {...field}
-                    // label={"Email"}
+                    label={"Email"}
                     type={"email"}
                     placeholder={"Email Id / Phone No."}
                     className={"border-[#D9D9D9] border"}
@@ -169,7 +169,7 @@ export const SignIn = () => {
                 render={({ field }) => (
                   <Input
                     {...field}
-                    // label={"Password"}
+                    label={"Password"}
                     type={"password"}
                     className={"border-[#D9D9D9] border"}
                     placeholder={"Password"}

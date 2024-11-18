@@ -24,6 +24,10 @@ import FundraiseListing from "../pages/fundraise/listing";
 import InvestmentListing from "../pages/investment/listing";
 import DocumentsListing from "../pages/documents/listing";
 import ChangePassword from "../pages/settings/changePassword";
+import PreviewPayment from "../pages/payment/previewPayment";
+import History from "../pages/payment/history";
+import Profile from "../pages/profile";
+import ProfileEdit from "../pages/profile/editProfile"
 
 const router = createBrowserRouter([
   {
@@ -153,8 +157,12 @@ const router = createBrowserRouter([
                 element: <SelectBusiness />,
               },
               {
+                path: "preview",
+                element: <PreviewPayment />,
+              },
+              {
                 path: "history",
-                element: <MakeAPayment />,
+                element: <History />,
               },
             ],
           },
@@ -166,7 +174,6 @@ const router = createBrowserRouter([
                 index: true,
                 element: <FundraiseListing />,
               },
-              
             ],
           },
           // Investment route
@@ -177,7 +184,6 @@ const router = createBrowserRouter([
                 index: true,
                 element: <InvestmentListing />,
               },
-              
             ],
           },
           // Documents route
@@ -188,7 +194,6 @@ const router = createBrowserRouter([
                 index: true,
                 element: <DocumentsListing />,
               },
-              
             ],
           },
           // Settings route
@@ -199,7 +204,20 @@ const router = createBrowserRouter([
                 index: true,
                 element: <ChangePassword />,
               },
-              
+            ],
+          },
+          // Profile route
+          {
+            path: "profile",
+            children: [
+              {
+                index: true,
+                element: <Profile />,
+              },
+              {
+                path: "edit",
+                element: <ProfileEdit />,
+              },
             ],
           },
         ],

@@ -5,7 +5,8 @@ import { Controller, useForm } from "react-hook-form";
 import { Input } from "../../../components/inputs";
 import { Selector } from "../../../components/select";
 import { Button } from "../../../components/buttons";
-import Businessdetails from "./components/business";
+import BusinessDetails from "./components/business";
+import Documents from ".//components/documents";
 const SelectBusiness = () => {
   const {
     handleSubmit,
@@ -40,12 +41,23 @@ const SelectBusiness = () => {
       point: "Do not upload photocopies.",
     },
     {
-      point:
+      point: 
         "Address proof can be your Aadhaar card, driving license, or electricity bill.",
     },
     {
       point:
         "All documents must be uploaded as PDF files, with a maximum file size of 20KB each.",
+    },
+  ];
+  const previewPdf = [
+    {
+      view: "View",
+    },
+    {
+      view: "View",
+    },
+    {
+      view: "View",
     },
   ];
 
@@ -68,144 +80,32 @@ const SelectBusiness = () => {
               render={({ field }) => (
                 <Selector
                   {...field}
-                  //   label={"Select Business"}
+                  label={"Select Business"}
                   placeholder={"Select Business"}
                   errorContent={errors.industryType?.message}
                   options={selectBusiness}
-                  //   required={true}
+                  // required={true}
                 />
               )}
             />
           </div>
-          <div className="flex flex-col sm:flex-row gap-5 pt-4 sm:pt-20">
-            <div className="flex flex-col gap-2 ">
-              <div className=" flex gap-2  text-base font-normal text-[#0A1C40] ">
-                AADHAR card{" "}
-                <div>
-                  <img
-                    src="/images/payment/i - icon.svg"
-                    data-tooltip-id="my-tooltip"
-                    data-tooltip-content={
-                      "The Aadhaar card image should include both front and back sides."
-                    }
-                  />
-                </div>
-              </div>
-              <div className="flex basis-1/3  gap-5">
-                <Controller
-                  name={`Aadhar Card`}
-                  control={control}
-                  render={({ field }) => (
-                    <div className="flex  gap-2 text-center relative border border-[#00000033] rounded-lg px-8 py-10 ">
-                      <img
-                        src="/images/payment/upload-icon.svg"
-                        alt=""
-                      />
-                      <label
-                        className="font-normal text-base text-[#585858]"
-                        htmlFor="upload"
-                      >
-                        Upload document
-                      </label>
-                      <input
-                        {...field}
-                        id="upload"
-                        className="w-full h-full absolute top-0 left-0 hidden"
-                        type="file"
-                        label={"Upload"}
-                        placeholder={"Upload document"}
-                        errorContent={errors.industryType?.message}
-                        required={true}
-                      />
-                    </div>
-                  )}
-                />
-              </div>
-            </div>
-            <div className="flex flex-col gap-2 ">
-              <div className=" flex gap-2  text-base font-normal text-[#0A1C40] ">
-                PAN Card{" "}
+          <Documents control={control} errors={errors} />
+          <div className="grid sm:grid-cols-3 grid-cols-1 gap-4 sm:w-[60%] pt-5">
+            {previewPdf.map((data, index) => (
+              <div
+                key={index}
+                className="flex bg-[#7676801F] pt-12 rounded gap-2  pb-4 py-4 flex-col justify-center items-center"
+              >
                 <img
-                  src="/images/payment/i - icon.svg"
-                  data-tooltip-id="my-tooltip"
-                  data-tooltip-content={
-                    "The Aadhaar card image should include both front and back sides."
-                  }
-                />{" "}
-              </div>
-              <div className="flex basis-1/3 gap-5">
-                <Controller
-                  name={`PanCard`}
-                  control={control}
-                  render={({ field }) => (
-                    <div className="flex  gap-2 text-center relative border border-[#00000033] rounded-lg px-8 py-10 ">
-                      <img
-                        src="/images/payment/upload-icon.svg"
-                        alt=""
-                      />
-                      <label
-                        className="font-normal text-base text-[#585858]"
-                        htmlFor="upload"
-                      >
-                        Upload document
-                      </label>
-                      <input
-                        {...field}
-                        id="upload"
-                        className="w-full h-full absolute top-0 left-0 hidden"
-                        type="file"
-                        label={"Upload"}
-                        placeholder={"Upload document"}
-                        errorContent={errors.industryType?.message}
-                        required={true}
-                      />
-                    </div>
-                  )}
+                  src="/public/images/payment/pdf-preview.svg"
+                  width={100}
+                  alt=""
                 />
+                <Link className="text-[#007AFF] font-normal text-base underline">
+                  {data.view}
+                </Link>
               </div>
-            </div>
-            <div className="flex flex-col gap-2 ">
-              <div className=" flex gap-2  text-base font-normal text-[#0A1C40] ">
-                ADDRESS PROOF{" "}
-                <img
-                  src="/images/payment/i - icon.svg"
-                  data-tooltip-id="my-tooltip"
-                  data-tooltip-content={
-                    "The Aadhaar card image should include both front and back sides."
-                  }
-                />{" "}
-              </div>
-              <div className="flex basis-1/3 gap-5">
-                <Controller
-                  name={`industryType`}
-                  control={control}
-                  render={({ field }) => (
-                    <div className="flex  gap-2 text-center relative border border-[#00000033] rounded-lg px-8 py-10 ">
-                      <img
-                        src="/images/payment/upload-icon.svg"
-                        alt=""
-                      />
-                      <label
-                        className="font-normal text-base text-[#585858]"
-                        htmlFor="upload"
-                      >
-                        Upload document
-                      </label>
-                      <input
-                        {...field}
-                        id="upload"
-                        className="w-full h-full absolute top-0 left-0 hidden"
-                        type="file"
-                        label={"Upload"}
-                        placeholder={"Upload document"}
-                        errorContent={errors.industryType?.message}
-                        required={true}
-                      />
-                    </div>
-                  )}
-                />
-              </div>
-            </div>
+            ))}
           </div>
         </div>
         <div>
@@ -220,7 +120,7 @@ const SelectBusiness = () => {
             ))}
           </ul>
         </div>
-        <Businessdetails control={control} errors={errors} />
+        <BusinessDetails control={control} errors={errors} />
       </div>
     </>
   );
