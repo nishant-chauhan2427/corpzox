@@ -22,12 +22,12 @@ export const Button = ({
       type={type}
       disabled={disabled || isLoading}
       onClick={onClick}
-      className={`${className ? className : "px-8 py-2"}
+      className={`${className ? className : "px-4 py-1"}
       ${disabled || (isLoading && "!bg-[#ADADAD] hover:bg-slate-500 rounded")} ${simpleLink &&
         !disabled &&
         !isLoading &&
         "text-primaryText font-medium  hover:text-gray-700 rounded"
-        } ${outline && !disabled && !isLoading && "text-primaryText rounded border border-button-border-color dark:border-gray-700"} ${primary &&
+        } ${outline && !disabled && !isLoading && "text-[#4B5563] rounded-lg border border-[#4B5563] dark:border-gray-700"} ${primary &&
         !disabled &&
         !isLoading &&
         "bg-[#FFD700] font-semibold text-black hover:bg-[#FFD700] hover:bg-opacity-80 rounded-[10px]"

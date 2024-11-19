@@ -45,7 +45,7 @@ export const IconBox = ({
           to={to}
           className={`px-2 py-3 ${
             pathname.includes(to) && "bg-[#FFD700] shadow-lg"
-          } rounded-md flex items-center gap-4 text-black`}
+          } hover:bg-[#FFEF9A] hover:shadow-lg rounded-md flex items-center gap-4 text-black group transition-all duration-300 ease-in-out hover:transition-all hover:duration-300 hover:ease-in-out`}
           onClick={onClick}
         >
           {/* <img className={`w-5`} src="/icons/home.svg" alt="" /> */}
@@ -62,7 +62,7 @@ export const IconBox = ({
               className={`${
                 pathname.includes(to)
                 ? "font-bold text-black" : "dark:text-white"
-              } text-base `}
+              } text-base group-hover:font-bold transition-all duration-300 ease-in-out group-hover:transition-all group-hover:duration-300 group-hover:ease-in-out`}
             >
               {title}
             </span>

@@ -115,7 +115,7 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
         initial={{ left: "-50%" }}
         animate={{ left: 10, transition: { duration: 0.3 } }}
         exit={{ left: "-50%", transition: { duration: 0.3 } }}
-        className={`${className ? className : ""} shadow-xl dark:bg-slate-900`}
+        className={`${className ? className : ""} overflow-hidden shadow-xl dark:bg-slate-900`}
       >
         {/* <div
           className={`${
@@ -176,8 +176,8 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
             </button>
           </div> */}
         </div>
-        <div className="h-[80vh] overflow-x-hidden overflow-y-auto">
-          <div className="px-4 py-4">
+        <div className="h-[90vh] overflow-x-hidden overflow-y-auto">
+          <div className="px-4 py-4 space-y-1">
             {items?.map((item, index) => (
               <IconBox
                 containerClassName="px-4 py-2"
@@ -194,7 +194,7 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
               />
             ))}
           </div>
-          <div className="px-2 flex flex-col gap-4">
+          <div className="px-2 pb-14 flex flex-col gap-4">
             {/*  */}
             <AccountManager sidebar={true} />
             <UpdateProfile />

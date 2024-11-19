@@ -15,7 +15,8 @@ const Insight = () => {
             className="flex gap-2 pt-2 rounded-lg  hover:shadow-lg  "
           >
             <div
-              className={`w-[40%] bg-[url(${blog.image})] rounded-lg bg-cover overflow-hidden`}
+             style={{ backgroundImage: `url(${blog.image})` }}
+              className={`w-[40%] rounded-lg bg-cover overflow-hidden`}
             ></div>
             <div className="flex w-[60%] flex-col gap-1">
               <div className="flex ">

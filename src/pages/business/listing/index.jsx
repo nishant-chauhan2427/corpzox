@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, Link } from "react-router-dom";
 import { setBusinessPage } from "../../../redux/slices/userLoginSlice";
 import { calculateAge } from "../../../utils/index";
+import { BusinessCard } from "./components/businessCard";
+
 const BusinessListing = () => {
   const data = businessListing;
   const dispatch = useDispatch();
@@ -66,72 +68,7 @@ const BusinessListing = () => {
         <>
           <div className="pb-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
             {business?.list.map((data, index) => (
-              <div className="p-4 bg-[#F3F7FF] rounded-xl">
-                <div className="flex flex-col gap-2 bg-white rounded-xl p-2">
-                  <div key={index} className="flex items-end gap-2">
-                    <div className="p-2 bg-[#F3F7FF] rounded-xl flex justify-center items-center">
-                      <img
-                        src="/images/business/business-logo.svg"
-                        className=""
-                        alt=""
-                      />
-                    </div>
-                    <div>
-                      <Link to={`/business/detail?id=${data?._id}`}>
-                        <p className="font-bold text-base text-[#171717]">
-                          {data.businessName}
-                        </p>
-                      </Link>
-                      <p className="font-semibold text-[11px] text-[#343C6A]">
-                        {data.businesSubTitle}{" "}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-1 w-[100%]">
-                    {labelValue("Type:", data.typeOfBusiness)}
-                    {labelValue(
-                      "Registered Office:",
-                      data?.businessAddressCity && data?.businessAddressState
-                        ? `${data?.businessAddressCity},${data?.businessAddressState}`
-                        : data?.businessAddressCity
-                        ? data?.businessAddressCity
-                        : data?.businessAddressState
-                    )}
-                    {labelValue(
-                      "Company Status:",
-                      data?.active ? "Active" : "In Active"
-                    )}
-                    {labelValue(
-                      "Company Age:",
-                      data?.yearOfStablish
-                        ? `${calculateAge(data?.yearOfStablish)}`
-                        : null
-                    )}
-                  </div>
-                </div>
-                <div className="flex justify-between items-center gap-2 pt-5">
-                  <div className="flex items-center gap-2">
-                    <div className="flex gap-1 items-center">
-                      <img src="images/critical-icon.svg" width={20} alt="" />
-                      <p className="font-bold text-[10px] text-[#FF3B3B]">
-                        CRITICAL
-                      </p>
-                    </div>
-                    <div className="flex gap-1 items-center">
-                      <img src="images/settinn-icon.svg" width={20} alt="" />
-                      <p className="font-bold text-[10px] text-[#007453]">
-                        {data?.totalService} ACTIVE SERVICES
-                      </p>
-                    </div>
-                  </div>
-                  <Button
-                    className={"w-fit px-2 py-1 text-[10px]"}
-                    primary={true}
-                  >
-                    +Service
-                  </Button>
-                </div>
-              </div>
+              <BusinessCard key={index} data={data} />
             ))}
           </div>
           {!businessLoading && business.list.length < business.totalPage && (
