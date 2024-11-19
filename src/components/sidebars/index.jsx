@@ -194,7 +194,7 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
               />
             ))}
           </div>
-          <div className="px-2 flex flex-col gap-4">
+          <div className="px-2 pb-14 flex flex-col gap-4">
             {/*  */}
             <AccountManager sidebar={true} />
             <UpdateProfile />

@@ -4,7 +4,7 @@ import { Button } from "../../../../../components/buttons";
 
 export const BusinessCard = ({ data }) => {
   return (
-    <div className="p-4 bg-[#F3F7FF] rounded-xl">
+    <div className="p-4 bg-[#F3F7FF] rounded-xl hover:shadow-lg">
       <div className="flex flex-col gap-2 bg-white rounded-xl p-2">
         <div className="flex items-end gap-2">
           <div className="p-2 bg-[#F3F7FF] rounded-xl flex justify-center items-center">
@@ -54,7 +54,7 @@ export const BusinessCard = ({ data }) => {
           </div>
         </div>
         <Button className={"w-fit px-2 py-1 text-[10px]"} primary={true}>
-          +Service
+          Add Service
         </Button>
       </div>
     </div>
