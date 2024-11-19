@@ -39,7 +39,7 @@ const DeactivateAccount = () => {
           />
 
           {/*  */}
-          <p className="text-2xl">
+          <p className="text-xl">
             Select your reason to deactivate your account
           </p>
           <CheckMarkLabel label={"I don't find CorpZo useful"} />
