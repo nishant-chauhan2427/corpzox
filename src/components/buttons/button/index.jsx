@@ -22,7 +22,7 @@ export const Button = ({
       type={type}
       disabled={disabled || isLoading}
       onClick={onClick}
-      className={`font-inter ${className ? className : "px-8 py-2"}
+      className={`${className ? className : "px-8 py-2"}
       ${disabled || (isLoading && "!bg-[#ADADAD] hover:bg-slate-500 rounded")} ${simpleLink &&
         !disabled &&
         !isLoading &&
