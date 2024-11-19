@@ -8,9 +8,13 @@ import { useLocation } from "react-router-dom";
 // import { businessCard, recommednedDetail,serviceProgressUpdateDetail } from "../../database";
 // import { GoDotFill } from "react-icons/go";
 // import { ImCross } from "react-icons/im";
-import { useState,useEffect } from "react";
-import {getUser,getUserBusiness,getUserServices} from '../../redux/actions/dashboard-action';
-import { useDispatch,useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import {
+  getUser,
+  getUserBusiness,
+  getUserServices,
+} from "../../redux/actions/dashboard-action";
+import { useDispatch, useSelector } from "react-redux";
 import {
   businessListing,
   recommendedServicesListing,
@@ -28,10 +32,19 @@ const Dashboard = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [isFadingOut, setIsFadingOut] = useState(false);
   const dispatch = useDispatch();
-  const location=useLocation();
+  const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const searchValue = queryParams.get('search');
-  const { user={},manager={},business,businessLoading,businessError,service={},serviceLoading,servicesError } = useSelector((state) => state.user);
+  const searchValue = queryParams.get("search");
+  const {
+    user = {},
+    manager = {},
+    business,
+    businessLoading,
+    businessError,
+    service = {},
+    serviceLoading,
+    servicesError,
+  } = useSelector((state) => state.user);
   // const handleBannerdisplay = () => {
   //   setIsFadingOut(true); // Start fade-out animation
   //   setIsVisible(false);
@@ -45,22 +58,22 @@ const Dashboard = () => {
     dispatch(getUserBusiness({}));
     dispatch(getUserServices({}));
   }, []);
-  useEffect(()=>{
-      dispatch(getUserBusiness({query:searchValue}));
-      dispatch(getUserServices({query:searchValue}));
-  },[searchValue])
+  useEffect(() => {
+    dispatch(getUserBusiness({ query: searchValue }));
+    dispatch(getUserServices({ query: searchValue }));
+  }, [searchValue]);
   return (
     <>
       <section className="py-6">
         <div className="my-2 flex flex-col md:flex-row justify-between gap-4">
           <div className="flex flex-col sm:flex-row gap-4 w-full">
-            <Profile user={user}/>
-            <AccountManager manager={manager}/>
+            <Profile user={user} />
+            <AccountManager manager={manager} />
           </div>
           {/* <Advertisement /> */}
         </div>
-        <Business data={business?.list} total={business?.totalPage}/>
-        <RecommendedServices data={service?.list}  total={service?.totalPage}/>
+        <Business data={business?.list} total={business?.totalPage} />
+        <RecommendedServices data={service?.list} total={service?.totalPage} />
         <ServicesProgress data={servicesProgress} />
       </section>
     </>
