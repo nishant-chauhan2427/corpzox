@@ -11,7 +11,7 @@ const Offers = () => {
         </div>
         <div className="h-[0.5px] bg-gradient-to-r  from-[#E0E1E2] via-[#E0E1E2] to-[#E0E1E2]"></div>
         {offers.map((offers, index) => (
-          <div className="rounded-lg">
+          <div className="rounded-lg overflow-hidden">
             <div
               key={index}
               className="flex  pt-2 rounded-lg  hover:shadow-lg  "
@@ -20,7 +20,7 @@ const Offers = () => {
                 style={{ backgroundImage: `url(${offers.image})` }}
                 className={`w-[40%] bg-cover bg-right overflow-hidden`}
               ></div>
-              <div className="flex w-[60%] flex-col gap-1 bg-[#D9D9D9] pl-3 py-4">
+              <div className="flex w-[60%] flex-col gap-1 bg-[#f9f9f9] pl-3 py-4">
                 <div className="flex ">
                   <p className="font-bold text-[12px]  text-[#1A202E] ">
                     Special Summer Offer{" "}
