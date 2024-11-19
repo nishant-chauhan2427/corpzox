@@ -27,7 +27,6 @@ import { RecommendedServices } from "./components/services/recommended";
 import { ServicesProgress } from "./components/services/progress";
 import { Business } from "./components/business";
 
-
 const Dashboard = () => {
   const [accountShowButton, setAccountShowButton] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -76,7 +75,6 @@ const Dashboard = () => {
         <Business data={business?.list} total={business?.totalPage} />
         <RecommendedServices data={service?.list} total={service?.totalPage} />
         <ServicesProgress data={servicesProgress} />
-        
       </section>
     </>
   );
