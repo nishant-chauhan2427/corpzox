@@ -20,7 +20,7 @@ export const IconWrapper = ({ children, className, ...props }) => {
   return (
     <div
       {...props}
-      className={` + ${className} md:bg-[#3c4962] md:dark:bg-[#22262C] lg:p-2 md:p-2 sm:bg-transparent sm:p-1 flex justify-center items-center rounded-full`}
+      className={` + ${className} md:bg-[#3c4962] md:dark:bg-[#22262C] lg:p-2 md:p-2 sm:bg-transparent sm:p-1 flex justify-center items-center rounded-full border-0 sm:border sm:border-[#97a3b5]`}
       
     >
       {children}

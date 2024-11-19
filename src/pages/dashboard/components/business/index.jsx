@@ -5,7 +5,7 @@ import {calculateAge} from '../../../../utils/index';
 export const Business = ({ data=[] ,total}) => {
   return (
     <div className="flex flex-col ">
-      <div className="flex justify-between gap-4">
+      <div className="flex flex-col sm:flex-row justify-between gap-4">
         <p className="flex items-center gap-4 font-semibold text-xl text-[#0A1C40]">
           Your Business ({total})
           <span>
@@ -68,7 +68,7 @@ export const Business = ({ data=[] ,total}) => {
           ))}
         </div>
       ) : (
-        <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
+        <div className="flex justify-center gap-2 items-center flex-col h-[50vh]">
           <img src="/images/business/no-business.svg" alt="" />
           <p className="font-bold  text-xl text-[#000000] ">
             No Business Created
