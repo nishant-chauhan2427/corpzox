@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { Button } from "../../../../components/buttons";
 import { IoMdAddCircle } from "react-icons/io";
-import {calculateAge} from '../../../../utils/index';
-export const Business = ({ data=[] ,total}) => {
+import { calculateAge } from "../../../../utils/index";
+export const Business = ({ data = [], total }) => {
   return (
     <div className="flex flex-col ">
       <div className="flex flex-col sm:flex-row justify-between gap-4">
@@ -13,8 +13,14 @@ export const Business = ({ data=[] ,total}) => {
           </span>
         </p>
         <div className="flex items-center gap-2">
-          <Button primary={true} leftIcon={<IoMdAddCircle />}>New Business</Button>
-          <Link className="font-semibold text-[#606060]" to={'/business'}>View all</Link>
+          <Link to={"/business/create"}>
+            <Button primary={true} leftIcon={<IoMdAddCircle />}>
+              New Business
+            </Button>{" "}
+          </Link>
+          <Link className="font-semibold text-[#606060]" to={"/business"}>
+            View all
+          </Link>
         </div>
       </div>
       {data.length > 0 ? (
@@ -24,7 +30,11 @@ export const Business = ({ data=[] ,total}) => {
               <div className="flex flex-col gap-2 bg-white rounded-xl p-2">
                 <div key={index} className="flex items-end gap-2">
                   <div className="p-2 bg-[#F3F7FF] rounded-xl flex justify-center items-center">
-                    <img src="/images/business/business-logo.svg" className="" alt="" />
+                    <img
+                      src="/images/business/business-logo.svg"
+                      className=""
+                      alt=""
+                    />
                   </div>
                   <div>
                     <p className="font-bold text-base text-[#171717]">
@@ -37,9 +47,24 @@ export const Business = ({ data=[] ,total}) => {
                 </div>
                 <div className="flex flex-col gap-1 w-[100%]">
                   {labelValue("Type:", data?.typeOfBusiness)}
-                  {labelValue("Registered Office:", (data?.businessAddressCity&&data?.businessAddressState)?`${data?.businessAddressCity},${data?.businessAddressState}`:(data?.businessAddressCity)?(data?.businessAddressCity):(data?.businessAddressState))}
-                  {labelValue("Company Status:", (data?.active)?"Active":"In Active")}
-                  {labelValue("Company Age:", (data?.yearOfStablish)?`${calculateAge(data?.yearOfStablish)}`:null)}
+                  {labelValue(
+                    "Registered Office:",
+                    data?.businessAddressCity && data?.businessAddressState
+                      ? `${data?.businessAddressCity},${data?.businessAddressState}`
+                      : data?.businessAddressCity
+                      ? data?.businessAddressCity
+                      : data?.businessAddressState
+                  )}
+                  {labelValue(
+                    "Company Status:",
+                    data?.active ? "Active" : "In Active"
+                  )}
+                  {labelValue(
+                    "Company Age:",
+                    data?.yearOfStablish
+                      ? `${calculateAge(data?.yearOfStablish)}`
+                      : null
+                  )}
                 </div>
               </div>
               <div className="flex justify-between items-center gap-2 pt-5">
