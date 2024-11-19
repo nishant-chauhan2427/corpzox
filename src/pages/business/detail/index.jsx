@@ -49,7 +49,7 @@ const BusinessDetail = () => {
               <div className="flex gap-2 items-center">
                 <div className="flex gap-1 items-center">
                   <img
-                    src="/icons/business/critical-icon.svg "
+                    src="/icons/business/critical-icon.svg"
                     width={20}
                     alt=""
                   />

@@ -25,7 +25,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
   const [signedInMenuPopup, setSignedInMenuPopup] = useState(false);
   const [signOutModalOpen, setSignOutModalOpen] = useState(false);
 
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user.user);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -74,6 +74,9 @@ export const Header = ({ className, collapse, setCollapse }) => {
         return "";
     }
   }
+
+  console.log(user, "jhhj");
+  
 
   return (
     <header
@@ -176,7 +179,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
                       {user?.name ? user?.name : "User Name"}
                     </h5>
                     <p className="text-[9px] text-white">
-                      {user?.name ? user?.name : "Designation"}
+                      {user?.name ? user?.email : "Designation"}
                     </p>
                   </div>
                   <img src="/icons/header/down-arrow.svg" alt="" />

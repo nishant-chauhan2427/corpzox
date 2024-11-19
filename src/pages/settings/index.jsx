@@ -25,7 +25,7 @@ const Settings = () => {
     <div className="pb-4">
       <div className="pt-2 flex flex-col md:flex-row justify-between gap-4">
         <div className="flex items-center gap-2 font-semibold text-xl text-[#0A1C40]">
-          <button>
+          <button onClick={() => navigate(-1)}>
             <GoArrowLeft />
           </button>
           <p>Settings</p>
