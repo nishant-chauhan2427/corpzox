@@ -8,24 +8,40 @@ export const ConfirmationModal = ({
   loading,
   title,
   description,
+  children,
 }) => {
   if (!isOpen) return null;
-//   const [isModalOpen, setIsModalOpen] = useState(false);
-//   const handleModalConfirm = async () => {};
+  //   const [isModalOpen, setIsModalOpen] = useState(false);
+  //   const handleModalConfirm = async () => {};
 
-//   const handleModalClose = () => {
-//     setIsModalOpen(false);
-//   };
+  //   const handleModalClose = () => {
+  //     setIsModalOpen(false);
+  //   };
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-[1005]">
       <div className="max-w-md relative bg-white p-4 rounded-md shadow-lg">
-        <h4>{title}</h4>
-        <p className="mb-4">{description}</p>
+        {children ? (
+          children
+        ) : (
+          <>
+            <h4>{title}</h4>
+            <p className="mb-4">{description}</p>
+          </>
+        )}
         <div className="flex justify-end gap-4">
-          <Button className={"w-fit px-8 py-2 rounded"} onClick={onConfirm} mainPrimary={true} isLoading={loading}>
+          <Button
+            className={"w-fit px-8 py-2 rounded"}
+            onClick={onConfirm}
+            mainPrimary={true}
+            isLoading={loading}
+          >
             Yes
           </Button>
-          <Button outLine={true} onClick={onClose}  className={"w-fit px-8 py-2 rounded"}>
+          <Button
+            outLine={true}
+            onClick={onClose}
+            className={"w-fit px-8 py-2 rounded"}
+          >
             Cancel
           </Button>
         </div>
