@@ -32,6 +32,10 @@ const ChangePassword = () => {
     console.log(data, "data before transformation");
   };
 
+  const onConfirmationModalClose = () => {
+    setConfirmationModal(!confirmationModal);
+  };
+
   useEffect(() => {
     setTimer(30);
   }, []);
@@ -171,76 +175,73 @@ const ChangePassword = () => {
           </div>
         </form>
       </div>
-      {confirmationModal && (
-        <ConfirmationModal
-          children={
-            <>
-              <h4 className="font-bold text-2xl">OTP Verification</h4>
-              <p className="text-sm text-[#525252]">
-                We have sent you an OTP on your registered mobile no.
-                <br /> and email id
-              </p>
-              <form
-                onSubmit={handleVerify}
-                className="w-full sm:w-full mt-8 flex flex-col gap-2"
+      <ConfirmationModal
+        isOpen={confirmationModal}
+        onClose={onConfirmationModalClose}
+      >
+        <>
+          <h4 className="font-bold text-2xl">OTP Verification</h4>
+          <p className="text-sm text-[#525252]">
+            We have sent you an OTP on your registered mobile no.
+            <br /> and email id
+          </p>
+          <form
+            onSubmit={handleVerify}
+            className="w-full sm:w-full mt-8 flex flex-col gap-2"
+          >
+            <div className="w-full flex justify-start items-start gap-4 pb-6">
+              {otp.map((digit, index) => (
+                <input
+                  className={`${
+                    error ? "border-error" : "border-[#DFEAF2]"
+                  } w-[15%] h-14 font-bold border rounded-lg text-center`}
+                  key={index}
+                  type="text"
+                  maxLength="1"
+                  value={digit}
+                  ref={(ref) => (inputRefs.current[index] = ref)}
+                  onChange={(e) => handleChange(index, e.target.value)}
+                  onKeyDown={(e) => handleBackspace(index, e)}
+                  onPaste={index === 0 ? handlePaste : null}
+                />
+              ))}
+            </div>
+            <div className="h-1">
+              {/* {error && <p className="text-error text-xs">{errorContent}</p>} */}
+            </div>
+            <div className="w-full flex flex-col justify-center items-center">
+              <button
+                className={`text-xs text-primary disabled:text-[#8D8D8D]`}
+                onClick={handleResendOtp}
+                type="button"
+                disabled={isResendDisabled}
               >
-                <div className="w-full flex justify-start items-start gap-4 pb-6">
-                  {otp.map((digit, index) => (
-                    <input
-                      className={`${
-                        error ? "border-error" : "border-[#DFEAF2]"
-                      } w-[15%] h-14 font-bold border rounded-lg text-center`}
-                      key={index}
-                      type="text"
-                      maxLength="1"
-                      value={digit}
-                      ref={(ref) => (inputRefs.current[index] = ref)}
-                      onChange={(e) => handleChange(index, e.target.value)}
-                      onKeyDown={(e) => handleBackspace(index, e)}
-                      onPaste={index === 0 ? handlePaste : null}
-                    />
-                  ))}
-                </div>
-                <div className="h-1">
-                  {/* {error && <p className="text-error text-xs">{errorContent}</p>} */}
-                </div>
-                <div className="w-full flex flex-col justify-center items-center">
-                  <button
-                    className={`text-xs text-primary disabled:text-[#8D8D8D]`}
-                    onClick={handleResendOtp}
-                    type="button"
-                    disabled={isResendDisabled}
-                  >
-                    {timer > 0 ? (
-                      <p className="!text-[#969696] font-normal text-sm">
-                        Resend Code{" "}
-                        <span className="!font-semibold text-[#5753FF] text-sm">
-                          00:{timer}
-                        </span>{" "}
-                      </p>
-                    ) : (
-                      "Resend Code"
-                    )}
-                  </button>
-                  <Button
-                    type={"submit"}
-                    primary={true}
-                    className={
-                      "mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold"
-                    }
-                    disabled={otp?.[otp.length - 1] == ""}
-                    isLoading={isVerify}
-                  >
-                    Continue
-                  </Button>
-                </div>
-              </form>
-            </>
-          }
-          isOpen={confirmationModal}
-          onClose={() => setConfirmationModal(!confirmationModal)}
-        />
-      )}
+                {timer > 0 ? (
+                  <p className="!text-[#969696] font-normal text-sm">
+                    Resend Code{" "}
+                    <span className="!font-semibold text-[#5753FF] text-sm">
+                      00:{timer}
+                    </span>{" "}
+                  </p>
+                ) : (
+                  "Resend Code"
+                )}
+              </button>
+              <Button
+                type={"submit"}
+                primary={true}
+                className={
+                  "mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold"
+                }
+                disabled={otp?.[otp.length - 1] == ""}
+                isLoading={isVerify}
+              >
+                Continue
+              </Button>
+            </div>
+          </form>
+        </>
+      </ConfirmationModal>
     </>
   );
 };

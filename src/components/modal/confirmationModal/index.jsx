@@ -2,13 +2,15 @@ import { RxCross2 } from "react-icons/rx";
 import { Button } from "../../buttons";
 
 export const ConfirmationModal = ({
+  title,
   isOpen,
   onClose,
-  onConfirm,
   loading,
-  title,
-  description,
   children,
+  onConfirm,
+  description,
+  modalClassName,
+  containerClassName,
 }) => {
   if (!isOpen) return null;
   //   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,8 +20,16 @@ export const ConfirmationModal = ({
   //     setIsModalOpen(false);
   //   };
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-[1005]">
-      <div className="max-w-md relative bg-white p-4 rounded-2xl shadow-lg">
+    <div
+      className={`${
+        containerClassName && containerClassName
+      } fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-[1005]`}
+    >
+      <div
+        className={`${
+          modalClassName && modalClassName
+        } max-w-md relative bg-white p-4 rounded-2xl shadow-lg`}
+      >
         {children ? (
           children
         ) : (
