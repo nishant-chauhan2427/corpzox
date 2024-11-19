@@ -19,11 +19,12 @@ import { capitalize } from "../../utils";
 import { Notification } from "../notification";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../../redux/slices/userLoginSlice";
+import { ConfirmationModal } from "../modal/confirmationModal";
 
 export const Header = ({ className, collapse, setCollapse }) => {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const [signedInMenuPopup, setSignedInMenuPopup] = useState(false);
-  const [signOutModalOpen, setSignOutModalOpen] = useState(false);
+  const [confirmationModal, setConfirmationModal] = useState(false);
 
   const user = useSelector((state) => state.user);
 
@@ -50,6 +51,10 @@ export const Header = ({ className, collapse, setCollapse }) => {
 
   const handleSidebar = () => {
     setCollapse(!collapse);
+  };
+
+  const onConfirmationModalClose = () => {
+    setConfirmationModal(!confirmationModal);
   };
 
   function getPageHeading(pathname) {
@@ -209,10 +214,10 @@ export const Header = ({ className, collapse, setCollapse }) => {
                     </Link>
                     <button
                       onClick={() => {
-                        setSignOutModalOpen(!signOutModalOpen);
+                        setConfirmationModal(true);
                         setSignedInMenuPopup(!signedInMenuPopup);
-                        dispatch(clearUser());
-                        navigate("/sign-in");
+                        // dispatch(clearUser());
+                        // navigate("/sign-in");
                       }}
                       className="flex items-center"
                     >
@@ -310,41 +315,24 @@ export const Header = ({ className, collapse, setCollapse }) => {
         </AnimatePresence>
 
         {/* Sign Out Modal */}
-        <AnimatePresence>
-          {signOutModalOpen && (
-            <motion.div
-              initial={{ scale: 0, translateY: 500 }}
-              animate={{ scale: 1, translateY: 0 }}
-              exit={{ scale: 0, translateY: 500 }}
-              onClick={() => setSignOutModalOpen(!signOutModalOpen)}
-              className="w-full h-full bg-black bg-opacity-50 fixed top-0 bottom-0 left-0 right-0 z-[1005]"
-            >
-              <div
-                className={`w-11/12 sm:w-8/12 lg:w-1/3 h-40 flex flex-col justify-center items-center gap-6 bg-white dark:bg-[#171717] p-1 overflow-hidden rounded-lg shadow-2xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2`}
-              >
-                <div className="flex items-center justify-center text-base md:text-xl ">
-                  <div>Are you sure you want to signout?</div>
-                </div>
-                <div className="flex items-center justify-center gap-4">
-                  <Button
-                    // disabled={isLoggingOut}
-                    // isLoading={isLoggingOut}
-                    // onClick={handleLogout}
-                    primary={true}
-                  >
-                    Sign Out
-                  </Button>
-                  <Button
-                    onClick={() => setSignOutModalOpen(!signOutModalOpen)}
-                    outLine={true}
-                  >
-                    Cancel
-                  </Button>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <ConfirmationModal
+          isOpen={confirmationModal}
+          onClose={onConfirmationModalClose}
+        >
+          <div className="text-center flex flex-col gap-2 py-4">
+            <p className="font-bold text-xl text-black ">Sign Out</p>
+            <hr className=" bg-gradient-to-r from-[#D0D0D066] via-[#9E9E9E] to-[#D0D0D066]" />
+            <p className="font-medium text-xl text-black">
+              Are you sure you want to Sign out from CorpZo?
+            </p>
+            <div className="flex items-center justify-center gap-4 pt-4">
+              <Button primary={true}>Yes</Button>
+              <Button onClose={onConfirmationModalClose} primary={true}>
+                No
+              </Button>
+            </div>
+          </div>
+        </ConfirmationModal>
       </div>
     </header>
   );
