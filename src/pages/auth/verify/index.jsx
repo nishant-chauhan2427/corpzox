@@ -145,7 +145,7 @@ export const Verify = () => {
                   containerClassName={"text-left pt-5"}
                   heading={"Verification Code"}
                   subHeading={
-                    "We have send you an OTP on your registered mobile no. and Email Id"
+                    "We have sent you an OTP on your registered mobile no.<br/> and email id"
                   }
                 />
                 <form
@@ -182,7 +182,7 @@ export const Verify = () => {
                       {timer > 0 ? (
                         <p className="!text-[#969696] font-normal text-sm">
                           Resend Code{" "}
-                          <span className="!font-semibold text-[#FF2C9C] text-sm">
+                          <span className="!font-semibold text-[#5753FF] text-sm">
                             00:{timer}
                           </span>{" "}
                         </p>
@@ -210,7 +210,7 @@ export const Verify = () => {
                     Need an account?
                     <Link
                       to={"/sign-up"}
-                      className="p-2 text-[#F1359C] font-semibold "
+                      className="p-2 text-[#5753FF] font-semibold "
                     >
                       Create one
                     </Link>
