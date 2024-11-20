@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Search } from "../../../components/search";
 import { Selector } from "../../../components/select";
+import { Heading } from "../../../components/heading";
 
 const DocumentsListing = () => {
   const servicesOptions = [
@@ -12,9 +13,21 @@ const DocumentsListing = () => {
     {
       name: "Folder",
       files: [
-        { name: "Sample Image", url: "/icons/documents/image-sample.svg", type: "image" },
-        { name: "Sample Video", url: "/icons/documents/video-sample.mp4", type: "video" },
-        { name: "Sample PDF", url: "/pdf/documents/sample-pdf.pdf", type: "pdf" },
+        {
+          name: "Sample Image",
+          url: "/icons/documents/image-sample.svg",
+          type: "image",
+        },
+        {
+          name: "Sample Video",
+          url: "/icons/documents/video-sample.mp4",
+          type: "video",
+        },
+        {
+          name: "Sample PDF",
+          url: "/pdf/documents/sample-pdf.pdf",
+          type: "pdf",
+        },
       ],
     },
   ];
@@ -23,14 +36,8 @@ const DocumentsListing = () => {
     <div>
       {/* Page Heading */}
       <div className="flex flex-col md:flex-row justify-between gap-4">
-        <p className="flex items-center gap-4 font-semibold text-xl text-[#0A1C40]">
-          Documents
-          <span>
-            <img src="/icons/dashboard/take-a-tour.svg" alt="" />
-          </span>
-        </p>
+        <Heading tourButton={true}>Documents</Heading>
         <div className="flex items-center gap-2">
-          
           <Search placeholder={"Search Files"} />
         </div>
       </div>
@@ -45,7 +52,7 @@ const DocumentsListing = () => {
         />
       </div>
       {/* Folders and files */}
-      <div className="py-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      <div className="py-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
         {folders.map((data, index) => (
           <Folder key={index} data={data} />
         ))}
@@ -80,13 +87,22 @@ const Folder = ({ data }) => {
             <div key={index} className="file-item">
               {file.type === "image" && (
                 <div className="image-file">
-                  <img src={file.url} alt={file.name} className="w-full h-auto" />
+                  <img
+                    src={file.url}
+                    alt={file.name}
+                    className="w-full h-auto"
+                  />
                   <p>{file.name}</p>
                 </div>
               )}
               {file.type === "pdf" && (
                 <div className="pdf-file">
-                  <iframe src={file.url} width="100%" height="200px" title={file.name}></iframe>
+                  <iframe
+                    src={file.url}
+                    width="100%"
+                    height="200px"
+                    title={file.name}
+                  ></iframe>
                   <p>{file.name}</p>
                 </div>
               )}
