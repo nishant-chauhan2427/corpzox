@@ -6,7 +6,7 @@ import { BusinessCardShimmer } from "../../../../../components/loader/BusinessCa
 export const BusinessCard = ({ data }) => {
   return (
     <>
-      {!data.length > 0 ? (
+      {data.length > 0 ? (
         <BusinessCardShimmer />
       ) : (
         <div className="p-4 bg-[#F3F7FF] rounded-xl hover:shadow-lg">
