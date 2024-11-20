@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "../../../components/buttons";
-import Insight from "../../../components/insight/insight";
+import Insight from "../../../components/insight";
 import { MainTab } from "../../../pages/services/components/tabs/mainTab";
 import ServicesCard from "../../../pages/services/listing/components/services-card";
 import { servicesListing } from "../../../database";
@@ -11,6 +11,7 @@ import { useLocation } from "react-router-dom";
 import {getUserServicesCatagory,getUserServicesSubCatagory,getUserServices,updateServiceWishlist,removeServiceWishlist,updateServiceQuickWishlist} from '../../../redux/actions/servicesListing-action';
 import {setToggleToCheckedWishlist,resetService} from '../../../redux/slices/serviceListingSlice'
 import toast from "react-hot-toast";
+import Offers from "../../../components/offers"
 const ServicesListing = () => {
   const dispatch = useDispatch();
   const { servicesMainTab } = useSelector((state) => state.app);
@@ -103,7 +104,8 @@ const ServicesListing = () => {
           )}
         </div>
       </div>
-      <div className=" sm:w-[30%] pt-4">
+      <div className=" sm:w-[30%] flex flex-col pt-4 gap-5">
+        <Offers/>
         <Insight />
       </div>
     </section>
