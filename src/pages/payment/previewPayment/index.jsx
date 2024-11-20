@@ -5,6 +5,7 @@ import { Button } from "../../../components/buttons";
 import { previewDetail } from "../../../database";
 import DocumentViewer from "./components/documentViewer";
 import { Link } from "react-router-dom";
+import { Heading } from "../../../components/heading";
 
 const PreviewPayment = () => {
   const {
@@ -35,6 +36,9 @@ const PreviewPayment = () => {
     <>
       <div className="py-5">
         <div>
+          <Heading title={"Select Business"} backButton={true}>
+            Select Buisness{" "}
+          </Heading>
           {/* <Documents control={control} errors={errors} /> */}
           <div className="grid sm:grid-cols-3 grid-cols-1 gap-4 sm:w-[60%] pt-5">
             {previewPdf.map((data, index) => (

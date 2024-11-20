@@ -7,6 +7,7 @@ import { Selector } from "../../../components/select";
 import { Button } from "../../../components/buttons";
 import BusinessDetails from "./components/business";
 import Documents from ".//components/documents";
+import { Heading } from "../../../components/heading";
 const SelectBusiness = () => {
   const {
     handleSubmit,
@@ -41,7 +42,7 @@ const SelectBusiness = () => {
       point: "Do not upload photocopies.",
     },
     {
-      point: 
+      point:
         "Address proof can be your Aadhaar card, driving license, or electricity bill.",
     },
     {
@@ -64,14 +65,9 @@ const SelectBusiness = () => {
   return (
     <>
       <div className="flex flex-col  gap-4 py-4">
-        <div className="flex items-center py-6 gap-4 font-semibold text-2xl text-[#0A1C40">
-          <Link>
-            <span>
-              <IoIosArrowRoundBack size={30} />
-            </span>
-          </Link>
-          Select Business
-        </div>
+        <Heading title={"Select Business"} backButton={true}>
+          Select Buisness{" "}
+        </Heading>
         <div>
           <div className="grid sm:grid-cols-2 grid-cols-1 pb-2 ">
             <Controller

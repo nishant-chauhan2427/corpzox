@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { insightBlog } from "../../database/index";
 
 export const Insight = () => {
@@ -6,7 +7,7 @@ export const Insight = () => {
       <div className="flex flex-col gap-4">
         <div className="flex justify-between items-center pb-2">
           <p className="font-semibold text-[16px] text-[#004BBC]">Insights</p>
-          <p className="font-semibold text-xs text-[#828282]">View All</p>
+          <Link className="font-semibold text-xs text-[#828282]">View All</Link>
         </div>
         <div className="h-[0.5px] bg-gradient-to-r from-[#E0E1E2] via-[#E0E1E2] to-[#E0E1E2]"></div>
         {insightBlog.map((blog, index) => (
@@ -15,7 +16,7 @@ export const Insight = () => {
             className="flex gap-2 pt-2 rounded-lg  hover:shadow-lg  "
           >
             <div
-             style={{ backgroundImage: `url(${blog.image})` }}
+              style={{ backgroundImage: `url(${blog.image})` }}
               className={`w-[40%] rounded-lg bg-cover overflow-hidden`}
             ></div>
             <div className="flex w-[60%] flex-col gap-1">
@@ -41,7 +42,7 @@ export const Insight = () => {
                 </div>
                 <div>
                   <p className="font-semibold text-[7px] text-[#495367]">
-                    Rahul Mahto
+                    Jacky
                   </p>
                   <p className="font-normal text-[6px] text-[#96A2BE]">
                     Posted Job Now
