@@ -13,7 +13,7 @@ export const Heading = ({ title, children, backButton, tourButton }) => {
   }, [title]);
 
   return (
-    <h2 className="flex items-center gap-4 font-semibold text-xl text-[#0A1C40]">
+    <h2 className="py-6 flex items-center gap-4 font-semibold text-xl text-[#0A1C40]">
       {backButton && (
         <button onClick={() => navigate(-1)}>
           <GoArrowLeft />
