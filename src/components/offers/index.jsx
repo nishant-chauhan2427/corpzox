@@ -1,7 +1,7 @@
 import { offers } from "../../database/index";
 import { Button } from "../buttons/button";
 
-const Offers = () => {
+export const Offers = () => {
   return (
     <>
       <div className="flex flex-col gap-4 ">
@@ -41,5 +41,3 @@ const Offers = () => {
     </>
   );
 };
-
-export default Offers;
