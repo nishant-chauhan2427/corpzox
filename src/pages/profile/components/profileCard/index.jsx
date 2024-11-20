@@ -2,22 +2,15 @@ import React from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { Button } from "../../../../components/buttons";
+import {Heading } from "../../../../components/heading"
 
 const ProfileCard = () => {
   return (
     <>
       <div className="pb-4">
-        <p className="flex items-center py-6 gap-4 font-semibold text-2xl text-[#0A1C40">
-          <Link>
-            <span>
-              <IoIosArrowRoundBack size={30} />
-            </span>
-          </Link>
-          Welcome Mehul!{" "}
-          <span className="bg-[#ECFDF5] text-sm font-medium px-4 py-1 rounded-full text-[#059669] drop-shadow-md">
-            User Profile
-          </span>
-        </p>
+        {/* <div className="flex items-center py-6 gap-4 font-semibold text-2xl text-[#0A1C40"> */}
+          <Heading title={"Profile"} backButton={true}>Welcome Mehul!</Heading>
+        {/* </div> */}
         <div className="flex flex-col gap-4 sm:flex-row justify-between drop-shadow-md bg-[#F4F9FF] border px-4 rounded-2xl py-4 border-[#DFEAF2] ">
           <div className="flex gap-4">
             <div>

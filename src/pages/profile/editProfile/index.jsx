@@ -6,6 +6,7 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signinValidationSchema } from "../../../validation/authValidatiorSchema";
 import { Input } from "../../../components/inputs";
+import { Heading } from "../../../components/heading";
 
 const Edit = () => {
   const {
@@ -20,14 +21,10 @@ const Edit = () => {
   return (
     <>
       <div className=" flex gap-4 flex-col">
-        <div className="flex items-center py-6 gap-4 font-semibold text-2xl text-[#0A1C40">
-          <Link to={"/profile"}  >
-          <span>
-              <IoIosArrowRoundBack  size={30} />
-            </span>
-          </Link>
+        <Heading title={"Payment"} backButton={true}>
           Edit Profile
-        </div>
+        </Heading>
+
         <div className="flex  drop-shadow-md bg-[#F4F9FF] border px-4 rounded-2xl py-10 border-[#DFEAF2] ">
           <div
             className="flex sm:flex-row flex-col w-full items-center

@@ -38,21 +38,18 @@ const MakeAPayment = () => {
   return (
     <>
       <div>
-        <div className="flex items-center py-6 gap-4 font-semibold text-2xl text-[#0A1C40">
-          {/* <Link>
-            <span>
-              <IoIosArrowRoundBack size={30} />
-            </span>
-          </Link> */}
-          <Heading>Make a payment</Heading>
-        </div>
+        {/* <div className="flex items-center pt-6 pb-2 gap-4 font-semibold text-2xl text-[#0A1C40"> */}
+        <Heading title={"Payment"} backButton={true}>
+          Make a Payment
+        </Heading>
+        {/* </div> */}
 
-        <div className="flex sm:flex-row flex-col sm:mt-6 gap-4 mt-2">
+        <div className="flex sm:flex-row flex-col  gap-4 ">
           <div className="sm:w-[60%] sm:pr-[50px]">
             <p className="font-medium text-[20px] text-[#000000]">
               Add Coupon Code
             </p>
-            <div className=" flex flex-row justify-between items-center gap-2 mt-2">
+            <div className=" flex flex-row justify-between items-center gap-2 ">
               {couponApplied ? (
                 <div className="flex gap-4 items-center">
                   <p className="text-sm bg-[#34C759] pl-4 pr-20 py-6 font-medium text-white rounded">
