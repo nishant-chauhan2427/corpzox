@@ -3,7 +3,7 @@ import { Offers } from "../../offers";
 
 export const RightSidebar = ({ className }) => {
   return (
-    <div className={`${className} py-4 flex flex-col gap-4`}>
+    <div className={`${className} py-4`}>
       <Offers />
       <Insight />
     </div>

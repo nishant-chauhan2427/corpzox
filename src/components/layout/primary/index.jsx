@@ -50,7 +50,7 @@ export const PrimaryLayout = () => {
             <div className="w-full md:w-3/4">
               <Outlet />
             </div>
-            <RightSidebar className={"w-full md:w-1/4 sticky top-0 right-0"} />
+            <RightSidebar className={"w-full md:w-1/4 hidden md:flex flex-col gap-4 md:sticky top-0 right-0"} />
           </motion.div>
         </motion.div>
       </div>

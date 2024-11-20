@@ -48,7 +48,7 @@ const BusinessListing = () => {
   };
   return (
     <div
-      className="flex flex-col pt-10 overflow-y-auto"
+      className="flex flex-col overflow-y-auto"
       onScroll={handleScroll}
     >
       <div className="flex flex-col md:flex-row justify-between gap-4">

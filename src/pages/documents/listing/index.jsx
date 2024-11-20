@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { LinkButton } from "../../../components/link";
-import { IoMdAddCircle } from "react-icons/io";
 import { Search } from "../../../components/search";
 import { Selector } from "../../../components/select";
 
