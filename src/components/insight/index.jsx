@@ -1,6 +1,6 @@
 import { insightBlog } from "../../database/index";
 
-const Insight = () => {
+export const Insight = () => {
   return (
     <>
       <div className="flex flex-col gap-4">
@@ -55,5 +55,3 @@ const Insight = () => {
     </>
   );
 };
-
-export default Insight;
