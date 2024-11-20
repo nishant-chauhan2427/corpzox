@@ -75,6 +75,8 @@ export const Header = ({ className, collapse, setCollapse }) => {
         return "Document";
       case pathname.includes("settings"):
         return "Settings";
+      case pathname.includes("profile"):
+        return "Profile";
       default:
         return "";
     }
@@ -142,7 +144,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
           </h1>
           {/* Search */}
           <Search
-            placeholder={"Search Business / Services"}
+            placeholder={`Search ${getPageHeading(pathname)}`}
             containerClassName={
               "hidden lg:block w-full h-10 lg:!max-w-lg !bg-[#3D485F] !rounded-full overflow-hidden"
             }
