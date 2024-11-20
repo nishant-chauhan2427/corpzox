@@ -1,36 +1,31 @@
-import { Link } from "react-router-dom";
-import { CrossButton } from "../buttons/crossButton";
-// import { SVG } from "../svg";
 import { useEffect } from "react";
-// import { FaArdivLeftLong } from "react-icons/fa6";
+import { GoArrowLeft } from "react-icons/go";
+import { useNavigate } from "react-router-dom";
 
-export const Heading = ({ parent, mainTitle, className, sectionLink }) => {
+export const Heading = ({ title, children, backButton, tourButton }) => {
   const projectName = "Corpzo";
+
+  const navigate = useNavigate();
+
   useEffect(() => {
-    document.title = ` ${mainTitle} - ${projectName}`;
+    document.title = ` ${title} - ${projectName}`;
     window.scrollTo(0, 0);
-  }, [mainTitle]);
+  }, [title]);
 
   return (
-    <div className="page-title flex flex-col items-start md:gap-2">
-      <nav class="flex md:justify-start items-center" aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item">
-            <Link to={`/dashboard`}>
-              <img className="w-4" src="/icons/home-color.svg" alt="" />
-              {/* <SVG iconId="Home" className="svg-divor" /> */}
-            </Link>
-          </li>
-          <li class="breadcrumb-item sm:text-base text-xs">
-            <Link to={sectionLink}>{parent}</Link>
-          </li>
-          <li class="active breadcrumb-item dark:!text-white text-xs sm:text-base">
-            {mainTitle}
-          </li>
-        </ol>
-      </nav>
-      <h3 className={`${className} dark:text-white `}> {mainTitle}</h3>
-    </div>
+    <h2 className="flex items-center gap-4 font-semibold text-xl text-[#0A1C40]">
+      {backButton && (
+        <button onClick={() => navigate(-1)}>
+          <GoArrowLeft />
+        </button>
+      )}
+      {children}
+      {tourButton && (
+        <span>
+          <img src="/icons/dashboard/take-a-tour.svg" alt="" />
+        </span>
+      )}
+    </h2>
   );
 };
 
