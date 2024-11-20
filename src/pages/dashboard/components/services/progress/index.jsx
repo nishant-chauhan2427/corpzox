@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { GoDotFill, GoTriangleDown } from "react-icons/go";
 import { ProgressBar } from "../../../../../components/progressBar";
+import { Heading } from "../../../../../components/heading";
 
 export const ServicesProgress = ({ data }) => {
   const [dropdownStates, setDropdownStates] = useState(data.map(() => false));
@@ -37,10 +38,10 @@ export const ServicesProgress = ({ data }) => {
       bottomLabel: "Mar 17, 2024",
       status: "completed",
     },
-    { step: 5, topLabel: "Application Submitted", status: "in-progress" },
+    { step: 5, topLabel: "App. Submitted", status: "in-progress" },
     {
       step: 6,
-      topLabel: "Application In Progress",
+      topLabel: "App. In Progress",
       estimated: "Est: 5-6 Days",
       status: "pending",
     },
@@ -54,13 +55,8 @@ export const ServicesProgress = ({ data }) => {
 
   return (
     <div className="">
-      <div className="flex justify-between gap-4 pb-4">
-        <p className="flex items-center font-semibold gap-4 text-xl text-[#0A1C40] ">
-          Your Service Progress Updates
-          <span>
-            <img src="/icons/dashboard/take-a-tour.svg" alt="" />
-          </span>
-        </p>
+      <div className="flex justify-between items-center gap-4 pb-4">
+        <Heading tourButton={true}>Your Service Progress Updates</Heading>
         <Link className="font-semibold text-[#606060]">View All</Link>
       </div>
       {data.length > 0 ? (
@@ -94,7 +90,10 @@ export const ServicesProgress = ({ data }) => {
                     </span>
                     On Time
                   </p>
-                  <button className={`${dropdownStates === true && "rotate-180"}`} onClick={() => handleServiceDropdown(index)}>
+                  <button
+                    className={`${dropdownStates === true && "rotate-180"}`}
+                    onClick={() => handleServiceDropdown(index)}
+                  >
                     <GoTriangleDown size={30} />
                   </button>
                 </div>

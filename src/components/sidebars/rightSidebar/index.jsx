@@ -1,10 +1,11 @@
+import { Insight } from "../../insight";
 import { Offers } from "../../offers";
 
-export const RightSidebar = () => {
+export const RightSidebar = ({ className }) => {
   return (
-    <div>
+    <div className={`${className} py-4`}>
       <Offers />
-      <Insights />
+      <Insight />
     </div>
   );
 };
