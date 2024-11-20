@@ -9,6 +9,7 @@ import { CheckOffer } from "../../../database/";
 import { ImCross } from "react-icons/im";
 import { useState } from "react";
 import PricingDetail from "./components/pricingDetail";
+import { Heading } from "../../../components/heading";
 
 const MakeAPayment = () => {
   const [couponApplied, setCouponApplied] = useState(false);
@@ -37,14 +38,15 @@ const MakeAPayment = () => {
   return (
     <>
       <div>
-        <p className="flex items-center py-6 gap-4 font-semibold text-2xl text-[#0A1C40">
-          <Link>
+        <div className="flex items-center py-6 gap-4 font-semibold text-2xl text-[#0A1C40">
+          {/* <Link>
             <span>
               <IoIosArrowRoundBack size={30} />
             </span>
-          </Link>
-          Make a Payment
-        </p>
+          </Link> */}
+          <Heading>Make a payment</Heading>
+        </div>
+
         <div className="flex sm:flex-row flex-col sm:mt-6 gap-4 mt-2">
           <div className="sm:w-[60%] sm:pr-[50px]">
             <p className="font-medium text-[20px] text-[#000000]">
