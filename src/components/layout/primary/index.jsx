@@ -4,6 +4,7 @@ import { Sidebar } from "../../sidebars";
 import { Outlet, Navigate } from "react-router-dom"; // Import Navigate
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
+import { RightSidebar } from "../../sidebars/rightSidebar";
 
 export const PrimaryLayout = () => {
   const [collapse, setCollapse] = useState(false);
@@ -11,7 +12,7 @@ export const PrimaryLayout = () => {
   // const sidebarClassName = useSelector((state) => state.theme.sidebarClassName);
   const sidebarClassName = "";
   // profile = //useSelector((state) => state.auth);
-  let userInfo=localStorage.getItem('userInfo');
+  let userInfo = localStorage.getItem("userInfo");
   if (!userInfo) {
     return <Navigate to="/sign-in" />;
   }
@@ -23,12 +24,15 @@ export const PrimaryLayout = () => {
         collapse={collapse}
         setCollapse={setCollapse}
       />
-      <div className={`w-full flex page-body-wrapper lg:px-4 md:px-2 sm:px-2 dark:dark:bg-slate-800`}>
+      <div
+        className={`w-full flex page-body-wrapper lg:px-4 md:px-2 sm:px-2 dark:dark:bg-slate-800`}
+      >
         <Sidebar
           collapse={collapse}
           setCollapse={setCollapse}
-          className={`${sidebarClassName ? sidebarClassName : ""} ${!collapse ? "min-w-60" : ""
-            } hidden lg:block max-w-60 fixed top-4 bottom-4 left-10 z-[1001] bg-gray-600 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100`}
+          className={`${sidebarClassName ? sidebarClassName : ""} ${
+            !collapse ? "min-w-60" : ""
+          } hidden lg:block max-w-60 fixed top-4 bottom-4 left-10 z-[1001] bg-gray-600 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100`}
         />
         {/* <Sidebar
           collapse={phoneCollapse}
@@ -42,8 +46,11 @@ export const PrimaryLayout = () => {
           exit={{ left: "-50%", transition: { duration: 0.3 } }}
           className={`lg:ps-60 w-full overflow-hidden`}
         >
-          <motion.div className="page-body bg-[#ffffff] dark:dark:bg-slate-800 px-4">
-            <Outlet />
+          <motion.div className="px-4 bg-[#ffffff] dark:dark:bg-slate-800 flex gap-4">
+            <div className="w-full md:w-3/4">
+              <Outlet />
+            </div>
+            <RightSidebar className={"w-full md:w-1/4 sticky top-0 right-0"} />
           </motion.div>
         </motion.div>
       </div>

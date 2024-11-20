@@ -4,10 +4,10 @@ import { Button } from "../buttons/button";
 export const Offers = () => {
   return (
     <>
-      <div className="flex flex-col gap-4 ">
+      <div className="flex flex-col gap-4">
         <div className="flex justify-between items-center pb-2">
           <p className="font-semibold text-[16px] text-[#004BBC]">Offers</p>
-          <p className="font-semibold text-xs text-[#828282]">View Al</p>
+          <p className="font-semibold text-xs text-[#828282]">View All</p>
         </div>
         <div className="h-[0.5px] bg-gradient-to-r  from-[#E0E1E2] via-[#E0E1E2] to-[#E0E1E2]"></div>
         {offers.map((offers, index) => (

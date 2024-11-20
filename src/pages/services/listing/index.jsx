@@ -92,53 +92,47 @@ const ServicesListing = () => {
   };
   return (
     <section className="flex sm:flex-row flex-col gap-4 sm:pt-6 pt-3 bg-white">
-      <div className="flex flex-col sm:w-[70%]">
-        <div className="flex justify-center flex-col">
-          <MainTab />
-          {servicesMainTab !== 0 ? (
-            <>
-              <p className="font-bold  text-[20px] leading-6 text-[#0A1C40]">
-                Service Category
-              </p>
-              <Filtertab />
-              {list.length != 0 && (
-                <SelectAllTabs
-                  onChangeSelectAllHandler={onChangeSelectAllHandler}
-                  onClickAddWishlistHandler={onClickAddWishlistHandler}
-                />
-              )}
-              <ServicesCard
-                data={list}
-                onClick={(service) => onClickWishList(service)}
-                onCheckedChange={(val) => onCheckHandler(val)}
+      <div className="flex justify-center flex-col overflow-hidden">
+        <MainTab />
+        {servicesMainTab !== 0 ? (
+          <>
+            <p className="font-bold  text-[20px] leading-6 text-[#0A1C40]">
+              Service Category
+            </p>
+            <Filtertab />
+            {list.length != 0 && (
+              <SelectAllTabs
+                onChangeSelectAllHandler={onChangeSelectAllHandler}
+                onClickAddWishlistHandler={onClickAddWishlistHandler}
               />
-            </>
-          ) : (
-            <>
-              <Filtertab />
-              {list.length != 0 && (
-                <SelectAllTabs
-                  onChangeSelectAllHandler={onChangeSelectAllHandler}
-                  onClickAddWishlistHandler={onClickAddWishlistHandler}
-                />
-              )}
-              <ServicesCard
-                data={list}
-                onClick={(service) => onClickWishList(service)}
-                onCheckedChange={(val) => onCheckHandler(val)}
+            )}
+            <ServicesCard
+              data={list}
+              onClick={(service) => onClickWishList(service)}
+              onCheckedChange={(val) => onCheckHandler(val)}
+            />
+          </>
+        ) : (
+          <>
+            <Filtertab />
+            {list.length != 0 && (
+              <SelectAllTabs
+                onChangeSelectAllHandler={onChangeSelectAllHandler}
+                onClickAddWishlistHandler={onClickAddWishlistHandler}
               />
-              {list && list.length > 5 && (
-                <div className="mt-10 flex justify-center">
-                  <Button primary={true}>Load More </Button>
-                </div>
-              )}
-            </>
-          )}
-        </div>
-      </div>
-      <div className=" sm:w-[30%] flex flex-col pt-4 gap-5">
-        <Offers />
-        <Insight />
+            )}
+            <ServicesCard
+              data={list}
+              onClick={(service) => onClickWishList(service)}
+              onCheckedChange={(val) => onCheckHandler(val)}
+            />
+            {list && list.length > 5 && (
+              <div className="mt-10 flex justify-center">
+                <Button primary={true}>Load More </Button>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </section>
   );

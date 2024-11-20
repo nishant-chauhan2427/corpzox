@@ -9,6 +9,7 @@ import { useLocation, Link } from "react-router-dom";
 import { setBusinessPage } from "../../../redux/slices/userLoginSlice";
 import { calculateAge } from "../../../utils/index";
 import { BusinessCard } from "./components/businessCard";
+import { Heading } from "../../../components/heading";
 
 const BusinessListing = () => {
   const data = businessListing;
@@ -51,12 +52,9 @@ const BusinessListing = () => {
       onScroll={handleScroll}
     >
       <div className="flex flex-col md:flex-row justify-between gap-4">
-        <p className="flex items-center gap-4 font-semibold text-xl text-[#0A1C40]">
+        <Heading title={"Business"} tourButton={true}>
           Your Business ({business?.totalPage})
-          <span>
-            <img src="/icons/dashboard/take-a-tour.svg" alt="" />
-          </span>
-        </p>
+        </Heading>
         <div className="flex items-center gap-2">
           <LinkButton to={"create"} primary={true} leftIcon={<IoMdAddCircle />}>
             New Business
@@ -66,7 +64,7 @@ const BusinessListing = () => {
       </div>
       {business?.list.length > 0 ? (
         <>
-          <div className="pb-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+          <div className="pb-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 mt-4">
             {business?.list.map((data, index) => (
               <BusinessCard key={index} data={data} />
             ))}

@@ -2,17 +2,14 @@ import { Link } from "react-router-dom";
 import { Button } from "../../../../components/buttons";
 import { IoMdAddCircle } from "react-icons/io";
 import { BusinessCard } from "../../../business/listing/components/businessCard";
+import { Heading } from "../../../../components/heading";
 
 export const Business = ({ data = [], total }) => {
   return (
     <div className="flex flex-col ">
       <div className="flex flex-col sm:flex-row justify-between gap-4">
-        <p className="flex items-center gap-4 font-semibold text-xl text-[#0A1C40]">
-          Your Business ({total})
-          <span>
-            <img src="/icons/dashboard/take-a-tour.svg" alt="" />
-          </span>
-        </p>
+        <Heading className={"py-4"} title={"Dashboard"} tourButton={true}>Your Business ({total})</Heading>
+
         <div className="flex items-center gap-2">
           <Link to={"/business/create"}>
             <Button primary={true} leftIcon={<IoMdAddCircle />}>
@@ -25,8 +22,8 @@ export const Business = ({ data = [], total }) => {
         </div>
       </div>
       {data.length > 0 ? (
-        <div className="pb-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-          {data.slice(0, 3).map((data, index) => (
+        <div className="pb-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 mt-4">
+          {data.slice(0, 2).map((data, index) => (
             <BusinessCard key={index} data={data} />
           ))}
         </div>

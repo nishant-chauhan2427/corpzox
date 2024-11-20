@@ -9,7 +9,7 @@ export const RecommendedServices = ({ data ,total}) => {
     navigate('/services')
   }
   return (
-    <div className="pt-10">
+    <div className="">
       <div className="flex justify-between gap-4" onClick={onClickViewAll}>
         <p className="flex items-center font-semibold gap-4 text-xl text-[#0A1C40] ">
           Recommended Services ({total})
@@ -20,10 +20,10 @@ export const RecommendedServices = ({ data ,total}) => {
         <Link className="font-semibold text-[#606060]">View All</Link>
       </div>
       <div
-        className="grid grid-cols-1 sm:grid-cols-2 !rounded-lg pb-5 mt-4 
-     lg:grid-cols-3 gap-4 bg-white"
+        className="grid grid-cols-1 sm:grid-cols-2 rounded-lg pb-5 mt-4 
+     lg:grid-cols-2 gap-4 bg-white"
       >
-        {data?.slice(0, 3).map((data, index) => (
+        {data?.slice(0, 2).map((data, index) => (
           <button
             key={index}
             className="flex justify-between items-center bg-[#F3F7FF] gap-2 w-full p-2 rounded-lg"
