@@ -75,13 +75,14 @@ export const Header = ({ className, collapse, setCollapse }) => {
         return "Document";
       case pathname.includes("settings"):
         return "Settings";
+      case pathname.includes("profile"):
+        return "Profile";
       default:
         return "";
     }
   }
 
   console.log(user, "jhhj");
-  
 
   return (
     <header
@@ -93,34 +94,29 @@ export const Header = ({ className, collapse, setCollapse }) => {
         {/* Left Side Menu */}
         <div className="flex items-center gap-4">
           {/* Logo */}
-          {/* <div className="flex items-center gap-2">
-           
+          <div className="lg:hidden flex items-center gap-2">
             <div
-              className={`${
-                collapse ? "flex justify-center items-center" : "pl-2"
-              } pb-4`}
+              className={`flex justify-center items-center`}
             >
-              <button onClick={handleSidebar} className="header-icon">
-                {collapse ? (
-                  <RxCross2 className="text-white"/>
-                ) : (
-                  <RxHamburgerMenu className="text-white" />
-                )}
-              </button>
+              <IconWrapper>
+                <button onClick={handleSidebar} className="header-icon">
+                  {collapse ? (
+                    <RxCross2 className="text-white" />
+                  ) : (
+                    <RxHamburgerMenu className="text-white" />
+                  )}
+                </button>
+              </IconWrapper>
             </div>
             <Link to={"/"}>
               <img
-                width={0}
-                height={0}
-                className="block dark:hidden w-36 h-full"
-                src="/corpzo_logo.svg"
+                className="block dark:hidden w-10 h-full"
+                src="/corpzo-logo-sm.svg"
                 alt="corpzo-logo"
               />
               <img
-                width={0}
-                height={0}
-                className="hidden dark:block w-36 h-full"
-                src="/corpzo_logo.svg"
+                className="hidden dark:block w-10 h-full"
+                src="/corpzo-logo-sm.svg"
                 alt="corpzo-logo"
               />
               {profile ? (
@@ -133,16 +129,14 @@ export const Header = ({ className, collapse, setCollapse }) => {
                 ""
               )}
             </Link>
-
-          
-          </div> */}
+          </div>
           {/* Page Heading */}
           <h1 className="font-bold text-white text-2xl">
             {getPageHeading(pathname)}
           </h1>
           {/* Search */}
           <Search
-            placeholder={"Search Business / Services"}
+            placeholder={`Search ${getPageHeading(pathname)}`}
             containerClassName={
               "hidden lg:block w-full h-10 lg:!max-w-lg !bg-[#3D485F] !rounded-full overflow-hidden"
             }
@@ -168,10 +162,15 @@ export const Header = ({ className, collapse, setCollapse }) => {
         {/* Right Side Menu */}
         {signedIn ? (
           <div className="flex items-center gap-4">
-            <ThemeSwitch />
+            {/* <ThemeSwitch /> */}
 
             {/* <FullScreenButton /> */}
             <Notification />
+            <Link to={"/wishlist"}>
+              <IconWrapper>
+                <img src="/icons/header/heart.svg" alt="" />
+              </IconWrapper>
+            </Link>
             <div className="flex relative gap-2">
               <div className="md:bg-[#3c4962] md:dark:bg-[#22262C] lg:px-2 md:px-2 sm:bg-transparent sm:px-1 py-0.5 flex justify-center items-center rounded-full sm:border sm:border-[#97a3b5]">
                 <button

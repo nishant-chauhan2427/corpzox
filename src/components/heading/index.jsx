@@ -14,7 +14,7 @@ export const Heading = ({
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = ` ${title} - ${projectName}`;
+    document.title = ` ${title ? title : children} - ${projectName}`;
     window.scrollTo(0, 0);
   }, [title]);
 

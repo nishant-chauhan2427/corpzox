@@ -3,19 +3,23 @@ import { Button } from "../../../../components/buttons";
 import { IoMdAddCircle } from "react-icons/io";
 import { BusinessCard } from "../../../business/listing/components/businessCard";
 import { Heading } from "../../../../components/heading";
+import { LinkButton } from "../../../../components/link";
 
 export const Business = ({ data = [], total }) => {
   return (
-    <div className="flex flex-col ">
-      <div className="flex flex-col sm:flex-row justify-between gap-4">
-        <Heading className={"py-4"} title={"Dashboard"} tourButton={true}>Your Business ({total})</Heading>
-
+    <div className="flex flex-col">
+      <div className="py-2 flex flex-col sm:flex-row justify-between gap-2">
+        <Heading className={"py-0"} title={"Dashboard"} tourButton={true}>
+          Your Business ({total})
+        </Heading>
         <div className="flex items-center gap-2">
-          <Link to={"/business/create"}>
-            <Button primary={true} leftIcon={<IoMdAddCircle />}>
-              New Business
-            </Button>{" "}
-          </Link>
+          <LinkButton
+            primary={true}
+            leftIcon={<IoMdAddCircle />}
+            to={"/business/create"}
+          >
+            New Business
+          </LinkButton>
           <Link className="font-semibold text-[#606060]" to={"/business"}>
             View all
           </Link>

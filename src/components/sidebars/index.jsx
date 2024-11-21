@@ -187,10 +187,10 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
                 key={index}
                 to={item.to}
                 icon={item.icon}
-                title={!collapse ? item.title : ""}
+                title={item.title}
                 child={item.child}
                 setPin={() => handlePinToggle(item.title)}
-                collapse={collapse}
+                // collapse={collapse}
               />
             ))}
           </div>

@@ -11,8 +11,8 @@ export const RecommendedServices = ({ data, total }) => {
   };
   return (
     <div className="">
-      <div className="flex justify-between items-center gap-4" onClick={onClickViewAll}>
-        <Heading title={"Title"} tourButton={true}>
+      <div className="py-2 flex flex-col sm:flex-row justify-between gap-2" onClick={onClickViewAll}>
+        <Heading className={"py-0"} title={"Title"} tourButton={true}>
           Recommended Services ({total})
         </Heading>
         <Link className="font-semibold text-[#606060]">View All</Link>

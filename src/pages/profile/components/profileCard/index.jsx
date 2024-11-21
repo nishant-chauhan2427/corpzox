@@ -17,7 +17,7 @@ const ProfileCard = ({userData, loading}) => {
         <div className="flex flex-col gap-4 sm:flex-row justify-between drop-shadow-md bg-[#F4F9FF] border px-4 rounded-2xl py-4 border-[#DFEAF2] ">
           <div className="flex gap-4">
             <div>
-              <img src="/public/images/profile/profile.svg" width={200} alt="" />
+              <img src="/images/profile/profile.svg" width={200} alt="" />
             </div>
             <div className="flex flex-col gap-4 justify-center">
               <p className="text-black font-semibold text-base sm:text-xl">
