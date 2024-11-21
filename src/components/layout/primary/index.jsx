@@ -17,8 +17,6 @@ export const PrimaryLayout = () => {
     return <Navigate to="/sign-in" />;
   }
 
-  console.log(collapse, "collapse");
-
   return (
     <div className="w-full">
       <Header
