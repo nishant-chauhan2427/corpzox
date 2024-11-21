@@ -54,9 +54,9 @@ export const ServicesProgress = ({ data }) => {
   ];
 
   return (
-    <div className="">
-      <div className="flex justify-between items-center gap-4 pb-4">
-        <Heading tourButton={true}>Your Service Progress Updates</Heading>
+    <div >
+      <div className="py-2 flex flex-col sm:flex-row justify-between gap-2">
+        <Heading className={"py-0"} tourButton={true}>Your Service Progress Updates</Heading>
         <Link className="font-semibold text-[#606060]">View All</Link>
       </div>
       {data.length > 0 ? (
