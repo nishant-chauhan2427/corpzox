@@ -67,7 +67,7 @@ const MakeAPayment = () => {
           <p className="font-medium text-[20px] text-[#000000] pb-4">
             Select a Method
           </p>
-          <div className="flex gap-4 w-[80%]">
+          <div className="flex gap-4 items-center sm:w-[80%]">
             {PaymentTabs.map((tab) => (
               <div
                 key={tab.id}
@@ -92,7 +92,7 @@ const MakeAPayment = () => {
         </div>
         <div className="flex sm:flex-row flex-col *:gap-4 pt-4">
           <div className="sm:w-[60%] flex  flex-col gap-8">
-            <div className="w-[90%]">
+            <div className="sm:w-[90%]">
               {activePaymentTab === "Card" && (
                 <DebitCard control={control} errors={errors} />
               )}
@@ -104,7 +104,7 @@ const MakeAPayment = () => {
               )}
             </div>
 
-            <div className="w-[70%] pt-4">
+            <div className="sm:w-[70%] pb-5 pt-4">
               <p className="font-normal text-[13px] pb-2 text-[#4F5B76]">
                 Coupon Code
               </p>
