@@ -20,6 +20,8 @@ const MakeAPayment = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [activePaymentTab, setActivePaymentTab] = useState("Card");
 
+  const [currentStep, setCurrentStep] = useState(0);
+
   const {
     control,
     handleSubmit,
@@ -52,10 +54,15 @@ const MakeAPayment = () => {
 
   return (
     <>
+      {/* <div className="w-full h-2 bg-gray-200 mb-4 rounded-full">
+        <div
+          className="h-2 bg-blue-500 rounded-full"
+          style={{
+            width: `${(currentStep / (steps.length - 1)) * 100}%`,
+          }}
+        ></div>
+      </div> */}
       <div>
-        <Heading title={"Payment"} backButton={true}>
-          Make a Payment
-        </Heading>
         <div>
           <p className="font-medium text-[20px] text-[#000000] pb-4">
             Select a Method

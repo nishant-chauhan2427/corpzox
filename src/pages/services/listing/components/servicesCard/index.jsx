@@ -14,7 +14,7 @@ export const ServicesCard = ({
         {data.map((service, index) => (
           <div
             key={index}
-            className="sm:m-3 flex flex-col gap-2 sm:gap-4 justify-between"
+            className="sm:m-3 flex flex-col gap-2 bg-[#F3F7FF]  rounded-lg sm:gap-4 justify-between"
           >
             <div className="flex justify-between">
               <p className="font-bold text-[#0A1C40]">{service.name}</p>

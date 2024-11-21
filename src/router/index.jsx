@@ -31,6 +31,8 @@ import Settings from "../pages/settings";
 import History from "../pages/payment/history";
 import Profile from "../pages/profile";
 import ProfileEdit from "../pages/profile/editProfile";
+import Wishlist from "../pages/wishlist";
+import Payments from "../pages/payment";
 
 const router = createBrowserRouter([
   {
@@ -150,6 +152,7 @@ const router = createBrowserRouter([
           // Payment route
           {
             path: "payment",
+            element: <Payments />,
             children: [
               {
                 index: true,
@@ -233,6 +236,16 @@ const router = createBrowserRouter([
               {
                 path: "edit",
                 element: <ProfileEdit />,
+              },
+            ],
+          },
+          // Wishlist route
+          {
+            path: "wishlist",
+            children: [
+              {
+                index: true,
+                element: <Wishlist />,
               },
             ],
           },

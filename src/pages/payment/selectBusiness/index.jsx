@@ -65,9 +65,7 @@ const SelectBusiness = () => {
   return (
     <>
       <div className="flex flex-col  gap-4 py-4">
-        <Heading title={"Select Business"} backButton={true}>
-          Select Buisness{" "}
-        </Heading>
+       
         <div>
           <div className="grid sm:grid-cols-2 grid-cols-1 pb-2 ">
             <Controller
