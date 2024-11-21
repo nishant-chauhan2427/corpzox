@@ -5,21 +5,16 @@ import { Button } from "../../../components/buttons";
 import Steps from "../../services/detail/components/steps";
 import Details from "../../services/detail/components/details";
 import Pricing from "../../services/detail/components/pricing";
+import { Heading } from "../../../components/heading";
 
 const ServiceDetail = () => {
   return (
     <>
       <section className="pb-10">
         <div className="flex flex-col pt-10 gap-5 ">
-          <div className="flex justify-between gap-4 ">
-            <p className="flex items-center gap-4 font-semibold text-2xl text-[#0A1C40] ">
-              <Link>
-                <span>
-                  <IoIosArrowRoundBack size={30} />
-                </span>
-              </Link>
-              Services{" "}
-            </p>
+          <div className="flex items-center justify-between gap-4">
+            <Heading>Service Details</Heading>
+            <Button></Button>
           </div>
           <Steps />
           <Details />

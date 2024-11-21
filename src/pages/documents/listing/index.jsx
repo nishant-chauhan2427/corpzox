@@ -36,7 +36,7 @@ const DocumentsListing = () => {
     <div>
       {/* Page Heading */}
       <div className="flex flex-col md:flex-row justify-between gap-4">
-        <Heading tourButton={true}>Documents</Heading>
+        <Heading title={"Documents"} tourButton={true}>Documents</Heading>
         <div className="flex items-center gap-2">
           <Search placeholder={"Search Files"} />
         </div>
