@@ -2,7 +2,7 @@ import React from "react";
 import { Checkbox } from "../../../../../components/inputs/checkbox";
 import { CiHeart } from "react-icons/ci";
 import { Button } from "../../../../../components/buttons";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export const ServicesCard = ({
   data = [],
@@ -14,7 +14,7 @@ export const ServicesCard = ({
 
   return (
     <>
-      <div className="grid grid-cols-1 sm:pt-3 pt-4  sm:grid-cols-2 xl:grid-cols-2  gap-1">
+      <div className="grid grid-cols-1 sm:pt-3 pt-4  sm:grid-cols-2 xl:grid-cols-2  gap-4">
         {data.map((service, index) => (
           <div
             key={index}
@@ -57,16 +57,18 @@ export const ServicesCard = ({
             <div className="flex justify-end pt-5 items-end">
               <div className="flex items-center  justify-center gap-2">
                 {heartAccordingToRoute.includes(location.pathname) ? (
-                  <img
-                    src="/public/icons/wishlist/red-heart.svg"
-                    alt="Red Heart"
-                  />
+                  <Link>
+                    {" "}
+                    <img src="/icons/wishlist/red-heart.svg" alt="Red Heart" />
+                  </Link>
                 ) : (
-                  <CiHeart
-                    size={30}
-                    color={service?.wishlistCount ? "#FF0000" : "#777777"}
-                    onClick={() => onClick(service)}
-                  />
+                  <Link>
+                    <CiHeart
+                      size={30}
+                      color={service?.wishlistCount ? "#FF0000" : "#777777"}
+                      onClick={() => onClick(service)}
+                    />
+                  </Link>
                 )}
                 <Button type="submit" primary={true}>
                   Avail It Now
