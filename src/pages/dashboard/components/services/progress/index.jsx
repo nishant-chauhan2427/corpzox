@@ -75,11 +75,11 @@ export const ServicesProgress = ({ data }) => {
                     />
                   </div>
                   <div className="flex flex-col gap-2">
-                    <h6 className="font-normal text-sm">
-                      Business: {data.detail1}{" "}
+                    <h6 className="text-sm text-[#7C7D80]">
+                      <strong>Business:</strong> {data.detail1}
                     </h6>
-                    <p className="font-normal text-sm ">
-                      Step: {data.detail2}{" "}
+                    <p className="text-sm text-[#7C7D80]">
+                      <strong>Step:</strong> {data.detail2}
                     </p>
                   </div>
                 </div>
@@ -91,7 +91,7 @@ export const ServicesProgress = ({ data }) => {
                     On Time
                   </p>
                   <button
-                    className={`${dropdownStates === true && "rotate-180"}`}
+                    className={`${dropdownStates === true && "rotate-180"} hidden lg:block`}
                     onClick={() => handleServiceDropdown(index)}
                   >
                     <GoTriangleDown size={30} />
