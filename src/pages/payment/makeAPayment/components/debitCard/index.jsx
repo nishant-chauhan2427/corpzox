@@ -243,7 +243,7 @@ export const DebitCard = ({ control, errors }) => {
             </ReactModal>
           </div>
         </div>
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row  gap-4">
           <div
             onClick={() => handleCardClick(1)}
             className={`flex rounded justify-between gap-3 border items-start px-2 py-4 cursor-pointer ${
