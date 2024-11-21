@@ -64,8 +64,8 @@ const Dashboard = () => {
   }, [searchValue]);
   return (
     <>
-      <section className="py-6">
-        <div className="my-2 flex flex-col md:flex-row justify-between gap-4">
+      <section className="py-4 flex flex-col gap-4">
+        <div className="py-2 flex flex-col md:flex-row justify-between gap-4">
           <div className="flex flex-col sm:flex-row gap-4 w-full">
             <Profile user={user} />
             <AccountManager manager={manager} />

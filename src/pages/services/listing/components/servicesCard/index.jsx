@@ -57,10 +57,7 @@ export const ServicesCard = ({
             <div className="flex justify-end pt-5 items-end">
               <div className="flex items-center  justify-center gap-2">
                 {heartAccordingToRoute.includes(location.pathname) ? (
-                  <img
-                    src="/public/icons/wishlist/red-heart.svg"
-                    alt="Red Heart"
-                  />
+                  <img src="/icons/wishlist/red-heart.svg" alt="Red Heart" />
                 ) : (
                   <CiHeart
                     size={30}
