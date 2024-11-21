@@ -31,7 +31,7 @@ const Edit = () => {
            gap-4"
           >
             <div>
-              <img src="/public/images/profile/profile.svg" alt="" />
+              <img src="/images/profile/profile.svg" alt="" />
             </div>
             <div className="flex flex-col gap-4 w-full ">
               <p className=" text-[#171717] font-medium text-lg">

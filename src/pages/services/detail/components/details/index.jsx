@@ -16,25 +16,25 @@ export const Details = () => {
 
           <div className="grid grid-cols-2 gap-4 pt-5">
             <div className="flex gap-2 items-center">
-              <img src="/public/services/setting-icon.svg" width={35} alt="" />
+              <img src="/services/setting-icon.svg" width={35} alt="" />
               <p className="font-semibold text-lg text-[#0A1C40]">
                 Comprehensive Business Services
               </p>
             </div>
             <div className="flex gap-2 items-center">
-              <img src="/public/services/clock-icon.svg" width={35} alt="" />
+              <img src="/services/clock-icon.svg" width={35} alt="" />
               <p className="font-semibold text-lg text-[#0A1C40]">
                 On-Time Delivery Quick Turnaround{" "}
               </p>
             </div>
             <div className="flex gap-2 items-center">
-              <img src="/public/services/target.svg" width={35} alt="" />
+              <img src="/services/target.svg" width={35} alt="" />
               <p className="font-semibold text-lg text-[#0A1C40]">
                 Tailored for MSMEs & Startups{" "}
               </p>
             </div>
             <div className="flex gap-2 items-center">
-              <img src="/public/services/fourth.svg" width={35} alt="" />
+              <img src="/services/fourth.svg" width={35} alt="" />
               <p className="font-semibold text-lg text-[#0A1C40]">
                 Professional Team of CAs, CSs and Lawyers{" "}
               </p>

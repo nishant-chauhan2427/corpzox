@@ -91,7 +91,7 @@ const SelectBusiness = () => {
                 className="flex bg-[#7676801F] pt-12 rounded gap-2  pb-4 py-4 flex-col justify-center items-center"
               >
                 <img
-                  src="/public/images/payment/pdf-preview.svg"
+                  src="/images/payment/pdf-preview.svg"
                   width={100}
                   alt=""
                 />
