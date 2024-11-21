@@ -11,7 +11,8 @@ import serviceListingSlice from "./slices/serviceListingSlice";
 import businessSlice from './slices/businessSlice';
 import { composeWithDevTools } from "redux-devtools-extension";
 import userSlice from "./slices/userLoginSlice";
-
+import profileReducer from "./slices/profileSlice"
+import settingsReducer from "./slices/settingsSlice"
 // Persist configuration
 const persistConfig = {
   key: "root",
@@ -25,7 +26,9 @@ const rootReducer = combineReducers({
   userUtility: userUtilitySlice,
   user: userSlice,
   service:serviceListingSlice,
-  business:businessSlice
+  business:businessSlice,
+  profile: profileReducer,
+  settings : settingsReducer,
 });
 
 // Create a persisted reducer

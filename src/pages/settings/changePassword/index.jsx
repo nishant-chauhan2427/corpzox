@@ -4,7 +4,10 @@ import { Input } from "../../../components/inputs";
 import { Button } from "../../../components/buttons";
 import { ConfirmationModal } from "../../../components/modal/confirmationModal";
 import toast from "react-hot-toast";
-
+import changePasswordSchema from "./changePasswordValidationSchema"
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useDispatch, useSelector } from "react-redux";
+import { changePassword } from "../../../redux/actions/settings-actions";
 const ChangePassword = () => {
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -12,8 +15,10 @@ const ChangePassword = () => {
   const [isResendDisabled, setIsResendDisabled] = useState(false);
   const [isVerify, setIsVerify] = useState(false);
 
+  const dispatch = useDispatch()
   const inputRefs = useRef([]);
 
+  const {loading} = useSelector((state)=> state.settings);
   const {
     handleSubmit,
     control,
@@ -22,14 +27,21 @@ const ChangePassword = () => {
     watch,
   } = useForm({
     mode: "onChange",
+    // resolver: yupResolver(changePasswordSchema),
     defaultValues: {},
   });
 
   let error;
 
   const onSubmit = (data) => {
-    setConfirmationModal(true);
-    console.log(data, "data before transformation");
+    // setConfirmationModal(true);
+    console.log(data)
+    const passwordData = {
+      newPassword : data.password,
+      oldPassword : data.confirmPassword
+    }
+    console.log(passwordData, "password Data")
+    dispatch(changePassword(passwordData))
   };
 
   const onConfirmationModalClose = () => {
@@ -134,27 +146,27 @@ const ChangePassword = () => {
               )}
             />
             <Controller
-              name={`password`}
+              name={`newPassword`}
               control={control}
               render={({ field }) => (
                 <Input
                   {...field}
                   label={`New Password`}
                   placeholder={`Enter your new password`}
-                  errorContent={errors.password?.message}
+                  errorContent={errors.newPassword?.message}
                   required={true}
                 />
               )}
             />
             <Controller
-              name={`password`}
+              name={`confirmPassword`}
               control={control}
               render={({ field }) => (
                 <Input
                   {...field}
                   label={`Re enter new Password`}
                   placeholder={`Re enter your new password`}
-                  errorContent={errors.password?.message}
+                  errorContent={errors.confirmPassword?.message}
                   required={true}
                 />
               )}
@@ -164,10 +176,10 @@ const ChangePassword = () => {
                 type={"submit"}
                 className={"px-4 py-1.5 rounded-lg"}
                 primary={true}
-                // isLoading={}
-                // disabled={
-
-                // }
+                isLoading={loading}
+                disabled={
+                    !isValid
+                }
               >
                 Update
               </Button>
