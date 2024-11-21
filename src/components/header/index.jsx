@@ -83,7 +83,6 @@ export const Header = ({ className, collapse, setCollapse }) => {
   }
 
   console.log(user, "jhhj");
-  
 
   return (
     <header
@@ -170,10 +169,15 @@ export const Header = ({ className, collapse, setCollapse }) => {
         {/* Right Side Menu */}
         {signedIn ? (
           <div className="flex items-center gap-4">
-            <ThemeSwitch />
+            {/* <ThemeSwitch /> */}
 
             {/* <FullScreenButton /> */}
             <Notification />
+            <Link to={"/wishlist"}>
+              <IconWrapper>
+                <img src="/icons/header/heart.svg" alt="" />
+              </IconWrapper>
+            </Link>
             <div className="flex relative gap-2">
               <div className="md:bg-[#3c4962] md:dark:bg-[#22262C] lg:px-2 md:px-2 sm:bg-transparent sm:px-1 py-0.5 flex justify-center items-center rounded-full sm:border sm:border-[#97a3b5]">
                 <button
