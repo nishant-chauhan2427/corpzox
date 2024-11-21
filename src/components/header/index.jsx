@@ -94,34 +94,29 @@ export const Header = ({ className, collapse, setCollapse }) => {
         {/* Left Side Menu */}
         <div className="flex items-center gap-4">
           {/* Logo */}
-          {/* <div className="flex items-center gap-2">
-           
+          <div className="lg:hidden flex items-center gap-2">
             <div
-              className={`${
-                collapse ? "flex justify-center items-center" : "pl-2"
-              } pb-4`}
+              className={`flex justify-center items-center`}
             >
-              <button onClick={handleSidebar} className="header-icon">
-                {collapse ? (
-                  <RxCross2 className="text-white"/>
-                ) : (
-                  <RxHamburgerMenu className="text-white" />
-                )}
-              </button>
+              <IconWrapper>
+                <button onClick={handleSidebar} className="header-icon">
+                  {collapse ? (
+                    <RxCross2 className="text-white" />
+                  ) : (
+                    <RxHamburgerMenu className="text-white" />
+                  )}
+                </button>
+              </IconWrapper>
             </div>
             <Link to={"/"}>
               <img
-                width={0}
-                height={0}
-                className="block dark:hidden w-36 h-full"
-                src="/corpzo_logo.svg"
+                className="block dark:hidden w-10 h-full"
+                src="/corpzo-logo-sm.svg"
                 alt="corpzo-logo"
               />
               <img
-                width={0}
-                height={0}
-                className="hidden dark:block w-36 h-full"
-                src="/corpzo_logo.svg"
+                className="hidden dark:block w-10 h-full"
+                src="/corpzo-logo-sm.svg"
                 alt="corpzo-logo"
               />
               {profile ? (
@@ -134,9 +129,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
                 ""
               )}
             </Link>
-
-          
-          </div> */}
+          </div>
           {/* Page Heading */}
           <h1 className="font-bold text-white text-2xl">
             {getPageHeading(pathname)}

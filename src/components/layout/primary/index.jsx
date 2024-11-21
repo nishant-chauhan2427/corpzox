@@ -17,6 +17,8 @@ export const PrimaryLayout = () => {
     return <Navigate to="/sign-in" />;
   }
 
+  console.log(collapse, "collapse");
+
   return (
     <div className="w-full">
       <Header
@@ -28,18 +30,13 @@ export const PrimaryLayout = () => {
         className={`w-full flex page-body-wrapper lg:px-4 md:px-2 sm:px-2 dark:dark:bg-slate-800`}
       >
         <Sidebar
-          collapse={collapse}
-          setCollapse={setCollapse}
-          className={`${sidebarClassName ? sidebarClassName : ""} ${
-            !collapse ? "min-w-60" : ""
-          } hidden lg:block max-w-60 fixed top-4 bottom-4 left-10 z-[1001] bg-gray-600 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100`}
+          className={`${sidebarClassName ? sidebarClassName : ""} hidden lg:block max-w-60 fixed top-4 bottom-4 left-10 z-[1001] bg-gray-600 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100`}
         />
-        {/* <Sidebar
-          collapse={phoneCollapse}
-          setCollapse={setPhoneCollapse}
-          className={`${sidebarClassName ? sidebarClassName : ""} ${!phoneCollapse ? "min-w-60 min-h-screen" : "min-h-screen"
-            } block lg:hidden fixed top-4 left-0 px-8 py-4 z-[1001] bg-gray-600 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100`}
-        /> */}
+        <Sidebar
+          className={`${sidebarClassName ? sidebarClassName : ""} ${
+            collapse ? "block" : "hidden"
+          } lg:hidden max-w-60 fixed top-20 left-0 z-[1001] bg-gray-600 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100`}
+        />
         <motion.div
           initial={{ left: "-50%" }}
           animate={{ left: 0, transition: { duration: 0.3 } }}
@@ -50,7 +47,11 @@ export const PrimaryLayout = () => {
             <div className="w-full md:w-3/4">
               <Outlet />
             </div>
-            <RightSidebar className={"w-full md:w-1/4 hidden md:flex flex-col gap-4 md:sticky top-0 right-0"} />
+            <RightSidebar
+              className={
+                "w-full md:w-1/4 hidden md:flex flex-col gap-4 md:sticky top-0 right-0"
+              }
+            />
           </motion.div>
         </motion.div>
       </div>
