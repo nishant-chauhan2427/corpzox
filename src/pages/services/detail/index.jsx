@@ -17,9 +17,9 @@ const ServiceDetail = () => {
             <Heading backButton={true}>Service Detail</Heading>
             <LinkButton primary={true}>Contact</LinkButton>
           </div>
-          <Details />
+          <Details pricing={true} />
           <Features />
-          <Pricing />
+          <Pricing pricing={true} />
           <Advisor />
           <Testimonials />
           <Steps />

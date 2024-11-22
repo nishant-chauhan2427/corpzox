@@ -35,7 +35,7 @@ export const Testimonials = () => {
 
   return (
     <div className="bg-white py-10 px-5">
-      <h4 className="font-bold text-2xl uppercase">
+      <h4 className="font-bold text-2xl uppercase mb-2">
         Trusted by entrepreneurs Like you
       </h4>
 
@@ -43,7 +43,7 @@ export const Testimonials = () => {
       <div className="bg-[#0E38BD] rounded-md p-5 flex justify-between items-center mb-8">
         {ratings.map((rating, index) => (
           <div key={index} className="flex flex-col items-center mx-4">
-            <div className="text-yellow-500 text-2xl font-bold">
+            <div className="text-white text-[10px] font-bold">
               {rating.score}
             </div>
             <p className="font-medium text-[11px] text-white">{rating.title}</p>
