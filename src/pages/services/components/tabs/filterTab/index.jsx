@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useSelector,useDispatch } from "react-redux";
-import {setSelectedSubCategory} from '../../../../../redux/slices/serviceListingSlice'
+import { useSelector, useDispatch } from "react-redux";
+import { setSelectedSubCategory } from "../../../../../redux/slices/serviceListingSlice";
 function Filtertab() {
   const { subCategory } = useSelector((state) => state.service);
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ function Filtertab() {
     { name: "Intellectual Property Rights" },
     { name: "Corporate Restructuring" },
   ];
-  console.log(subCategory,'subCategory');
+  console.log(subCategory, "subCategory");
   return (
     <>
       <div className="flex space-x-5  overflow-x-auto scrollbar-hide whitespace-nowrap pb-4 pt-4 ">
@@ -22,8 +22,9 @@ function Filtertab() {
           <button
             key={index}
             className={`sm: ${
-              subCategory?.selectedSubCategory.subCategoryId === tab.subCategoryId
-                ? "text-[#0A1C40] text-sm font-bold border-b-4 py-1 border-[#004BBC] rounded pr-2 "
+              subCategory?.selectedSubCategory.subCategoryId ===
+              tab.subCategoryId
+                ? "text-[#0A1C40] text-sm font-bold border-b-4 py-1 border-[#004BBC]  rounded pr-2 "
                 : "font-normal text-sm pr-2 py-1 text-[#7E7E7E]"
             }`}
             onClick={() => dispatch(setSelectedSubCategory(tab))}

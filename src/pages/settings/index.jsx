@@ -1,5 +1,6 @@
 import { GoArrowLeft } from "react-icons/go";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Heading } from "../../components/heading";
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -23,14 +24,7 @@ const Settings = () => {
   ];
   return (
     <div className="pb-4">
-      <div className="pt-2 flex flex-col md:flex-row justify-between gap-4">
-        <div className="flex items-center gap-2 font-semibold text-xl text-[#0A1C40]">
-          <button onClick={() => navigate(-1)}>
-            <GoArrowLeft />
-          </button>
-          <p>Settings</p>
-        </div>
-      </div>
+      <Heading backButton={true}>Settings</Heading>
 
       {/* Tabs */}
       <Tabs tabs={tabs} />

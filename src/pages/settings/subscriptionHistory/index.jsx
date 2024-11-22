@@ -138,7 +138,7 @@ const SubscriptionHistory = () => {
           <h4 className="font-semibold text-lg">
             Handle your subscription packages here
           </h4>
-          <div className="py-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
+          <div className="py-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {subscriptionPackage.map((data, index) => (
               <Card
                 key={index}

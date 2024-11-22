@@ -11,7 +11,7 @@ export const ErrorComponent = ({ containerClassName, imageClassName }) => {
     >
       <img
         className={`${imageClassName} w-96`}
-        src={"/public/404-img.svg"}
+        src={"/404-img.svg"}
         alt="404-image"
       />
       {!error?.message ? (

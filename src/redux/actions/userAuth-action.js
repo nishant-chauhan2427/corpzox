@@ -90,7 +90,7 @@ export const resetPassword = createAsyncThunk("resetPassword", async (payload, {
     }
 });
 
-export const logOutUser = createAsyncThunk("logOutUser", async (a = "", { rejectWithValue }) => {
+export const logOutUser = createAsyncThunk("logOutUser", async ( { rejectWithValue }) => {
     try {
         const response = await client("/admin/user/logout", {
             withCredentials: true

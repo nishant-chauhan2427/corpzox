@@ -2,18 +2,30 @@ import React from "react";
 import { Checkbox } from "../../../../../components/inputs/checkbox";
 import { CiHeart } from "react-icons/ci";
 import { Button } from "../../../../../components/buttons";
-function ServicesCard({ data=[] ,onClick=()=>console.log('wishlist clicked'),onCheckedChange=()=>console.log('checked clicked')}) {
+import { Link, useLocation } from "react-router-dom";
+
+export const ServicesCard = ({
+  data = [],
+  onClick = () => console.log("wishlist clicked"),
+  onCheckedChange = () => console.log("checked clicked"),
+}) => {
+  const location = useLocation();
+  const heartAccordingToRoute = ["/wishlist", "/services"];
+
   return (
     <>
-      <div className="grid grid-cols-1 sm:pt-3 pt-5  sm:grid-cols-2 xl:grid-cols-2  gap-4">
+      <div className="grid grid-cols-1 sm:pt-3 pt-4  sm:grid-cols-2 xl:grid-cols-2  gap-4">
         {data.map((service, index) => (
           <div
             key={index}
-            className="sm:m-3 flex flex-col gap-2 sm:gap-4 justify-between"
+            className="sm:m-3 flex flex-col gap-2 bg-[#F3F7FF] px-4 py-4  rounded-lg sm:gap-4 justify-between"
           >
             <div className="flex justify-between">
               <p className="font-bold text-[#0A1C40]">{service.name}</p>
-              <Checkbox className='service-checkbox' onChange={()=>onCheckedChange(service)}/>
+              <Checkbox
+                className="service-checkbox"
+                onChange={() => onCheckedChange(service)}
+              />
             </div>
             <p className="text-base leading-[22px] font-normal text-[#7C7C7C]">
               {service.details}
@@ -32,7 +44,7 @@ function ServicesCard({ data=[] ,onClick=()=>console.log('wishlist clicked'),onC
                   Min Requirement
                 </p>
                 <p className="font-bold text-[12px] text-[#000000]">
-                  {service?.minRequirement||'_ _'}
+                  {service?.minRequirement || "_ _"}
                 </p>
               </div>
               <div className="flex justify-between sm:w-4/5">
@@ -44,7 +56,20 @@ function ServicesCard({ data=[] ,onClick=()=>console.log('wishlist clicked'),onC
             </div>
             <div className="flex justify-end pt-5 items-end">
               <div className="flex items-center  justify-center gap-2">
-                <CiHeart size={30} color={service?.wishlistCount?'#FF0000':"#777777"} onClick={()=>onClick(service)}/>
+                {heartAccordingToRoute.includes(location.pathname) ? (
+                  <Link>
+                    {" "}
+                    <img src="/icons/wishlist/red-heart.svg" alt="Red Heart" />
+                  </Link>
+                ) : (
+                  <Link>
+                    <CiHeart
+                      size={30}
+                      color={service?.wishlistCount ? "#FF0000" : "#777777"}
+                      onClick={() => onClick(service)}
+                    />
+                  </Link>
+                )}
                 <Button type="submit" primary={true}>
                   Avail It Now
                 </Button>
@@ -55,6 +80,4 @@ function ServicesCard({ data=[] ,onClick=()=>console.log('wishlist clicked'),onC
       </div>
     </>
   );
-}
-
-export default ServicesCard;
+};

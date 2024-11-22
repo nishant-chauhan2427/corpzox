@@ -5,6 +5,7 @@ import { Button } from "../../../components/buttons";
 import { previewDetail } from "../../../database";
 import DocumentViewer from "./components/documentViewer";
 import { Link } from "react-router-dom";
+import { Heading } from "../../../components/heading";
 
 const PreviewPayment = () => {
   const {
@@ -35,6 +36,7 @@ const PreviewPayment = () => {
     <>
       <div className="py-5">
         <div>
+          
           {/* <Documents control={control} errors={errors} /> */}
           <div className="grid sm:grid-cols-3 grid-cols-1 gap-4 sm:w-[60%] pt-5">
             {previewPdf.map((data, index) => (
@@ -43,7 +45,7 @@ const PreviewPayment = () => {
                 className="flex bg-[#7676801F] pt-12 rounded gap-2  pb-4 py-4 flex-col justify-center items-center"
               >
                 <img
-                  src="/public/images/payment/pdf-preview.svg"
+                  src="/images/payment/pdf-preview.svg"
                   width={100}
                   alt=""
                 />
