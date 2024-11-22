@@ -3,6 +3,7 @@ import { LinkButton } from "../../../components/link";
 import { Steps } from "./components/steps";
 import { Details } from "./components/details";
 import { Pricing } from "./components/pricing";
+import { Features } from "./components/features";
 
 const ServiceDetail = () => {
   return (
@@ -13,9 +14,10 @@ const ServiceDetail = () => {
             <Heading backButton={true}>Service Detail</Heading>
             <LinkButton primary={true}>Contact</LinkButton>
           </div>
-          <Steps />
           <Details />
+          <Features />
           <Pricing />
+          <Steps />
         </div>
       </section>
     </>
