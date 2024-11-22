@@ -66,9 +66,9 @@ export const Pricing = ({ pricing = true }) => {
   return (
     <section>
       <div className="flex flex-col gap-4">
-        <p className="font-bold uppercase text-2xl text-[#0A1C40]">
+        <h4 className="font-bold uppercase text-2xl text-[#0A1C40]">
           your business, your price
-        </p>
+        </h4>
         {pricing && (
           <div className="flex flex-col md:flex-row justify-between gap-4">
             <div className="flex flex-col gap-1">
