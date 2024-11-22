@@ -102,8 +102,8 @@ export const Pricing = ({ pricing = true }) => {
 
 const PricingCard = ({ data }) => {
   return (
-    <div className="flex gap-10 justify-center pt-10">
-      <div className="flex flex-col gap-2 drop-shadow-lg hover:drop-shadow-2xl bg-white px-5 py-6 ">
+    <div className="w-full flex gap-10 justify-center">
+      <div className="w-full flex flex-col gap-2 drop-shadow-lg hover:drop-shadow-2xl bg-white px-5 py-6">
         <div>
           <p className="font-bold text-[#0A1C40] text-[22px] ">{data.price}</p>
           <p className="font-semibold text-xs text-[#038624]">
