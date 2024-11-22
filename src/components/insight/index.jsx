@@ -13,7 +13,7 @@ export const Insight = () => {
         {insightBlog.map((blog, index) => (
           <div
             key={index}
-            className="flex gap-2 pt-2 rounded-lg  hover:shadow-lg  "
+            className="flex gap-2 pt-2 px-2 bg-[#EEEFF3] rounded-lg  hover:shadow-lg  "
           >
             <div
               style={{ backgroundImage: `url(${blog.image})` }}
@@ -21,33 +21,22 @@ export const Insight = () => {
             ></div>
             <div className="flex w-[60%] flex-col gap-1">
               <div className="flex ">
-                <p className="font-normal rounded-[4px] text-[10px] text-white bg-[#F1359C] px-2 py-1 ">
+                {/* <p className="font-normal rounded-[4px] text-[10px] text-white bg-[#F1359C] px-2 py-1 ">
                   {blog.time}
-                </p>
+                </p> */}
               </div>
-              <p className="font-bold text-lg  text-[#1A202E]">
+              <p className="font-bold text-[13px]  text-[#1A202E]">
                 {blog.title}
               </p>
-              <p className="font-normal text-[11px] text-[#737373]">
+              <p className="font-normal text-[12px] text-[#737373]">
                 {blog.description}
               </p>
               <hr />
-              <div className="flex gap-2 items-center pt-2">
-                <div className="flex">
-                  <img
-                    src="/images/insights/Avatar.svg"
-                    className="w-6 h-6 rounded-full"
-                    alt="Author Avatar"
-                  />
-                </div>
-                <div>
-                  <p className="font-semibold text-[9px] text-[#495367]">
-                    Jacky
-                  </p>
-                  <p className="font-normal text-[8px] text-[#96A2BE]">
-                    Posted Job Now
-                  </p>
-                </div>
+              <div className="flex flex-col pt-2">
+                <p className="font-medium text-[11px] text-[#495367]">Anupriya Banger</p>
+                <p className="font-normal text-[9px] text-[#96A2BE]">
+                  Posted Job Now
+                </p>
               </div>
             </div>
           </div>

@@ -55,7 +55,7 @@ export const insightBlog = [
     time: " 3 min read",
     title: "How to Maximize Your Business Tax Deductions",
     description:
-      " Income tax in India is a fundamental component of the country's fiscal system, designed to levy taxes on the income earned by individuals, businesses,",
+      " Income tax in India is a fundamental component of the country's fiscal system, ,",
     image: "/images/insights/insight-dummy.svg",
   },
   {
@@ -63,7 +63,7 @@ export const insightBlog = [
 
     title: "How to Maximize Your Business Tax Deductions",
     description:
-      " Income tax in India is a fundamental component of the country's fiscal system, designed to levy taxes on the income earned by individuals, businesses,",
+      " Income tax in India is a fundamental component of the country's fiscal system, ",
     image: "/images/insights/insight-computer.svg",
   },
   {
@@ -71,7 +71,7 @@ export const insightBlog = [
 
     title: "How to Maximize Your Business Tax Deductions",
     description:
-      " Income tax in India is a fundamental component of the country's fiscal system, designed to levy taxes on the income earned by individuals, businesses,",
+      " Income tax in India is a fundamental component of the country's fiscal system, ",
     image: "/images/insights/insight-dummy.svg",
   },
   {
@@ -79,7 +79,7 @@ export const insightBlog = [
 
     title: "How to Maximize Your Business Tax Deductions",
     description:
-      " Income tax in India is a fundamental component of the country's fiscal system, designed to levy taxes on the income earned by individuals, businesses,",
+      " Income tax in India is a fundamental component of the country's fiscal system, ",
     image: "/images/insights/insight-dummy.svg",
   },
 ];
