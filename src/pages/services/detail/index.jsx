@@ -4,6 +4,9 @@ import { Steps } from "./components/steps";
 import { Details } from "./components/details";
 import { Pricing } from "./components/pricing";
 import { Features } from "./components/features";
+import { Advisor } from "./components/advisor";
+import { Testimonials } from "./components/testimonials";
+import { FAQs } from "./components/faq";
 
 const ServiceDetail = () => {
   return (
@@ -17,7 +20,14 @@ const ServiceDetail = () => {
           <Details />
           <Features />
           <Pricing />
+          <Advisor />
+          <Testimonials />
           <Steps />
+          <FAQs />
+          <Advisor
+            label="Still have questions?"
+            description="Contact us for more information or assistance."
+          />
         </div>
       </section>
     </>
