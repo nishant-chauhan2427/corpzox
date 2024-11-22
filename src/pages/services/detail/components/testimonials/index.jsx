@@ -88,7 +88,7 @@ export const Testimonials = () => {
 
       {/* Rating Section */}
       <div className="bg-[#0E38BD] rounded-md p-5 flex flex-col md:flex-row justify-between gap-4 items-center mb-8">
-        <div className="flex">
+        <div className="flex flex-wrap justify-center">
           {ratings.map((rating, index) => (
             <div
               key={index}
