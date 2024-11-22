@@ -1,7 +1,7 @@
 import { Controller } from "react-hook-form";
 import { Input } from "../../../../../components/inputs";
 
-export const KYCDetails = ({ control, errors }) => {
+export const KYCDetails = ({ control, errors, handleBlur, trigger }) => {
   return (
     <div>
       <div className="flex flex-col md:flex-row gap-4">
@@ -16,41 +16,56 @@ export const KYCDetails = ({ control, errors }) => {
           </div>
           <div className="grid grid-cols-1 gap-4">
             <Controller
-              name={`kycDetails.username`}
+              name={`kyc.kycDetails.kycUser`}
               control={control}
               render={({ field }) => (
                 <Input
                   {...field}
                   label={`Username`}
                   placeholder={`Enter username`}
-                  errorContent={errors.kycDetails?.username?.message}
+                  errorContent={errors.kyc?.kycDetails?.kycUser?.message}
                   required={true}
+                  onBlur={() => handleBlur(`kyc.kycDetails.kycUser`)}  // Handle blur event
+                  onChange={(e) => {
+                    field.onChange(e); // Default handling
+                    trigger("kyc.kycDetails.kycUser");  // Manually trigger validation for this field
+                  }}
                 />
               )}
             />
             <Controller
-              name={`kycDetails.id`}
+              name={`kyc.kycDetails.id`}
               control={control}
               render={({ field }) => (
                 <Input
                   {...field}
                   label={`ID proof No.`}
                   placeholder={`Enter identity proof no.`}
-                  errorContent={errors.kycDetails?.id?.message}
+                  errorContent={errors.kyc?.kycDetails?.id?.message}
                   required={true}
+                  onBlur={() => handleBlur(`kyc.kycDetails.id`)}  // Handle blur event
+                  onChange={(e) => {
+                    field.onChange(e); // Default handling
+                    trigger("kyc.kycDetails.id");  // Manually trigger validation for this field
+                  }}
                 />
               )}
             />
             <Controller
-              name={`kycDetails.addressProof`}
+              name={`kyc.kycDetails.addressProof`}
               control={control}
               render={({ field }) => (
                 <Input
                   {...field}
                   label={`Address Proof No.`}
                   placeholder={`Enter address proof no.`}
-                  errorContent={errors.kycDetails?.addressProof?.message}
+                  errorContent={errors.kyc?.kycDetails?.addressProof?.message}
                   required={true}
+                  onBlur={() => handleBlur(`kyc.kycDetails.addressProof`)}  // Handle blur event
+                  onChange={(e) => {
+                    field.onChange(e); // Default handling
+                    trigger("kyc.kycDetails.addressProof");  // Manually trigger validation for this field
+                  }}
                 />
               )}
             />

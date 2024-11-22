@@ -34,6 +34,7 @@ export const Signup = () => {
     registerMessage,
   } = useSelector((state) => state.auth);
   const handleBlur = async (field) => {
+    console.log("field",field);
     await trigger(field);
   };
 

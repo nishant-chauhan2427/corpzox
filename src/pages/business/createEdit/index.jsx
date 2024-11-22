@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "../../../components/buttons";
 import { RegistrationDetails } from "./components/registration";
@@ -6,50 +6,151 @@ import { AddressDetails } from "./components/address";
 import { FinancialDetails } from "./components/financial";
 import { KYCDetails } from "./components/kyc";
 import { FundingDetails } from "./components/funding";
-import { createBusiness } from "../../../redux/slices/businessSlice";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { createBusiness, resetBusiness, setBusinessId } from "../../../redux/slices/businessSlice";
 import { ModalWrapper } from "../../../components/wrappers/modal";
 import { useNavigate } from "react-router-dom";
 import BusinessListing from "../listing";
+import { useDispatch, useSelector } from "react-redux";
+import { registrationDetails, updateRegistrationDetails } from "../../../redux/actions/business-action";
+import { addressSchema, financialSchema, fundingSchema, kycSchema, registrationSchema } from "../../../validation/createBusinessValidationSchema";
 
 const CreateBusiness = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const navigate = useNavigate();
+  const {business,businessId} = useSelector((state) => state.business);
+
+  console.log("DATAAA",business);
+  const dispatch = useDispatch();
+  const getValidationSchema = (step) => {
+    switch (step) {
+      case 0:
+        return registrationSchema;
+      case 1:
+        return addressSchema;
+      case 2:
+        return financialSchema;
+      case 3:
+        return kycSchema;
+      case 4:
+        return fundingSchema;
+      default:
+        return null;
+    }
+  };
+
+  // console.log("Business Data",business);
+
 
   const {
     handleSubmit,
     control,
-    formState: { errors, isValid },
+    formState: { errors, isValid, touchedFields },
     setValue,
+    getValues,
     watch,
+    trigger,
   } = useForm({
     mode: "onChange",
-    defaultValues: {},
+    resolver: yupResolver(getValidationSchema(currentStep)),
+      defaultValues: business || {},
   });
+
+  const handleBlur = async (field) => {
+    console.log("field",field);
+    await trigger(field);
+  };
 
   const onSubmit = (data) => {
     console.log(data, "data before transformation");
-    dispatch(createBusiness(data));
+    //dispatch(createBusiness(data));
   };
+
+    // Function to get the current schema based on the current step
+  
 
   // Step data to render specific components
   const steps = [
-    <RegistrationDetails
+    {component: <RegistrationDetails
       setValue={setValue}
       control={control}
       errors={errors}
-    />,
-    <AddressDetails setValue={setValue} control={control} errors={errors} />,
-    <FinancialDetails setValue={setValue} control={control} errors={errors} />,
-    <KYCDetails setValue={setValue} control={control} errors={errors} />,
-    <FundingDetails setValue={setValue} control={control} errors={errors} />,
+      touchedFields={touchedFields}
+      handleBlur= {handleBlur}
+      trigger = {trigger}
+    />, key: 'registration'},
+    {component: <AddressDetails setValue={setValue} control={control} errors={errors} handleBlur= {handleBlur}
+    trigger = {trigger}
+    />,key: "address"},
+    {component: <FinancialDetails setValue={setValue} control={control} errors={errors} handleBlur= {handleBlur}
+    trigger = {trigger} />, key:"financial"},
+    {component: <KYCDetails setValue={setValue} control={control} errors={errors} handleBlur= {handleBlur}
+    trigger = {trigger}/>, key: "kyc"},
+    {component: <FundingDetails setValue={setValue} control={control} errors={errors} handleBlur= {handleBlur}
+    trigger = {trigger}/>, key: "funding"},
   ];
 
+  useEffect(() => {
+    trigger(); 
+  }, [currentStep, setValue, trigger]);
+  
+  
+  useEffect(() => {
+    const currentSection = steps[currentStep]?.key;
+   
+    if (business && business[currentSection]) {
+      setValue(currentSection, business[currentSection]);
+    }
+  }, [currentStep, business, setValue]);
+
+  // useEffect(() =>{
+  //   dispatch(resetBusiness());
+  // })
+
   // Handle step navigation
-  const handleNextStep = () => {
-    if (currentStep < steps.length - 1) {
+  const handleNextStep = async () => {
+    const isStepValid = await trigger();
+    if (!isStepValid) {
+      return;
+    }
+   // Trigger validation for the current step
+    if (!isStepValid) {
+      return; 
+    }
+    if(currentStep == 0){
+      const currentSection = steps[currentStep].key;
+      const data = getValues(currentSection);
+      
+      
+      if (businessId) {
+        data.businessId = businessId;
+        dispatch(updateRegistrationDetails(data));
+      } else {
+        dispatch(registrationDetails(data)).then((response) => {
+          console.log("Response",response);
+          const newBusinessId = response.payload;
+          dispatch(setBusinessId(newBusinessId)); 
+        });
+      }
+    }
+    if (currentStep <= steps.length - 1) {
+      const currentSection = steps[currentStep].key;
+      const data = getValues(currentSection);
+      console.log("Data to be dispatched for section", currentSection, ":", data);
+      console.log("Get Values",getValues('registration'));
+
+      if (data && Object.keys(data).length > 0) {
+        dispatch(createBusiness({ section: currentSection, data }));
+      }
+
+      
+      console.log("Steps",currentStep,steps.length);
+    }  
+    if (currentStep === steps.length - 1) {
+      
+      navigate("/business/preview");
+    } else {
       setCurrentStep(currentStep + 1);
-    } else if (currentStep == 4){
-      navigate("/business/preview")
     }
   };
 
@@ -79,7 +180,7 @@ const CreateBusiness = () => {
 
           {/* Step Components */}
           <div className="p-4 h-[60vh] overflow-y-auto">
-            {steps[currentStep]}
+            {steps[currentStep]?.component}
           </div>
 
           {/* Navigation Buttons */}
@@ -105,6 +206,6 @@ const CreateBusiness = () => {
       </ModalWrapper>
     </div>
   );
-};
+}; 
 
 export default CreateBusiness;
