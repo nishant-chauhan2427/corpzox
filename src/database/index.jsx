@@ -1,4 +1,4 @@
-import { desc, details } from "framer-motion/client";
+import { desc, details, time } from "framer-motion/client";
 
 export const headerLinks = [
   // { label: "Sign In", url: "/sign-in" },
@@ -52,24 +52,31 @@ export const servicesListing = [
 // Sidear blogs data
 export const insightBlog = [
   {
+    time: " 3 min read",
     title: "How to Maximize Your Business Tax Deductions",
     description:
       " Income tax in India is a fundamental component of the country's fiscal system, designed to levy taxes on the income earned by individuals, businesses,",
     image: "/images/insights/insight-dummy.svg",
   },
   {
+    time: " 5 min read",
+
     title: "How to Maximize Your Business Tax Deductions",
     description:
       " Income tax in India is a fundamental component of the country's fiscal system, designed to levy taxes on the income earned by individuals, businesses,",
     image: "/images/insights/insight-computer.svg",
   },
   {
+    time: " 4 min read",
+
     title: "How to Maximize Your Business Tax Deductions",
     description:
       " Income tax in India is a fundamental component of the country's fiscal system, designed to levy taxes on the income earned by individuals, businesses,",
     image: "/images/insights/insight-dummy.svg",
   },
   {
+    time: " 10 min read",
+
     title: "How to Maximize Your Business Tax Deductions",
     description:
       " Income tax in India is a fundamental component of the country's fiscal system, designed to levy taxes on the income earned by individuals, businesses,",

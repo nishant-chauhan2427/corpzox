@@ -3,14 +3,14 @@ import React from "react";
 const PricingDetail = () => {
   return (
     <>
-      <div className="flex flex-col px-4 py-3 gap-3 ">
+      <div className="flex flex-col gap-3 ">
         <p className="text-xs font-semibold text-center text-[#525252]">
           Select your preferred payment method to proceed with the document
           review and startup assistance process. You'll have the opportunity to
           review and make changes to your order before finalizing it
         </p>
         <hr />
-        <div className="flex flex-col w-[80%]">
+        <div className="flex flex-col ">
           <p className="text-lg font-semibold text-[#0A1C40] pb-4">
             Final Price
           </p>

@@ -22,13 +22,13 @@ export const Insight = () => {
             <div className="flex w-[60%] flex-col gap-1">
               <div className="flex ">
                 <p className="font-normal rounded-[4px] text-[10px] text-white bg-[#F1359C] px-2 py-1 ">
-                  3 min read
+                  {blog.time}
                 </p>
               </div>
-              <p className="font-bold text-[12px]  text-[#1A202E]">
+              <p className="font-bold text-lg  text-[#1A202E]">
                 {blog.title}
               </p>
-              <p className="font-normal text-[8px] text-[#737373]">
+              <p className="font-normal text-[11px] text-[#737373]">
                 {blog.description}
               </p>
               <hr />
@@ -41,10 +41,10 @@ export const Insight = () => {
                   />
                 </div>
                 <div>
-                  <p className="font-semibold text-[7px] text-[#495367]">
+                  <p className="font-semibold text-[9px] text-[#495367]">
                     Jacky
                   </p>
-                  <p className="font-normal text-[6px] text-[#96A2BE]">
+                  <p className="font-normal text-[8px] text-[#96A2BE]">
                     Posted Job Now
                   </p>
                 </div>
