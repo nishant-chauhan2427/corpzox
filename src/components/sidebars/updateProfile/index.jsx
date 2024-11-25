@@ -7,12 +7,12 @@ export const UpdateProfile = () => {
         <img src="/images/sidebar/fingerprint.svg" alt="" />
       </div>
       <div className="space-y-1">
-        <h4 className="font-bold text-sm">Update your Profile !</h4>
-        <p className="text-xs">
+        <h4 className="font-bold text-xs">Update your Profile !</h4>
+        <p className="text-[10px]">
           Update your profile and find the best opportunities
         </p>
       </div>
-      <LinkButton to={"/profile"} className={"p-2 !font-medium"} primary={true}>
+      <LinkButton to={"/profile"} className={"p-2 !font-medium !text-[11px]"} primary={true}>
         Complete your profile
       </LinkButton>
     </div>

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 
 // Table component
-export const Table = ({ data, columns, isExpandable = true }) => {
+export const Table = ({ data, columns, isExpandable = true, actionMenu }) => {
   const [expandedRow, setExpandedRow] = useState(null);
+  console.log(data);
 
   // Function to handle row expansion
   const toggleRow = (rowIndex) => {
@@ -31,8 +32,8 @@ export const Table = ({ data, columns, isExpandable = true }) => {
             <React.Fragment key={index}>
               {/* Main Row */}
               <tr
-                className={`cursor-pointer hover:bg-gray-50 ${
-                  expandedRow === index ? "bg-gray-200" : ""
+                className={` hover:bg-gray-50 ${
+                  expandedRow === index ? "bg-gray-200 cursor-pointer" : ""
                 } border-b`}
                 onClick={() => toggleRow(index)}
               >
@@ -79,6 +80,7 @@ export const Table = ({ data, columns, isExpandable = true }) => {
                     )}
                   </td>
                 ))}
+                {actionMenu && actionMenu()}
               </tr>
               {/* Expanded Row (only when expandable is true and row is expanded) */}
               {expandedRow === index && isExpandable && (

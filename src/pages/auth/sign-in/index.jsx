@@ -1,5 +1,5 @@
-import { useRef, useState,useEffect } from "react";
-import { useDispatch,useSelector } from "react-redux";
+import { useRef, useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import { Input } from "../../../components/inputs";
@@ -15,13 +15,16 @@ import { DualHeadingTwo } from "../components/dualHeading/dualHeadingTwo";
 import { Checkbox } from "../../../components/inputs/checkbox";
 // import { ThemeSwitch } from "../../../components/theme/switch";
 import { AuthLayout } from "../../../components/layout/auth";
-import {loginUser,thirdPartyLogin} from '../../../redux/actions/userAuth-action';
-import ReCAPTCHA from 'react-google-recaptcha';
+import {
+  loginUser,
+  thirdPartyLogin,
+} from "../../../redux/actions/userAuth-action";
+import ReCAPTCHA from "react-google-recaptcha";
 import toast from "react-hot-toast";
-import{signinValidationSchema} from '../../../validation/authValidatiorSchema';
+import { signinValidationSchema } from "../../../validation/authValidatiorSchema";
 // import {GoogleLogin} from '@react-oauth/google';
-import { GoogleLogin } from 'react-google-login';
-import {gapi} from 'gapi-script';
+import { GoogleLogin } from "react-google-login";
+import { gapi } from "gapi-script";
 export const SignIn = () => {
   const {
     control,
@@ -32,14 +35,19 @@ export const SignIn = () => {
     resolver: yupResolver(signinValidationSchema),
     mode: "onChange",
   });
-  const recaptchaRef=useRef(null);
-  const RECAPTCHA_SITE_KEY = '6LemSE0qAAAAADhn4nN770nVLBJxAGRz_LoFXP6h';
+  const recaptchaRef = useRef(null);
+  const RECAPTCHA_SITE_KEY = "6LemSE0qAAAAADhn4nN770nVLBJxAGRz_LoFXP6h";
   const [isSubmit, setIsSubmit] = useState(false);
   const handleBlur = async (field) => {
     await trigger(field);
   };
-  const { isLoggingIn=false,error ,loginMessage,profile } = useSelector((state) => state.auth);
-  
+  const {
+    isLoggingIn = false,
+    error,
+    loginMessage,
+    profile,
+  } = useSelector((state) => state.auth);
+
   // const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -48,22 +56,21 @@ export const SignIn = () => {
   const handleCheckbox = (e) => {
     e.preventDefault();
     setCheckedCheckbox(!checkedCheckbox);
-    if(checkedCheckbox){
-      localStorage.removeItem('signedIn');
-    }else{
-      localStorage.setItem('signedIn',true);
+    if (checkedCheckbox) {
+      localStorage.removeItem("signedIn");
+    } else {
+      localStorage.setItem("signedIn", true);
     }
   };
-  const onSubmit = async(data) => {
+  const onSubmit = async (data) => {
     setIsSubmit(true);
     const token = await recaptchaRef.current.executeAsync().then((res) => {
-      console.log("check response ", res)
+      console.log("check response ", res);
 
-      data = {...data, recaptchaToken: res }
-      console.log(data, "data from form")
-      dispatch(loginUser(data))
-
-    })
+      data = { ...data, recaptchaToken: res };
+      console.log(data, "data from form");
+      dispatch(loginUser(data));
+    });
     // let newData={...data};
     // newData.captcha=recaptchaRef.current;
     // console.log(newData, "data");
@@ -95,39 +102,41 @@ export const SignIn = () => {
     //   setError("Wrong email or password");
     // }
   };
-  useEffect(()=>{
-    if(!isLoggingIn&&isSubmit){
-      setIsSubmit(false)
-      if(error){
-        toast.error(error)
-      }else{
+  useEffect(() => {
+    if (!isLoggingIn && isSubmit) {
+      setIsSubmit(false);
+      if (error) {
+        toast.error(error);
+      } else {
         // toast.success(loginMessage)
-        if(profile?.source=='GOOGLE'){
-          navigate('/dashboard');
-        }else{
-          navigate('/verify');
+        if (profile?.source == "GOOGLE") {
+          navigate("/dashboard");
+        } else {
+          navigate("/verify");
         }
       }
     }
-    console.log(isLoggingIn,isSubmit,profile);
-  },[isLoggingIn])
-  const googleLogin=(data)=>{
+    console.log(isLoggingIn, isSubmit, profile);
+  }, [isLoggingIn]);
+  const googleLogin = (data) => {
     setIsSubmit(true);
-    dispatch(thirdPartyLogin({
-      "email": data?.profileObj?.email,
-      "name": data?.profileObj?.givenName,
-      "profilePicture": data?.profileObj?.imageUrl
-    }))
-    
-  }
-  useEffect(()=>{
-    gapi.load('client:auth2',()=>{
-      gapi.client.init({
-        clientId:'1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com',
-        scope:''
+    dispatch(
+      thirdPartyLogin({
+        email: data?.profileObj?.email,
+        name: data?.profileObj?.givenName,
+        profilePicture: data?.profileObj?.imageUrl,
       })
-    })
-  })
+    );
+  };
+  useEffect(() => {
+    gapi.load("client:auth2", () => {
+      gapi.client.init({
+        clientId:
+          "1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com",
+        scope: "",
+      });
+    });
+  });
   return (
     <>
       <MetaTitle title={"Sign In"} />
@@ -204,7 +213,6 @@ export const SignIn = () => {
               </div>
               <Button
                 type={"submit"}
-                v2={true}
                 primary={true}
                 className={
                   "mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none "
@@ -235,11 +243,11 @@ export const SignIn = () => {
                 <p className="flex gap-2">
                   {/* Sign in with Google <img src="google.svg" alt="" /> */}
                   <GoogleLogin
-                   clientId='1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com'
+                    clientId="1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com"
                     onSuccess={googleLogin}
-                    onError={()=>console.log('Errors')} 
-                    cookiePolicy={'single_host_origin'}
-                    scope="openid profile email" 
+                    onError={() => console.log("Errors")}
+                    cookiePolicy={"single_host_origin"}
+                    scope="openid profile email"
                   />
                 </p>
                 {/* <img src="" alt="" /> */}

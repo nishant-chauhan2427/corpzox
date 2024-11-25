@@ -57,9 +57,9 @@ export const AccountManager = ({ manager, sidebar }) => {
         <div>
           <button
             onClick={handleAccountShowBtn}
-            className="cursor-pointer bg-[#D9D9D9] rounded-full px-1 py-1"
+            className={`${!sidebar && "cursor-pointer bg-[#D9D9D9] rounded-full px-1 py-1"}`}
           >
-            <CiMenuKebab />
+            <CiMenuKebab className={`${sidebar && "text-white"}`} />
           </button>
           {accountShowButton && (
             <div ref={accountShowButtonRef} className="absolute  pt-3">

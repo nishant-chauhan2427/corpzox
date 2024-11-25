@@ -1,68 +1,64 @@
-import React, { useState } from "react";
+import React from "react";
 
 export const RouteProgressBar = ({ steps }) => {
-  const [activeStep, setActiveStep] = useState(1);
-
-  const nextStep = () => {
-    setActiveStep(activeStep + 1);
-  };
-
-  const prevStep = () => {
-    setActiveStep(activeStep - 1);
-  };
-
   const totalSteps = steps?.length;
 
-  const width = `${(100 / (totalSteps - 1)) * (activeStep - 1)}%`;
+  // Calculate the width of the completed progress bar
+  const completedSteps = steps.filter(
+    (step) => step.status === "completed"
+  ).length;
+  const width = `${(100 / (totalSteps - 1)) * completedSteps}%`;
 
   return (
     <div className="w-full px-10 pb-10">
       <div className="flex justify-between relative">
         {/* Background line */}
-        <div className="absolute inset-y-1/2 w-full bg-[#F3E7F3] h-[1px] transform -translate-y-1/2"></div>
+        <div className="absolute inset-y-1/2 w-full bg-[#C6C6C6]  h-[1px] transform -translate-y-1/2"></div>
+
         {/* Step progress line */}
         <div
-          className="absolute inset-y-1/2 w-full bg-[#34A853] h-[1px] transform -translate-y-1/2 transition-all duration-400"
+          className="absolute inset-y-1/2 w-full bg-[#F1359C] h-[1px] transform -translate-y-1/2 transition-all duration-400"
           style={{ width }}
         ></div>
 
-        {/* Steps */}
         {steps?.map(({ step, topLabel, bottomLabel, status }) => (
           <div key={step} className="relative z-10">
+            {/* Step Circle with Tick or Number */}
             <div
-              className={` transition-all duration-400 flex justify-center items-center ${
-                activeStep >= step ? "" : ""
+              className={`w-5 h-5 rounded-full flex  justify-center items-center ${
+                status === "completed"
+                  ? " border-2   border-[#F1359C] text-white"
+                  : status === "current"
+                  ? "bg-[#E5E5E5] text-black border-2 border-[#C6C6C6] "
+                  : "bg-gray-300 text-gray-600 "
               }`}
             >
-              {activeStep > step ? (
-                <div className="text-[#4A154B] text-xl font-semibold transform scale-x-[-1] rotate-[-46deg]">
-                  `{" "}
-                </div>
-              ) : (
-                <span className="text-[#F3E7F3] text-[19px] sm:text-[16px]">
-                  `
+              {status === "completed" ? (
+                <span className="text-white bg-white font-bold text-xl">
+                  <img
+                    src="/public/icons/payment/Progress-tick.svg"
+                    width={12}
+                    alt=""
+                  />
                 </span>
+              ) : (
+                <span className="text-sm font-bold"></span>
               )}
             </div>
 
+            {/* Top Label */}
             {topLabel && (
               <div className="absolute top-[-10px] left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                <span
-                  className={`w-fit px-1 py-0.5 rounded ${
-                    status === "completed"
-                      ? "bg-green-600"
-                      : status === "in-progress"
-                      ? "bg-yellow-600"
-                      : "bg-gray-600"
-                  } font-normal text-[10px] text-white whitespace-nowrap`}
-                >
+                <span className="text-xs font-normal text-gray-500 whitespace-nowrap">
                   {topLabel}
                 </span>
               </div>
             )}
+
+            {/* Bottom Label */}
             {bottomLabel && (
-              <div className="absolute top-[25px] left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                <span className="text-[10px] text-gray-500 whitespace-nowrap">
+              <div className="absolute top-[30px] left-1/2 pt-4 transform -translate-x-1/2 -translate-y-1/2">
+                <span className="text-sm font-medium text-gray-500 whitespace-nowrap">
                   {bottomLabel}
                 </span>
               </div>
@@ -70,23 +66,6 @@ export const RouteProgressBar = ({ steps }) => {
           </div>
         ))}
       </div>
-
-      {/* <div className="flex justify-between mt-[10px] mx-[-15px]">
-        <button
-          onClick={prevStep}
-          disabled={activeStep === 1}
-          className="w-[90px] py-2 bg-[#4A154B] text-white rounded-[4px] cursor-pointer active:scale-95 disabled:bg-[#F3E7F3] disabled:text-black disabled:cursor-not-allowed"
-        >
-          Previous
-        </button>
-        <button
-          onClick={nextStep}
-          disabled={activeStep === totalSteps}
-          className="w-[90px] py-2 bg-[#4A154B] text-white rounded-[4px] cursor-pointer active:scale-95 disabled:bg-[#F3E7F3] disabled:text-black disabled:cursor-not-allowed"
-        >
-          Next
-        </button>
-      </div> */}
     </div>
   );
 };
