@@ -62,7 +62,7 @@ export const IconBox = ({
               className={`${
                 pathname.includes(to)
                 ? "font-bold text-black" : "dark:text-white"
-              } text-base group-hover:font-bold transition-all duration-300 ease-in-out group-hover:transition-all group-hover:duration-300 group-hover:ease-in-out`}
+              } text-sm group-hover:font-bold transition-all duration-300 ease-in-out group-hover:transition-all group-hover:duration-300 group-hover:ease-in-out`}
             >
               {title}
             </span>

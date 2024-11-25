@@ -28,20 +28,20 @@ export const PrimaryLayout = () => {
         className={`w-full flex page-body-wrapper lg:px-4 md:px-2 sm:px-2 dark:dark:bg-slate-800`}
       >
         <Sidebar
-          className={`${sidebarClassName ? sidebarClassName : ""} hidden lg:block max-w-60 fixed top-4 bottom-4 left-10 z-[1001] bg-gray-600 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100`}
+          className={`${sidebarClassName ? sidebarClassName : ""} hidden lg:block max-w-48 fixed top-4 bottom-4 left-10 z-[1001] bg-gray-600 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100`}
         />
         <Sidebar
           className={`${sidebarClassName ? sidebarClassName : ""} ${
             collapse ? "block" : "hidden"
-          } lg:hidden max-w-60 fixed top-20 left-0 z-[1001] bg-gray-600 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100`}
+          } lg:hidden max-w-48 fixed top-20 left-0 z-[1001] bg-gray-600 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100`}
         />
         <motion.div
           initial={{ left: "-50%" }}
           animate={{ left: 0, transition: { duration: 0.3 } }}
           exit={{ left: "-50%", transition: { duration: 0.3 } }}
-          className={`lg:ps-60 w-full overflow-hidden`}
+          className={`lg:ps-48 w-full overflow-hidden`}
         >
-          <motion.div className="px-4 bg-[#ffffff] dark:dark:bg-slate-800 flex gap-4">
+          <motion.div className="px-4 lg:pr-0 bg-[#ffffff] dark:dark:bg-slate-800 flex gap-5">
             <div className="w-full md:w-3/4">
               <Outlet />
             </div>

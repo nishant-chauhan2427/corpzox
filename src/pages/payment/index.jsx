@@ -7,12 +7,14 @@ const Payments = () => {
 
   function getPageHeading(pathname) {
     switch (true) {
-      case pathname == "/payment":
+      case pathname === "/payment":
         return "Make a Payment";
-      case pathname == "/payment/create":
+      case pathname === "/payment/create":
         return "Select Business";
-      case pathname == "/payment/preview":
+      case pathname === "/payment/preview":
         return "Preview Payment";
+      case pathname === "/payment/history":
+        return "Payment History";
       default:
         return "";
     }
@@ -22,26 +24,49 @@ const Payments = () => {
     {
       step: 1,
       bottomLabel: "Make a payment",
-      status: pathname == "/payment" && "completed",
+      status:
+        pathname === "/payment"
+          ? "current"
+          : [
+              "/payment/create",
+              "/payment/preview",
+              "/payment/history",
+            ].includes(pathname)
+          ? "completed"
+          : "upcoming",
     },
     {
       step: 2,
       bottomLabel: "Select Business",
-      status: pathname == "/payment/create" && "completed",
+      status:
+        pathname === "/payment/create"
+          ? "current"
+          : ["/payment/preview", "/payment/history"].includes(pathname)
+          ? "completed"
+          : "upcoming",
     },
     {
       step: 3,
       bottomLabel: "Preview Business",
-      status: pathname == "/payment/preview" && "completed",
+      status:
+        pathname === "/payment/preview"
+          ? "current"
+          : ["/payment/history"].includes(pathname)
+          ? "completed"
+          : "upcoming",
     },
   ];
+
+  const shouldShowProgressBar = pathname !== "/payment/history";
 
   return (
     <div>
       <Heading title={"Payment"} backButton={true}>
         {getPageHeading(pathname)}
       </Heading>
-      <RouteProgressBar steps={servicesProgessSteps} />
+      {shouldShowProgressBar && (
+        <RouteProgressBar steps={servicesProgessSteps} />
+      )}
       <Outlet />
     </div>
   );

@@ -2,7 +2,7 @@ import React from "react";
 import { Checkbox } from "../../../../../components/inputs/checkbox";
 import { CiHeart } from "react-icons/ci";
 import { Button } from "../../../../../components/buttons";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export const ServicesCard = ({
   data = [],
@@ -15,7 +15,7 @@ export const ServicesCard = ({
   return (
     <>
       <div className="grid grid-cols-1 sm:pt-3 pt-4  sm:grid-cols-2 xl:grid-cols-2  gap-4">
-        {data.map((service, index) => (
+        {data?.map((service, index) => (
           <div
             key={index}
             className="sm:m-3 flex flex-col gap-2 bg-[#F3F7FF] px-4 py-4  rounded-lg sm:gap-4 justify-between"
@@ -57,20 +57,15 @@ export const ServicesCard = ({
             <div className="flex justify-end pt-5 items-end">
               <div className="flex items-center  justify-center gap-2">
                 {heartAccordingToRoute.includes(location.pathname) ? (
-                  <Link>
-                    {" "}
-                    <img src="/icons/wishlist/red-heart.svg" alt="Red Heart" />
-                  </Link>
+                  <img src="/icons/wishlist/red-heart.svg" alt="Red Heart" />
                 ) : (
-                  <Link>
-                    <CiHeart
-                      size={30}
-                      color={service?.wishlistCount ? "#FF0000" : "#777777"}
-                      onClick={() => onClick(service)}
-                    />
-                  </Link>
+                  <CiHeart
+                    size={30}
+                    color={service?.wishlistCount ? "#FF0000" : "#777777"}
+                    onClick={() => onClick(service)}
+                  />
                 )}
-                <Button type="submit" primary={true}>
+                <Button type="submit" to={"/payment"} primary={true}>
                   Avail It Now
                 </Button>
               </div>
