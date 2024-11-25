@@ -65,7 +65,7 @@ export const ServicesCard = ({
                     onClick={() => onClick(service)}
                   />
                 )}
-                <Button type="submit" primary={true}>
+                <Button type="submit" to={"/payment"} primary={true}>
                   Avail It Now
                 </Button>
               </div>
