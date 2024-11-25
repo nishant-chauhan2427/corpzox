@@ -15,7 +15,7 @@ export const ServicesCard = ({
   return (
     <>
       <div className="grid grid-cols-1 sm:pt-3 pt-4  sm:grid-cols-2 xl:grid-cols-2  gap-4">
-        {data.map((service, index) => (
+        {data?.map((service, index) => (
           <div
             key={index}
             className="sm:m-3 flex flex-col gap-2 bg-[#F3F7FF] px-4 py-4  rounded-lg sm:gap-4 justify-between"

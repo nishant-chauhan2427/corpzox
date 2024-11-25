@@ -13,6 +13,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import userSlice from "./slices/userLoginSlice";
 import profileReducer from "./slices/profileSlice"
 import settingsReducer from "./slices/settingsSlice"
+import wishListReducer from "./slices/wishlistSlice"
 // Persist configuration
 const persistConfig = {
   key: "root",
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   business:businessSlice,
   profile: profileReducer,
   settings : settingsReducer,
+  wishlist : wishListReducer
 });
 
 // Create a persisted reducer

@@ -123,7 +123,11 @@ const DeactivateAccount = () => {
               <TextArea
                 className="min-h-20"
                 placeholder="We are sorry to see you go! Before you go, please let us know what happened, so we can avoid losing future users."
-                onChange={(e) => { setOtherVsalue(e.target.value) }}
+                onChange={(e) => { setOtherVsalue(e.target.value) 
+                  if (e.target.value) {
+                    setOtherError(""); // Clear the error when the user starts typing
+                  }
+                }}
                 value={otherValue} // Ensure the value from the form state is used
               />
             )}
@@ -135,6 +139,7 @@ const DeactivateAccount = () => {
                 type="submit"
                 className="px-4 py-1.5 rounded-lg"
                 primary={true}
+                disabled={!isValid || otherError}
               >
                 Deactivate
               </Button>

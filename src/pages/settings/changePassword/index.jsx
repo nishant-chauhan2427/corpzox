@@ -18,7 +18,7 @@ const ChangePassword = () => {
   const dispatch = useDispatch()
   const inputRefs = useRef([]);
 
-  const {loading} = useSelector((state)=> state.settings);
+  const {isPasswordChanging} = useSelector((state)=> state.settings);
   const {
     handleSubmit,
     control,
@@ -27,7 +27,7 @@ const ChangePassword = () => {
     watch,
   } = useForm({
     mode: "onChange",
-    // resolver: yupResolver(changePasswordSchema),
+    resolver: yupResolver(changePasswordSchema),
     defaultValues: {},
   });
 
@@ -176,7 +176,7 @@ const ChangePassword = () => {
                 type={"submit"}
                 className={"px-4 py-1.5 rounded-lg"}
                 primary={true}
-                isLoading={loading}
+                isLoading={isPasswordChanging}
                 disabled={
                     !isValid
                 }
