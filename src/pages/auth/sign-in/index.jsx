@@ -189,7 +189,7 @@ export const SignIn = () => {
               />
               <Link
                 to={"/forgot-password"}
-                className="font-medium text-lg text-[#0A1C40]"
+                className="font-medium text-base text-[#0A1C40]"
               >
                 Forgot Password?
               </Link>
@@ -200,7 +200,7 @@ export const SignIn = () => {
               />
               <div
                 onClick={handleCheckbox}
-                className="flex items-center cursor-pointer font-medium text-[14px] text-[#a5a3a3] -mt-2 gap-2"
+                className="flex items-center cursor-pointer font-normal text-[14px] text-[#a5a3a3] -mt-2 gap-2"
               >
                 {" "}
                 <Checkbox
