@@ -13,9 +13,9 @@ export const PrimaryLayout = () => {
   const sidebarClassName = "";
   // profile = //useSelector((state) => state.auth);
   let userInfo = localStorage.getItem("userInfo");
-  if (!userInfo) {
-    return <Navigate to="/sign-in" />;
-  }
+  // if (!userInfo) {
+  //   return <Navigate to="/sign-in" />;
+  // }
 
   return (
     <div className="w-full">
@@ -28,7 +28,9 @@ export const PrimaryLayout = () => {
         className={`w-full flex page-body-wrapper lg:px-4 md:px-2 sm:px-2 dark:dark:bg-slate-800`}
       >
         <Sidebar
-          className={`${sidebarClassName ? sidebarClassName : ""} hidden lg:block max-w-48 fixed top-4 bottom-4 left-10 z-[1001] bg-gray-600 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100`}
+          className={`${
+            sidebarClassName ? sidebarClassName : ""
+          } hidden lg:block max-w-48 fixed top-4 bottom-4 left-10 z-[1001] bg-gray-600 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100`}
         />
         <Sidebar
           className={`${sidebarClassName ? sidebarClassName : ""} ${
