@@ -9,6 +9,7 @@ export const AuthLayout = ({ children }) => {
       >
         {/* <img src="/images/auth-main.svg" alt="" /> */}
         {/* h-[calc(100% - 24px)] */}
+        
       </div>
       <div className="w-full md:w-1/2 min-h-screen flex flex-col justify-start pt-2 sm:pr-10">
         {children}
