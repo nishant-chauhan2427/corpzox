@@ -145,14 +145,13 @@ export const SignIn = () => {
         <div className="w-full flex">
           <div className="w-full flex flex-col">
             <DualHeadingTwo
-              containerClassName={"text-left pt-5"}
+              containerClassName={"text-left pt-2"}
               heading={"Sign In"}
               subHeading={"Please Sign in to continue to your account."}
             />
-            {/* <ThemeSwitch/> */}
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="flex flex-col gap-4 pt-5"
+              className="flex flex-col gap-3 pt-5"
             >
               <Controller
                 name="email"
@@ -165,7 +164,7 @@ export const SignIn = () => {
                     type={"email"}
                     placeholder={"Email Id / Phone No."}
                     className={"border-[#D9D9D9] border"}
-                    errorContent={errors?.email?.message}
+                    // errorContent={errors?.email?.message}
                     onBlur={() => handleBlur("email")}
                   />
                 )}
@@ -182,7 +181,7 @@ export const SignIn = () => {
                     type={"password"}
                     className={"border-[#D9D9D9] border"}
                     placeholder={"Password"}
-                    errorContent={errors?.password?.message}
+                    // errorContent={errors?.password?.message}
                     onBlur={() => handleBlur("password")}
                   />
                 )}
@@ -190,7 +189,7 @@ export const SignIn = () => {
               />
               <Link
                 to={"/forgot-password"}
-                className="font-medium text-base text-[#0A1C40]"
+                className="font-medium text-lg text-[#0A1C40]"
               >
                 Forgot Password?
               </Link>
@@ -201,7 +200,7 @@ export const SignIn = () => {
               />
               <div
                 onClick={handleCheckbox}
-                className="flex items-center cursor-pointer font-normal text-base text-[#a5a3a3] gap-2"
+                className="flex items-center cursor-pointer font-medium text-[14px] text-[#a5a3a3] -mt-2 gap-2"
               >
                 {" "}
                 <Checkbox
@@ -209,7 +208,13 @@ export const SignIn = () => {
                   onClick={(e) => e.stopPropagation()}
                   onChange={handleCheckbox}
                 />{" "}
-                Keep me Signed in
+                <span
+                  className={`${
+                    checkedCheckbox ? "text-[#000]" : "text-[#6C6C6C]"
+                  }`}
+                >
+                  Keep me Signed in
+                </span>
               </div>
               <Button
                 type={"submit"}
@@ -240,7 +245,7 @@ export const SignIn = () => {
                 <div className="border-t w-full border-[#D9D9D9]"></div>
               </div>
               <div className="flex items-center justify-center rounded p-2  text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
-                <p className="flex gap-2">
+                <div className="flex gap-2">
                   {/* Sign in with Google <img src="google.svg" alt="" /> */}
                   <GoogleLogin
                     clientId="1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com"
@@ -249,7 +254,7 @@ export const SignIn = () => {
                     cookiePolicy={"single_host_origin"}
                     scope="openid profile email"
                   />
-                </p>
+                </div>
                 {/* <img src="" alt="" /> */}
               </div>
 
@@ -264,32 +269,10 @@ export const SignIn = () => {
                   </Link>
                 </p>
               </div>
-              {error && (
+              {/* {error && (
                 <div className="text-red-500 mt-2 text-center">{error}</div>
-              )}
+              )} */}
             </form>
-            {/* Uncomment if needed
-            <div className="text-center">
-              Don't have an account?{" "}
-              <span className="font-bold text-base underline cursor-pointer hover:text-primary hover:no-underline text-primaryBg">
-                Sign up for free
-              </span>
-            </div>
-            <div className="flex text-center justify-center items-center font-semibold text-[#858181]">
-              <MdOutlineHorizontalRule />
-              <MdOutlineHorizontalRule />
-              <MdOutlineHorizontalRule />
-              Or Sign up With
-              <MdOutlineHorizontalRule />
-              <MdOutlineHorizontalRule />
-              <MdOutlineHorizontalRule />
-            </div>
-            <div className="flex cursor-pointer justify-center items-center gap-3 text-2xl">
-              <FaFacebookSquare color="#884EA7" />
-              <FaGoogle color="#884EA7" />
-              <FaInstagramSquare color="#884EA7" />
-            </div>
-            */}
           </div>
         </div>
       </AuthLayout>

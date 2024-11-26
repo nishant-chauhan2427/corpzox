@@ -5,11 +5,11 @@ export const Insight = () => {
   return (
     <>
       <div className="flex flex-col gap-4">
-        <div className="flex justify-between items-center pb-2">
-          <p className="font-semibold text-[16px] text-[#004BBC]">Insights</p>
-          <Link className="font-semibold text-xs text-[#828282]">View All</Link>
+        <div className="flex justify-between items-center ">
+          <p className="font-medium text-[16px] text-[#004BBC]">Insights</p>
+          <Link className="font-medium text-xs text-[#828282]">View All</Link>
         </div>
-        <div className="h-[0.5px] bg-gradient-to-r rounded-lg from-[#E0E1E2] via-[#E0E1E2] to-[#E0E1E2]"></div>
+        <div className="h-[1px] bg-gradient-to-r rounded-lg from-[#E0E1E2] via-[#E0E1E2] to-[#E0E1E2]"></div>
         {insightBlog.map((blog, index) => (
           <div
             key={index}
@@ -31,9 +31,11 @@ export const Insight = () => {
               <p className="font-normal text-[12px] text-[#737373]">
                 {blog.description}
               </p>
-              <hr />
+
               <div className="flex flex-col pt-2">
-                <p className="font-medium text-[11px] text-[#495367]">Anupriya Banger</p>
+                <p className="font-medium text-[11px] text-[#495367]">
+                  Anupriya Banger
+                </p>
                 <p className="font-normal text-[9px] text-[#96A2BE]">
                   Posted Job Now
                 </p>

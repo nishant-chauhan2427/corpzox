@@ -6,12 +6,14 @@ import { AuthLayout } from "../../../components/layout/auth";
 import { DualHeadingTwo } from "../components/dualHeading/dualHeadingTwo";
 import { MetaTitle } from "../../../components/metaTitle";
 import { Link } from "react-router-dom";
-import { useDispatch,useSelector } from "react-redux";
-import {forgotPasswordSchema} from '../../../validation/authValidatiorSchema';
+import { useDispatch, useSelector } from "react-redux";
+import { forgotPasswordSchema } from "../../../validation/authValidatiorSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
-import {resendOtp,verifyUser} from '../../../redux/actions/userAuth-action';
-import toast from "react-hot-toast";//import {updateProfile} from '../../../redux/slices/userAuth-slice';
+import { resendOtp, verifyUser } from "../../../redux/actions/userAuth-action";
+import toast from "react-hot-toast";
+//  import {updateProfile} from '../../../redux/slices/userAuth-slice';
 import { useNavigate } from "react-router-dom";
+import GoogleLogin from "react-google-login";
 export const ForgotPassword = () => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [timer, setTimer] = useState(30);
@@ -29,29 +31,40 @@ export const ForgotPassword = () => {
   });
   const [isOtpScreen, setIsOtpScreen] = useState(false);
   const [isVerify, setIsVerify] = useState(false);
-  const { isVerifying=false,verifyingError,verifyMessage,resendingOtp,profile} = useSelector((state) => state.auth);
+  const {
+    isVerifying = false,
+    verifyingError,
+    verifyMessage,
+    resendingOtp,
+    profile,
+  } = useSelector((state) => state.auth);
   useEffect(() => {
-    if (timer === 0||timer == '00') {
+    if (timer === 0 || timer == "00") {
       setIsResendDisabled(false);
     } else {
       setIsResendDisabled(true);
       const countdown = setTimeout(() => {
-        setTimer((timer - 1).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false}));
+        setTimer(
+          (timer - 1).toLocaleString("en-US", {
+            minimumIntegerDigits: 2,
+            useGrouping: false,
+          })
+        );
       }, 1000);
       return () => clearTimeout(countdown);
     }
   }, [timer]);
-  useEffect(()=>{
-    if(isVerify&&!isVerifying){
-     setIsVerify(false);
-     if(verifyingError){
-       toast.error(verifyingError);
-     }else{
-      //  toast.success(verifyMessage);
-       navigate('/create-new-password')
-     }
+  useEffect(() => {
+    if (isVerify && !isVerifying) {
+      setIsVerify(false);
+      if (verifyingError) {
+        toast.error(verifyingError);
+      } else {
+        //  toast.success(verifyMessage);
+        navigate("/create-new-password");
+      }
     }
-   },[isVerifying])
+  }, [isVerifying]);
   const handleChange = (index, value) => {
     if (/^\d$/.test(value)) {
       const newOtp = [...otp];
@@ -62,7 +75,6 @@ export const ForgotPassword = () => {
       }
     }
   };
-
   const handleBackspace = (index, e) => {
     if (e.key === "Backspace" && index >= 0) {
       const newOtp = [...otp];
@@ -72,6 +84,16 @@ export const ForgotPassword = () => {
         inputRefs.current[index - 1].focus();
       }
     }
+  };
+  const googleLogin = (data) => {
+    setIsSubmit(true);
+    dispatch(
+      thirdPartyLogin({
+        email: data?.profileObj?.email,
+        name: data?.profileObj?.givenName,
+        profilePicture: data?.profileObj?.imageUrl,
+      })
+    );
   };
 
   const handlePaste = (e) => {
@@ -92,7 +114,7 @@ export const ForgotPassword = () => {
 
   const handleResendOtp = (event) => {
     event.preventDefault();
-    console.log(profile)
+    console.log(profile);
     setTimer(30);
     dispatch(
       resendOtp({
@@ -107,8 +129,8 @@ export const ForgotPassword = () => {
     const enteredOtp = otp.join("");
     console.log("Entered OTP:", enteredOtp);
     // Add further OTP validation logic here
-    setIsVerify(true)
-    dispatch(verifyUser({otp:enteredOtp,id:profile?.[0]?.id}))
+    setIsVerify(true);
+    dispatch(verifyUser({ otp: enteredOtp, id: profile?.[0]?.id }));
   };
 
   const handleEmailSubmit = (data) => {
@@ -118,12 +140,12 @@ export const ForgotPassword = () => {
     // setIsOtpScreen(true);
     // setTimer(30);
   };
-  useEffect(()=>{
-   if(!isOtpScreen&&resendingOtp){
-    setIsOtpScreen(true);
-    setTimer(30);
-   }
-  },[resendingOtp])
+  useEffect(() => {
+    if (!isOtpScreen && resendingOtp) {
+      setIsOtpScreen(true);
+      setTimer(30);
+    }
+  }, [resendingOtp]);
 
   return (
     <>
@@ -144,23 +166,29 @@ export const ForgotPassword = () => {
                 onSubmit={handleOtpSubmit}
                 className="w-full sm:w-[100%] sm:mt-8 flex flex-col gap-2"
               >
-                <div className="w-full flex justify-between items-start gap-4 sm:pb-20">
-                  {otp.map((digit, index) => (
-                    <input
-                      className={`${
-                        errors ? "border-error" : "border-[#DFEAF2]"
-                      } w-[15%] h-14 font-bold border rounded-lg text-center`}
-                      key={index}
-                      type="text"
-                      maxLength="1"
-                      value={digit}
-                      ref={(ref) => (inputRefs.current[index] = ref)}
-                      onChange={(e) => handleChange(index, e.target.value)}
-                      onKeyDown={(e) => handleBackspace(index, e)}
-                      onPaste={index === 0 ? handlePaste : null}
-                    />
-                  ))}
+                <div className="w-[90%] flex flex-col sm:pb-20">
+                  <div className="w-full flex justify-between items-start gap-2  ">
+                    {otp.map((digit, index) => (
+                      <input
+                        className={`${
+                          !isValid ? "border-error" : "border-[#DFEAF2] "
+                        } w-[15%] h-14 font-bold border rounded-lg text-center `}
+                        key={index}
+                        type="text"
+                        maxLength="1"
+                        value={digit}
+                        ref={(ref) => (inputRefs.current[index] = ref)}
+                        onChange={(e) => handleChange(index, e.target.value)}
+                        onKeyDown={(e) => handleBackspace(index, e)}
+                        onPaste={index === 0 ? handlePaste : null}
+                      />
+                    ))}
+                  </div>
+                  <div className="text-red-500 mt-2 font-medium text-sm text-center">
+                    Wrong OTP!
+                  </div>
                 </div>
+
                 <div className="w-full flex flex-col justify-center items-center">
                   <button
                     className={`text-xs text-primary disabled:text-[#8D8D8D]`}
@@ -183,7 +211,7 @@ export const ForgotPassword = () => {
                     type="submit"
                     primary={true}
                     className="mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none"
-                    disabled={otp?.[otp.length-1]==''}
+                    disabled={otp?.[otp.length - 1] == ""}
                     isLoading={isVerifying}
                   >
                     Continue
@@ -234,7 +262,14 @@ export const ForgotPassword = () => {
                   <div className="border-t w-full border-[#D9D9D9]"></div>
                 </div>
                 <div className="flex items-center justify-center rounded p-2 gap-2 text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
-                  Sign in with Google <img src="google.svg" alt="" />
+                  {/* Sign in with Google <img src="google.svg" alt="" /> */}
+                  <GoogleLogin
+                    clientId="1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com"
+                    onSuccess={googleLogin}
+                    onError={() => console.log("Errors")}
+                    cookiePolicy={"single_host_origin"}
+                    scope="openid profile email"
+                  />
                   <img src="" alt="" />
                 </div>
               </form>

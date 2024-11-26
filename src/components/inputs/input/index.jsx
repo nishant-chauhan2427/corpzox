@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { IoInformationCircleOutline } from "react-icons/io5";
 
@@ -25,6 +25,7 @@ export const Input = ({
   ...props
 }) => {
   const [passwordType, setPasswordType] = useState("password");
+  const [updatedInfoContent, setUpdatedInfoContent] = useState(infoContent);
 
   const viewPassword = () => {
     setPasswordType(passwordType === "password" ? "text" : "password");
@@ -42,6 +43,12 @@ export const Input = ({
     onChange(e);
   };
 
+  useEffect(() => {
+    if (errorContent) {
+      setUpdatedInfoContent(errorContent);
+    }
+  }, [errorContent]);
+
   return (
     <div className={containerClassName}>
       <div className="w-full flex flex-col">
@@ -54,11 +61,11 @@ export const Input = ({
           >
             {label}
           </label> */}
-          {infoContent && (
+          {updatedInfoContent && (
             <IoInformationCircleOutline
-              className="text-primary text-sm focus:outline-none  "
+              className="text-primary text-[10px] focus:outline-none absolute right-2 top-4 z-40 "
               data-tooltip-id="my-tooltip"
-              data-tooltip-content={infoContent}
+              data-tooltip-content={updatedInfoContent}
             />
           )}
         </div>
@@ -84,7 +91,7 @@ export const Input = ({
             } ${
               required &&
               "after:content-['*'] after:text-red-500 after:absolute after:-top-1"
-            } absolute -translate-y-4 scale-75 top-2 origin-[0] rounded-lg text-sm text-gray-400 dark:text-gray-400 duration-300 transform bg-white dark:bg-gray-950 peer-focus:px-2 peer-focus:text-bee-primary peer-focus:dark:text-bee-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-3 + ${labelClassName}`}
+            } absolute -translate-y-4 scale-75 top-2 origin-[0] rounded-lg text-sm text-[#6c6c6c] dark:text-gray-400 duration-300 transform bg-white dark:bg-gray-950 peer-focus:px-2 peer-focus:text-bee-primary peer-focus:dark:text-bee-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-3 + ${labelClassName}`}
           >
             <span className="mr-2">{labelIcon}</span>
             {label}
