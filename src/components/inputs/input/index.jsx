@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { IoInformationCircleOutline } from "react-icons/io5";
 
@@ -25,6 +25,7 @@ export const Input = ({
   ...props
 }) => {
   const [passwordType, setPasswordType] = useState("password");
+  const [updatedInfoContent, setUpdatedInfoContent] = useState(infoContent);
 
   const viewPassword = () => {
     setPasswordType(passwordType === "password" ? "text" : "password");
@@ -42,7 +43,11 @@ export const Input = ({
     onChange(e);
   };
 
-  
+  useEffect(() => {
+    if (errorContent) {
+      setUpdatedInfoContent(errorContent);
+    }
+  }, [errorContent]);
 
   return (
     <div className={containerClassName}>
@@ -56,11 +61,11 @@ export const Input = ({
           >
             {label}
           </label> */}
-          {infoContent && (
+          {updatedInfoContent && (
             <IoInformationCircleOutline
-              className="text-primary text-sm focus:outline-none  "
+              className="text-primary text-[10px] focus:outline-none absolute right-2 top-4 z-40 "
               data-tooltip-id="my-tooltip"
-              data-tooltip-content={infoContent}
+              data-tooltip-content={updatedInfoContent}
             />
           )}
         </div>

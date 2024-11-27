@@ -2,14 +2,14 @@ import { Controller } from "react-hook-form";
 import { Input } from "../../../../../components/inputs";
 import { Selector } from "../../../../../components/select";
 
-export const FundingDetails = ({ control, errors }) => {
+export const FundingDetails = ({ control, errors, setValue, handleBlur, trigger }) => {
   const isFundingRequiredOption = [
     { label: "Yes", value: 1 },
     { label: "No", value: 0 },
   ];
   const existingBusinessOption = [
-    // { label: "Active", value: 1 },
-    // { label: "Inactive", value: 0 },
+    { label: "Active", value: 1 },
+    { label: "Inactive", value: 0 },
   ];
 
   return (
@@ -26,32 +26,56 @@ export const FundingDetails = ({ control, errors }) => {
           </div>
           <div className="grid grid-cols-1 gap-4">
             <Controller
-              name={`fundingRequirement.isFundingRequired`}
+              name={`funding.fundingRequirement.lookingForFunding`}
               control={control}
-              render={({ field }) => (
-                <Selector
-                  {...field}
-                  label={"Funding Required"}
-                  placeholder={"Select existing business"}
-                  errorContent={errors.fundingRequirement?.isFundingRequired?.message}
-                  options={isFundingRequiredOption}
-                  required={true}
-                />
-              )}
+              render={({ field }) => {
+                const selectedFund = isFundingRequiredOption.find(
+                  (option) => option.value === field.value
+                );
+                return (
+                  <Selector
+                    {...field}
+                    label={"Funding Required"}
+                    placeholder={"Select funding requirement"}
+                    errorContent={errors.funding?.fundingRequirement?.lookingForFunding?.message}
+                    options={isFundingRequiredOption}
+                    required={true}
+                    value={selectedFund || {}}
+                    onBlur={() => handleBlur("funding.fundingRequirement.lookingForFunding")}
+                    onChange={(selectedValue) => {
+                      field.onChange(selectedValue.value); // Default handling
+                      trigger("funding.fundingRequirement.lookingForFunding"); // Manually trigger validation
+                      setValue("funding.fundingRequirement.lookingForFunding", selectedValue.value); // Update value
+                    }}
+                  />
+                );
+              }}
             />
             <Controller
-              name="fundingRequirement.existingBusiness"
+              name="funding.fundingRequirement.existingBusinessName"
               control={control}
-              render={({ field }) => (
-                <Selector
-                  {...field}
-                  label={"Existing Business"}
-                  placeholder={"Select existing business"}
-                  errorContent={errors.fundingRequirement?.existingBusiness?.message}
-                  options={existingBusinessOption}
-                  required={true}
-                />
-              )}
+              render={({ field }) => {
+                const selectedFund = existingBusinessOption.find(
+                  (option) => option.value === field.value
+                );
+                return (
+                  <Selector
+                    {...field}
+                    label={"Existing Business"}
+                    placeholder={"Select existing business"}
+                    errorContent={errors.funding?.fundingRequirement?.existingBusinessName?.message}
+                    options={existingBusinessOption}
+                    required={true}
+                    value={selectedFund || {}}
+                    onBlur={() => handleBlur("funding.fundingRequirement.existingBusinessName")}
+                    onChange={(selectedValue) => {
+                      field.onChange(selectedValue.value); // Default handling
+                      trigger("funding.fundingRequirement.existingBusinessName"); // Manually trigger validation
+                      setValue("funding.fundingRequirement.existingBusinessName", selectedValue.value); // Update value
+                    }}
+                  />
+                );
+              }}
             />
           </div>
         </div>

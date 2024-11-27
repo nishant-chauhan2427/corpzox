@@ -142,6 +142,7 @@ const MakeAPayment = () => {
                 <div>
                   <ReactModal
                     isOpen={modalOpen}
+                    crossButton={true}
                     onRequestClose={() => setModalOpen(false)}
                     button={
                       showAddIcon && (

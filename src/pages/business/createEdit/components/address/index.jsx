@@ -3,7 +3,7 @@ import { Input } from "../../../../../components/inputs";
 import { Selector } from "../../../../../components/select";
 import { PhoneNumberInput } from "../../../../../components/inputs/phoneInput";
 
-export const AddressDetails = ({ control, errors }) => {
+export const AddressDetails = ({ control, errors, setValue, handleBlur, trigger}) => {
   const cityOption = [
     { label: "Active", value: 1 },
     { label: "Inactive", value: 0 },
@@ -14,6 +14,17 @@ export const AddressDetails = ({ control, errors }) => {
     { label: "Female", value: "female" },
     { label: "Others", value: "others" },
   ];
+
+  const handleFieldChange = (fieldName, field, trigger) => {
+    return (e) => {
+      field.onChange(e); // Default handling
+      trigger(fieldName); // Manually trigger validation for this field
+    };
+  };
+
+  const handleFieldBlur = (fieldName) => {
+    return () => handleBlur(fieldName);
+  };
 
   return (
     <>
@@ -29,72 +40,102 @@ export const AddressDetails = ({ control, errors }) => {
           </div>
           <div className="w-full grid grid-cols-1 gap-4">
             <Controller
-              name={`businessAddress.lineOne`}
+              name={`address.businessAddress.businessAddressL1`}
               control={control}
               render={({ field }) => (
                 <Input
                   {...field}
                   label={`Line 1`}
                   placeholder={`Line 1`}
-                  errorContent={errors.businessAddress?.lineOne?.message}
+                  errorContent={errors.address?.businessAddress?.businessAddressL1?.message}
                   required={true}
+                  onBlur={()=>handleBlur(`address.businessAddress.businessAddressL1`)}
+                  onChange={(e)=>{ field.onChange(e); trigger(`address.businessAddress.businessAddressL1`)}}
                 />
               )}
             />
             <Controller
-              name={`businessAddress.lineTwo`}
+              name={`address.businessAddress.businessAddressL2`}
               control={control}
               render={({ field }) => (
                 <Input
                   {...field}
                   label={`Line 2`}
                   placeholder={`Line 2`}
-                  errorContent={errors.businessAddress?.lineTwo?.message}
+                  errorContent={errors?.address?.businessAddress?.businessAddressL2?.message}
                   required={true}
+                  onBlur={handleFieldBlur(`address.businessAddress.businessAddressL2`)}
+                  onChange={handleFieldChange(`address.businessAddress.businessAddressL2`, field, trigger)}
                 />
               )}
             />
             <Controller
-              name={`businessAddress.pinCode`}
+              name={`address.businessAddress.businessAddressPin`}
               control={control}
               render={({ field }) => (
                 <Input
                   {...field}
                   label={`PIN Code`}
                   placeholder={`Enter your pincode`}
-                  errorContent={errors.businessAddress?.pinCode?.message}
+                  errorContent={errors?.address?.businessAddress?.businessAddressPin?.message}
                   required={true}
+                  onBlur={handleFieldBlur(`address.businessAddress.businessAddressPin`)}
+                  onChange={handleFieldChange(`address.businessAddress.businessAddressPin`, field, trigger)}
                 />
               )}
             />
 
             <Controller
-              name="businessAddress.city"
+              name="address.businessAddress.businessAddressCity"
               control={control}
-              render={({ field }) => (
-                <Selector
-                  {...field}
-                  label={"City"}
-                  placeholder={"Select city"}
-                  errorContent={errors.businessAddress?.city?.message}
-                  options={cityOption}
-                  required={true}
-                />
-              )}
+              render={({ field }) => {
+                const selectedFund = cityOption.find(
+                  (option) => option.value === field.value
+                );
+                return (
+                  <Selector
+                    {...field}
+                    label={"City"}
+                    placeholder={"Select city"}
+                    errorContent={errors?.address?.businessAddress?.businessAddressCity?.message}
+                    options={cityOption}
+                    required={true}
+                    value={selectedFund || {}}
+                    onChange={(selectedValue) => {
+                      field.onChange(selectedValue.value);
+                      setValue("address.businessAddress.businessAddressCity", selectedValue.value);
+                      trigger("address.businessAddress.businessAddressCity"); // Manually trigger validation
+                    }}
+                    onBlur={handleFieldBlur(`address.businessAddress.businessAddressCity`)}
+                  />
+                );
+              }}
             />
             <Controller
-              name="businessAddress.state"
+              name="address.businessAddress.businessAddressState"
               control={control}
-              render={({ field }) => (
-                <Selector
-                  {...field}
-                  label={"State"}
-                  placeholder={"Select state"}
-                  errorContent={errors.businessAddress?.state?.message}
-                  options={stateOption}
-                  required={true}
-                />
-              )}
+              render={({ field }) => {
+                const selectedFund = stateOption.find(
+                  (option) => option.value === field.value
+                );
+                return (
+                  <Selector
+                    {...field}
+                    label={"State"}
+                    placeholder={"Select state"}
+                    errorContent={errors?.address?.businessAddress?.businessAddressState?.message}
+                    options={stateOption}
+                    required={true}
+                    value={selectedFund || {}}
+                    onChange={(selectedValue) => {
+                      field.onChange(selectedValue.value);
+                      setValue("address.businessAddress.businessAddressState", selectedValue.value);
+                      trigger("address.businessAddress.businessAddressState"); // Manually trigger validation
+                    }}
+                    onBlur={handleFieldBlur(`address.businessAddress.businessAddressState`)}
+                  />
+                );
+              }}
             />
           </div>
         </div>
@@ -110,72 +151,102 @@ export const AddressDetails = ({ control, errors }) => {
           </div>
           <div className="w-full grid grid-cols-1 gap-4">
             <Controller
-              name={`communicationAddress.lineOne`}
+              name={`address.communicationAddress.communicationAddressL1`}
               control={control}
               render={({ field }) => (
                 <Input
                   {...field}
                   label={`Line 1`}
                   placeholder={`Line 1`}
-                  errorContent={errors.communicationAddress?.lineOne?.message}
+                  errorContent={errors?.address?.communicationAddress?.communicationAddressL1?.message}
                   required={true}
+                  onBlur={handleFieldBlur(`address.communicationAddress.communicationAddressL1`)}
+                  onChange={handleFieldChange(`address.communicationAddress.communicationAddressL1`, field, trigger)}
                 />
               )}
             />
             <Controller
-              name={`communicationAddress.lineTwo`}
+              name={`address.communicationAddress.communicationAddressL2`}
               control={control}
               render={({ field }) => (
                 <Input
                   {...field}
                   label={`Line 2`}
                   placeholder={`Line 2`}
-                  errorContent={errors.communicationAddress?.lineTwo?.message}
+                  errorContent={errors?.address?.communicationAddress?.communicationAddressL2?.message}
                   required={true}
+                  onBlur={handleFieldBlur(`address.communicationAddress.communicationAddressL2`)}
+                  onChange={handleFieldChange(`address.communicationAddress.communicationAddressL2`, field, trigger)}
                 />
               )}
             />
             <Controller
-              name={`communicationAddress.pinCode`}
+              name={`address.communicationAddress.communicationAddressPin`}
               control={control}
               render={({ field }) => (
                 <Input
                   {...field}
                   label={`PIN Code`}
                   placeholder={`Enter your pincode`}
-                  errorContent={errors.communicationAddress?.pinCode?.message}
+                  errorContent={errors?.address?.communicationAddress?.communicationAddressPin?.message}
                   required={true}
+                  onBlur={handleFieldBlur(`address.communicationAddress.communicationAddressPin`)}
+                  onChange={handleFieldChange(`address.communicationAddress.communicationAddressPin`, field, trigger)}
                 />
               )}
             />
 
             <Controller
-              name="communicationAddress.city"
+              name="address.communicationAddress.communicationAddressCity"
               control={control}
-              render={({ field }) => (
-                <Selector
-                  {...field}
-                  label={"City"}
-                  placeholder={"Select city"}
-                  errorContent={errors.communicationAddress?.city?.message}
-                  options={cityOption}
-                  required={true}
-                />
-              )}
+              render={({ field }) => {
+                const selectedFund = cityOption.find(
+                  (option) => option.value === field.value
+                );
+                return (
+                  <Selector
+                    {...field}
+                    label={"City"}
+                    placeholder={"Select city"}
+                    errorContent={errors?.address?.communicationAddress?.communicationAddressCity?.message}
+                    options={cityOption}
+                    required={true}
+                    value={selectedFund || {}}
+                    onChange={(selectedValue) => {
+                      field.onChange(selectedValue.value);
+                      setValue("address.communicationAddress.communicationAddressCity", selectedValue.value);
+                      trigger("address.communicationAddress.communicationAddressCity"); // Manually trigger validation
+                    }}
+                    onBlur={handleFieldBlur(`address.communicationAddress.communicationAddressCity`)}
+                  />
+                );
+              }}
             />
             <Controller
-              name="communicationAddress.state"
+              name="address.communicationAddress.communicationAddressState"
               control={control}
-              render={({ field }) => (
-                <Selector
-                  {...field}
-                  label={"State"}
-                  placeholder={"Select state"}
-                  errorContent={errors.communicationAddress?.state?.message}
-                  options={stateOption}
-                  required={true}
-                />
-              )}
+              render={({ field }) => {
+                const selectedFund = stateOption.find(
+                  (option) => option.value === field.value
+                );
+                return (
+                  <Selector
+                    {...field}
+                    label={"State"}
+                    placeholder={"Select state"}
+                    errorContent={errors?.address?.communicationAddress?.state?.message}
+                    options={stateOption}
+                    required={true}
+                    value={selectedFund || {}}
+                    onChange={(selectedValue) => {
+                      field.onChange(selectedValue.value);
+                      setValue("address.communicationAddress.communicationAddressState", selectedValue.value);
+                      trigger("address.communicationAddress.communicationAddressState"); // Manually trigger validation
+                    }}
+                    onBlur={handleFieldBlur(`address.communicationAddress.communicationAddressState`)}
+                  />
+                );
+              }}
             />
           </div>
         </div>

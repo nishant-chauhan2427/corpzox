@@ -3,39 +3,64 @@ import { ModalWrapper } from "../../../components/wrappers/modal";
 import BusinessListing from "../listing";
 import { Button } from "../../../components/buttons";
 import { useNavigate } from "react-router-dom";
-import { createBusiness } from "../../../redux/slices/businessSlice";
+import { createBusiness, resetBusiness } from "../../../redux/slices/businessSlice";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { ConfirmationModal } from "../../../components/modal/confirmationModal";
+import { updateAddressDetails, updateFinancialDetails, updateFundingDetails, updateKYCDetails } from "../../../redux/actions/business-action";
 
 const BusinessPreview = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const business = useSelector((state) => state.business);
-
+  const {registration, address, financial, kyc, funding} = useSelector((state) => state.business.business);
+  const {businessId} = useSelector(state => state.business);
   const [confirmationModal, setConfirmationModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [formModal,setFormModal] = useState(true);
 
-  console.log(business, "business");
+  console.log("DAT",businessId);
 
-  // Handle step navigation
-  const handleNextStep = () => {
-    dispatch(createBusiness());
-    navigate("/business");
-    toast.success("Business created succesfully!");
+
+
+
+  const handleNextStep = async () => {
+    if (businessId) {
+      try {
+        setLoading(true);
+        await dispatch(updateAddressDetails({...address?.businessAddress, ...address?.communicationAddress, businessId}));
+        await dispatch(updateFinancialDetails({...financial?.financialDetails, businessId}));
+        await dispatch(updateKYCDetails({ ...kyc?.kycDetails,businessId }));
+        await dispatch(updateFundingDetails({ businessId,...funding?.fundingRequirement}));
+
+        toast.success("Business created successfully!");
+        
+        setConfirmationModal(true);
+        dispatch(resetBusiness());
+        setLoading(false);
+        setFormModal(false);
+      } catch (error) {
+        setLoading(false);
+        toast.error("An error occurred while submitting business details.");
+        console.error(error);
+      }
+    } else {
+      setLoading(false); 
+      toast.error("Business ID not found.");
+    }
   };
 
   const handlePrevStep = () => {
     navigate("/business/create");
   };
   const onConfirmationModalClose = () => {
-    setConfirmationModal(!confirmationModal);
+    setConfirmationModal(false);
   };
 
   return (
     <>
       <div>
         <BusinessListing />
-        <ModalWrapper title="Preview Business">
+       { formModal ? <ModalWrapper title="Preview Business">
           <div className="px-4 my-2 flex flex-col gap-4">
             <div className="p-4 h-[60vh] overflow-y-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -45,7 +70,7 @@ const BusinessPreview = () => {
                     Business Type
                   </h3>
                   <p className="text-gray-600">
-                    {business?.businessType || "N/A"}
+                    {registration?.typeOfBusiness || "N/A"}
                   </p>
                 </div>
 
@@ -55,7 +80,7 @@ const BusinessPreview = () => {
                     Business Name
                   </h3>
                   <p className="text-gray-600">
-                    {business?.businessName || "N/A"}
+                    {registration?.businessName || "N/A"}
                   </p>
                 </div>
 
@@ -64,13 +89,13 @@ const BusinessPreview = () => {
                   <h3 className="text-lg font-semibold text-gray-800">
                     CIN Number
                   </h3>
-                  <p className="text-gray-600">{business?.cinNo || "N/A"}</p>
+                  <p className="text-gray-600">{registration?.cinNumber || "N/A"}</p>
                 </div>
 
                 {/* Role */}
                 <div className="space-y-2">
                   <h3 className="text-lg font-semibold text-gray-800">Role</h3>
-                  <p className="text-gray-600">{business?.role || "N/A"}</p>
+                  <p className="text-gray-600">{ registration?.roleOfCompany ? "Yes" : "No"}</p>
                 </div>
 
                 {/* Year of Establishment */}
@@ -79,7 +104,7 @@ const BusinessPreview = () => {
                     Year of Establishment
                   </h3>
                   <p className="text-gray-600">
-                    {business?.yearOfEstablishment || "N/A"}
+                    {registration?.yearOfStablish || "N/A"}
                   </p>
                 </div>
 
@@ -89,7 +114,7 @@ const BusinessPreview = () => {
                     Headquarter Location
                   </h3>
                   <p className="text-gray-600">
-                    {business?.headquarterLocation || "N/A"}
+                    {registration?.headQuarterLocation || "N/A"}
                   </p>
                 </div>
 
@@ -99,10 +124,10 @@ const BusinessPreview = () => {
                     Business Address
                   </h3>
                   <p className="text-gray-600">
-                    {business?.businessAddress?.line1},{" "}
-                    {business?.businessAddress?.city},{" "}
-                    {business?.businessAddress?.state} -{" "}
-                    {business?.businessAddress?.pinCode || "N/A"}
+                    {address?.businessAddress?.businessAddressL1},{" "}
+                    {address?.businessAddress?.businessAddressCity},{" "}
+                    {address?.businessAddress?.businessAddressState} -{" "}
+                    {address?.businessAddress?.businessAddressPin || "N/A"}
                   </p>
                 </div>
 
@@ -112,10 +137,10 @@ const BusinessPreview = () => {
                     Communication Address
                   </h3>
                   <p className="text-gray-600">
-                    {business?.communicationAddress?.line1},{" "}
-                    {business?.communicationAddress?.city},{" "}
-                    {business?.communicationAddress?.state} -{" "}
-                    {business?.communicationAddress?.pinCode || "N/A"}
+                    {address?.communicationAddress?.communicationAddressL1},{" "}
+                    {address?.communicationAddress?.communicationAddressCity},{" "}
+                    {address?.communicationAddress?.communicationAddressState} -{" "}
+                    {address?.communicationAddress?.communicationAddressPin || "N/A"}
                   </p>
                 </div>
 
@@ -125,13 +150,13 @@ const BusinessPreview = () => {
                     Financial Details
                   </h3>
                   <p className="text-gray-600">
-                    Capital: {business?.financialDetails?.capital || "N/A"}
+                    Capital: {financial?.financialDetails?.capital || "N/A"}
                   </p>
                   <p className="text-gray-600">
-                    Revenue: {business?.financialDetails?.revenue || "N/A"}
+                    Revenue: {financial?.financialDetails?.revenue || "N/A"}
                   </p>
                   <p className="text-gray-600">
-                    Profit: {business?.financialDetails?.profit || "N/A"}
+                    Profit: {financial?.financialDetails?.profit || "N/A"}
                   </p>
                 </div>
 
@@ -141,14 +166,15 @@ const BusinessPreview = () => {
                     KYC Details
                   </h3>
                   <p className="text-gray-600">
-                    Username: {business?.kycDetails?.username || "N/A"}
+                    Username: {
+                    kyc?.kycDetails?.kycUser || "N/A"}
                   </p>
                   <p className="text-gray-600">
-                    ID Proof No: {business?.kycDetails?.idProofNo || "N/A"}
+                    ID Proof No: {kyc?.kycDetails?.id || "N/A"}
                   </p>
                   <p className="text-gray-600">
                     Address Proof No:{" "}
-                    {business?.kycDetails?.addressProofNo || "N/A"}
+                    {kyc?.kycDetails?.addressProof || "N/A"}
                   </p>
                 </div>
 
@@ -159,11 +185,11 @@ const BusinessPreview = () => {
                   </h3>
                   <p className="text-gray-600">
                     Funding Required:{" "}
-                    {business?.fundingRequirement?.fundingRequired || "N/A"}
+                    {funding?.fundingRequirement?.lookingForFunding ? "Yes" : "No"}
                   </p>
                   <p className="text-gray-600">
                     Existing Business:{" "}
-                    {business?.fundingRequirement?.existingBusiness
+                    {funding?.fundingRequirement?.existingBusinessName
                       ? "Yes"
                       : "No"}
                   </p>
@@ -178,20 +204,22 @@ const BusinessPreview = () => {
 
               <Button
                 onClick={() => {
-                  setConfirmationModal(true);
-                  setSignedInMenuPopup(!signedInMenuPopup);
-                  handleNextStep(); // Assuming this is the function to be triggered
+                  handleNextStep();
+                  //setConfirmationModal(true);
+                  //setSignedInMenuPopup(!signedInMenuPopup);
+                   // Assuming this is the function to be triggered
                 }}
                 type="button"
                 primary={true} // Assuming this is a valid prop
+                disabled={loading}
               >
-                Submit
+                 {loading ? "Submitting..." : "Submit"}
               </Button>
             </div>
           </div>
-        </ModalWrapper>
+        </ModalWrapper> : ""}
       </div>
-      <ConfirmationModal
+     {!loading && confirmationModal && <ConfirmationModal
         isOpen={confirmationModal}
         onClose={onConfirmationModalClose}
       >
@@ -201,10 +229,10 @@ const BusinessPreview = () => {
           <p className="text-base text-[#595959] font-medium">
 Your business has been created succesfully          </p>
           <div className="flex flex-col w-full">
-            <Button primary={true}>Continue</Button>
+            <Button primary={true} onClick={onConfirmationModalClose}>Continue</Button>
           </div>
         </div>
-      </ConfirmationModal>
+      </ConfirmationModal>}
     </>
   );
 };

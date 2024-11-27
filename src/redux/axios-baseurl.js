@@ -2,6 +2,7 @@ import axios from 'axios'
 
 const client = axios.create({
     baseURL: "https://corpzo.onrender.com/api"
+    // baseURL: "http://localhost:8080/
 }, {
     withCredentials: true,
 })
