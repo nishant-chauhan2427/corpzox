@@ -1,124 +1,138 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search } from "../../../components/search";
 import { Selector } from "../../../components/select";
 import { Heading } from "../../../components/heading";
-
+import { NoData } from "../../../components/errors/noData";
+import {
+  getService,
+  getServiceData,
+  getfolderData,
+} from "../../../redux/actions/document-action";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { DocumentCardShimmer } from "../../../components/loader/DocumentCardShimmer";
+import { DocumentListShimmer } from "../../../components/loader/DocumentListShimmer";
 const DocumentsListing = () => {
-  const servicesOptions = [
-    { label: "Fractional CFO Services", value: "fcs" },
-    { label: "Sole Proprietorship", value: "sc" },
-  ];
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const folders = [
-    {
-      name: "Folder",
-      files: [
-        {
-          name: "Sample Image",
-          url: "/icons/documents/image-sample.svg",
-          type: "image",
-        },
-        {
-          name: "Sample Video",
-          url: "/icons/documents/video-sample.mp4",
-          type: "video",
-        },
-        {
-          name: "Sample PDF",
-          url: "/pdf/documents/sample-pdf.pdf",
-          type: "pdf",
-        },
-      ],
-    },
-  ];
+  const {
+    documentList: services = [],
+    dataList: folders = [],
+    isLoading,
+    isdocumentLoading,
+    isdataLoading,
+    fetchingDocumentError,
+  } = useSelector((state) => state.document);
+
+  const [selectedServiceInfo, setSelectedServiceInfo] = useState(null);
+
+  const handleFolderClick = (_id) => {
+    dispatch(getfolderData({ applicationId: _id }));
+    navigate("/documents/detail");
+  };
+
+  useEffect(() => {
+    dispatch(getService());
+    dispatch(getServiceData({ formId: "", serviceId: "" }));
+  }, [dispatch]);
+
+  const servicesOptions = Array.isArray(services)
+    ? services.map((item) => ({
+        label: item.serviceName,
+        value: item.serviceId,
+        formId: item.formId,
+      }))
+    : [];
+
+  const handleServiceSelection = (selectedOption) => {
+    dispatch(
+      getServiceData({
+        formId: selectedOption?.formId,
+        serviceId: selectedOption?.value,
+      })
+    );
+    setSelectedServiceInfo({
+      formId: selectedOption.formId,
+      serviceId: selectedOption.value,
+    });
+  };
 
   return (
     <div>
-      {/* Page Heading */}
-      <div className="flex flex-col md:flex-row justify-between gap-4">
-        <Heading title={"Documents"} tourButton={true}>Documents</Heading>
-        <div className="flex items-center gap-2">
-          <Search placeholder={"Search Files"} />
-        </div>
-      </div>
+      {isLoading ? (
+        <DocumentCardShimmer/>
+      ) : (
+        <>
+          <div className="flex flex-col md:flex-row justify-between gap-4">
+            <Heading title={"Documents"} tourButton={true}>
+              Documents
+            </Heading>
+            <div className="flex items-center gap-2">
+              <Search placeholder={"Search Files"} />
+            </div>
+          </div>
 
-      {/* Filter */}
-      <div>
-        <Selector
-          className={"w-fit"}
-          label={"Folders"}
-          placeholder={"Select Services"}
-          options={servicesOptions}
-        />
-      </div>
-      {/* Folders and files */}
-      <div className="py-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-        {folders.map((data, index) => (
-          <Folder key={index} data={data} />
-        ))}
-      </div>
+          {fetchingDocumentError && (
+            <div className="text-red-500 my-2">
+              An error occurred: {fetchingDocumentError}
+            </div>
+          )}
+
+          <div>
+            <Selector
+              className={"w-fit"}
+              isClearable={true}
+              label={"Folders"}
+              placeholder={"Select Services"}
+              options={servicesOptions}
+              onChange={handleServiceSelection}
+              value={
+                servicesOptions.find(
+                  (option) => option.value === selectedServiceInfo?.serviceId
+                ) || null
+              }
+            />
+          </div>
+
+          
+          {isdataLoading ? (
+            <div className="flex justify-center items-center py-8">
+              <DocumentListShimmer />
+            </div>
+          ) : (
+            <div className="py-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+              {folders.length > 0 ? (
+                folders.map((data) => (
+                  <div
+                    key={data._id}
+                    onClick={() => handleFolderClick(data._id)}
+                    className="relative bg-[#F2F2F2] px-4 py-2 flex justify-between items-center gap-4 border rounded"
+                  >
+                    <div className="flex items-center gap-4">
+                      <img
+                        src="/icons/documents/folder.svg"
+                        alt="folder-icon"
+                      />
+                      <p className="font-semibold text-xs">{data?.caseId}</p>
+                    </div>
+                    <button>
+                      <img
+                        src="/icons/documents/three-dots.svg"
+                        alt="folder-icon"
+                      />
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <NoData />
+              )}
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 };
 
 export default DocumentsListing;
-
-const Folder = ({ data }) => {
-  const [folder, setFolder] = useState(false);
-
-  return (
-    <>
-      {!folder ? (
-        <div
-          onClick={() => setFolder(true)}
-          className="relative bg-[#F2F2F2] px-4 py-2 flex justify-between items-center gap-4 border rounded"
-        >
-          <div className="flex items-center gap-4 ">
-            <img src="/icons/documents/folder.svg" alt="folder-icon" />
-            <p className="font-semibold text-xs">{data.name}</p>
-          </div>
-          <button>
-            <img src="/icons/documents/three-dots.svg" alt="folder-icon" />
-          </button>
-        </div>
-      ) : (
-        <>
-          {data?.files.map((file, index) => (
-            <div key={index} className="file-item">
-              {file.type === "image" && (
-                <div className="image-file">
-                  <img
-                    src={file.url}
-                    alt={file.name}
-                    className="w-full h-auto"
-                  />
-                  <p>{file.name}</p>
-                </div>
-              )}
-              {file.type === "pdf" && (
-                <div className="pdf-file">
-                  <iframe
-                    src={file.url}
-                    width="100%"
-                    height="200px"
-                    title={file.name}
-                  ></iframe>
-                  <p>{file.name}</p>
-                </div>
-              )}
-              {file.type === "video" && (
-                <div className="video-file">
-                  <video width="100%" height="auto" controls>
-                    <source src={file.url} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                  <p>{file.name}</p>
-                </div>
-              )}
-            </div>
-          ))}
-        </>
-      )}
-    </>
-  );
-};

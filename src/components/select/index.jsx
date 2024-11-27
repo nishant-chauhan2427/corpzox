@@ -144,7 +144,6 @@ export const Selector = ({
     <div className={`w-full relative`}>
       <Select
         // menuPosition={"fixed"}
-
         id={label}
         name={name}
         isSearchable={isSearchable}

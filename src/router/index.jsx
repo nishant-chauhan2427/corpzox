@@ -33,6 +33,7 @@ import Profile from "../pages/profile";
 import ProfileEdit from "../pages/profile/editProfile";
 import Wishlist from "../pages/wishlist";
 import Payments from "../pages/payment";
+import DocumentDetail from "../pages/documents/detail";
 
 const router = createBrowserRouter([
   {
@@ -199,6 +200,10 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <DocumentsListing />,
+              },
+              {
+                path: "detail",
+                element: <DocumentDetail />,
               },
             ],
           },
