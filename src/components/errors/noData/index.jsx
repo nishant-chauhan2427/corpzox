@@ -12,11 +12,11 @@ export const NoData = () => {
           alt=""
         />
         <p className="font-medium  text-lg  text-[#595959]">
-          "Uh-oh! Something went wrong please try again later."{" "}
+          "No data available."{" "}
         </p>
         {/* <div className="flex flex-col w-full sm:w-[30%]"> */}
         <Link to={"/"} className="flex flex-col w-full sm:w-[30%]">
-          <Button primary={true}>Try Again </Button>
+          <Button primary={true}>Go Back </Button>
         </Link>
         {/* </div> */}
       </div>

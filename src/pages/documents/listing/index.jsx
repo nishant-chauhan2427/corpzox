@@ -5,7 +5,6 @@ import { NoData } from "../../../components/errors/noData";
 import {
   getService,
   getServiceData,
-  getfolderData,
 } from "../../../redux/actions/document-action";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -15,7 +14,7 @@ import { DocumentListShimmer } from "../../../components/loader/DocumentListShim
 const DocumentsListing = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  
   const {
     documentList: services = [],
     dataList: folders = [],
@@ -24,24 +23,30 @@ const DocumentsListing = () => {
     isdataLoading,
     fetchingDocumentError,
   } = useSelector((state) => state.document);
+  console.log(folders.length, "services 123");
 
   const [selectedServiceInfo, setSelectedServiceInfo] = useState(null);
-  const { id } = useParams(); 
 
+  console.log(selectedServiceInfo, "selectedServiceInfo")
+  const { id } = useParams();
+  useEffect(() => {
+      dispatch(getService());   
+      dispatch(getServiceData({formId:"",serviceId:""}));
+  }, [dispatch]);
   const handleFolderClick = (_id) => {
-   // console.log("Folder ID:", _id);
+    // console.log("Folder ID:", _id);
     //dispatch(getfolderData(_id));
-    navigate(`/documents/detail/${_id}`); 
+    navigate(`/documents/detail/${_id}`);
   };
 
-  
+  console.log("selected service info",selectedServiceInfo);
 
   const servicesOptions = Array.isArray(services)
     ? services.map((item) => ({
-        label: item.serviceName,
-        value: item.serviceId,
-        formId: item.formId,
-      }))
+      label: item.serviceName,
+      value: item.serviceId,
+      formId: item.formId,
+    }))
     : [];
 
   const handleServiceSelection = (selectedOption) => {
@@ -64,8 +69,8 @@ const DocumentsListing = () => {
       ) : (
         <>
           <div className="flex flex-col md:flex-row justify-between gap-4">
-            <Heading title={"Documents"} tourButton={true}>
-              Documents
+            <Heading backButton={true} title={"Documents"} tourButton={true}>
+              Documents ({folders.length})
             </Heading>
           </div>
 
@@ -82,6 +87,7 @@ const DocumentsListing = () => {
               label={"Folders"}
               placeholder={"Select Services"}
               options={servicesOptions}
+              // onChange={handleServiceSelection}
               onChange={(selectedOption) => {
                 if (selectedOption) {
                   dispatch(
@@ -100,9 +106,11 @@ const DocumentsListing = () => {
                 }
               }}
               value={
-                servicesOptions.find(
-                  (option) => option.value === selectedServiceInfo?.serviceId
-                ) || null
+                selectedServiceInfo 
+                  ? servicesOptions.find(
+                    (option) => option.value === selectedServiceInfo.serviceId
+                  )
+                  : null
               }
             />
           </div>
