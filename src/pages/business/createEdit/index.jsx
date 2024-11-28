@@ -53,7 +53,7 @@ const CreateBusiness = () => {
   } = useForm({
     mode: "onChange",
     resolver: yupResolver(getValidationSchema(currentStep)),
-      defaultValues: business || {},
+     defaultValues: business || {},
   });
 
   const handleBlur = async (field) => {
@@ -122,8 +122,8 @@ const CreateBusiness = () => {
       const data = getValues(currentSection);
       
       
-      if (businessId) {
-        data.businessId = businessId;
+      if (businessId || business?._id) {
+        data.businessId = businessId ? businessId : business?._id;
         dispatch(updateRegistrationDetails(data));
       } else {
         dispatch(registrationDetails(data)).then((response) => {
