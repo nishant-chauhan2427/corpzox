@@ -21,6 +21,8 @@ const BusinessListing = () => {
   const { business, businessLoading, businessError } = useSelector(
     (state) => state.user
   );
+
+  console.log("User Business",business);
   // useEffect(()=>{
   //   dispatch(getUserBusiness({}));
   // },[])

@@ -49,7 +49,6 @@ export const Input = ({
     }
   }, [errorContent]);
 
-  // 
 
   return (
     <div className={containerClassName}>

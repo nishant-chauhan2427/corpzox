@@ -1,11 +1,12 @@
 import { Controller, useWatch } from "react-hook-form";
 import { Input } from "../../../../../components/inputs";
 import { Selector } from "../../../../../components/select";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
 export const RegistrationDetails = ({ control, errors, setValue, touchedFields,handleBlur,trigger }) => {
   const [subIndustryOptions, setSubIndustryOptions] = useState([]);
+  const {business,businessId} = useSelector((state) => state.business);
 
   const dispatch = useDispatch();
 
@@ -19,6 +20,9 @@ export const RegistrationDetails = ({ control, errors, setValue, touchedFields,h
     console.log("Selected Industry in useEffect:", selectedIndustry);
     setSubIndustryOptions([]);
 
+   
+    
+
     if (selectedIndustry && subIndustryOption[selectedIndustry]) {
       const updatedOptions = subIndustryOption[selectedIndustry];
       console.log("Updated subIndustryOptions:", updatedOptions);
@@ -28,6 +32,22 @@ export const RegistrationDetails = ({ control, errors, setValue, touchedFields,h
       setSubIndustryOptions([]);
     }
   }, [selectedIndustry]); 
+
+  useEffect(() => {
+    // Ensure to populate the registration data when business is available
+    if (business ) {
+      setValue("registration.businessName", business?.registration?.businessName);
+      setValue("registration.typeOfBusiness", business?.registration?.typeOfBusiness);
+      setValue("registration.cinNumber", business?.registration?.cinNumber);
+      setValue("registration.roleOfCompany", business?.registration?.roleOfCompany);
+      setValue("registration.yearOfStablish", business?.registration?.yearOfStablish);
+      setValue("registration.headQuarterLocation", business?.registration?.headQuarterLocation);
+      setValue("registration.industry", business?.registration?.industry);
+      setValue("registration.subIndustry", business?.registration?.subIndustry);
+      setValue("registration.sizeOfCompany", business?.registration?.sizeOfCompany);
+      setValue("registration.funded", business?.registration?.funded);
+    }
+  }, [business, setValue]);
 
   useEffect(() => {
     console.log("Errors: ", errors);

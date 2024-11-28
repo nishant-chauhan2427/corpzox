@@ -2,8 +2,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import client from "../axios-baseurl";
 
 export const getBusiness = createAsyncThunk("getBusiness", async ({businessId}, { rejectWithValue }) => {
+  console.log("BUSINESS ID",businessId)
 try {
-        const response = await client.get(`/user/user-details?businessId=${businessId}`,{
+        const response = await client.get(`/business/business-details?businessId=${businessId}`,{
             headers: {
               Accept: "application/json",
               "Content-Type": "application/json",

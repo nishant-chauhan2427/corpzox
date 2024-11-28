@@ -1,9 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { calculateAge } from "../../../../../utils/index";
 import { Button } from "../../../../../components/buttons";
 import { BusinessCardShimmer } from "../../../../../components/loader/BusinessCardShimmer";
 
 export const BusinessCard = ({ data }) => {
+
+  const navigate = useNavigate();
+
+  
+  const handleServices = () =>{
+    navigate("/services");
+  }
   return (
     <>
       {data.length > 0 ? (
@@ -69,7 +76,7 @@ export const BusinessCard = ({ data }) => {
                 </p>
               </div>
             </div>
-            <Button className={"w-fit px-2 py-1 text-[10px]"} primary={true}>
+            <Button className={"w-fit px-2 py-1 text-[10px]"} primary={true} onClick={handleServices}>
               Add Service
             </Button>
           </div>
