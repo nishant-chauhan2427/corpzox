@@ -6,12 +6,15 @@ import { useLocation } from "react-router-dom";
 
 export const ServicesCard = ({
   data = [],
-  onClick = () => console.log("wishlist clicked"),
+
+
+  onClick = () => console.log("Heart icon clicked"),
   onCheckedChange = () => console.log("checked clicked"),
+  
 }) => {
   const location = useLocation();
   const heartAccordingToRoute = ["/wishlist", "/services"];
-
+  //console.log(data,"12345")
   return (
     <>
       <div className="grid grid-cols-1 sm:pt-3 pt-4  sm:grid-cols-2 xl:grid-cols-2  gap-4">

@@ -23,16 +23,18 @@ const DocumentsListing = () => {
     isdataLoading,
     fetchingDocumentError,
   } = useSelector((state) => state.document);
-  console.log(folders.length, "services 123");
+  //console.log(folders.length, "services 123");
 
   const [selectedServiceInfo, setSelectedServiceInfo] = useState(null);
 
-  console.log(selectedServiceInfo, "selectedServiceInfo")
+ // console.log(selectedServiceInfo, "selectedServiceInfo")
   const { id } = useParams();
+
   useEffect(() => {
       dispatch(getService());   
       dispatch(getServiceData({formId:"",serviceId:""}));
-  }, [dispatch]);
+  }, []);
+  
   const handleFolderClick = (_id) => {
     // console.log("Folder ID:", _id);
     //dispatch(getfolderData(_id));

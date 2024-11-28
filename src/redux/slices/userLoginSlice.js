@@ -31,9 +31,13 @@ const userSlice = createSlice({
     reducers: {
         setUser(state, action) {
             state.user = action.payload;
+           // localStorage.setItem("userInfo",action.payload);
+
         },
         clearUser(state) {
             state.user = null;
+            localStorage.removeItem("userInfo")
+            
         },
         setBusinessPage(state,action){
           state.business.page=action.payload;

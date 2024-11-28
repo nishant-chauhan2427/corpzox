@@ -84,18 +84,30 @@ export const Header = ({ className, collapse, setCollapse }) => {
 
   console.log(user, "jhhj");
 
+  const handleLogout =()=>{
+
+    dispatch(clearUser()); 
+                  navigate("/sign-in"); 
+  }
+
+  const handleCancelLogout =()=>{
+
+    onConfirmationModalClose()
+  }
+
   return (
     <header
-      className={`${
-        className && className
-      } bg-[#0A1C40] dark:bg-slate-900 lg:ps-[14rem] px-2 lg:px-4 py-4 z-[1000]`}
+      className={`${className && className
+        } bg-[#0A1C40] dark:bg-slate-900 lg:ps-[14rem] px-2 lg:px-4 py-4 z-[1000]`}
     >
       <div className="relative flex justify-between items-center">
         {/* Left Side Menu */}
         <div className="flex items-center gap-4">
           {/* Logo */}
           <div className="lg:hidden flex items-center gap-2">
-            <div className={`flex justify-center items-center`}>
+            <div
+              className={`flex justify-center items-center`}
+            >
               <IconWrapper>
                 <button onClick={handleSidebar} className="header-icon">
                   {collapse ? (
@@ -133,25 +145,22 @@ export const Header = ({ className, collapse, setCollapse }) => {
             {getPageHeading(pathname)}
           </h1>
           {/* Search */}
-          {!pathname.includes("documents") && (
-            <Search
-              placeholder={`Search ${getPageHeading(pathname)}`}
-              containerClassName={
-                "hidden lg:block w-full h-10 lg:!max-w-lg !bg-[#3D485F] !rounded-full overflow-hidden"
-              }
-              inputClassName={
-                "w-full h-10 lg:!max-w-lg  !bg-[#3D485F] text-white"
-              }
-            />
-          )}
+          {!pathname.includes("documents") && <Search
+            placeholder={`Search ${getPageHeading(pathname)}`}
+            containerClassName={
+              "hidden lg:block w-full h-10 lg:!max-w-lg !bg-[#3D485F] !rounded-full overflow-hidden"
+            }
+            inputClassName={
+              "w-full h-10 lg:!max-w-lg  !bg-[#3D485F] text-white"
+            }
+          />}
 
           {/* Header Links */}
           <div className="hidden lg:flex items-center gap-4">
             {headerLinks?.map((data, index) => (
               <Link
-                className={`${
-                  window.location.pathname.includes(data.url) && "text-primary"
-                } hover:text-primary`}
+                className={`${window.location.pathname.includes(data.url) && "text-primary"
+                  } hover:text-primary`}
                 to={data.url}
                 key={index}
               >
@@ -329,8 +338,21 @@ export const Header = ({ className, collapse, setCollapse }) => {
               Are you sure you want to Sign out from CorpZo?
             </p>
             <div className="flex items-center justify-center gap-4 pt-4">
-              <Button primary={true}>Yes</Button>
-              <Button onClose={onConfirmationModalClose} primary={true}>
+              {/* <Button primary={true}>Yes</Button> */}
+              <Button
+                primary={true}
+                onClick={handleLogout}
+              >
+                Yes
+              </Button>
+              {/* <Button onClose={onConfirmationModalClose} primary={true}>
+                No
+              </Button> */}
+
+<Button
+                primary={true}
+                onClick={handleCancelLogout}
+              >
                 No
               </Button>
             </div>

@@ -4,15 +4,15 @@ import client from "../axios-baseurl";
 export const getService = createAsyncThunk(
   "document/getService",
   async (_, { rejectWithValue }) => {
+    console.log("local storage",JSON.parse(localStorage.getItem('userInfo'))?.token);
     try {
-      const token = localStorage.getItem("authToken");
+      const token = JSON.parse(localStorage.getItem('userInfo'))?.token;
 
       if (!token) {
         return rejectWithValue("Authentication token not found");
       }
 
       const response = await client.get("/application/services", {
-       
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
@@ -40,8 +40,8 @@ export const getServiceData = createAsyncThunk(
     "document/getServiceData",
     async ({formId,serviceId}, { rejectWithValue }) => {
       try {
-        const token = localStorage.getItem("authToken");
-  
+        const token = JSON.parse(localStorage.getItem('userInfo'))?.token;
+
         if (!token) {
           return rejectWithValue("Authentication token not found");
         }
@@ -78,7 +78,7 @@ export const getfolderData = createAsyncThunk(
   async (id, { rejectWithValue }) => {
    console.log("app id",id);
     try {
-      const token = localStorage.getItem("authToken");
+      const token = JSON.parse(localStorage.getItem('userInfo'))?.token;
 
       if (!token) {
         return rejectWithValue("Authentication token not found");
