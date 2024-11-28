@@ -5,7 +5,7 @@ import { Button } from "../../../../components/buttons";
 import {Heading } from "../../../../components/heading"
 import { BusinessCardShimmer } from "../../../../components/loader/BusinessCardShimmer";
 const ProfileCard = ({userData, loading}) => {
-  console.log(loading, "userData")
+  //console.log(userData, "userData123")
   return (
     <>
     {
@@ -17,18 +17,19 @@ const ProfileCard = ({userData, loading}) => {
         <div className="flex flex-col gap-4 sm:flex-row justify-between drop-shadow-md bg-[#F4F9FF] border px-4 rounded-2xl py-4 border-[#DFEAF2] ">
           <div className="flex gap-4">
             <div>
-              <img src="/images/profile/profile.svg" width={200} alt="" />
+              <img src="/images/profile/profile.svg" width={130} alt="" />
             </div>
             <div className="flex flex-col gap-4 justify-center">
-              <p className="text-black font-semibold text-base sm:text-xl">
-                Mehul
+            <p className="text-[#525252] text-base font-semibold sm:text-lg">
+              Name: <span className="text-black">  {userData && userData?.name}</span>
+              
               </p>
               <p className="text-[#525252] text-base font-semibold sm:text-lg">
                 Email Id:{" "}
                 <span className="text-black">{userData && userData?.email}</span>
               </p>
               <p className="text-[#525252] text-base font-semibold sm:text-lg">
-                Business email Id: <span className="text-black">{userData && userData.businessId ? userData.businessId : "--"}</span>
+                Business email Id: <span className="text-black">{userData && userData?.busniessEmail}</span>
               </p>
             </div>
           </div>
