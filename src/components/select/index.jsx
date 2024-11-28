@@ -147,11 +147,12 @@ export const Selector = ({
         id={label}
         name={name}
         isSearchable={isSearchable}
+        isClearable={isClearable}
         value={value}
         placeholder={
           <>
             {placeholder}{" "}
-            <span className="after:content-['*'] after:text-red-600"></span>
+            {/* <span className="after:content-['*'] after:text-red-600"></span> */}
           </>
         }
         styles={customStyles}

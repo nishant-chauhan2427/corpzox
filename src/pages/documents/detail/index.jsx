@@ -1,59 +1,54 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Heading } from "../../../components/heading";
-import { useSelector } from "react-redux";
+import { Search } from "../../../components/search";
+import { useDispatch, useSelector } from "react-redux";
 import { DocumentListShimmer } from "../../../components/loader/DocumentListShimmer";
+import { NoData } from "../../../components/errors/noData";
+import DocumentViewer from "./Components";
+import { useParams } from "react-router-dom";
+import { getfolderData } from "../../../redux/actions/document-action";
+
+
 
 const DocumentDetail = () => {
-  const { isdocumentLoading, listData = [] } = useSelector(
-    (state) => state.document
-  );
-  console.log(listData ,"listData 12");
-  return (
-    <div>
-      {isdocumentLoading ? (
-        <DocumentListShimmer></DocumentListShimmer>
-      ) : (
-        <>
-          <Heading backButton={true}>Document Detail</Heading>
-       
-          {listData.length > 0 ? (
-            listData.map((file, index) => (
-              <div key={index} className="file-item">
-                {file.type === "image" && (
-                  <div className="image-file">
-                    <img src={file?.value?.[0]} alt={file.label} />
-                    <p>{file.lebel}</p>
-                  </div>
-                )}
-                {file.type === "pdf" && (
-                  <div className="pdf-file">
-                    <iframe
-                      src={file.url}
-                      width="10%"
-                      height="10%"
-                      title={file.label}
-                    ></iframe>
-                    <p>{file.label}</p>
-                  </div>
-                )}
-                {file.type === "video" && (
-                  <div className="video-file">
-                    <video width="100%" height="auto" controls>
-                      <source src={file.url} type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
-                    <p>{file.label}</p>
-                  </div>
-                )}
-              </div>
-            ))
-          ) : (
-            <p>No documents available.</p>
-          )}
-        </>
-      )}
-    </div>
-  );
+    const { isdocumentLoading, listData = [] } = useSelector(
+        (state) => state.document
+    );
+    //console.log(listData, "list data")
+    const dispatch = useDispatch();
+    const { id } = useParams(); 
+    const url = listData[0]?.value[0];
+    const name = listData[0]?.lebel
+    useEffect(() => {
+        if (id) {
+          dispatch(getfolderData(id));   
+        }
+      }, [dispatch, id]);
+    //console.log(url, "url")
+    return (
+        <div>
+            {isdocumentLoading ? (
+                <DocumentListShimmer/>
+            ) : (
+                <>
+                    <div className="flex items-center justify-between">
+                        <Heading backButton={true}>Document Detail</Heading>
+                        <div className="flex items-center gap-2">
+                            <Search placeholder={"Search Files"} />
+                        </div>
+                    </div>
+
+
+                    {listData.length > 0 ? (
+                        // 
+                        <DocumentViewer docUrl={url} docName={name}/>
+                    ) : (
+                        <NoData></NoData>
+                    )}
+                </>
+            )}
+        </div>
+    );
 };
 
 export default DocumentDetail;

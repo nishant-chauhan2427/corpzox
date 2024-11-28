@@ -201,8 +201,9 @@ const router = createBrowserRouter([
                 index: true,
                 element: <DocumentsListing />,
               },
+              
               {
-                path: "detail",
+                path: "detail/:id",
                 element: <DocumentDetail />,
               },
             ],

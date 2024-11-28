@@ -71,10 +71,12 @@ export const getServiceData = createAsyncThunk(
   );
 
 
+
+
 export const getfolderData = createAsyncThunk(
   "document/getfolderData",
-  async ({applicationId:_id}, { rejectWithValue }) => {
-    console.log("app id",{applicationId:_id});
+  async (id, { rejectWithValue }) => {
+   console.log("app id",id);
     try {
       const token = localStorage.getItem("authToken");
 
@@ -82,7 +84,7 @@ export const getfolderData = createAsyncThunk(
         return rejectWithValue("Authentication token not found");
       }
 
-      const response = await client.post("/application/documents",{applicationId:_id}, {
+      const response = await client.get(`/application/documents?applicationId=${id}`, {
        
             headers: {
                 Accept: "application/json",

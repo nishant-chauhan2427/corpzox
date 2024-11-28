@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Search } from "../../../components/search";
 import { Selector } from "../../../components/select";
 import { Heading } from "../../../components/heading";
 import { NoData } from "../../../components/errors/noData";
@@ -9,9 +8,10 @@ import {
   getfolderData,
 } from "../../../redux/actions/document-action";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { DocumentCardShimmer } from "../../../components/loader/DocumentCardShimmer";
 import { DocumentListShimmer } from "../../../components/loader/DocumentListShimmer";
+
 const DocumentsListing = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -26,16 +26,15 @@ const DocumentsListing = () => {
   } = useSelector((state) => state.document);
 
   const [selectedServiceInfo, setSelectedServiceInfo] = useState(null);
+  const { id } = useParams(); 
 
   const handleFolderClick = (_id) => {
-    dispatch(getfolderData({ applicationId: _id }));
-    navigate("/documents/detail");
+   // console.log("Folder ID:", _id);
+    //dispatch(getfolderData(_id));
+    navigate(`/documents/detail/${_id}`); 
   };
 
-  useEffect(() => {
-    dispatch(getService());
-    dispatch(getServiceData({ formId: "", serviceId: "" }));
-  }, [dispatch]);
+  
 
   const servicesOptions = Array.isArray(services)
     ? services.map((item) => ({
@@ -61,16 +60,13 @@ const DocumentsListing = () => {
   return (
     <div>
       {isLoading ? (
-        <DocumentCardShimmer/>
+        <DocumentCardShimmer />
       ) : (
         <>
           <div className="flex flex-col md:flex-row justify-between gap-4">
             <Heading title={"Documents"} tourButton={true}>
               Documents
             </Heading>
-            <div className="flex items-center gap-2">
-              <Search placeholder={"Search Files"} />
-            </div>
           </div>
 
           {fetchingDocumentError && (
@@ -81,12 +77,28 @@ const DocumentsListing = () => {
 
           <div>
             <Selector
-              className={"w-fit"}
+              className={"!min-w-52 !max-w-fit"}
               isClearable={true}
               label={"Folders"}
               placeholder={"Select Services"}
               options={servicesOptions}
-              onChange={handleServiceSelection}
+              onChange={(selectedOption) => {
+                if (selectedOption) {
+                  dispatch(
+                    getServiceData({
+                      formId: selectedOption.formId,
+                      serviceId: selectedOption.value,
+                    })
+                  );
+                  setSelectedServiceInfo({
+                    formId: selectedOption.formId,
+                    serviceId: selectedOption.value,
+                  });
+                } else {
+                  setSelectedServiceInfo(null);
+                  dispatch(getServiceData({ formId: "", serviceId: "" }));
+                }
+              }}
               value={
                 servicesOptions.find(
                   (option) => option.value === selectedServiceInfo?.serviceId
@@ -95,7 +107,6 @@ const DocumentsListing = () => {
             />
           </div>
 
-          
           {isdataLoading ? (
             <div className="flex justify-center items-center py-8">
               <DocumentListShimmer />
@@ -116,12 +127,7 @@ const DocumentsListing = () => {
                       />
                       <p className="font-semibold text-xs">{data?.caseId}</p>
                     </div>
-                    <button>
-                      <img
-                        src="/icons/documents/three-dots.svg"
-                        alt="folder-icon"
-                      />
-                    </button>
+                    <button></button>
                   </div>
                 ))
               ) : (
