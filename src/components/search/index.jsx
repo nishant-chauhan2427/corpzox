@@ -14,7 +14,7 @@ export const Search = (props) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState("");
   const [filterMenu, setFilterMenu] = useState(false);
-  console.log(filterMenu, "fsda");
+  //console.log(filterMenu, "fsda");
 
   const navigate = useNavigate();
   const location = useLocation();

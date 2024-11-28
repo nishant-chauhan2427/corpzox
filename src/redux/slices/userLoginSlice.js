@@ -8,6 +8,7 @@ const initialState = {
         list:[],
         totalPage:0,
         page:1,
+        
         limit:10,
     },
     businessLoading:false,
@@ -15,6 +16,7 @@ const initialState = {
     service:{
         list:[],
         totalPage:0,
+        totalCount:0,
         page:1,
         limit:10,
     },
@@ -42,9 +44,12 @@ const userSlice = createSlice({
             state.loading = true;
           }).addCase(getUser.fulfilled, (state, action) => {
             state.loading = false;
+           // console.log(action.payload,"action.payload23");
             // state.isVerificationSuccessfull = true;
+            
             state.error = action.payload.message;
             state.user=action.payload;
+            
             state.manager=action.payload?.agent_data?.[0]?.manager_data?.[0];
             // state.profile={...action.payload?.data?.[0],isVerified:true};
             // localStorage.setItem("userInfo", JSON.stringify(state.profile));
@@ -77,10 +82,13 @@ const userSlice = createSlice({
         builder.addCase(getUserServices.pending, (state, action) => {
           state.serviceLoading = true;
         }).addCase(getUserServices.fulfilled, (state, action) => {
+          console.log(action.payload.total,"action.payload13");
           state.serviceLoading = false;
           state.servicesError = action.payload.message;
           state.service.list=action.payload.data;
           state.service.totalPage=action.payload?.total;
+          state.service.totalCount=action.payload?.total;
+          console.log(state.service.totalCount,"1234");
         }).addCase(getUserServices.rejected, (state, action) => {
           state.serviceLoading = false;
           state.servicesError = action.payload;

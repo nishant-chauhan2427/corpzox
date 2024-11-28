@@ -24,19 +24,20 @@ export const AccountManager = ({ manager, sidebar }) => {
     >
       <div className="flex items-center">
         <img
-          className={`${sidebar ? "w-12 h-12" : "w-20 h-20"} rounded-full`}
+          className={`${sidebar ? "w-05 h-05" : "w-12 h-20"} rounded-full`}
           src="/images/dashboard/asuthosh-gupta.svg"
           alt=""
         />
       </div>
       <div>
-        <p className={`${sidebar ? "text-black" : "text-[#FF4141]"} font-semibold text-[10px]`}>
+        {/* <p className={`${sidebar ? "text-black" : "text-[#FF4141]"} font-semibold text-[10px]`}>
           {manager?.role?.toUpperCase()
             ? manager?.role?.toUpperCase()
             : "Manager Role"}
-        </p>
-        <p className={`${sidebar ? "text-xs text-white" : "text-lg text-[#232323] -mt-1"} font-semibold`}>
-          {manager?.name ? manager?.name : "Manager Name"}
+        </p> */}
+        <p className={`${sidebar ? "text-xs text-white" : "text-sm text-[#232323] -mt-1"} font-semibold`}>
+          <p>Manager Name :</p>
+          {manager?.name ? manager?.name : "____________"}
         </p>
         <div className="pt-2 flex gap-2">
           <Link
