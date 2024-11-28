@@ -189,7 +189,7 @@ export const SignIn = () => {
               />
               <Link
                 to={"/forgot-password"}
-                className="font-medium text-lg text-[#0A1C40]"
+                className="font-medium text-base text-[#0A1C40]"
               >
                 Forgot Password?
               </Link>
@@ -200,7 +200,7 @@ export const SignIn = () => {
               />
               <div
                 onClick={handleCheckbox}
-                className="flex items-center cursor-pointer font-medium text-[14px] text-[#a5a3a3] -mt-2 gap-2"
+                className="flex items-center cursor-pointer font-normal text-[14px] text-[#a5a3a3] -mt-2 gap-2"
               >
                 {" "}
                 <Checkbox
@@ -210,7 +210,7 @@ export const SignIn = () => {
                 />{" "}
                 <span
                   className={`${
-                    checkedCheckbox ? "text-[#000]" : "text-[#6C6C6C]"
+                    checkedCheckbox ? "text-[#000]" : "text-[#a5a3a3]"
                   }`}
                 >
                   Keep me Signed in
@@ -220,7 +220,7 @@ export const SignIn = () => {
                 type={"submit"}
                 primary={true}
                 className={
-                  "mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none "
+                  "mt-2 py-3 w-full rounded-lg  text-[#0A1C40] font-semibold !border-none "
                 }
                 disabled={!isValid}
                 isLoading={isSubmit}

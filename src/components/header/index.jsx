@@ -95,9 +95,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
         <div className="flex items-center gap-4">
           {/* Logo */}
           <div className="lg:hidden flex items-center gap-2">
-            <div
-              className={`flex justify-center items-center`}
-            >
+            <div className={`flex justify-center items-center`}>
               <IconWrapper>
                 <button onClick={handleSidebar} className="header-icon">
                   {collapse ? (
@@ -135,15 +133,18 @@ export const Header = ({ className, collapse, setCollapse }) => {
             {getPageHeading(pathname)}
           </h1>
           {/* Search */}
-          <Search
-            placeholder={`Search ${getPageHeading(pathname)}`}
-            containerClassName={
-              "hidden lg:block w-full h-10 lg:!max-w-lg !bg-[#3D485F] !rounded-full overflow-hidden"
-            }
-            inputClassName={
-              "w-full h-10 lg:!max-w-lg  !bg-[#3D485F] text-white"
-            }
-          />
+          {!pathname.includes("documents") && (
+            <Search
+              placeholder={`Search ${getPageHeading(pathname)}`}
+              containerClassName={
+                "hidden lg:block w-full h-10 lg:!max-w-lg !bg-[#3D485F] !rounded-full overflow-hidden"
+              }
+              inputClassName={
+                "w-full h-10 lg:!max-w-lg  !bg-[#3D485F] text-white"
+              }
+            />
+          )}
+
           {/* Header Links */}
           <div className="hidden lg:flex items-center gap-4">
             {headerLinks?.map((data, index) => (
