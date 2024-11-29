@@ -3,6 +3,7 @@ import { Checkbox } from "../../../../../components/inputs/checkbox";
 import { CiHeart } from "react-icons/ci";
 import { Button } from "../../../../../components/buttons";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { LinkButton } from "../../../../../components/link";
 import { useSelector } from "react-redux";
 
 export const ServicesCard = ({
@@ -30,12 +31,11 @@ export const ServicesCard = ({
               className="sm:m-3 flex flex-col gap-2 bg-[#F3F7FF] px-4 py-4  rounded-lg sm:gap-4 justify-between"
             >
               <div className="flex justify-between">
-                <div>
-                  <p className="font-bold text-[#0A1C40]">{service.name}</p>
-                  <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1 ">
-                    {service.off}
-                  </p>
+                <div className="flex  gap-2">
                   <p className="font-bold text-[#0A1C40]">{service?.name}</p>
+                  <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1 ">
+                    {service?.name}
+                  </p>
                 </div>
                 <Checkbox
                   className="service-checkbox"
@@ -89,13 +89,13 @@ export const ServicesCard = ({
                     )}
                   </button>
 
-                  <Link
+                  <LinkButton
                     type="submit"
                     to={`/services/detail/${service?._id}`}
                     primary={true}
                   >
                     Avail It Now
-                  </Link>
+                  </LinkButton >
                 </div>
               </div>
             </div>
