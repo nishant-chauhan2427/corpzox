@@ -3,7 +3,13 @@ import { Button } from "../../../../../components/buttons";
 import { Rating } from "../../../../../components/rating";
 import { talkToAdvisor } from "../../../../../redux/actions/servicesDetails-actions";
 
-export const Details = ({ pricing = true, data, serviceId, handleRequest, isLoading }) => {
+export const Details = ({
+  pricing = true,
+  data,
+  serviceId,
+  handleRequest,
+  isLoading,
+}) => {
   const dispatch = useDispatch();
 
   return (
@@ -12,9 +18,7 @@ export const Details = ({ pricing = true, data, serviceId, handleRequest, isLoad
         <p className="font-semibold text-3xl uppercase text-[#0A1C40]">
           {data?.name}
         </p>
-        <p className="font-medium text-sm text-[#0A1C40]">
-          {data?.details}
-        </p>
+        <p className="font-medium text-sm text-[#0A1C40]">{data?.details}</p>
       </div>
       <div className="pt-4 flex flex-col md:flex-row items-center gap-4">
         {!pricing && (
@@ -30,7 +34,12 @@ export const Details = ({ pricing = true, data, serviceId, handleRequest, isLoad
                 *Subject to fluctuate at the time of application
               </p>
             </div>
-            <Button className={"w-fit px-6 py-1.5 !font-semibold !rounded"} primary={true}>Talk to our Advisors</Button>
+            <Button
+              className={"w-fit px-6 py-1.5 !font-semibold !rounded"}
+              primary={true}
+            >
+              Talk to our Advisors
+            </Button>
           </div>
         )}
         <div
@@ -42,7 +51,12 @@ export const Details = ({ pricing = true, data, serviceId, handleRequest, isLoad
         {pricing && (
           <div className="w-full md:w-2/5 bg-[#EEEFF3] box-sg rounded-lg px-5 py-6 gap-2 flex flex-col">
             <div>
-              <p className="font-extrabold text-2xl text-[#0A1C40]">₹{data?.cost}</p>
+              <div className="font-extrabold text-2xl text-[#0A1C40] flex gap-2">
+                ₹{data?.cost}
+                <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 ">
+                  {data?.name}
+                </p>
+              </div>
               <p className="text-xs text-[#0A1C40]">
                 {data?.cost} + Applicable govt. fees
               </p>
@@ -51,9 +65,7 @@ export const Details = ({ pricing = true, data, serviceId, handleRequest, isLoad
               <p className="font-bold text-base text-[#0A1C40]">
                 What’s Included
               </p>
-              <p className="text-[11px] text-[#0A1C40]">
-                {data?.about}
-              </p>
+              <p className="text-[11px] text-[#0A1C40]">{data?.about}</p>
             </div>
             <div className="py-2">
               <p className="font-bold text-xs text-[#0A1C40]">
@@ -82,7 +94,12 @@ export const Details = ({ pricing = true, data, serviceId, handleRequest, isLoad
               <Button className={"text-xs px-2 py-1 rounded-sm"} outline={true}>
                 Avail services
               </Button>
-              <Button isLoading={isLoading} onClick={handleRequest} className={"text-xs px-2 py-1 rounded-sm"} primary={true}>
+              <Button
+                isLoading={isLoading}
+                onClick={handleRequest}
+                className={"text-xs px-2 py-1 rounded-sm"}
+                primary={true}
+              >
                 Talk to our Advisors
               </Button>
             </div>

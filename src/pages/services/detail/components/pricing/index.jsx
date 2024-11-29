@@ -109,8 +109,8 @@ export const Pricing = ({ pricing = true, data, serviceId }) => {
   
 
   const defaultObject = {
-    label: formattedStates ? formattedStates[0].label : "",
-    id: formattedStates ? formattedStates[0].id : ""
+    label: formattedStates ? formattedStates[0]?.label : "",
+    id: formattedStates ? formattedStates[0]?.id : ""
   }
   return (
     <section>
