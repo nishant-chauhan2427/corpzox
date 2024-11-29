@@ -1,18 +1,19 @@
+import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../../../../../components/buttons";
 import { Rating } from "../../../../../components/rating";
+import { talkToAdvisor } from "../../../../../redux/actions/servicesDetails-actions";
 
-export const Details = ({ pricing = true }) => {
+export const Details = ({ pricing = true, data, serviceId, handleRequest, isLoading }) => {
+  const dispatch = useDispatch();
+
   return (
     <section className="flex flex-col gap-2">
       <div className="flex flex-col text-start gap-2">
         <p className="font-semibold text-3xl uppercase text-[#0A1C40]">
-          Private Limited Company Incorporation
+          {data?.name}
         </p>
         <p className="font-medium text-sm text-[#0A1C40]">
-          Register your Private Limited (Pvt. Ltd.) Company with CorpZo for
-          ₹4,999 in just 10 days. Enjoy a seamless process as our expert team
-          handles all documentation and compliance. Apply now and launch your
-          business with complete peace of mind.
+          {data?.details}
         </p>
       </div>
       <div className="pt-4 flex flex-col md:flex-row items-center gap-4">
@@ -41,9 +42,9 @@ export const Details = ({ pricing = true }) => {
         {pricing && (
           <div className="w-full md:w-2/5 bg-[#EEEFF3] box-sg rounded-lg px-5 py-6 gap-2 flex flex-col">
             <div>
-              <p className="font-extrabold text-2xl text-[#0A1C40]">₹1,999</p>
+              <p className="font-extrabold text-2xl text-[#0A1C40]">₹{data?.cost}</p>
               <p className="text-xs text-[#0A1C40]">
-                ₹1,999 + Applicable govt. fees
+                {data?.cost} + Applicable govt. fees
               </p>
             </div>
             <div className="py-2">
@@ -51,9 +52,7 @@ export const Details = ({ pricing = true }) => {
                 What’s Included
               </p>
               <p className="text-[11px] text-[#0A1C40]">
-                2 x DIN & Digital Signatures, 2 x Name Application for the
-                Company, Drafting of MOA, Drafting of AOA, COI, PAN, TAN, EPF
-                Registration, ESIC Registration
+                {data?.about}
               </p>
             </div>
             <div className="py-2">
@@ -83,7 +82,7 @@ export const Details = ({ pricing = true }) => {
               <Button className={"text-xs px-2 py-1 rounded-sm"} outline={true}>
                 Avail services
               </Button>
-              <Button className={"text-xs px-2 py-1 rounded-sm"} primary={true}>
+              <Button isLoading={isLoading} onClick={handleRequest} className={"text-xs px-2 py-1 rounded-sm"} primary={true}>
                 Talk to our Advisors
               </Button>
             </div>

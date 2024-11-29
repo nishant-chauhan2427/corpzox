@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { changePassword, deactivateAccount } from "../actions/settings-actions";
+import { changePassword, deactivateAccount, getSubscriptionHistoryCount, getSubscriptions } from "../actions/settings-actions";
 import toast from "react-hot-toast";
 // Slice
 const settingsSlice = createSlice({
@@ -8,7 +8,16 @@ const settingsSlice = createSlice({
     isPasswordChanging: false,
     error: null,
     success: null,
-    isDeactivate : false
+    isDeactivate : false, 
+    isCountFetching : false,
+    activeCount : null, 
+    expiredCount : null,
+    upcomingCount : null,
+    isActiveLoading : false, 
+    isExpiredLoading : false, 
+    isUpcommingLoading : false,
+    subscriptionsData : [], 
+    isSubScriptionLoading : false,
   },
   reducers: {
     clearState: (state) => {
@@ -56,7 +65,76 @@ const settingsSlice = createSlice({
         state.isDeactivate = false;
         state.error = action.payload;
         state.success = null;
-      });
+      })
+      .addCase(getSubscriptionHistoryCount.pending, (state, action) => {
+        const {type} = action.meta.arg;
+        if(type === "active"){
+          state.isActiveLoading = true
+        }else if(type === "expired"){
+          state.isExpiredLoading = true
+        }else{
+          state.isUpcommingLoading = true
+        }
+        state.error = null;
+        state.success = null;
+      })
+      .addCase(getSubscriptionHistoryCount.fulfilled, (state, action) => {
+        console.log(action.payload, "subscription fullfilled");
+        const {type, count} = action.payload;
+        if(type === "active"){
+          state.isActiveLoading = false
+        }else if(type === "expired"){
+          state.isExpiredLoading = false
+        }else{
+          state.isUpcommingLoading = false
+        }
+        if(type === "active"){
+          state.activeCount = count
+        }else if(type === "expired"){
+          state.expiredCount = count
+        }else{
+          state.upcomingCount = count
+        }
+        // toast.success(action.payload.message);
+        state.isCountFetching = false;
+       
+        state.error = null;
+      })
+      .addCase(getSubscriptionHistoryCount.rejected, (state, action) => {
+       
+        const {type} = action.meta.arg;
+        if(type === "active"){
+          state.isActiveLoading = false
+        }else if(type === "expired"){
+          state.isExpiredLoading = false
+        }else{
+          state.isUpcommingLoading = false
+        }
+        toast.error(action.payload.message || "Account deactivation failed");
+        state.isCountFetching = false;
+        state.error = action.payload;
+      
+      })
+      .addCase(getSubscriptions.pending, (state) => {
+        state.isSubScriptionLoading = true;
+        state.error = null;
+        state.subscriptionsData = null;
+      })
+      .addCase(getSubscriptions.fulfilled, (state, action) => {
+        console.log(action.payload, "account deactivated successfully");
+        toast.success(action.payload.message);
+        state.isSubScriptionLoading = false;
+        state.subscriptionsData = action.payload;
+        state.error = null;
+      })
+      .addCase(getSubscriptions.rejected, (state, action) => {
+        console.log(action.payload, "get count failed");
+        toast.error(action.payload.message || "Failed to fetch subscription list");
+        state.isSubScriptionLoading = false;
+        state.error = action.payload;
+        state.subscriptionsData = null;
+      })
+      ;
   },
 });
 

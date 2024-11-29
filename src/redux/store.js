@@ -14,6 +14,7 @@ import userSlice from "./slices/userLoginSlice";
 import profileReducer from "./slices/profileSlice"
 import settingsReducer from "./slices/settingsSlice"
 import wishListReducer from "./slices/wishlistSlice"
+import serviceDetailsReducer from "./slices/serviceDetailsSlice"
 import documentSlice from "./slices/documentSlice";
 
 
@@ -34,6 +35,7 @@ const rootReducer = combineReducers({
   profile: profileReducer,
   settings : settingsReducer,
   wishlist : wishListReducer,
+  serviceDetails : serviceDetailsReducer,
   document : documentSlice
 });
 

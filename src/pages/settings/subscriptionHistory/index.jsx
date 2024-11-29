@@ -1,64 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GoArrowLeft } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
 import { Table } from "../../../components/table";
 import { Button } from "../../../components/buttons";
+import { useDispatch, useSelector } from "react-redux";
+import { getSubscriptionHistoryCount, getSubscriptions } from "../../../redux/actions/settings-actions";
+import { ImSpinner2 } from "react-icons/im";
+import { TableShimmer } from "../../../components/loader/TableShimmer";
 
-const subscriptionPackage = [
-  {
-    number: "5",
-    label: "Active Subscription",
-    description: "Manage all your active subscriptions efficiently.",
-    data: [
-      {
-        subscription: "Private Limited Company",
-        status: "Active",
-        amount: 2999,
-        paymentMethod: "3243",
-        renewDate: "Mar 23, 2025",
-        plan: "Basic",
-      },
-      {
-        subscription: "Private Limited Company",
-        status: "Active",
-        amount: 2999,
-        paymentMethod: "3243",
-        renewDate: "Mar 23, 2025",
-        plan: "Basic",
-      },
-    ],
-  },
-  {
-    number: "12",
-    label: "Expired Subscription",
-    description: "Manage all your expired subscriptions efficiently.",
-    data: [
-      {
-        subscription: "Public Limited Company",
-        status: "Expired",
-        amount: 2499,
-        paymentMethod: "3244",
-        renewDate: "Jan 20, 2023",
-        plan: "Basic",
-      },
-    ],
-  },
-  {
-    number: "2",
-    label: "Upcoming Renewals",
-    description: "Manage all your upcoming renewals efficiently.",
-    data: [
-      {
-        subscription: "LLP",
-        status: "Upcoming",
-        amount: 1999,
-        paymentMethod: "3245",
-        renewDate: "Nov 10, 2024",
-        plan: "Basic",
-      },
-    ],
-  },
-];
+
 
 const columns = [
   { header: "Subscription", accessor: "subscription" },
@@ -73,24 +23,82 @@ const SubscriptionHistory = () => {
   const [packageIndex, setPackageIndex] = useState(0);
   const navigate = useNavigate();
 
-  const handleNavigation = (button) => {
+  const dispatch = useDispatch();
+  const { activeCount, isActiveLoading, expiredCount, upcomingCount, isExpiredLoading, isUpcommingLoading, subscriptionsData, isSubScriptionLoading } = useSelector((state) => state.settings);
+  console.log(subscriptionsData, "subscriptionsData")
+
+  const FormattedSubscriptions = subscriptionsData?.map((subscription) => {
+    const { amount, active, paymentMode, subscriptionExpireyDate, service_data, subscriptionDetails
+    } = subscription
+
+    return {
+      subscription: subscriptionDetails.details,
+      status: active ? "Active" : "",
+      amount: amount,
+      paymentMethod: paymentMode,
+      renewDate: subscriptionExpireyDate,
+      plan: subscriptionDetails.type
+    }
+  })
+  console.log(FormattedSubscriptions, "ehe")
+  useEffect(() => {
+    dispatch(getSubscriptionHistoryCount({ type: "active" }))
+    dispatch(getSubscriptionHistoryCount({ type: "expired" }))
+    dispatch(getSubscriptionHistoryCount({ type: "up-coming" }))
+  }, [])
+  const handleNavigation = (button, label) => {
     switch (button) {
-      case "Previous":
+      case "Previous":{
         setPackageIndex((prev) =>
           prev > 0 ? prev - 1 : subscriptionPackage.length - 1
         );
+        dispatch(dispatch(getSubscriptions({ page: 1, type: label == "Active Subscription" ? "active" : label == "Expired Subscription" ? "expired" : "up-coming" })))
+      }
         break;
-      case "Next":
+      case "Next":{
+
         setPackageIndex((prev) =>
           prev < subscriptionPackage.length - 1 ? prev + 1 : 0
         );
+        console.log(label, "label")
+        dispatch(dispatch(getSubscriptions({ page: 1, type: label == "Active Subscription" ? "active" : label == "Expired Subscription" ? "expired" : "up-coming" })))
+      }
         break;
       default:
         break;
     }
   };
 
+  const subscriptionPackage = [
+    {
+      number: activeCount ? activeCount : 0,
+      label: "Active Subscription",
+      description: "Manage all your active subscriptions efficiently.",
+      loading: isActiveLoading,
+      data: FormattedSubscriptions ? FormattedSubscriptions : []
+    },
+    {
+      number: expiredCount ? expiredCount : 0,
+      label: "Expired Subscription",
+      description: "Manage all your expired subscriptions efficiently.",
+      loading: isExpiredLoading,
+      data:FormattedSubscriptions ? FormattedSubscriptions : []
+    },
+    {
+      number: upcomingCount ? upcomingCount : 0,
+      label: "Upcoming Renewals",
+      description: "Manage all your upcoming renewals efficiently.",
+      loading: isUpcommingLoading,
+      data:FormattedSubscriptions ? FormattedSubscriptions : []
+    },
+  ];
   const currentPackage = subscriptionPackage[packageIndex];
+
+  const handleCard = (label) => {
+    setPackageType(label)
+    dispatch(dispatch(getSubscriptions({ page: 1, type: label == "Active Subscription" ? "active" : label == "Expired Subscription" ? "expired" : "up-coming" })))
+  }
+
 
   return (
     <div>
@@ -107,20 +115,20 @@ const SubscriptionHistory = () => {
               <h4 className="font-semibold text-lg">
                 {currentPackage.description}
               </h4>
-              <Table columns={columns} data={currentPackage.data} />
+              {isSubScriptionLoading ? (<TableShimmer />) : <Table columns={columns} data={currentPackage.data} />}
               <div className="flex justify-between items-center gap-3">
                 <p>
                   <b>{currentPackage.data.length}</b> results
                 </p>
                 <div className="flex items-center gap-2">
                   <Button
-                    onClick={() => handleNavigation("Previous")}
+                    onClick={() => handleNavigation("Previous", currentPackage.label)}
                     outline={true}
                   >
                     Previous
                   </Button>
                   <Button
-                    onClick={() => handleNavigation("Next")}
+                    onClick={() => handleNavigation("Next", currentPackage.label)}
                     outline={true}
                   >
                     Next
@@ -145,7 +153,8 @@ const SubscriptionHistory = () => {
                 number={data.number}
                 label={data.label}
                 description={data.description}
-                onClick={() => setPackageType(data.label)}
+                onClick={() => handleCard(data.label)}
+                loading={data.loading}
               />
             ))}
           </div>
@@ -157,13 +166,14 @@ const SubscriptionHistory = () => {
 
 export default SubscriptionHistory;
 
-const Card = ({ number, label, description, onClick }) => {
+const Card = ({ number, label, description, onClick, loading }) => {
   return (
     <div
       onClick={onClick}
       className="flex flex-col items-start gap-4 px-5 py-5 border border-[#DFEAF2] hover:bg-[#007AFF] hover:text-white transition-all duration-300 ease-in-out hover:transition-all hover:duration-300 hover:ease-in-out rounded-[25px] cursor-pointer"
     >
-      <h2 className="font-bold text-4xl">{number}</h2>
+      {loading ? <ImSpinner2 className="animate-spin text-gray hover:text-white !text-xl" /> : <h2 className="font-bold text-4xl">{number}</h2>}
+
       <div>
         <label className="font-bold text-lg">{label}</label>
         <p className="text-sm">{description}</p>

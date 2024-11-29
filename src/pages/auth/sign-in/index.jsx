@@ -166,6 +166,7 @@ export const SignIn = () => {
                     className={"border-[#D9D9D9] border"}
                     // errorContent={errors?.email?.message}
                     onBlur={() => handleBlur("email")}
+                    maxLength={25}
                   />
                 )}
                 rules={{ required: "Email Address is required" }}
@@ -183,6 +184,7 @@ export const SignIn = () => {
                     placeholder={"Password"}
                     // errorContent={errors?.password?.message}
                     onBlur={() => handleBlur("password")}
+                    maxLength={20}
                   />
                 )}
                 rules={{ required: "Password is required" }}
