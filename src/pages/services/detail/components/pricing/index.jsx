@@ -115,9 +115,6 @@ export const Pricing = ({ pricing = true, data, serviceId }) => {
     label: formattedStates ? formattedStates[0].label : "",
     id: formattedStates ? formattedStates[0].id : "",
   };
-    label: formattedStates ? formattedStates[0]?.label : "",
-    id: formattedStates ? formattedStates[0]?.id : ""
-  }
   return (
     <section>
       <div className="flex flex-col gap-4">

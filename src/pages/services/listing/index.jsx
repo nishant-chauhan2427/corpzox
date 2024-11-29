@@ -25,12 +25,19 @@ import { Offers } from "../../../components/offers";
 const ServicesListing = () => {
   const dispatch = useDispatch();
   const { servicesMainTab } = useSelector((state) => state.app);
-  const { category, subCategory, page, limit, totalCount,totalPage,list, wishList } = useSelector(
-    (state) => state.service
-  );
-  
+  const {
+    category,
+    subCategory,
+    page,
+    limit,
+    totalCount,
+    totalPage,
+    list,
+    wishList,
+  } = useSelector((state) => state.service);
+
   //const{totalCount}=useSelector((state)=>state.user);
-  console.log(category,"totalCount123");
+  console.log(category, "totalCount123");
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const searchValue = queryParams.get("search");
@@ -73,7 +80,7 @@ const ServicesListing = () => {
       toast.success(wishList?.error);
     }
   }, [wishList?.loading]);
-  
+
   let onClickWishList = (service) => {
     setIsSubmit(true);
     if (service?.wishlistCount) {
@@ -132,7 +139,11 @@ const ServicesListing = () => {
             />
             {list && list.length > 5 && (
               <div className="mt-10 flex justify-center">
-               { list.length ==totalCount ? <></> : <Button primary={true}>Load More </Button>}
+                {list.length == totalCount ? (
+                  <></>
+                ) : (
+                  <Button primary={true}>Load More </Button>
+                )}
               </div>
             )}
           </>

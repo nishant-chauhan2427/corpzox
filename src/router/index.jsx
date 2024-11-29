@@ -35,7 +35,7 @@ import Wishlist from "../pages/wishlist";
 import Payments from "../pages/payment";
 import DocumentDetail from "../pages/documents/detail";
 import OffersDetails from "../pages/offers/components";
-
+import ServiceprogressViewAll from "../pages/services/serviceProgressViewAll";
 
 const router = createBrowserRouter([
   {
@@ -149,6 +149,10 @@ const router = createBrowserRouter([
               {
                 path: "detail/:serviceId",
                 element: <ServiceDetail />,
+              },
+              {
+                path: "serviceprogressdetail",
+                element: <ServiceprogressViewAll />,
               },
             ],
           },
