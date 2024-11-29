@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { FaStar } from "react-icons/fa";
 import { FaStar as FaStarFill } from "react-icons/fa6";
 
-export const Rating = ({ totalStars = 5 ,rating,setRating}) => {
+export const Rating = ({ totalStars = 5 ,rating,setRating, size}) => {
   
   const [hoverRating, setHoverRating] = useState(0);
 
@@ -24,9 +24,9 @@ export const Rating = ({ totalStars = 5 ,rating,setRating}) => {
             onMouseLeave={() => setHoverRating(0)}
           >
             {starValue <= (hoverRating || rating) ? (
-              <FaStar className={`text-xs fill-yellow-500`} />
+              <FaStar size={size} className={`text-xs fill-yellow-500`} />
             ) : (
-              <FaStarFill className={`text-xs fill-gray-500`} />
+              <FaStarFill size={size} className={`text-xs fill-gray-500`} />
             )}
           </motion.div>
         );
