@@ -3,14 +3,22 @@ import { Link } from "react-router-dom";
 import { GoDotFill, GoTriangleDown } from "react-icons/go";
 import { ProgressBar } from "../../../../../components/progressBar";
 import { Heading } from "../../../../../components/heading";
+import { ConfirmationModal } from "../../../../../components/modal/confirmationModal";
+import { p } from "framer-motion/client";
+import { ReactModal } from "../../../../../components/modal";
 
 export const ServicesProgress = ({ data }) => {
   const [dropdownStates, setDropdownStates] = useState(data.map(() => false));
+  const [confirmationModal, setConfirmationModal] = useState(false);
 
   const handleServiceDropdown = (index) => {
     setDropdownStates((prevState) =>
       prevState.map((state, i) => (i === index ? !state : state))
     );
+  };
+
+  const onConfirmationModalClose = () => {
+    setConfirmationModal(!confirmationModal);
   };
 
   const servicesProgessSteps = [
@@ -54,9 +62,11 @@ export const ServicesProgress = ({ data }) => {
   ];
 
   return (
-    <div >
+    <div>
       <div className="py-2 flex flex-col sm:flex-row justify-between gap-2">
-        <Heading className={"py-0"} tourButton={true}>Your Service Progress Updates</Heading>
+        <Heading className={"py-0"} tourButton={true}>
+          Your Service Progress Updates
+        </Heading>
         <Link className="font-semibold text-[#606060]">View All</Link>
       </div>
       {data.length > 0 ? (
@@ -84,14 +94,24 @@ export const ServicesProgress = ({ data }) => {
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <p className="flex items-center h-8 px-2 py-0.5 rounded-full font-semibold text-sm text-[#037847] bg-[#03784728]">
-                    <span>
-                      <GoDotFill />
-                    </span>
-                    On Time
-                  </p>
+                  <ReactModal
+                    crossButton={true}
+                    className="border-[#FF3B3B] border-[3px] py-2 w-[55%]"
+                    button={
+                      <Link className="flex items-center h-8 px-2 py-0.5 rounded-full font-semibold text-sm text-[#037847] bg-[#03784728]">
+                        <span>
+                          <GoDotFill />
+                        </span>
+                        Rate review{" "}
+                      </Link>
+                    }
+                  >
+                    <></>
+                  </ReactModal>
                   <button
-                    className={`${dropdownStates === true && "rotate-180"} hidden lg:block`}
+                    className={`${
+                      dropdownStates === true && "rotate-180"
+                    } hidden lg:block`}
                     onClick={() => handleServiceDropdown(index)}
                   >
                     <GoTriangleDown size={30} />

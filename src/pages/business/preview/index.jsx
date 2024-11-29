@@ -20,9 +20,6 @@ const BusinessPreview = () => {
 
   console.log("DAT",businessId);
 
-
-
-
   const handleNextStep = async () => {
     if (businessId) {
       try {

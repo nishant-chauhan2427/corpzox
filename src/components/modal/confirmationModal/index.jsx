@@ -14,12 +14,7 @@ export const ConfirmationModal = ({
   containerClassName,
 }) => {
   if (!isOpen) return null;
-  //   const [isModalOpen, setIsModalOpen] = useState(false);
-  //   const handleModalConfirm = async () => {};
 
-  //   const handleModalClose = () => {
-  //     setIsModalOpen(false);
-  //   };
   return (
     <AnimatePresence>
       <motion.div

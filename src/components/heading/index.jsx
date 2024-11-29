@@ -10,7 +10,6 @@ export const Heading = ({
   tourButton,
 }) => {
   const projectName = "Corpzo";
-
   const navigate = useNavigate();
 
   useEffect(() => {
