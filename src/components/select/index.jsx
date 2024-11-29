@@ -112,6 +112,7 @@ export const Selector = ({
   options,
   isClearable,
   isDisabled,
+  ...props
 }) => {
   // useState to change input field ring color (onFocus and onBlur events)
   const [ringColor, setRingColor] = useState(
@@ -176,6 +177,7 @@ export const Selector = ({
         onFocus={handleFocus}
         onClick={handleClick}
         isDisabled={isDisabled}
+        {...props}
       />
       {errorContent && touched && (
         <div className="h-1 mb-2">

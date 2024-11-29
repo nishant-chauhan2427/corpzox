@@ -2,7 +2,7 @@ import React from "react";
 import { Checkbox } from "../../../../../components/inputs/checkbox";
 import { CiHeart } from "react-icons/ci";
 import { Button } from "../../../../../components/buttons";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export const ServicesCard = ({
   data = [],
@@ -11,7 +11,11 @@ export const ServicesCard = ({
 }) => {
   const location = useLocation();
   const heartAccordingToRoute = ["/wishlist", "/services"];
+  const navigate = useNavigate()
 
+  const handleNavigate=()=>{
+    navigate("/services/detail")
+  }
   return (
     <>
       <div className="grid grid-cols-1 sm:pt-3 pt-4  sm:grid-cols-2 xl:grid-cols-2  gap-4">
@@ -65,14 +69,14 @@ export const ServicesCard = ({
                     onClick={() => onClick(service)}
                   />
                 )}
-                <Button type="submit" to={"/payment"} primary={true}>
+                <Link type="submit" to={`/services/detail/${service._id}`} primary={true}>
                   Avail It Now
-                </Button>
+                </Link>
               </div>
             </div>
           </div>
         ))}
       </div>
     </>
-  );
+  );  
 };

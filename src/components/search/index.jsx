@@ -98,7 +98,7 @@ export const Search = (props) => {
             className={`${
               props.filter ? "right-6" : "right-2"
             } absolute top-1/2 -translate-y-1/2 dark:text-white`}
-            onClick={handleClearSearch}
+            onClick={handleearch}
           >
             <RxCross2 size={18} />
           </button>

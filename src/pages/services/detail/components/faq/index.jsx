@@ -1,7 +1,19 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 export const FAQs = () => {
   const [openIndex, setOpenIndex] = useState(null);
+  const { success } = useSelector((state) => state.serviceDetails);
+  const faqArray = success?.faqservices
+  const transformedFaqArray = faqArray?.map((item) => {
+    const { question, answer } = item.faq[0]; 
+    return {
+      question,
+      answer,
+      icon: "❓",
+    };
+  });
+  console.log(transformedFaqArray, "faqArrayNew")
 
   const toggleFAQ = (index) => {
     setOpenIndex(index === openIndex ? null : index);
@@ -47,7 +59,7 @@ export const FAQs = () => {
 
       {/* FAQ Items */}
       <div className="space-y-4">
-        {faqs.map((faq, index) => (
+        {transformedFaqArray?.map((faq, index) => (
           <div
             key={index}
             className="border border-gray-300 rounded-lg shadow-md"

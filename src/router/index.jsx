@@ -136,22 +136,22 @@ const router = createBrowserRouter([
                 element: <ServicesListing />,
               },
               {
-                path: "create",
+                path: "create/:serviceId",
                 element: <ServiceDetail />,
               },
               {
-                path: "edit",
+                path: "edit/:serviceId",
                 element: <ServiceDetail />,
               },
               {
-                path: "detail",
+                path: "detail/:serviceId",
                 element: <ServiceDetail />,
               },
             ],
           },
           // Payment route
           {
-            path: "payment",
+            path: "payment/:serviceId",
             element: <Payments />,
             children: [
               {
