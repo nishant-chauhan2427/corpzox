@@ -45,7 +45,7 @@ export const Verify = () => {
     dispatch(verifyUser({ otp: enteredOtp, id: profile?.[0]?.id }));
   };
   useEffect(() => {
-    console.log(isVerify,isVerifying)
+    console.log(isVerify, isVerifying);
     if (isVerify && !isVerifying) {
       setIsVerify(false);
       if (verifyingError) {
@@ -86,7 +86,7 @@ export const Verify = () => {
     console.log(profile);
     dispatch(
       resendOtp({
-        id: profile?.[0]?.id||profile?.id||profile?.userId,
+        id: profile?.[0]?.id || profile?.id || profile?.userId,
       })
     );
   };
@@ -145,33 +145,36 @@ export const Verify = () => {
                   containerClassName={"text-left pt-5"}
                   heading={"Verification Code"}
                   subHeading={
-                    "We have sent you an OTP on your registered mobile no.<br/> and email id"
+                    "We have sent you an OTP on your registered mobile no. and email id"
                   }
                 />
                 <form
                   onSubmit={handleSubmit}
                   className="w-full sm:w-[100%] mt-8 flex flex-col gap-2"
                 >
-                  <div className=" w-full flex justify-start items-start gap-4 pb-20 ">
-                    {otp.map((digit, index) => (
-                      <input
-                        className={`${
-                          error ? "border-error" : "border-[#DFEAF2]"
-                        } w-[15%] h-14 font-bold border rounded-lg text-center`}
-                        key={index}
-                        type="text"
-                        maxLength="1"
-                        value={digit}
-                        ref={(ref) => (inputRefs.current[index] = ref)}
-                        onChange={(e) => handleChange(index, e.target.value)}
-                        onKeyDown={(e) => handleBackspace(index, e)}
-                        onPaste={index === 0 ? handlePaste : null}
-                      />
-                    ))}
+                  <div className=" w-[90%] flex flex-col sm:pb-20">
+                    <div className="w-full flex justify-between items-start gap-2  ">
+                      {otp.map((digit, index) => (
+                        <input
+                          className={`${
+                            error ? "border-error" : "border-[#DFEAF2]"
+                          } w-[15%] h-14 font-bold border rounded-lg text-center`}
+                          key={index}
+                          type="text"
+                          maxLength="1"
+                          value={digit}
+                          ref={(ref) => (inputRefs.current[index] = ref)}
+                          onChange={(e) => handleChange(index, e.target.value)}
+                          onKeyDown={(e) => handleBackspace(index, e)}
+                          onPaste={index === 0 ? handlePaste : null}
+                        />
+                      ))}
+                    </div>
+                    <div className="text-red-500 mt-2 font-medium text-sm text-center">
+                      Wrong OTP!
+                    </div>
                   </div>
-                  <div className="h-1">
-                    {/* {error && <p className="text-error text-xs">{errorContent}</p>} */}
-                  </div>
+                  <div className="h-1"></div>
                   <div className="w-full flex flex-col justify-center items-center">
                     <button
                       className={`text-xs text-primary disabled:text-[#8D8D8D]`}

@@ -23,8 +23,8 @@ export const Button = ({
       disabled={disabled || isLoading}
       onClick={onClick}
       className={`${className ? className : "px-4 py-1"}
-      ${disabled ? "!bg-[#ADADAD] hover:bg-slate-500 rounded" : null} ${
-        isLoading ? "!bg-[#ADADAD] hover:bg-slate-500 rounded" : ""
+      ${disabled ? "!bg-[#FFEF9A] hover:bg-slate-500 rounded" : null} ${
+        isLoading ? "!bg-[#FFEF9A] hover:bg-slate-500 rounded" : ""
       } ${
         simpleLink && !disabled && !isLoading
           ? "text-primaryText font-medium  hover:text-gray-700 rounded"

@@ -65,7 +65,7 @@
 
 /* When the checkbox is checked, add a blue background */
 .container input:checked ~ .checkmark {
-  background-color: var(--text-primary-color);
+  background-color: #F1359C;
   animation: pop 0.5s;
   animation-direction: alternate;
   border: none;

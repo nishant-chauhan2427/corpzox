@@ -6,11 +6,12 @@ import { Heading } from "../../../../components/heading";
 import { LinkButton } from "../../../../components/link";
 
 export const Business = ({ data = [], total }) => {
+  
   return (
     <div className="flex flex-col">
       <div className="py-2 flex flex-col sm:flex-row justify-between gap-2">
         <Heading className={"py-0"} title={"Dashboard"} tourButton={true}>
-          Your Business ({total})
+          Your Business ({data.length})
         </Heading>
         <div className="flex items-center gap-2">
           <LinkButton

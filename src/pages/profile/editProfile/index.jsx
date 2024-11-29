@@ -39,11 +39,12 @@ const Edit = () => {
   useEffect(() => {
      dispatch(getUser());
     const data = (user.name || "").split(" ");
-    console.log(data);
+    console.log(data,"data123");
+    console.log("useer",user);
     setValue("firstName", data[0]);
     setValue("lastName", data[1]);
     setValue("email", user?.email);
-    setValue("businessEmail", user?.businessEmail ? user?.businessEmail : "");
+    setValue("businessEmail", user?.busniessEmail ? user?.busniessEmail : "");
   }, []);
 
   return (
@@ -134,6 +135,7 @@ const Edit = () => {
                         placeholder={"Business Email id"}
                         className={"border-[#D9D9D9] border"}
                         errorContent={errors?.businessEmail?.message}
+                        disabled={true}
                       />
                     )}
                    

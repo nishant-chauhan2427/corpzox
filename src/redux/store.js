@@ -15,6 +15,9 @@ import profileReducer from "./slices/profileSlice"
 import settingsReducer from "./slices/settingsSlice"
 import wishListReducer from "./slices/wishlistSlice"
 import serviceDetailsReducer from "./slices/serviceDetailsSlice"
+import documentSlice from "./slices/documentSlice";
+
+
 // Persist configuration
 const persistConfig = {
   key: "root",
@@ -32,7 +35,8 @@ const rootReducer = combineReducers({
   profile: profileReducer,
   settings : settingsReducer,
   wishlist : wishListReducer,
-  serviceDetails : serviceDetailsReducer
+  serviceDetails : serviceDetailsReducer,
+  document : documentSlice
 });
 
 // Create a persisted reducer

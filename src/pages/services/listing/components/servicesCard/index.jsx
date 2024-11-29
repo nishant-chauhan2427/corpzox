@@ -6,13 +6,16 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export const ServicesCard = ({
   data = [],
-  onClick = () => console.log("wishlist clicked"),
+
+
+  onClick = () => console.log("Heart icon clicked"),
   onCheckedChange = () => console.log("checked clicked"),
+  
 }) => {
   const location = useLocation();
   const heartAccordingToRoute = ["/wishlist", "/services"];
   const navigate = useNavigate()
-
+  //console.log(data,"12345")
   const handleNavigate=()=>{
     navigate("/services/detail")
   }

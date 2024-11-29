@@ -18,6 +18,7 @@ import { AuthLayout } from "../../../components/layout/auth";
 import { PhoneNumberInput } from "../../../components/inputs/phoneInput";
 import { registerUser } from "../../../redux/actions/userAuth-action";
 import toast from "react-hot-toast";
+import GoogleLogin from "react-google-login";
 export const Signup = () => {
   const {
     control,
@@ -34,7 +35,18 @@ export const Signup = () => {
     registerMessage,
   } = useSelector((state) => state.auth);
   const handleBlur = async (field) => {
+    console.log("field", field);
     await trigger(field);
+  };
+  const googleLogin = (data) => {
+    setIsSubmit(true);
+    dispatch(
+      thirdPartyLogin({
+        email: data?.profileObj?.email,
+        name: data?.profileObj?.givenName,
+        profilePicture: data?.profileObj?.imageUrl,
+      })
+    );
   };
 
   const [error, setError] = useState("");
@@ -70,7 +82,7 @@ export const Signup = () => {
     <>
       <MetaTitle title={"Sign Up"} />
       <AuthLayout>
-      <img className="sm:w-32 w-36" src="logo.svg" alt="CORPZO Logo" />
+        <img className="sm:w-32 w-36" src="logo.svg" alt="CORPZO Logo" />
         <div className="w-full  flex  ">
           <div className="w-full flex flex-col">
             <DualHeadingTwo
@@ -125,7 +137,7 @@ export const Signup = () => {
                   render={({ field }) => (
                     <PhoneNumberInput
                       {...field}
-                      label={"Phone Number"}
+                      // label={"Phone Number"}
                       country={"in"}
                       placeholder={"Phone No."}
                       touched={true}
@@ -190,7 +202,14 @@ export const Signup = () => {
                   <div className="border-t w-full border-[#D9D9D9]"></div>
                 </div>
                 <div className="flex items-center justify-center rounded p-2 gap-2 text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
-                  Sign in with Google <img src="google.svg" alt="" />
+                  {/* Sign in with Google <img src="google.svg" alt="" /> */}
+                  <GoogleLogin
+                    clientId="1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com"
+                    onSuccess={googleLogin}
+                    onError={() => console.log("Errors")}
+                    cookiePolicy={"single_host_origin"}
+                    scope="openid profile email"
+                  />
                   <img src="" alt="" />
                 </div>
                 <div className="text-center flex  justify-center gap-2 font-normal text-[#6C6C6C]">
