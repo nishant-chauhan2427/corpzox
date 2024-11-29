@@ -1,27 +1,53 @@
 import { Controller, useForm } from "react-hook-form";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Input } from "../../../components/inputs";
 import { Button } from "../../../components/buttons/button";
 import { FaPlus } from "react-icons/fa";
 import { ReactModal } from "../../../components/modal/";
 import { CheckOffer } from "../../../database/";
 import { ImCross } from "react-icons/im";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PricingDetail from "./components/pricingDetail";
 import { Heading } from "../../../components/heading";
 import { DebitCard } from "../makeAPayment/components/debitCard";
 import { UPI } from "../makeAPayment/components/upi";
 import { NetBanking } from "./components/netBanking";
+import { useDispatch, useSelector } from "react-redux";
+import { availService, getServiceDetails, talkToAdvisor, verifyCoupon } from "../../../redux/actions/servicesDetails-actions";
+import { addCoupons, removeCoupon } from "../../../redux/slices/serviceDetailsSlice";
+import { ConfirmationModal } from "../../../components/modal/confirmationModal";
 
 const MakeAPayment = () => {
+  const dispatch = useDispatch()
+  const { serviceId } = useParams();
   const [couponApplied, setCouponApplied] = useState(false);
   const [showAddIcon, setShowAddIcon] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [activePaymentTab, setActivePaymentTab] = useState("Card");
+  const [confirmationModal, setConfirmationModal] = useState(false);
+  const [failureModal, setFailureModal] = useState(false);
+
+
 
   const [currentStep, setCurrentStep] = useState(0);
+  const { success, cost, appliedCoupons, coupons, availServiceData, isServiceAvailing, totalSavings, serviceCost, serviceCharge } = useSelector((state) => state.serviceDetails);
+  console.log(availServiceData, "cost from slice ")
+  useEffect(() => {
+    // PASS DYNAMIC ID HERE
+    dispatch(getServiceDetails({ serviceId: serviceId }));
+  }, [dispatch])
 
+  const transformedCouponArray = coupons[0].map((item) => {
+    const { couponTitle, discount, _id } = item;
+    return {
+      id: _id,
+      title: couponTitle,
+      // description : offerDetail, 
+      off: discount
+    };
+  });
+  console.log(transformedCouponArray, "transformedCouponArray")
   const {
     control,
     handleSubmit,
@@ -31,13 +57,18 @@ const MakeAPayment = () => {
     mode: "onChange",
   });
 
-  const handleApplyCoupon = () => {
-    setCouponApplied(true); // Apply the coupon
-    setShowAddIcon(false); // Hide the add icon after applying coupon
-    setModalOpen(false); // Close the modal after applying coupon
+  const handleApplyCoupon = ({ id, offerCost, title }) => {
+    console.log(id, offerCost, "data id")
+    // setCouponsApplied([...couponsApplied, { id, offerCost }]);
+    dispatch(verifyCoupon({ couponId: id, cost: offerCost, title }))
+
+    setCouponApplied(true);
+    setShowAddIcon(false);
+    setModalOpen(false);
   };
 
-  const handleRemoveCoupon = () => {
+  const handleRemoveCoupon = (id) => {
+    dispatch(removeCoupon({ id }))
     setCouponApplied(false);
     setShowAddIcon(!showAddIcon);
   };
@@ -51,6 +82,21 @@ const MakeAPayment = () => {
       label: "Net Banking",
     },
   ];
+
+  const availTheService = () => {
+    // if(isServiceAvailing === false){
+    //   onConfirmationModalClose()
+    // }
+    dispatch(availService({ ...availServiceData, amount: cost, totalCouponDiscount: 0, appliedCoupan: [] }))
+    console.log({ ...availServiceData, amount: cost, totalCouponDiscount: 0, appliedCoupan: [] })
+  }
+
+  const onConfirmationModalClose = () => {
+    setConfirmationModal(!confirmationModal);
+  };
+  const onFailureModalClose = () => {
+    setFailureModal(!failureModal);
+  };
 
   return (
     <>
@@ -72,17 +118,15 @@ const MakeAPayment = () => {
               <div
                 key={tab.id}
                 onClick={() => setActivePaymentTab(tab.id)}
-                className={`px-3 py-2 rounded-md w-full cursor-pointer ${
-                  activePaymentTab === tab.id ? "bg-[#FFD700]" : "bg-[#D9D9D9]"
-                }`}
+                className={`px-3 py-2 rounded-md w-full cursor-pointer ${activePaymentTab === tab.id ? "bg-[#FFD700]" : "bg-[#D9D9D9]"
+                  }`}
               >
                 <img src={tab.icon} alt={tab.label} />
                 <p
-                  className={`font-semibold text-[13px] ${
-                    activePaymentTab === tab.id
-                      ? "text-[#0A1C40]"
-                      : "text-gray-600"
-                  }`}
+                  className={`font-semibold text-[13px] ${activePaymentTab === tab.id
+                    ? "text-[#0A1C40]"
+                    : "text-gray-600"
+                    }`}
                 >
                   {tab.label}
                 </p>
@@ -109,18 +153,37 @@ const MakeAPayment = () => {
                 Coupon Code
               </p>
               <div className=" flex flex-row justify-between items-center gap-2 ">
-                {couponApplied ? (
-                  <div className="flex !w-full gap-4 items-center">
-                    <p className="text-sm bg-[#34C759] pl-4 pr-20 py-6 font-medium text-white rounded">
-                      20% Off Coupon | Corpzo’s Rewards Program
-                    </p>
-                    <ImCross
-                      size={35}
-                      color="#abaaaa"
-                      className="bg-[#D9D9D9] px-2 py-2 rounded-full cursor-pointer"
-                      onClick={handleRemoveCoupon}
-                    />
+                {appliedCoupons.length > 0 ? (
+                  <div className="flex flex-col gap-4">
+                    {appliedCoupons.map((coupon, index) => (
+                      <div key={coupon.id || index} className="flex !w-full gap-4 items-center">
+                        <p className="text-sm bg-[#34C759] pl-4 pr-20 py-6 font-medium text-white rounded">
+                          {coupon.cost}% {coupon.title}
+                        </p>
+                        <ImCross
+                          size={35}
+                          color="#abaaaa"
+                          className="bg-[#D9D9D9] px-2 py-2 rounded-full cursor-pointer"
+                          onClick={() => handleRemoveCoupon(coupon.couponId)}
+                        />
+                      </div>
+                    ))}
                   </div>
+
+                  // {
+
+                  // }
+                  // <div className="flex !w-full gap-4 items-center">
+                  //   <p className="text-sm bg-[#34C759] pl-4 pr-20 py-6 font-medium text-white rounded">
+                  //     40% Off Coupon | Corpzo’s Rewards Program
+                  //   </p>
+                  //   <ImCross
+                  //     size={35}
+                  //     color="#abaaaa"
+                  //     className="bg-[#D9D9D9] px-2 py-2 rounded-full cursor-pointer"
+                  //     onClick={handleRemoveCoupon}
+                  //   />
+                  // </div>
                 ) : (
                   <Controller
                     name="coupon"
@@ -162,17 +225,17 @@ const MakeAPayment = () => {
                         Check all offers!
                       </p>
                       <div className="h-[60vh] overflow-y-scroll">
-                        {CheckOffer.map((data, index) => (
+                        {transformedCouponArray?.map((data, index) => (
                           <div
                             key={index}
-                            className="flex flex-row sm:flex-row gap-4 bg-white m-4 rounded-sm"
+                            className="flex flex-row  sm:flex-row gap-4 bg-white m-4 rounded-sm"
                           >
-                            <p className="text-xl text-center flex justify-center items-center px-3 py-2 font-semibold bg-[#007AFF26] text-[#272727]">
+                            <p className="text-xl text-center flex justify-cener items-center px-3 py-2 font-semibold bg-[#007AFF26] text-[#272727]">
                               {data.off}
                             </p>
                             <div className="py-3 flex flex-col gap-1">
                               <p className="font-medium text-[#080808] text-lg">
-                                {data.tittle}
+                                {data.title}
                               </p>
                               <p className="font-normal text-xs text-[#4D4D4D]">
                                 {data.description}
@@ -184,7 +247,8 @@ const MakeAPayment = () => {
                             <div className="flex flex-col gap-1 text-center items-center px-2 justify-center">
                               <Button
                                 primary={true}
-                                onClick={handleApplyCoupon}
+                                isLoading={isServiceAvailing}
+                                onClick={() => handleApplyCoupon({ id: data.id, offerCost: data.off, title: data.title })}
                               >
                                 Apply
                               </Button>
@@ -204,9 +268,9 @@ const MakeAPayment = () => {
             </div>
           </div>
           <div className="sm:w-[40%] mb-2 sm:mt-9 flex flex-col px-4 py-3 border rounded gap-3 border-[#C6C6C6]">
-            <PricingDetail />
+            <PricingDetail totalCost={cost} availServiceData={availServiceData} totalSavings={totalSavings} serviceCost={serviceCost} serviceCharge={serviceCharge} />
             <div className="flex justify-center items-center pt-4 px-4 gap-2 ">
-              <ReactModal
+              {/* <ReactModal
                 className="border-[#FF3B3B] border-[3px] py-2 "
                 button={<Button primary={true}>Continue</Button>}
               >
@@ -226,10 +290,12 @@ const MakeAPayment = () => {
                     Try Again{" "}
                   </Button>
                 </div>
-              </ReactModal>
-              <ReactModal
+              </ReactModal> */}
+              <Button isLoading={isServiceAvailing} onClick={availTheService} primary={true}>Continue</Button>
+
+              {/* <ReactModal
                 className="border-[#FF3B3B] border-[3px] px-4 py-2 "
-                button={<Button primary={true}>Continue</Button>}
+                button={<Button isLoading={isServiceAvailing} onClick={availTheService} primary={false}>Continue</Button>}
               >
                 <div className="flex flex-col text-center gap-2 px-5 py-5 items-center">
                   <img
@@ -243,16 +309,54 @@ const MakeAPayment = () => {
                   <p className="font-medium text-[16px] text-[#595959]">
                     Thank you for availing this service.
                   </p>
-                  <Button primary={true} className="w-full py-2">
+                  <Button  primary={true} className="w-full py-2">
                     {" "}
                     Try Again{" "}
                   </Button>
                 </div>
-              </ReactModal>
+              </ReactModal> */}
             </div>
           </div>
         </div>
       </div>
+      <ConfirmationModal isOpen={failureModal} onClose={onFailureModalClose}>
+        <div className="flex flex-col text-center gap-2 py-5 px-5 items-center">
+          <img
+            src="/images/payment/payment-failed-icon.svg"
+            alt=""
+            width={100}
+          />
+          <p className="text-3xl font-bold text-[#0A1C40]">Failed</p>
+          <p className="font-medium text-[16px] text-[#595959]">
+            The registration failed due to incomplete <br /> or
+            non-compliant documentation
+          </p>
+          <Button className="w-full py-2" primary={true}>
+            {" "}
+            Try Again{" "}
+          </Button>
+        </div>
+      </ConfirmationModal>
+      <ConfirmationModal isOpen={confirmationModal}
+        onClose={onConfirmationModalClose}>
+        <div className="flex flex-col text-center gap-2 px-5 py-5 items-center">
+          <img
+            src="/images/payment/payment-done.svg"
+            alt=""
+            width={100}
+          />
+          <p className="text-3xl font-bold text-[#0A1C40]">
+            Payment Done!{" "}
+          </p>
+          <p className="font-medium text-[16px] text-[#595959]">
+            Thank you for availing this service.
+          </p>
+          <Button primary={true} className="w-full py-2">
+            {" "}
+            Try Again{" "}
+          </Button>
+        </div>
+      </ConfirmationModal>
     </>
   );
 };

@@ -11,12 +11,12 @@ const Profile = () => {
   const { user, loading } = useSelector((state) => state.user);
 
   useEffect(() => {
-    Object.keys(user).length === 0 && dispatch(getUser());
+     dispatch(getUser());
   }, [dispatch])
   return (
     <>
       <div className="flex flex-col gap-1">
-        <ProfileCard userData={user} loading={loading} />
+        <ProfileCard userData={user}  />
         <Business data={businessListing} />
         <ServicesProgress data={servicesProgress} />
       </div>

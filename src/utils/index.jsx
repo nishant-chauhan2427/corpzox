@@ -589,3 +589,12 @@ export const createOptions = (array, firstVal, secondVal) => {
     value: obj.secondVal,
   }));
 };
+
+
+export function formatMillisecondsToDate(timestampString) {
+  const date = new Date(Number(timestampString)); // Convert the string to a number and then to a Date object
+  const options = { day: '2-digit', month: 'short', year: 'numeric' };
+  return date.toLocaleDateString('en-US', options);
+}
+
+

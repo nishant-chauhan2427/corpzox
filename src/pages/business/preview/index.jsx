@@ -20,6 +20,9 @@ const BusinessPreview = () => {
 
   console.log("DAT",businessId);
 
+
+
+
   const handleNextStep = async () => {
     if (businessId) {
       try {
@@ -51,6 +54,7 @@ const BusinessPreview = () => {
   };
   const onConfirmationModalClose = () => {
     setConfirmationModal(false);
+    navigate("/business");
   };
 
   return (
@@ -101,7 +105,7 @@ const BusinessPreview = () => {
                     Year of Establishment
                   </h3>
                   <p className="text-gray-600">
-                    {registration?.yearOfStablish || "N/A"}
+                   {formattedDate}
                   </p>
                 </div>
 
@@ -121,10 +125,10 @@ const BusinessPreview = () => {
                     Business Address
                   </h3>
                   <p className="text-gray-600">
-                    {address?.businessAddress?.businessAddressL1},{" "}
-                    {address?.businessAddress?.businessAddressCity},{" "}
-                    {address?.businessAddress?.businessAddressState} -{" "}
-                    {address?.businessAddress?.businessAddressPin || "N/A"}
+                    {address?.businessAddressL1},{" "}
+                    {address?.businessAddressCity},{" "}
+                    {address?.businessAddressState} -{" "}
+                    {address?.businessAddressPin || "N/A"}
                   </p>
                 </div>
 
@@ -134,10 +138,10 @@ const BusinessPreview = () => {
                     Communication Address
                   </h3>
                   <p className="text-gray-600">
-                    {address?.communicationAddress?.communicationAddressL1},{" "}
-                    {address?.communicationAddress?.communicationAddressCity},{" "}
-                    {address?.communicationAddress?.communicationAddressState} -{" "}
-                    {address?.communicationAddress?.communicationAddressPin || "N/A"}
+                    {address?.communicationAddressL1},{" "}
+                    {address?.communicationAddressCity},{" "}
+                    {address?.communicationAddressState} -{" "}
+                    {address?.communicationAddressPin || "N/A"}
                   </p>
                 </div>
 
@@ -147,13 +151,13 @@ const BusinessPreview = () => {
                     Financial Details
                   </h3>
                   <p className="text-gray-600">
-                    Capital: {financial?.financialDetails?.capital || "N/A"}
+                    Capital: {financial?.capital || "N/A"}
                   </p>
                   <p className="text-gray-600">
-                    Revenue: {financial?.financialDetails?.revenue || "N/A"}
+                    Revenue: {financial?.revenue || "N/A"}
                   </p>
                   <p className="text-gray-600">
-                    Profit: {financial?.financialDetails?.profit || "N/A"}
+                    Profit: {financial?.profit || "N/A"}
                   </p>
                 </div>
 
@@ -164,14 +168,14 @@ const BusinessPreview = () => {
                   </h3>
                   <p className="text-gray-600">
                     Username: {
-                    kyc?.kycDetails?.kycUser || "N/A"}
+                    kyc?.kycUser || "N/A"}
                   </p>
                   <p className="text-gray-600">
-                    ID Proof No: {kyc?.kycDetails?.id || "N/A"}
+                    ID Proof No: {kyc?.id || "N/A"}
                   </p>
                   <p className="text-gray-600">
                     Address Proof No:{" "}
-                    {kyc?.kycDetails?.addressProof || "N/A"}
+                    {kyc?.addressProof || "N/A"}
                   </p>
                 </div>
 
@@ -182,11 +186,11 @@ const BusinessPreview = () => {
                   </h3>
                   <p className="text-gray-600">
                     Funding Required:{" "}
-                    {funding?.fundingRequirement?.lookingForFunding ? "Yes" : "No"}
+                    {funding?.lookingForFunding ? "Yes" : "No"}
                   </p>
                   <p className="text-gray-600">
                     Existing Business:{" "}
-                    {funding?.fundingRequirement?.existingBusinessName
+                    {funding?.existingBusinessName
                       ? "Yes"
                       : "No"}
                   </p>
@@ -221,10 +225,10 @@ const BusinessPreview = () => {
         onClose={onConfirmationModalClose}
       >
         <div className="flex flex-col text-center justify-center items-center gap-2 sm:px-10  sm:py-8">
-          <img src="/images/congratulations.svg" width={120} alt="" />
+          <img src="/images/payment/payment-done.svg" width={120} alt="" />
           <h5 className="font-bold  text-3xl text-[#232323]">Congratulation</h5>
           <p className="text-base text-[#595959] font-medium">
-            Thank you for availing this service.
+            Your business has been created.
           </p>
           <div className="flex flex-col w-full">
             <Button primary={true} onClick={onConfirmationModalClose}>Continue</Button>
@@ -236,3 +240,5 @@ const BusinessPreview = () => {
 };
 
 export default BusinessPreview;
+
+

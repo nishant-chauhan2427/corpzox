@@ -1,9 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { calculateAge } from "../../../../../utils/index";
 import { Button } from "../../../../../components/buttons";
 import { BusinessCardShimmer } from "../../../../../components/loader/BusinessCardShimmer";
 
 export const BusinessCard = ({ data }) => {
+
+  const navigate = useNavigate();
+
+  
+  const handleServices = () =>{
+    navigate("/services");
+  }
   return (
     <>
       {data.length > 0 ? (
@@ -21,9 +28,9 @@ export const BusinessCard = ({ data }) => {
               </div>
               <div>
                 <Link to={`/business/detail?id=${data?._id}`}>
-                  <p className="font-bold text-base text-[#171717]">
+                  <h4 className="font-bold text-base text-[#171717] break-all">
                     {data.businessName}
-                  </p>
+                  </h4>
                 </Link>
                 <p className="font-semibold text-[11px] text-[#343C6A]">
                   {data.businesSubTitle}{" "}
@@ -69,7 +76,7 @@ export const BusinessCard = ({ data }) => {
                 </p>
               </div>
             </div>
-            <Button className={"w-fit px-2 py-1 text-[10px]"} primary={true}>
+            <Button className={"w-fit px-2 py-1 text-[10px]"} primary={true} onClick={handleServices}>
               Add Service
             </Button>
           </div>
@@ -82,6 +89,6 @@ export const BusinessCard = ({ data }) => {
 const labelValue = (label, value) => (
   <div className="flex justify-between">
     <p className="font-medium text-sm text-[#000000B2] ">{label}</p>
-    <p className="font-semibold text-sm text-black">{value}</p>
+    <p className="font-semibold text-sm text-black break-all">{value}</p>
   </div>
 );

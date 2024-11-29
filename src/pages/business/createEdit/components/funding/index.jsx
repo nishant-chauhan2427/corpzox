@@ -1,8 +1,21 @@
 import { Controller } from "react-hook-form";
 import { Input } from "../../../../../components/inputs";
 import { Selector } from "../../../../../components/select";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 export const FundingDetails = ({ control, errors, setValue, handleBlur, trigger }) => {
+
+  const {business,businessId} = useSelector((state) => state.business);
+
+  useEffect(() => {
+    // Ensure to populate the registration data when business is available
+    if (business) {
+      setValue("funding.lookingForFunding", business?.funding?.lookingForFunding);
+      setValue("funding.existingBusinessName", business?.funding?.existingBusinessName);
+
+    }
+  }, [business, setValue]);
   const isFundingRequiredOption = [
     { label: "Yes", value: 1 },
     { label: "No", value: 0 },
@@ -26,7 +39,7 @@ export const FundingDetails = ({ control, errors, setValue, handleBlur, trigger 
           </div>
           <div className="grid grid-cols-1 gap-4">
             <Controller
-              name={`funding.fundingRequirement.lookingForFunding`}
+              name={`funding.lookingForFunding`}
               control={control}
               render={({ field }) => {
                 const selectedFund = isFundingRequiredOption.find(
@@ -37,22 +50,22 @@ export const FundingDetails = ({ control, errors, setValue, handleBlur, trigger 
                     {...field}
                     label={"Funding Required"}
                     placeholder={"Select funding requirement"}
-                    errorContent={errors.funding?.fundingRequirement?.lookingForFunding?.message}
+                    errorContent={errors.funding?.lookingForFunding?.message}
                     options={isFundingRequiredOption}
                     required={true}
                     value={selectedFund || {}}
-                    onBlur={() => handleBlur("funding.fundingRequirement.lookingForFunding")}
+                    onBlur={() => handleBlur("funding.lookingForFunding")}
                     onChange={(selectedValue) => {
                       field.onChange(selectedValue.value); // Default handling
-                      trigger("funding.fundingRequirement.lookingForFunding"); // Manually trigger validation
-                      setValue("funding.fundingRequirement.lookingForFunding", selectedValue.value); // Update value
+                      trigger("funding.lookingForFunding"); // Manually trigger validation
+                      setValue("funding.lookingForFunding", selectedValue.value); // Update value
                     }}
                   />
                 );
               }}
             />
             <Controller
-              name="funding.fundingRequirement.existingBusinessName"
+              name="funding.existingBusinessName"
               control={control}
               render={({ field }) => {
                 const selectedFund = existingBusinessOption.find(
@@ -63,15 +76,15 @@ export const FundingDetails = ({ control, errors, setValue, handleBlur, trigger 
                     {...field}
                     label={"Existing Business"}
                     placeholder={"Select existing business"}
-                    errorContent={errors.funding?.fundingRequirement?.existingBusinessName?.message}
+                    errorContent={errors.funding?.existingBusinessName?.message}
                     options={existingBusinessOption}
                     required={true}
                     value={selectedFund || {}}
-                    onBlur={() => handleBlur("funding.fundingRequirement.existingBusinessName")}
+                    onBlur={() => handleBlur("funding.existingBusinessName")}
                     onChange={(selectedValue) => {
                       field.onChange(selectedValue.value); // Default handling
-                      trigger("funding.fundingRequirement.existingBusinessName"); // Manually trigger validation
-                      setValue("funding.fundingRequirement.existingBusinessName", selectedValue.value); // Update value
+                      trigger("funding.existingBusinessName"); // Manually trigger validation
+                      setValue("funding.existingBusinessName", selectedValue.value); // Update value
                     }}
                   />
                 );

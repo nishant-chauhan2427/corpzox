@@ -1,7 +1,22 @@
 import { Controller } from "react-hook-form";
 import { Input } from "../../../../../components/inputs";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 export const FinancialDetails = ({ control, errors, setValue, handleBlur, trigger }) => {
+
+  
+  const {business,businessId} = useSelector((state) => state.business);
+
+  useEffect(() => {
+    // Ensure to populate the registration data when business is available
+    if (business) {
+      setValue("financial.capital", business?.financial?.capital);
+      setValue("financial.revenue", business?.financial?.revenue);
+      setValue("financial.profit", business?.financial?.profit);
+    }
+  }, [business, setValue]);
+
   const handleFieldChange = (fieldName, field, trigger) => {
     return (e) => {
       field.onChange(e); // Default handling
@@ -15,6 +30,8 @@ export const FinancialDetails = ({ control, errors, setValue, handleBlur, trigge
       trigger(fieldName); // Manually trigger validation for the field on blur
     };
   };
+
+
 
   return (
     <div>
@@ -30,47 +47,47 @@ export const FinancialDetails = ({ control, errors, setValue, handleBlur, trigge
           </div>
           <div className="grid grid-cols-1 gap-4">
             <Controller
-              name={`financial.financialDetails.capital`}
+              name={`financial.capital`}
               control={control}
               render={({ field }) => (
                 <Input
                   {...field}
                   label={`Capital`}
                   placeholder={`Enter capital`}
-                  errorContent={errors.financial?.financialDetails?.capital?.message}
+                  errorContent={errors.financial?.capital?.message}
                   required={true}
-                  onBlur={handleFieldBlur(`financial.financialDetails.capital`)} // Trigger validation on blur
-                  onChange={handleFieldChange(`financial.financialDetails.capital`, field, trigger)} // Trigger validation on change
+                  onBlur={handleFieldBlur(`financial.capital`)} // Trigger validation on blur
+                  onChange={handleFieldChange(`financial.capital`, field, trigger)} // Trigger validation on change
                 />
               )}
             />
             <Controller
-              name={`financial.financialDetails.revenue`}
+              name={`financial.revenue`}
               control={control}
               render={({ field }) => (
                 <Input
                   {...field}
                   label={`Revenue`}
                   placeholder={`Enter revenue`}
-                  errorContent={errors.financial?.financialDetails?.revenue?.message}
+                  errorContent={errors.financial?.revenue?.message}
                   required={true}
-                  onBlur={handleFieldBlur(`financial.financialDetails.revenue`)} // Trigger validation on blur
-                  onChange={handleFieldChange(`financial.financialDetails.revenue`, field, trigger)} // Trigger validation on change
+                  onBlur={handleFieldBlur(`financial.revenue`)} // Trigger validation on blur
+                  onChange={handleFieldChange(`financial.revenue`, field, trigger)} // Trigger validation on change
                 />
               )}
             />
             <Controller
-              name={`financial.financialDetails.profit`}
+              name={`financial.profit`}
               control={control}
               render={({ field }) => (
                 <Input
                   {...field}
                   label={`Profit`}
                   placeholder={`Enter profit`}
-                  errorContent={errors.financial?.financialDetails?.profit?.message}
+                  errorContent={errors.financial?.profit?.message}
                   required={true}
-                  onBlur={handleFieldBlur(`financial.financialDetails.profit`)} // Trigger validation on blur
-                  onChange={handleFieldChange(`financial.financialDetails.profit`, field, trigger)} // Trigger validation on change
+                  onBlur={handleFieldBlur(`financial.profit`)} // Trigger validation on blur
+                  onChange={handleFieldChange(`financial.profit`, field, trigger)} // Trigger validation on change
                 />
               )}
             />

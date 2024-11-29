@@ -33,6 +33,7 @@ import Profile from "../pages/profile";
 import ProfileEdit from "../pages/profile/editProfile";
 import Wishlist from "../pages/wishlist";
 import Payments from "../pages/payment";
+import DocumentDetail from "../pages/documents/detail";
 
 const router = createBrowserRouter([
   {
@@ -136,15 +137,15 @@ const router = createBrowserRouter([
                 element: <ServicesListing />,
               },
               {
-                path: "create",
+                path: "create/:serviceId",
                 element: <ServiceDetail />,
               },
               {
-                path: "edit",
+                path: "edit/:serviceId",
                 element: <ServiceDetail />,
               },
               {
-                path: "detail",
+                path: "detail/:serviceId",
                 element: <ServiceDetail />,
               },
             ],
@@ -155,7 +156,7 @@ const router = createBrowserRouter([
             element: <Payments />,
             children: [
               {
-                index: true,
+                path : ":serviceId",
                 element: <MakeAPayment />,
               },
               {
@@ -199,6 +200,11 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <DocumentsListing />,
+              },
+              
+              {
+                path: "detail/:id",
+                element: <DocumentDetail />,
               },
             ],
           },

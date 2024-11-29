@@ -11,7 +11,7 @@ const Wishlist = () => {
   const dispatch = useDispatch()
   const { loading, wishList } = useSelector((state) => state.wishlist)
   useEffect(() => {
-    wishList.length== 0 &&   dispatch(getWishList())
+    wishList?.length== 0 &&   dispatch(getWishList())
   }, [dispatch])
   return (
     <>

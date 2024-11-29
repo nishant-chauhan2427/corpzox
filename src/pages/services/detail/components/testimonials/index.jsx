@@ -9,8 +9,23 @@ import "swiper/css/effect-fade";
 import { Autoplay, Pagination, Navigation, EffectFade } from "swiper/modules";
 import { motion } from "framer-motion";
 import { useRef } from "react";
+import { useSelector } from "react-redux";
 
 export const Testimonials = () => {
+
+  const {serviceTestimonials, averageRating} = useSelector((state)=> state.serviceDetails); 
+  console.log(serviceTestimonials, "serviceTestimonials")
+
+  const formattedTestimonials = serviceTestimonials?.map((testimonial)=>{
+    return {
+      company : testimonial.authorCompany ? authorCompany : "", 
+      feedback : testimonial.authorDescription,
+      client : testimonial.authorName,
+      image : testimonial.authorImage
+    }
+  })
+
+  console.log(formattedTestimonials, "formattedTestimonial")
   const testimonials = [
     {
       company: "EcoWave Solutions",
@@ -111,7 +126,7 @@ export const Testimonials = () => {
         </div>
         <div className="flex flex-col items-start">
           <div className="flex items-center gap-2 text-xl ">
-            <p className="font-bold text-white">{overallRating.score}/5</p>
+            <p className="font-bold text-white">{averageRating}/5</p>
             <Rating rating={4} />
           </div>
           <p className="font-semibold text-[11px] text-white">{`Based on ${overallRating.reviews} reviews`}</p>
@@ -155,7 +170,7 @@ export const Testimonials = () => {
             },
           }}
         >
-          {testimonials.map((testimonial, index) => (
+          {formattedTestimonials?.map((testimonial, index) => (
             <SwiperSlide>
               <TestimonialCard key={index} testimonial={testimonial} />
             </SwiperSlide>
