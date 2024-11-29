@@ -34,6 +34,8 @@ import ProfileEdit from "../pages/profile/editProfile";
 import Wishlist from "../pages/wishlist";
 import Payments from "../pages/payment";
 import DocumentDetail from "../pages/documents/detail";
+import OffersDetails from "../pages/offers/components";
+
 
 const router = createBrowserRouter([
   {
@@ -252,6 +254,15 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <Wishlist />,
+              },
+            ],
+          },
+          {
+            path: "offersDetails",
+            children: [
+              {
+                index: true,
+                element: <OffersDetails />,
               },
             ],
           },
