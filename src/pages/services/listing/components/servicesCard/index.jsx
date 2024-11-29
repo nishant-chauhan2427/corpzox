@@ -7,18 +7,16 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 export const ServicesCard = ({
   data = [],
 
-
   onClick = (service) => console.log("Heart icon clicked"),
   onCheckedChange = () => console.log("checked clicked"),
-  
 }) => {
   const location = useLocation();
   const heartAccordingToRoute = ["/wishlist", "/services"];
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   //console.log(data,"12345")
-  const handleNavigate=()=>{
-    navigate("/services/detail")
-  }
+  const handleNavigate = () => {
+    navigate("/services/detail");
+  };
   return (
     <>
       <div className="grid grid-cols-1 sm:pt-3 pt-4  sm:grid-cols-2 xl:grid-cols-2  gap-4">
@@ -28,7 +26,12 @@ export const ServicesCard = ({
             className="sm:m-3 flex flex-col gap-2 bg-[#F3F7FF] px-4 py-4  rounded-lg sm:gap-4 justify-between"
           >
             <div className="flex justify-between">
-              <p className="font-bold text-[#0A1C40]">{service.name}</p>
+              <div>
+                <p className="font-bold text-[#0A1C40]">{service.name}</p>
+                <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1 ">
+                  {service.off}
+                </p>
+              </div>
               <Checkbox
                 className="service-checkbox"
                 onChange={() => onCheckedChange(service)}
@@ -72,7 +75,11 @@ export const ServicesCard = ({
                     onClick={() => onClick(service)}
                   />
                 )}
-                <Link type="submit" to={`/services/detail/${service._id}`} primary={true}>
+                <Link
+                  type="submit"
+                  to={`/services/detail/${service._id}`}
+                  primary={true}
+                >
                   Avail It Now
                 </Link>
               </div>
@@ -81,5 +88,5 @@ export const ServicesCard = ({
         ))}
       </div>
     </>
-  );  
+  );
 };

@@ -2,6 +2,8 @@ import React from "react";
 import { Heading } from "../../../components/heading";
 import { Offerss } from "../../../database";
 import { Button } from "../../../components/buttons/button";
+import { Link } from "react-router-dom";
+import { LinkButton } from "../../../components/link";
 
 function OffersDetails() {
   return (
@@ -38,7 +40,7 @@ function OffersDetails() {
                 <li>{offers.offertime}</li>
               </p>
               <div className="flex justify-end pt-5">
-                <Button primary={true}> Avail Now</Button>
+                <LinkButton to={"/services"} primary={true}> Avail Now</LinkButton>
               </div>
             </div>
           </div>
