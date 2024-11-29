@@ -6,10 +6,14 @@ import { Heading } from "../../../../../components/heading";
 import { ConfirmationModal } from "../../../../../components/modal/confirmationModal";
 import { p } from "framer-motion/client";
 import { ReactModal } from "../../../../../components/modal";
+import { TextArea } from "../../../../../components/inputs/textarea";
+import { Rating } from "../../../../../components/rating";
+import { Button } from "../../../../../components/buttons";
 
 export const ServicesProgress = ({ data }) => {
   const [dropdownStates, setDropdownStates] = useState(data.map(() => false));
   const [confirmationModal, setConfirmationModal] = useState(false);
+  const [otherValue, setOtherVsalue] = useState("");
 
   const handleServiceDropdown = (index) => {
     setDropdownStates((prevState) =>
@@ -98,16 +102,41 @@ export const ServicesProgress = ({ data }) => {
                     crossButton={true}
                     className="border-[#FF3B3B] border-[3px] py-2 w-[55%]"
                     button={
-                      <Link className="flex items-center h-8 px-2 py-0.5 rounded-full font-semibold text-sm text-[#037847] bg-[#03784728]">
-                        <span>
-                          <GoDotFill />
-                        </span>
-                        Rate review{" "}
+                      <Link className="flex items-center  px-4 py-[10px] rounded-full font-semibold text-base text-[#0068FF] bg-[#DBE9FE]">
+                        Rate Your Experience
                       </Link>
                     }
                   >
-                    <></>
+                    <>
+                      <div>
+                        <p className="text-[32px]  text-[#232323] font-bold">
+                          Rate Your Experience!
+                        </p>
+                        <div className="pt-4 pb-5">
+                          <label
+                            htmlFor="Review"
+                            className="flex text-lg font-bold text-[#0A1C40]"
+                          >
+                            Review
+                          </label>
+                          <TextArea
+                            className="min-h-20 placeholder:text-xl border bg-white border-[#D9D9D9]"
+                            placeholder="Add Review"
+                          />
+                        </div>
+                        <div className="flex justify-center items-center pb-20">
+                          <Rating size={40} rating={4} />
+                        </div>
+                        <div className="flex justify-end gap-4">
+                          <Button outline={true}>Maybe Later </Button>
+                          <Button primary={true} disabled={true}>
+                            Submit{" "}
+                          </Button>
+                        </div>
+                      </div>
+                    </>
                   </ReactModal>
+                  <Button primary={true}>Avail again</Button>
                   <button
                     className={`${
                       dropdownStates === true && "rotate-180"
