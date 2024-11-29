@@ -152,11 +152,11 @@ const router = createBrowserRouter([
           },
           // Payment route
           {
-            path: "payment/:serviceId",
+            path: "payment",
             element: <Payments />,
             children: [
               {
-                index: true,
+                path : ":serviceId",
                 element: <MakeAPayment />,
               },
               {
