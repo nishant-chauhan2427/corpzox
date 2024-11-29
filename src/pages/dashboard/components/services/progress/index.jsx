@@ -71,7 +71,7 @@ export const ServicesProgress = ({ data }) => {
         <Heading className={"py-0"} tourButton={true}>
           Your Service Progress Updates
         </Heading>
-        <Link to={"/serviceprogressdetail"} className="font-semibold text-[#606060]">View All</Link>
+        <Link to={"/services/serviceprogressdetail"} className="font-semibold text-[#606060]">View All</Link>
       </div>
       {data.length > 0 ? (
         <div className="flex flex-col gap-4">
