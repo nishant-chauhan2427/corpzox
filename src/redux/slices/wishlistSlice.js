@@ -11,6 +11,8 @@ const wishlistSlice = createSlice({
     error: null,
     wishList: null,
     isDeactivate: false,
+    isLoading: false,
+    totalCount: null,
   },
   reducers: {
     clearState: (state) => {
@@ -23,6 +25,7 @@ const wishlistSlice = createSlice({
     builder
       .addCase(getWishList.pending, (state) => {
         state.loading = true;
+        state.isLoading = true;
         state.error = null;
         state.wishList = null;
         console.log("pending wishlist");
@@ -31,6 +34,8 @@ const wishlistSlice = createSlice({
         console.log("wishList wishlist", action.payload);
         toast.success(action.payload.message || "Wishlist fetched wishListfully");
         state.loading = false;
+        state.isLoading = false;
+        state.totalCount=action.payload.length
         state.wishList = action.payload;
         state.error = null;
       })
@@ -39,6 +44,7 @@ const wishlistSlice = createSlice({
         const errorMessage = action.payload?.message || "Something went wrong";
         toast.error(errorMessage);
         state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
         state.wishList = null;
       });

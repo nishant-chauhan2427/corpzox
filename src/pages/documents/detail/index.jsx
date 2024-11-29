@@ -20,7 +20,7 @@ const DocumentDetail = () => {
     const url = listData[0]?.value[0];
     const name = listData[0]?.lebel
     //const count
-    console.log(listData.value[0],"123");
+    //console.log(listData.value[0],"123");`
     useEffect(() => {
         if (id) {
           dispatch(getfolderData(id));   

@@ -73,6 +73,7 @@ const ServicesListing = () => {
       toast.success(wishList?.error);
     }
   }, [wishList?.loading]);
+  
   let onClickWishList = (service) => {
     setIsSubmit(true);
     if (service?.wishlistCount) {

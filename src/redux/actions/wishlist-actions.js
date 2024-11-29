@@ -20,8 +20,8 @@ export const getWishList = createAsyncThunk(
             'Authorization': `Bearer ${token}`,
           },
         });
-        console.log(response.data.data[0].service, "wishlist response");
-        return response.data.data[0].service;
+        //console.log(response.data.data[0]?.service, "wishlist response");
+        return response.data.data;
       } catch (error) {
         console.log(error, "wishlist error");
         return rejectWithValue(error.response?.data || "Something went wrong");
