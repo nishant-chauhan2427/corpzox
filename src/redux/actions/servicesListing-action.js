@@ -4,6 +4,7 @@ import client from "../axios-baseurl";
 export const getUserServicesCatagory = createAsyncThunk("getUserServicesCatagory", async ({page,sort_by,query,categoryId,subCategoryId}, { rejectWithValue }) => {
     try {
         const response = await client.get(`/user/service-category`,{
+            params: { active: true }, 
             headers: {
               Accept: "application/json",
               "Content-Type": "application/json",
@@ -20,9 +21,13 @@ export const getUserServicesCatagory = createAsyncThunk("getUserServicesCatagory
         return rejectWithValue(error?.response?.data?.message || error?.message);
     }
 });
+
+
+  
 export const getUserServicesSubCatagory = createAsyncThunk("getUserSubServicesCatagory", async ({categoryId}, { rejectWithValue }) => {
     try {
         const response = await client.get(`/user/service-sub-category?sectionId=${categoryId}`,{
+            params: { active: true }, 
             headers: {
               Accept: "application/json",
               "Content-Type": "application/json",

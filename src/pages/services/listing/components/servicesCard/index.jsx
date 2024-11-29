@@ -8,7 +8,7 @@ export const ServicesCard = ({
   data = [],
 
 
-  onClick = () => console.log("Heart icon clicked"),
+  onClick = (service) => console.log("Heart icon clicked"),
   onCheckedChange = () => console.log("checked clicked"),
   
 }) => {
@@ -59,15 +59,17 @@ export const ServicesCard = ({
             </div>
             <div className="flex justify-end pt-5 items-end">
               <div className="flex items-center  justify-center gap-2">
+                <Button onClick={onClick}>
                 {heartAccordingToRoute.includes(location.pathname) ? (
                   <img src="/icons/wishlist/red-heart.svg" alt="Red Heart" />
                 ) : (
                   <CiHeart
                     size={30}
                     color={service?.wishlistCount ? "#FF0000" : "#777777"}
-                    onClick={() => onClick(service)}
+                    
                   />
                 )}
+                </Button>
                 <Button type="submit" to={"/payment"} primary={true}>
                   Avail It Now
                 </Button>

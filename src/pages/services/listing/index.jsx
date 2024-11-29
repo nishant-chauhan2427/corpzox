@@ -30,7 +30,7 @@ const ServicesListing = () => {
   );
   
   //const{totalCount}=useSelector((state)=>state.user);
-  console.log(totalCount,"totalCount123");
+  console.log(category,"totalCount123");
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const searchValue = queryParams.get("search");
