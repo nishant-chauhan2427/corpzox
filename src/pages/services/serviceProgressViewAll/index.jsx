@@ -1,13 +1,61 @@
-import React from "react";
+import React, { useState } from "react";
 import { PageHeading } from "../../../components/heading";
 import { ServicesProgress } from "../../dashboard/components/services/progress";
-import {
-    businessListing,
-    recommendedServicesListing,
-    servicesProgress,
-  } from "../../../database";
 
-const ServiceprogressViewAll = ({data}) => {
+const ServiceprogressViewAll = ({ data }) => {
+  const [dropdownStates, setDropdownStates] = useState(data.map(() => false));
+  const [confirmationModal, setConfirmationModal] = useState(false);
+  const [otherValue, setOtherVsalue] = useState("");
+
+  const handleServiceDropdown = (index) => {
+    setDropdownStates((prevState) =>
+      prevState.map((state, i) => (i === index ? !state : state))
+    );
+  };
+
+  const onConfirmationModalClose = () => {
+    setConfirmationModal(!confirmationModal);
+  };
+
+  const servicesProgessSteps = [
+    {
+      step: 1,
+      topLabel: "Under Review",
+      bottomLabel: "Mar 12, 2024",
+      status: "completed",
+    },
+    {
+      step: 2,
+      topLabel: "Service Started",
+      bottomLabel: "Mar 15, 2024",
+      status: "completed",
+    },
+    {
+      step: 3,
+      topLabel: "Payment Received",
+      bottomLabel: "Mar 16, 2024",
+      status: "completed",
+    },
+    {
+      step: 4,
+      topLabel: "Documents Uploaded",
+      bottomLabel: "Mar 17, 2024",
+      status: "completed",
+    },
+    { step: 5, topLabel: "App. Submitted", status: "in-progress" },
+    {
+      step: 6,
+      topLabel: "App. In Progress",
+      estimated: "Est: 5-6 Days",
+      status: "pending",
+    },
+    {
+      step: 7,
+      topLabel: "Service Completed",
+      estimated: "Est: 1-2 Days",
+      status: "pending",
+    },
+  ];
   return (
     <>
       <PageHeading title={"Your Service Progress Updates"} back={true}>
