@@ -121,12 +121,18 @@ const serviceListingSlice = createSlice({
       })
       .addCase(updateServiceWishlist.fulfilled, (state, action) => {
         state.wishList.loading = false;
-        state.list=state.list.map((service)=>{
-           if(service?._id!=action.payload?.data?.serviceId){
-            return service
-           }
+       // console.log(service._id,"service._id");
+       state.list = state.list.map((service) =>
+       service?._id === action.payload?.data?.serviceId
+         ? { ...service, ...action.payload }
+         :service
+     );
+        // state.list=state.list.map((service)=>{
+        //    if(service?._id!=action.payload?.data?.serviceId){
+        //     return service
+        //    }
           
-        })
+        // })
         state.wishList.error=action.payload?.message;
       })
       .addCase(updateServiceWishlist.rejected, (state, action) => {

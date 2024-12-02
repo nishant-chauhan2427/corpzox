@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../../../components/buttons";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -14,6 +14,7 @@ import { profileValidationSchema } from "./editProfileValidationSchema";
 const Edit = () => {
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
   const { loading } = useSelector((state) => state.profile);
   const {
@@ -22,25 +23,28 @@ const Edit = () => {
     setValue,
     formState: { errors, isValid },
   } = useForm({
-    resolver : yupResolver(profileValidationSchema),
+    resolver: yupResolver(profileValidationSchema),
     mode: "onChange", // Enables form validation tracking on change
   });
 
   const onSubmit = (data) => {
-    console.log(data, "Form submitted");
+    //console.log(data, "Form submitted");
 
     dispatch(submitEditProfile({
-      firstName: data.firstName,
-      lastName: data.lastName,
-      businessEmail: data.businessEmail
+      formData: {
+        firstName: data.firstName,
+        lastName: data.lastName,
+      },
+      navigate,
+
     }));
   };
 
   useEffect(() => {
-     dispatch(getUser());
+   // dispatch(getUser());
     const data = (user.name || "").split(" ");
-    console.log(data,"data123");
-    console.log("useer",user);
+    //  console.log(data,"data123");
+    // console.log("useer",user);
     setValue("firstName", data[0]);
     setValue("lastName", data[1]);
     setValue("email", user?.email);
@@ -79,9 +83,10 @@ const Edit = () => {
                           placeholder={"First Name"}
                           className={"border-[#D9D9D9] border"}
                           errorContent={errors?.firstName?.message}
+                          maxLength={30}
                         />
                       )}
-                      
+
                     />
                   </div>
                   <div className="w-full">
@@ -97,9 +102,10 @@ const Edit = () => {
                           placeholder={"Last Name"}
                           className={"border-[#D9D9D9] border"}
                           errorContent={errors?.lastName?.message}
+                          maxLength={30}
                         />
                       )}
-                    
+
                     />
                   </div>
                 </div>
@@ -119,7 +125,7 @@ const Edit = () => {
                         disabled={true}
                       />
                     )}
-                   
+
                   />
                 </div>
                 <div>
@@ -138,7 +144,7 @@ const Edit = () => {
                         disabled={true}
                       />
                     )}
-                   
+
                   />
                 </div>
               </div>

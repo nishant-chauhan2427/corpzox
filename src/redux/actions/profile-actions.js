@@ -1,9 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import client from "../axios-baseurl";
+import toast from "react-hot-toast";
 
 export const submitEditProfile = createAsyncThunk(
     "profile/submitEditProfile",
-    async (formData, { rejectWithValue }) => {
+    async ({formData,navigate}, { rejectWithValue }) => {
+    //  console.log(formData,"DATAQ");
         try {
             const response = await client.put("/user/user-details", formData, {
                 headers: {
@@ -12,7 +14,13 @@ export const submitEditProfile = createAsyncThunk(
                     'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
                 },
             });
-            console.log(response, "edit response")
+           // console.log(response, "edit response")
+            //console.log(response.data.message, "edit response")
+            if(response.data.code===200){
+
+             // toast.success(response.data.message)
+             navigate("/profile");
+            }
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data || "Something went wrong");

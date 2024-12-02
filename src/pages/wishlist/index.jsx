@@ -13,6 +13,7 @@ const Wishlist = () => {
   const { loading, wishList, totalCount } = useSelector(
     (state) => state.wishlist
   );
+  console.log(wishList, service?._id,"totalCount12334");
   let onClickWishList = (service) => {
     //setIsSubmit(true);
    // if (service?.wishlistCount) {

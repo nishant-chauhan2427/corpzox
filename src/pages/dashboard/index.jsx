@@ -13,6 +13,7 @@ import {
   getUser,
   getUserBusiness,
   getUserServices,
+  updateServiveProgress,
 } from "../../redux/actions/dashboard-action";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -51,7 +52,7 @@ const Dashboard = () => {
 
   const { recommendedServiceList, isRecommendedServiceLoading } = useSelector((state) => state.service)
   console.log(isRecommendedServiceLoading, "recommendedServiceList")
-  const formattedRecommendedServices = recommendedServiceList.map((service) => {
+  const formattedRecommendedServices = recommendedServiceList?.map((service) => {
 
 
     return {
@@ -65,6 +66,7 @@ const Dashboard = () => {
     dispatch(getUser());
     dispatch(getUserBusiness({}));
     dispatch(getUserServices({}));
+    dispatch(updateServiveProgress({page:1}));
   }, []);
   useEffect(() => {
     dispatch(getUserBusiness({ query: searchValue }));

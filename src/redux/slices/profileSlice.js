@@ -25,7 +25,8 @@ const profileSlice = createSlice({
       })
       .addCase(submitEditProfile.fulfilled, (state, action) => {
         console.log(action.payload, "data from slice")
-        toast.success(action.payload.message)
+        //toast.success(action.payload.message)
+        //console.log(action.payload,"action.payload12");
         state.loading = false;
         state.success = action.payload;
         state.error = null;
@@ -34,7 +35,7 @@ const profileSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
         state.success = null;
-        console.log(action.payload, "rejected")
+       // console.log(action.payload, "rejected")
       })
   },
 });
