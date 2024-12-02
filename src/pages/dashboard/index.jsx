@@ -52,7 +52,7 @@ const Dashboard = () => {
 
   const { recommendedServiceList, isRecommendedServiceLoading } = useSelector((state) => state.service)
   console.log(isRecommendedServiceLoading, "recommendedServiceList")
-  const formattedRecommendedServices = recommendedServiceList.map((service) => {
+  const formattedRecommendedServices = recommendedServiceList?.map((service) => {
 
 
     return {
@@ -66,7 +66,7 @@ const Dashboard = () => {
     dispatch(getUser());
     dispatch(getUserBusiness({}));
     dispatch(getUserServices({}));
-    dispatch(updateServiveProgress({}));
+    dispatch(updateServiveProgress({page:1}));
   }, []);
   useEffect(() => {
     dispatch(getUserBusiness({ query: searchValue }));

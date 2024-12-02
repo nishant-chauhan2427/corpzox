@@ -119,4 +119,33 @@ export const requestChangeManager = createAsyncThunk(
       }
     }
   );
+
+
   
+
+export const updateServiveProgress = createAsyncThunk("updateServiveProgress", async ({page}, { rejectWithValue }) => {
+  try {
+      let params=new URLSearchParams();
+      if(page) params.append('page',page);
+      // if(sort_by) params.append('sort_by',sort_by);
+      // if(query) params.append('query',query);
+      // if(categoryId) params.append('categoryId',categoryId);
+      // if(subCategoryId) params.append('subCategoryId',subCategoryId);
+      const response = await client.get(`/user/service-progress-update${(params)&&`?${params}`}`,{
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+          },
+        });
+      console.log(response,'services..');
+      if(response?.data?.code==200||response?.data?.code==201){
+          return response.data;
+      }else{
+          return rejectWithValue(response?.data?.message);            
+      }
+  } catch (error) {
+    console.log(error, "error")
+      return rejectWithValue(error?.response?.data?.message || error?.message);
+  }
+});
