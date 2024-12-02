@@ -29,8 +29,6 @@ export const Pricing = ({ pricing = true, data, serviceId }) => {
     };
   });
 
-  })
-
 const formattedSubscriptions = subscription?.map((subscription)=>{
   return {
     title: subscription.title,
