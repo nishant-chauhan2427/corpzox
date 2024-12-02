@@ -127,3 +127,24 @@ export const updateServiceQuickWishlist = createAsyncThunk("updateServiceQuickWi
         return rejectWithValue(error?.response?.data?.message || error?.message);
     }
 });
+
+export const recommendedServiceListing = createAsyncThunk("recommendedServiceListing", async (_, { rejectWithValue }) => {
+    try {
+       
+        const response = await client.get(`/user/recommended-service`,{
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+            },
+          });
+        
+        if(response?.data?.code==200||response?.data?.code==201){
+           return response?.data.data
+        }else{
+            return rejectWithValue(response?.data?.message);            
+        }
+    } catch (error) {
+        return rejectWithValue(error?.response?.data?.message || error?.message);
+    }
+});

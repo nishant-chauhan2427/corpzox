@@ -45,7 +45,7 @@ const ServiceDetail = () => {
           </div>
           <Details data={success} pricing={true} serviceId={serviceId} handleRequest={handleTalkTouOurAdvisors} isLoading={isTalkToAdvisorLoading} />
           <Features />
-          <Pricing data={subscription} pricing={false} serviceId={serviceId} />
+          <Pricing data={subscription} pricing={true} serviceId={serviceId} />
           <Advisor
             handleRequest={handleTalkTouOurAdvisors}
             isLoading={isTalkToAdvisorLoading} />

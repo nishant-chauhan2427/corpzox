@@ -598,3 +598,8 @@ export function formatMillisecondsToDate(timestampString) {
 }
 
 
+export const formatReadableDate = (timestamp) => {
+  const date = new Date(timestamp);
+  const options = { day: "2-digit", month: "short", year: "numeric" };
+  return date.toLocaleDateString("en-GB", options);
+};

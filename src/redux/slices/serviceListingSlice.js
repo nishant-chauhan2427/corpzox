@@ -5,7 +5,9 @@ import {
   getUserServices,
   updateServiceWishlist,
   removeServiceWishlist,
+  recommendedServiceListing
 } from "../actions/servicesListing-action";
+import toast from "react-hot-toast";
 const initialState = {
   list: [],
   totalPage: 0,
@@ -13,6 +15,8 @@ const initialState = {
   limit: 10,
   loading: false,
   error: null,
+  isRecommendedServiceLoading : false, 
+  recommendedServiceList : [], 
   category: {
     list: [],
     total: 0,
@@ -147,6 +151,19 @@ const serviceListingSlice = createSlice({
       .addCase(removeServiceWishlist.rejected, (state, action) => {
         state.wishList.loading = false;
         state.wishList.error=action.payload;
+      })
+      .addCase(recommendedServiceListing.pending, (state) => {
+        state.isRecommendedServiceLoading = true
+       
+      })
+      .addCase(recommendedServiceListing.fulfilled, (state, action) => {
+        state.isRecommendedServiceLoading = false 
+        state.recommendedServiceList = action.payload;
+      })
+      .addCase(recommendedServiceListing.rejected, (state, action) => {
+        state.isRecommendedServiceLoading = false 
+        const errorMessage = action.payload?.message || "Something went wrong";
+        toast.error(errorMessage);
       });
   },
 });

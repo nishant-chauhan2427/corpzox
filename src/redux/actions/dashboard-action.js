@@ -68,3 +68,53 @@ export const getUserServices = createAsyncThunk("getUserServices", async ({page,
         return rejectWithValue(error?.response?.data?.message || error?.message);
     }
 });
+
+// export const requestChangeManager = createAsyncThunk("requestChangeManager", async (_, { rejectWithValue }) => {
+//     try {
+        
+//         const response = await client.put(`/application/request-change-manager`,null,{
+//             headers: {
+//               Accept: "application/json",
+//               "Content-Type": "application/json",
+//               'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+//             },
+//           });
+//         if(response?.data?.code==200||response?.data?.code==201){
+//             return response.data;
+//         }else{
+//             return rejectWithValue(response?.data?.message);            
+//         }
+//     } catch (error) {
+//         console.log(error, "error manager")
+//         return rejectWithValue(error?.response?.data?.message);
+//     }
+// });
+
+export const requestChangeManager = createAsyncThunk(
+    "requestChangeManager",
+    async (_, { rejectWithValue }) => {
+      try {
+        const response = await client.put(
+          `/application/request-change-manager`, 
+          {}, // No body for the PUT request
+          {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+            },
+          }
+        );
+  
+        if (response?.data?.code === 200 || response?.data?.code === 201) {
+          return response.data;
+        } else {
+          return rejectWithValue(response?.data?.message);
+        }
+      } catch (error) {
+        console.log(error, "error manager");
+        return rejectWithValue(error?.response?.data?.message);
+      }
+    }
+  );
+  

@@ -15,7 +15,7 @@ export const NoData = () => {
           No data available.{" "}
         </p>
         {/* <div className="flex flex-col w-full sm:w-[30%]"> */}
-        <Link to={"/"} className="flex flex-col w-full sm:w-[30%]">
+        <Link to={"/"} className="flex flex-co`l w-full sm:w-[30%]">
          
         </Link>
         {/* </div> */}
