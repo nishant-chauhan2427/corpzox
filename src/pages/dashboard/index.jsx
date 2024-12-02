@@ -64,7 +64,7 @@ const Dashboard = () => {
   console.log(formattedRecommendedServices, "formattedRecommendedServices")
   useEffect(() => {
     dispatch(getUser());
-    dispatch(getUserBusiness({}));
+    dispatch(getUserBusiness({}));  
     dispatch(getUserServices({}));
     dispatch(updateServiveProgress({page:1}));
   }, []);
