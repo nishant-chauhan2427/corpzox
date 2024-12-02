@@ -2,10 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../../buttons";
 
-export const NoData = () => {
+export const NoData = ({className}) => {
   return (
     <>
-      <div className="h-screen flex flex-col gap-4 text-center justify-center items-center">
+      <div className={`${className ||" h-screen"} flex flex-col gap-4 text-center justify-center items-center`}>
         <img
           src="/images/errors/no-data.svg"
           width={350}
