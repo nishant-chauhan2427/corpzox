@@ -13,7 +13,7 @@ import { formatMillisecondsToDate } from "../../../../../utils";
 export const Pricing = ({ pricing = true, data, serviceId }) => {
   const [isInitialDispatchMade, setIsInitialDispatchMade] = useState(false);
   const { subscription, quotationDetails } = useSelector(
-    (state) => state.serviceDetails
+    (state) => state.serviceDetails 
   );
 
   console.log(subscription, "subscription quiotation")
