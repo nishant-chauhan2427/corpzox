@@ -7,7 +7,7 @@ import { servicesListing } from "../../../database";
 import Filtertab from "../../../pages/services/components/tabs/filterTab";
 import { SelectAllTabs } from "../components/tabs/selectAllTab/index";
 import { useSelector, useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import {
   getUserServicesCatagory,
   getUserServicesSubCatagory,
@@ -22,15 +22,24 @@ import {
 } from "../../../redux/slices/serviceListingSlice";
 import toast from "react-hot-toast";
 import { Offers } from "../../../components/offers";
+import { updateServiveProgress } from "../../../redux/actions/dashboard-action";
 const ServicesListing = () => {
   const dispatch = useDispatch();
+  const {categoryId,subCategoryId}=useParams();
   const { servicesMainTab } = useSelector((state) => state.app);
-  const { category, subCategory, page, limit, totalCount,totalPage,list, wishList } = useSelector(
-    (state) => state.service
-  );
-  
+  const {
+    category,
+    subCategory,
+    page,
+    limit,
+    totalCount,
+    totalPage,
+    list,
+    wishList,
+  } = useSelector((state) => state.service);
+//console.log(service?._id,"ServiceIdId12");
   //const{totalCount}=useSelector((state)=>state.user);
-  console.log(category,"totalCount123");
+  //console.log(category, "totalCount123");
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const searchValue = queryParams.get("search");
@@ -38,6 +47,7 @@ const ServicesListing = () => {
   useEffect(() => {
     dispatch(resetService({}));
     dispatch(getUserServicesCatagory({}));
+    
   }, []);
   useEffect(() => {
     if (category?.selectedCategory?.categoryId) {
@@ -73,7 +83,7 @@ const ServicesListing = () => {
       toast.success(wishList?.error);
     }
   }, [wishList?.loading]);
-  
+
   let onClickWishList = (service) => {
     setIsSubmit(true);
     if (service?.wishlistCount) {
@@ -132,7 +142,11 @@ const ServicesListing = () => {
             />
             {list && list.length > 5 && (
               <div className="mt-10 flex justify-center">
-               { list.length ==totalCount ? <></> : <Button primary={true}>Load More </Button>}
+                {list.length == totalCount ? (
+                  <></>
+                ) : (
+                  <Button primary={true}>Load More </Button>
+                )}
               </div>
             )}
           </>

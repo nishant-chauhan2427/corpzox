@@ -18,7 +18,7 @@ const ServiceDetail = () => {
   const dispatch = useDispatch();
   const { success, statesList, subscription, isTalkToAdvisorLoading } = useSelector((state) => state.serviceDetails);
 
-  console.log(success?.subscription, "from component")
+ // console.log(success?.subscription, "from component")
   useEffect(() => {
     // dispatch(getServiceDetails({serviceId : serviceId ||  "66e17336b029b506bdd35f34"}));
     dispatch(getServiceDetails({ serviceId: serviceId }));

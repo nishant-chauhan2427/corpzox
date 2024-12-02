@@ -18,7 +18,7 @@ const BusinessDetail = () => {
   const {user} = useSelector((state) => state.user);
   const queryParams = new URLSearchParams(location.search);
   const businessId = queryParams.get("id");
-  console.log("BUSINESS ID",businessId)
+//  console.log("BUSINESS ID",businessId)
   useEffect(() => {
     if (businessId) {
       console.log("Dispatching action with businessId:", businessId);

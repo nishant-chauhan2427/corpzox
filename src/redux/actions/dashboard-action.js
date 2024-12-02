@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import client from "../axios-baseurl";
+import toast from "react-hot-toast";
 
 export const getUser = createAsyncThunk("getUser", async (authInfo, { rejectWithValue }) => {
     try {
@@ -10,8 +11,9 @@ export const getUser = createAsyncThunk("getUser", async (authInfo, { rejectWith
               'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
             },
           });
-        console.log(response);
+        console.log(response,"get response");
         if(response?.data?.code==200||response?.data?.code==201){
+            //toast(response.data.message)
             return response.data?.data?.[0];
         }else{
             return rejectWithValue(response?.data?.message);            
@@ -59,6 +61,30 @@ export const getUserServices = createAsyncThunk("getUserServices", async ({page,
             },
           });
         console.log(response,'services..');
+        if(response?.data?.code==200||response?.data?.code==201){
+            return response.data;
+        }else{
+            return rejectWithValue(response?.data?.message);            
+        }
+    } catch (error) {
+        return rejectWithValue(error?.response?.data?.message || error?.message);
+    }
+});
+//Service Progress Updates
+export const updateServiveProgress = createAsyncThunk("updateServiveProgress", async ({page,sort_by='date_desc',status}, { rejectWithValue }) => {
+    try {
+        let params=new URLSearchParams();
+        if(page) params.append('page',page);
+        if(sort_by) params.append('sort_by',sort_by);
+        if(status) params.append('status',status);
+        const response = await client.get(`/user/service-progress-update?${(params)&&`?${params}`}`,{
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+            },
+          });
+        console.log(response);
         if(response?.data?.code==200||response?.data?.code==201){
             return response.data;
         }else{

@@ -17,7 +17,7 @@ export const ServicesCard = ({
   const heartAccordingToRoute = ["/wishlist", "/services"];
   const navigate = useNavigate();
   //console.log(data,"12345")
-  console.log(data, "Data123");
+  //console.log(data, "Data123");
   const handleNavigate = () => {
     navigate("/services/detail");
   };
@@ -74,6 +74,7 @@ export const ServicesCard = ({
                   <button
                     onClick={() => {
                       onClick(service);
+                      //{console.log(service,"Service Onclick");}
                     }}
                   >
                     {location.pathname === "/wishlist" ? (

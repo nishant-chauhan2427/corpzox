@@ -13,6 +13,7 @@ import {
   getUser,
   getUserBusiness,
   getUserServices,
+  updateServiveProgress,
 } from "../../redux/actions/dashboard-action";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -57,6 +58,7 @@ const Dashboard = () => {
     dispatch(getUser());
     dispatch(getUserBusiness({}));
     dispatch(getUserServices({}));
+    dispatch(updateServiveProgress({}));
   }, []);
   useEffect(() => {
     dispatch(getUserBusiness({ query: searchValue }));
