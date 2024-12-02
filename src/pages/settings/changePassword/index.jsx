@@ -19,6 +19,7 @@ const ChangePassword = () => {
   const inputRefs = useRef([]);
 
   const {isPasswordChanging} = useSelector((state)=> state.settings);
+  console.log(isPasswordChanging, "isPasswordChanging")
   const {
     handleSubmit,
     control,
@@ -37,8 +38,8 @@ const ChangePassword = () => {
     // setConfirmationModal(true);
     console.log(data)
     const passwordData = {
-      newPassword : data.password,
-      oldPassword : data.confirmPassword
+      newPassword : data.confirmPassword,
+      oldPassword : data.password
     }
     console.log(passwordData, "password Data")
     dispatch(changePassword(passwordData))

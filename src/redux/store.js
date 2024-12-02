@@ -16,6 +16,8 @@ import settingsReducer from "./slices/settingsSlice"
 import wishListReducer from "./slices/wishlistSlice"
 import serviceDetailsReducer from "./slices/serviceDetailsSlice"
 import documentSlice from "./slices/documentSlice";
+import paymentHistoryReducer from "./slices/paymentHistorySlice"
+import dashboardReducer from "./slices/dashboardSlice"
 import offerSlice from "./slices/offerSlice"
 
 
@@ -38,6 +40,8 @@ const rootReducer = combineReducers({
   wishlist : wishListReducer,
   serviceDetails : serviceDetailsReducer,
   document : documentSlice,
+  paymentHistory : paymentHistoryReducer,
+  dashboard : dashboardReducer,
   offers: offerSlice,
 });
 

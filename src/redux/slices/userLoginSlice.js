@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {getUser,getUserBusiness,getUserServices} from '../actions/dashboard-action';
+import {getUser,getUserBusiness,getUserServices, updateServiveProgress} from '../actions/dashboard-action';
 const initialState = {
     loading:false,
     user: null,
+    dataUpdate:null,
     manager:null,
     business:{
         list:[],
@@ -96,7 +97,23 @@ const userSlice = createSlice({
         }).addCase(getUserServices.rejected, (state, action) => {
           state.serviceLoading = false;
           state.servicesError = action.payload;
-        });
+        })
+
+        .addCase(updateServiveProgress.pending, (state, action) => {
+          state.fetching = true;
+        })
+      
+        .addCase(updateServiveProgress.fulfilled, (state, action) => {
+          state.fetching = false;
+          state.error = action.payload.message;
+         // console.log(action.payload,"action.payload22");
+          state.dataUpdate=action.payload;
+          //state.manager=action.payload?.agent_data?.[0]?.manager_data?.[0];
+          
+        }).addCase(updateServiveProgress.rejected, (state, action) => {
+          state.fetching = false;
+          state.error = action.payload;
+        });;
     }
 });
 

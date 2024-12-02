@@ -13,10 +13,10 @@ import { formatMillisecondsToDate } from "../../../../../utils";
 export const Pricing = ({ pricing = true, data, serviceId }) => {
   const [isInitialDispatchMade, setIsInitialDispatchMade] = useState(false);
   const { subscription, quotationDetails } = useSelector(
-    (state) => state.serviceDetails
+    (state) => state.serviceDetails 
   );
 
-  console.log(subscription, quotationDetails, "subscription quiotation");
+  console.log(subscription, "subscription quiotation")
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { statesList } = useSelector((state) => state.serviceDetails);
@@ -29,7 +29,17 @@ export const Pricing = ({ pricing = true, data, serviceId }) => {
     };
   });
 
-  console.log(data, "susbcription");
+const formattedSubscriptions = subscription?.map((subscription)=>{
+  return {
+    title: subscription.title,
+    price: subscription.amount,
+    additional_cost: "+ applicable govt. ₹500",
+    features: [
+      "Fast Application",
+      "Application within 5 working days or your money back.",
+    ],
+  }
+})
   const packages = [
     {
       title: "STARTER PACK",
@@ -112,9 +122,9 @@ export const Pricing = ({ pricing = true, data, serviceId }) => {
   }, [dispatch, formattedStates, serviceId, isInitialDispatchMade]);
 
   const defaultObject = {
-    label: formattedStates ? formattedStates[0].label : "",
-    id: formattedStates ? formattedStates[0].id : "",
-  };
+    label: formattedStates ? formattedStates[0]?.label : "",
+    id: formattedStates ? formattedStates[0]?.id : ""
+  }
   return (
     <section>
       <div className="flex flex-col gap-4">

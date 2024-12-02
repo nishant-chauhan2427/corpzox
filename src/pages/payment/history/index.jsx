@@ -1,12 +1,32 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "../../../components/buttons";
 import { Heading } from "../../../components/heading";
 import { Table } from "../../../components/table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ReactModal } from "../../../components/modal";
 import { FaPlus } from "react-icons/fa";
+import { getPaymentTransaction } from "../../../redux/actions/payment-history-action";
+import { useDispatch, useSelector } from "react-redux";
+import { formatReadableDate } from "../../../utils";
+import { TableShimmer } from "../../../components/loader/TableShimmer";
+import { NoData } from "../../../components/errors/noData";
 
 const History = () => {
+  const dispatch = useDispatch()
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [currentPage, setCurrentPage] = useState(1);
+  const { paymentHistory, isPaymentHistoryLoading, totalTransaction } = useSelector((state) => state.paymentHistory)
+  const transformedTransactionHistory = paymentHistory?.map((history) => {
+    return {
+      transaction_id: history.invoiceNumber,
+      status: history.active ? "Succeeded" : "Declined",
+      amount: history?.amount,
+      currency: "INR",
+      payment_date: formatReadableDate(history.paymentDate),
+    }
+  })
+
+  console.log(transformedTransactionHistory, "transformedTransactionHistory")
   const columns = [
     { header: "Transaction ID", accessor: "transaction_id" },
     { header: "Status", accessor: "status" },
@@ -15,6 +35,20 @@ const History = () => {
     { header: "Payment Date", accessor: "payment_date" },
     { header: "Actions", accessor: "actions" },
   ];
+
+  useEffect(() => {
+    const page = searchParams.get("page") || 1;
+    const query = searchParams.get('search') || ""
+    setCurrentPage(Number(page));
+    dispatch(getPaymentTransaction({ page, query }));
+  }, [searchParams, dispatch]);
+
+  const handleNavigation = (direction) => {
+    const newPage = direction === "Next" ? currentPage + 1 : currentPage - 1;
+    if (newPage < 1) return; // Prevent navigating to a negative page
+    setSearchParams({ page: newPage });
+  };
+
   const paymentData = [
     {
       transaction_id: "06c1774-7f3d-46ad...90a8",
@@ -43,7 +77,17 @@ const History = () => {
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
+  const handleTalkTouOurAdvisors = () => {
+    console.log("clicked")
+    // const requestData = {
+    //   userId: JSON.parse(localStorage.getItem('userInfo'))?.userId,
+    //   serviceId: serviceId,
+    //   status: "negotiation",
+    //   quotationDate: Date.now()
+    // }
+    // dispatch(talkToAdvisor(requestData))
 
+  }
   const actionMenu = () => {
     return (
       <div className="flex py-2 justify-evenly items-center">
@@ -51,6 +95,7 @@ const History = () => {
           crossButton={true}
           className="border-[#FF3B3B] border-[3px] py-2 w-[55%]"
           button={<img src="/icons/payment/paymentPrint.svg" alt="" />}
+          onClick={handleTalkTouOurAdvisors}
         >
           <div className="flex flex-col gap-2 ">
             <div className="flex justify-center">
@@ -140,6 +185,7 @@ const History = () => {
           crossButton={true}
           className="border-[#FF3B3B] border-[3px] py-2 "
           button={<img src="/icons/payment/calling.svg" alt="" />}
+          onClick={handleTalkTouOurAdvisors}
         >
           <div className="flex flex-col gap-2 items-center justify-center ">
             <img src="/public/icons/payment/callback.svg" width={200} alt="" />
@@ -159,18 +205,37 @@ const History = () => {
     );
   };
 
+  // const actionMenu = () => {
+  //   <div className="flex py-2 justify-evenly items-center">
+
+
+  //   </div>
+  // }
+
   return (
     <>
       <div>
-        <Table
-          isExpandable={false}
-          columns={columns}
-          data={paymentData}
-          actionMenu={actionMenu}
-        />
+        {
+          isPaymentHistoryLoading ? (
+            <TableShimmer />
+          ) : (
+            transformedTransactionHistory && transformedTransactionHistory.length > 0 ? (
+              <Table
+                isExpandable={false}
+                columns={columns}
+                data={transformedTransactionHistory}
+                actionMenu={actionMenu}
+              />
+            ) : (
+              <div><NoData /></div>
+            )
+          )
+        }
+
+
         <div className="flex justify-between items-center">
           <p className="font-normal text-sm text-[#4B5563]">
-            <span className="font-semibold">5</span> results
+            <span className="font-semibold">{totalTransaction ? totalTransaction : 0}</span> results
           </p>
           <div className="flex items-center gap-2 pt-4">
             <Button onClick={() => handleNavigation("Previous")} outline={true}>

@@ -4,10 +4,12 @@ import { CiMenuKebab } from "react-icons/ci";
 import { IoMdCall } from "react-icons/io";
 import { useOutsideClick } from "../../../../utils";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { requestChangeManager } from "../../../../redux/actions/dashboard-action";
 
 export const AccountManager = ({ manager, sidebar }) => {
   const [accountShowButton, setAccountShowButton] = useState(false);
-
+  const dispatch = useDispatch();
   const accountShowButtonRef = useRef();
 
   const handleAccountShowBtn = () => {
@@ -17,6 +19,10 @@ export const AccountManager = ({ manager, sidebar }) => {
   useOutsideClick(accountShowButtonRef, handleAccountShowBtn);
   console.log(manager, "manager");
 
+  const requestManagerChange=()=>{
+    dispatch(requestChangeManager())
+    handleAccountShowBtn()
+  }
   return (
     <div
       className={`${
@@ -64,7 +70,7 @@ export const AccountManager = ({ manager, sidebar }) => {
           </button>
           {accountShowButton && (
             <div ref={accountShowButtonRef} className="absolute  pt-3">
-              <button className="px-3 py-2 cursor-pointer w-full bg-[#D9D9D9] font-medium text-xs rounded-md">
+              <button onClick={requestManagerChange} className="px-3 py-2 cursor-pointer w-full bg-[#D9D9D9] font-medium text-xs rounded-md">
                 Request to Change Manager
               </button>
             </div>

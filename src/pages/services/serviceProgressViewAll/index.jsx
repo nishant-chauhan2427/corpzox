@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { PageHeading } from "../../../components/heading";
 import { ServicesProgress } from "../../dashboard/components/services/progress";
+import { TextArea } from "../../../components/inputs/textarea";
+import { Rating } from "../../../components/rating";
+import { Button } from "../../../components/buttons";
 
 const ServiceprogressViewAll = ({ data }) => {
   const [dropdownStates, setDropdownStates] = useState(data.map(() => false));

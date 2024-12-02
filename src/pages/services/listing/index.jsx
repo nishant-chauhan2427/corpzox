@@ -7,7 +7,7 @@ import { servicesListing } from "../../../database";
 import Filtertab from "../../../pages/services/components/tabs/filterTab";
 import { SelectAllTabs } from "../components/tabs/selectAllTab/index";
 import { useSelector, useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import {
   getUserServicesCatagory,
   getUserServicesSubCatagory,
@@ -22,20 +22,15 @@ import {
 } from "../../../redux/slices/serviceListingSlice";
 import toast from "react-hot-toast";
 import { Offers } from "../../../components/offers";
+import { updateServiveProgress } from "../../../redux/actions/dashboard-action";
 const ServicesListing = () => {
   const dispatch = useDispatch();
+  const {categoryId,subCategoryId}=useParams();
   const { servicesMainTab } = useSelector((state) => state.app);
-  const {
-    category,
-    subCategory,
-    page,
-    limit,
-    totalCount,
-    totalPage,
-    list,
-    wishList,
-  } = useSelector((state) => state.service);
-
+  const { category, subCategory, page, limit, totalCount,totalPage,list, wishList } = useSelector(
+    (state) => state.service
+  );
+  
   //const{totalCount}=useSelector((state)=>state.user);
   console.log(category, "totalCount123");
   const location = useLocation();
@@ -45,6 +40,7 @@ const ServicesListing = () => {
   useEffect(() => {
     dispatch(resetService({}));
     dispatch(getUserServicesCatagory({}));
+    
   }, []);
   useEffect(() => {
     if (category?.selectedCategory?.categoryId) {

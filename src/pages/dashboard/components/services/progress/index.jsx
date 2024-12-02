@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { GoDotFill, GoTriangleDown } from "react-icons/go";
 import { ProgressBar } from "../../../../../components/progressBar";
 import { Heading } from "../../../../../components/heading";
@@ -9,20 +9,48 @@ import { ReactModal } from "../../../../../components/modal";
 import { TextArea } from "../../../../../components/inputs/textarea";
 import { Rating } from "../../../../../components/rating";
 import { Button } from "../../../../../components/buttons";
+import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { ratingReviewSchema } from "../../../../../validation/ratingReviewValidationSchema";
+import { useDispatch, useSelector } from "react-redux";
+import { ratingReview } from "../../../../../redux/actions/dashboard-action";
 
 export const ServicesProgress = ({ data }) => {
   const [dropdownStates, setDropdownStates] = useState(data.map(() => false));
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [otherValue, setOtherVsalue] = useState("");
-
+  const [serviceId, setServiceId] = useState("")
+  const [rating, setRating] = useState(0);
+  const dispatch = useDispatch()
+  const { isRatingSubmitting } = useSelector((state) => state.dashboard)
   const handleServiceDropdown = (index) => {
     setDropdownStates((prevState) =>
       prevState.map((state, i) => (i === index ? !state : state))
     );
   };
 
+  const { control, handleSubmit, reset, formState: { errors, isValid }, } = useForm({
+    defaultValues: {
+      review: "",
+      rating: 0,
+    },
+    resolver: yupResolver(ratingReviewSchema)
+  });
   const onConfirmationModalClose = () => {
-    setConfirmationModal(!confirmationModal);
+    setConfirmationModal(false);
+    setServiceId("")
+  };
+  const onConfirmationModalOpen = (data) => {
+    console.log(data, "mo idea")
+    setServiceId(data)
+    setConfirmationModal(true);
+  };
+  const onSubmit = (formData) => {
+    console.log("Submitted Data: ", formData);
+    // Handle form submission logic
+
+    dispatch(ratingReview({...formData, serviceId}))
+    reset(); // Reset the form after submission
   };
 
   const servicesProgessSteps = [
@@ -69,19 +97,22 @@ export const ServicesProgress = ({ data }) => {
     <div>
       <div className="py-2 flex flex-col sm:flex-row justify-between gap-2">
         <Heading className={"py-0"} tourButton={true}>
-          Your Service Progress Updates
+          Your Service Progress Updates({dataUpdate?.total})
         </Heading>
         <Link to={"/services/serviceprogressdetail"} className="font-semibold text-[#606060]">View All</Link>
       </div>
-      {data.length > 0 ? (
+      {dataUpdate?.data?.length > 0 ? (
         <div className="flex flex-col gap-4">
-          {data.map((data, index) => (
+          {dataUpdate?.data?.map((data, index) => (
             <div key={index} className="bg-[#F8FAFF] px-4 py-2 rounded-md">
+
               <div className="flex flex-col sm:flex-row items-start justify-between sm:items-center gap-2">
                 <div className="flex flex-col gap-1">
+                  
                   <div className="flex gap-2">
                     <img src="/images/dashboard/service-progress.svg" alt="" />
-                    <p className="font-bold">Service: {data.name} </p>
+                  
+                    <p className="font-bold">Service: {data?.service[0]?.name} </p>
                     <img
                       src="/icons/dashboard/service-error.svg"
                       width={15}
@@ -90,29 +121,30 @@ export const ServicesProgress = ({ data }) => {
                   </div>
                   <div className="flex flex-col gap-2">
                     <h6 className="text-sm text-[#7C7D80]">
-                      <strong>Business:</strong> {data.detail1}
+                      <strong>Business:</strong> {data?.businessdetails[0]?.businessName}
                     </h6>
                     <p className="text-sm text-[#7C7D80]">
-                      <strong>Step:</strong> {data.detail2}
+                      <strong>Step:</strong> {data?.status
+}
                     </p>
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <ReactModal
-                    crossButton={true}
-                    className="border-[#FF3B3B] border-[3px] py-2 w-[55%]"
-                    button={
-                      <Link className="flex items-center  px-4 py-[10px] rounded-full font-semibold text-base text-[#0068FF] bg-[#DBE9FE]">
-                        Rate Your Experience
-                      </Link>
-                    }
+
+                  <Button onClick={()=>{onConfirmationModalOpen(data)}} className="flex items-center  px-4 py-[10px] rounded-full font-semibold text-base text-[#0068FF] bg-[#DBE9FE]">
+                    Rate Your Experience213
+                  </Button>
+
+                  <ConfirmationModal
+                    isOpen={confirmationModal}
+                    onClose={onConfirmationModalClose}
                   >
                     <>
                       <div>
                         <p className="text-[32px]  text-[#232323] font-bold">
                           Rate Your Experience!
                         </p>
-                        <div className="pt-4 pb-5">
+                        {/* <div className="pt-4 pb-5">
                           <label
                             htmlFor="Review"
                             className="flex text-lg font-bold text-[#0A1C40]"
@@ -132,15 +164,84 @@ export const ServicesProgress = ({ data }) => {
                           <Button primary={true} disabled={true}>
                             Submit{" "}
                           </Button>
-                        </div>
+                        </div> */}
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                          <div>
+                            <div className="pt-4 pb-5">
+                              <label
+                                htmlFor="Review"
+                                className="flex text-lg font-bold text-[#0A1C40]"
+                              >
+                                Review
+                              </label>
+                              <Controller
+                                name="review"
+                                control={control}
+                                render={({ field, fieldState }) => (
+                                  // <TextArea
+                                  //   {...field}
+                                  //   className="min-h-20 placeholder:text-xl border bg-white border-[#D9D9D9]"
+                                  //   placeholder="Add Review"
+                                  // />
+                                  <>
+                                    <TextArea
+                                      {...field}
+                                      className="min-h-20 placeholder:text-xl border bg-white border-[#D9D9D9]"
+                                      placeholder="Add Review"
+                                    />
+                                    {fieldState.error && (
+                                      <p className="text-red-500 text-sm">{fieldState.error.message}</p>
+                                    )}
+                                  </>
+                                )}
+                              />
+                            </div>
+                            <div className="flex justify-center items-center pb-5">
+                              {/* <Controller
+                                name="rating"
+                                control={control}
+                                render={({ field }) => (
+                                  <Rating
+                                    rating={field.value} // Bind the value to the form state
+                                    setRating={(value) => field.onChange(value)} // Update the form state on change
+                                    size={40}
+                                  />
+                                )}
+                              /> */}
+                              <Controller
+                                name="rating"
+                                control={control}
+                                render={({ field, fieldState }) => (
+                                  <div className="flex flex-col gap-4">
+                                    <Rating {...field} rating={field.value} setRating={field.onChange} size={40} />
+                                    {fieldState.error && (
+                                      <p className="text-red-500 text-sm">{fieldState.error.message}</p>
+                                    )}
+                                  </div>
+                                )}
+                              />
+                            </div>
+                            <div className="flex justify-end gap-4">
+                              <Button
+                                outline={true}
+                                type="button"
+                                onClick={() => reset()}
+                              >
+                                Maybe Later
+                              </Button>
+                              <Button disabled={!isValid} isLoading={isRatingSubmitting} primary={true} type="submit">
+                                Submit
+                              </Button>
+                            </div>
+                          </div>
+                        </form>
                       </div>
                     </>
-                  </ReactModal>
+                  </ConfirmationModal>
                   <Button primary={true}>Avail again</Button>
                   <button
-                    className={`${
-                      dropdownStates === true && "rotate-180"
-                    } hidden lg:block`}
+                    className={`${dropdownStates === true && "rotate-180"
+                      } hidden lg:block`}
                     onClick={() => handleServiceDropdown(index)}
                   >
                     <GoTriangleDown size={30} />

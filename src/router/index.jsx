@@ -139,6 +139,10 @@ const router = createBrowserRouter([
                 element: <ServicesListing />,
               },
               {
+                path: ":categoryId/:subCategoryId",
+                element: <ServicesListing />,
+              },
+              {
                 path: "create/:serviceId",
                 element: <ServiceDetail />,
               },
