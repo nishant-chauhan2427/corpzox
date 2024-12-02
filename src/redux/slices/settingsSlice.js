@@ -34,16 +34,23 @@ const settingsSlice = createSlice({
         state.success = null;
       })
       .addCase(changePassword.fulfilled, (state, action) => {
-        console.log(action.payload, "password changed successfully");
-        toast.success(action.payload.message);
         state.isPasswordChanging = false;
+        console.log(action.payload, "password changed successfully");
+        if(action.payload.code === 404){
+          toast.error(action.payload.message);  
+          state.isPasswordChanging = false;
+        }else{
+
+          toast.success(action.payload.message);
+        }
+       
         state.success = action.payload;
         state.error = null;
       })
       .addCase(changePassword.rejected, (state, action) => {
         console.log(action.payload, "password change failed");
-        toast.error(action.payload.message || "Password change failed");
         state.isPasswordChanging = false;
+        toast.error(action.payload.message || "Password change failed");
         state.error = action.payload;
         state.success = null;
       })
@@ -53,14 +60,21 @@ const settingsSlice = createSlice({
         state.success = null;
       })
       .addCase(deactivateAccount.fulfilled, (state, action) => {
-        console.log(action.payload, "account deactivated successfully");
-        toast.success(action.payload.message);
+        if(action.payload.code === 400){
+          state.isDeactivate = false;
+
+          toast.error(action.payload.message);
+        }else{
+          state.isDeactivate = false;
+
+          toast.success(action.payload.message);
+        }
         state.isDeactivate = false;
+        console.log(action.payload, "account deactivated successfully");
         state.success = action.payload;
         state.error = null;
       })
       .addCase(deactivateAccount.rejected, (state, action) => {
-        console.log(action.payload, "account deactivation failed");
         toast.error(action.payload.message || "Account deactivation failed");
         state.isDeactivate = false;
         state.error = action.payload;
@@ -121,8 +135,6 @@ const settingsSlice = createSlice({
         state.subscriptionsData = null;
       })
       .addCase(getSubscriptions.fulfilled, (state, action) => {
-        console.log(action.payload, "account deactivated successfully");
-        toast.success(action.payload.message);
         state.isSubScriptionLoading = false;
         state.subscriptionsData = action.payload;
         state.error = null;

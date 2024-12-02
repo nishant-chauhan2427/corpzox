@@ -1,39 +1,18 @@
-import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { GoDotFill, GoTriangleDown } from "react-icons/go";
-import { ProgressBar } from "../../../../../components/progressBar";
-import { Heading } from "../../../../../components/heading";
-import { ConfirmationModal } from "../../../../../components/modal/confirmationModal";
-import { p } from "framer-motion/client";
-import { ReactModal } from "../../../../../components/modal";
-import { TextArea } from "../../../../../components/inputs/textarea";
-import { Rating } from "../../../../../components/rating";
-import { Button } from "../../../../../components/buttons";
-import { LinkButton } from "../../../../../components/link";
-//import { getServiveProgress } from "../../../../../redux/actions/dashboard-action";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { PageHeading } from "../../../components/heading";
+import { ServicesProgress } from "../../dashboard/components/services/progress";
 
-export const ServicesProgress = ({ data }) => {
+const ServiceprogressViewAll = ({ data }) => {
   const [dropdownStates, setDropdownStates] = useState(data.map(() => false));
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [otherValue, setOtherVsalue] = useState("");
-  const dispatch = useDispatch();
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const searchValue = queryParams.get("search");
-
-  const {
-    dataUpdate
-  } = useSelector((state) => state.user);
-  console.log(dataUpdate,"dataUpdate getServiveProgress");
 
   const handleServiceDropdown = (index) => {
     setDropdownStates((prevState) =>
       prevState.map((state, i) => (i === index ? !state : state))
     );
   };
-  
-  
+
   const onConfirmationModalClose = () => {
     setConfirmationModal(!confirmationModal);
   };
@@ -77,27 +56,20 @@ export const ServicesProgress = ({ data }) => {
       status: "pending",
     },
   ];
-
   return (
-    <div>
-      <div className="py-2 flex flex-col sm:flex-row justify-between gap-2">
-        <Heading className={"py-0"} tourButton={true}>
-          Your Service Progress Updates({dataUpdate?.total})
-        </Heading>
-        <Link to={"/services/serviceprogressdetail"} className="font-semibold text-[#606060]">View All</Link>
-      </div>
-      {dataUpdate?.data?.length > 0 ? (
+    <>
+      <PageHeading title={"Your Service Progress Updates"} back={true}>
+        Your Service Progress Updates
+      </PageHeading>
+      {data.length > 0 ? (
         <div className="flex flex-col gap-4">
-          {dataUpdate?.data?.map((data, index) => (
+          {data.map((data, index) => (
             <div key={index} className="bg-[#F8FAFF] px-4 py-2 rounded-md">
-
               <div className="flex flex-col sm:flex-row items-start justify-between sm:items-center gap-2">
                 <div className="flex flex-col gap-1">
-                  
                   <div className="flex gap-2">
                     <img src="/images/dashboard/service-progress.svg" alt="" />
-                  
-                    <p className="font-bold">Service: {data?.service[0]?.name} </p>
+                    <p className="font-bold">Service: {data.name} </p>
                     <img
                       src="/icons/dashboard/service-error.svg"
                       width={15}
@@ -106,11 +78,10 @@ export const ServicesProgress = ({ data }) => {
                   </div>
                   <div className="flex flex-col gap-2">
                     <h6 className="text-sm text-[#7C7D80]">
-                      <strong>Business:</strong> {data?.businessdetails[0]?.businessName}
+                      <strong>Business:</strong> {data.detail1}
                     </h6>
                     <p className="text-sm text-[#7C7D80]">
-                      <strong>Step:</strong> {data?.status
-}
+                      <strong>Step:</strong> {data.detail2}
                     </p>
                   </div>
                 </div>
@@ -153,7 +124,7 @@ export const ServicesProgress = ({ data }) => {
                       </div>
                     </>
                   </ReactModal>
-                  <LinkButton to={"/services"} primary={true}>Avail again</LinkButton>
+                  <Button primary={true}>Avail again</Button>
                   <button
                     className={`${
                       dropdownStates === true && "rotate-180"
@@ -180,48 +151,8 @@ export const ServicesProgress = ({ data }) => {
           </p>
         </div>
       )}
-    </div>
-  );
-};
-
-const Dropdown = ({ isOpen, servicesProgessSteps }) => {
-  return (
-    <>
-      {isOpen && (
-        <div className="p-6">
-          <div className="flex justify-between items-center">
-            <ProgressBar steps={servicesProgessSteps} />
-            {/* {servicesProgessSteps.map((step, index) => (
-              <div
-                key={index}
-                className={`flex flex-col items-center relative text-white`}
-              >
-                <div
-                  className={`w-fit px-1 py-0.5 rounded ${
-                    step.status === "completed"
-                      ? "bg-green-600"
-                      : step.status === "in-progress"
-                      ? "bg-yellow-600"
-                      : "bg-gray-600"
-                  }`}
-                >
-                  <p className="font-normal text-[10px]">{step.label}</p>
-                </div>
-
-                <div className="w-full h-4 bg-gray-300"></div>
-                {step.date && (
-                  <div className="text-[10px] text-gray-500">{step.date}</div>
-                )}
-                {step.estimated && (
-                  <div className="text-[10px] text-gray-500">
-                    {step.estimated}
-                  </div>
-                )}
-              </div>
-            ))} */}
-          </div>
-        </div>
-      )}
     </>
   );
 };
+
+export default ServiceprogressViewAll;

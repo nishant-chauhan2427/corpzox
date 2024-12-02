@@ -27,19 +27,12 @@ const ServicesListing = () => {
   const dispatch = useDispatch();
   const {categoryId,subCategoryId}=useParams();
   const { servicesMainTab } = useSelector((state) => state.app);
-  const {
-    category,
-    subCategory,
-    page,
-    limit,
-    totalCount,
-    totalPage,
-    list,
-    wishList,
-  } = useSelector((state) => state.service);
-//console.log(service?._id,"ServiceIdId12");
+  const { category, subCategory, page, limit, totalCount,totalPage,list, wishList } = useSelector(
+    (state) => state.service
+  );
+  
   //const{totalCount}=useSelector((state)=>state.user);
-  //console.log(category, "totalCount123");
+  console.log(category, "totalCount123");
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const searchValue = queryParams.get("search");

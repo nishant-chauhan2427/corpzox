@@ -2,6 +2,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { resetService } from "../../../../../redux/slices/serviceListingSlice";
 import { Heading } from "../../../../../components/heading";
+import { useEffect } from "react";
+
 export const RecommendedServices = ({ data, total }) => {
   let navigate = useNavigate();
   let dispatch = useDispatch();
@@ -9,6 +11,7 @@ export const RecommendedServices = ({ data, total }) => {
     dispatch(resetService({}));
     navigate("/services");
   };
+  
   return (
     <div className="">
       <div className="py-2 flex flex-col sm:flex-row justify-between gap-2" onClick={onClickViewAll}>

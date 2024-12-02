@@ -49,12 +49,12 @@ const DeactivateAccount = () => {
     dispatch(deactivateAccount(data))
   }
   const onConfirmationModalClose = () => {
-    setConfirmationModal(!confirmationModal);
+    setConfirmationModal(false);
   };
 
   useEffect(() => {
     if (!isDeactivate) {
-      onConfirmationModalClose();
+      onConfirmationModalClose(false);
     }
   }, [isDeactivate]); 
   return (

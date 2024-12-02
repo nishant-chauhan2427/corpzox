@@ -38,7 +38,7 @@ const MakeAPayment = () => {
     dispatch(getServiceDetails({ serviceId: serviceId }));
   }, [dispatch])
 
-  const transformedCouponArray = coupons[0].map((item) => {
+  const transformedCouponArray = coupons[0]?.map((item) => {
     const { couponTitle, discount, _id } = item;
     return {
       id: _id,

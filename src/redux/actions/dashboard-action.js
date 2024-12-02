@@ -70,27 +70,53 @@ export const getUserServices = createAsyncThunk("getUserServices", async ({page,
         return rejectWithValue(error?.response?.data?.message || error?.message);
     }
 });
-//Service Progress Updates
-export const updateServiveProgress = createAsyncThunk("updateServiveProgress", async ({page,sort_by='date_desc',status}, { rejectWithValue }) => {
-    try {
-        let params=new URLSearchParams();
-        if(page) params.append('page',page);
-        if(sort_by) params.append('sort_by',sort_by);
-        if(status) params.append('status',status);
-        const response = await client.get(`/user/service-progress-update?${(params)&&`?${params}`}`,{
+
+// export const requestChangeManager = createAsyncThunk("requestChangeManager", async (_, { rejectWithValue }) => {
+//     try {
+        
+//         const response = await client.put(`/application/request-change-manager`,null,{
+//             headers: {
+//               Accept: "application/json",
+//               "Content-Type": "application/json",
+//               'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+//             },
+//           });
+//         if(response?.data?.code==200||response?.data?.code==201){
+//             return response.data;
+//         }else{
+//             return rejectWithValue(response?.data?.message);            
+//         }
+//     } catch (error) {
+//         console.log(error, "error manager")
+//         return rejectWithValue(error?.response?.data?.message);
+//     }
+// });
+
+export const requestChangeManager = createAsyncThunk(
+    "requestChangeManager",
+    async (_, { rejectWithValue }) => {
+      try {
+        const response = await client.put(
+          `/application/request-change-manager`, 
+          {}, // No body for the PUT request
+          {
             headers: {
               Accept: "application/json",
               "Content-Type": "application/json",
-              'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+              Authorization: `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
             },
-          });
-        console.log(response);
-        if(response?.data?.code==200||response?.data?.code==201){
-            return response.data;
-        }else{
-            return rejectWithValue(response?.data?.message);            
+          }
+        );
+  
+        if (response?.data?.code === 200 || response?.data?.code === 201) {
+          return response.data;
+        } else {
+          return rejectWithValue(response?.data?.message);
         }
-    } catch (error) {
-        return rejectWithValue(error?.response?.data?.message || error?.message);
+      } catch (error) {
+        console.log(error, "error manager");
+        return rejectWithValue(error?.response?.data?.message);
+      }
     }
-});
+  );
+  

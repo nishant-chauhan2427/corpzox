@@ -1,7 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../../../../../components/buttons/button";
 import { Selector } from "../../../../../components/select";
-import { getStates, getStateWiseServiceCharge } from "../../../../../redux/actions/servicesDetails-actions";
+import {
+  getStates,
+  getStateWiseServiceCharge,
+} from "../../../../../redux/actions/servicesDetails-actions";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { stePaymentDetails } from "../../../../../redux/slices/serviceDetailsSlice";
@@ -9,23 +12,34 @@ import { formatMillisecondsToDate } from "../../../../../utils";
 
 export const Pricing = ({ pricing = true, data, serviceId }) => {
   const [isInitialDispatchMade, setIsInitialDispatchMade] = useState(false);
-  const {subscription, quotationDetails} = useSelector((state)=> state.serviceDetails)
+  const { subscription, quotationDetails } = useSelector(
+    (state) => state.serviceDetails
+  );
 
-  console.log(subscription, quotationDetails, "subscription quiotation")
+  console.log(subscription, "subscription quiotation")
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { statesList } = useSelector((state) => state.serviceDetails);
   const formattedStates = statesList?.map((state) => {
     const { _id, name } = state;
 
     return {
       label: name,
-      id: _id
-    }
+      id: _id,
+    };
+  });
 
-  })
-
-  console.log(data, "susbcription")
+const formattedSubscriptions = subscription?.map((subscription)=>{
+  return {
+    title: subscription.title,
+    price: subscription.amount,
+    additional_cost: "+ applicable govt. ₹500",
+    features: [
+      "Fast Application",
+      "Application within 5 working days or your money back.",
+    ],
+  }
+})
   const packages = [
     {
       title: "STARTER PACK",
@@ -88,13 +102,14 @@ export const Pricing = ({ pricing = true, data, serviceId }) => {
   // ];
 
   const handleStateChange = (data) => {
-    dispatch(getStateWiseServiceCharge({ serviceId: serviceId, stateId: data.id }))
-  }
-  useEffect(()=>{
-    dispatch(getStates()); 
-  }, [])
+    dispatch(
+      getStateWiseServiceCharge({ serviceId: serviceId, stateId: data.id })
+    );
+  };
   useEffect(() => {
-   
+    dispatch(getStates());
+  }, []);
+  useEffect(() => {
     if (!isInitialDispatchMade && formattedStates?.length > 0) {
       dispatch(
         getStateWiseServiceCharge({
@@ -105,8 +120,6 @@ export const Pricing = ({ pricing = true, data, serviceId }) => {
       setIsInitialDispatchMade(true);
     }
   }, [dispatch, formattedStates, serviceId, isInitialDispatchMade]);
-
-  
 
   const defaultObject = {
     label: formattedStates ? formattedStates[0]?.label : "",
@@ -128,19 +141,38 @@ export const Pricing = ({ pricing = true, data, serviceId }) => {
                 *Subject to fluctuate at the time of application
               </p>
             </div>
-            <Selector defaultValue={defaultObject} isSearchable={true} className={"lg:min-w-60"} placeholder={"Select State"} options={formattedStates} onChange={handleStateChange} />
+            <Selector
+              defaultValue={defaultObject}
+              isSearchable={true}
+              className={"lg:min-w-60"}
+              placeholder={"Select State"}
+              options={formattedStates}
+              onChange={handleStateChange}
+            />
           </div>
         )}
         {pricing ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {subscription?.map((data, index) => (
-              <PricingCard key={index} data={data} serviceId={serviceId} navigate={navigate} dispatch={dispatch}/>
+              <PricingCard
+                key={index}
+                data={data}
+                serviceId={serviceId}
+                navigate={navigate}
+                dispatch={dispatch}
+              />
             ))}
           </div>
         ) : (
           <>
             {quotationDetails.map((data, index) => (
-              <QuotationCard serviceId={serviceId} key={index} navigate={navigate} quotation={data} dispatch={dispatch}/>
+              <QuotationCard
+                serviceId={serviceId}
+                key={index}
+                navigate={navigate}
+                quotation={data}
+                dispatch={dispatch}
+              />
             ))}
           </>
         )}
@@ -150,19 +182,25 @@ export const Pricing = ({ pricing = true, data, serviceId }) => {
 };
 
 const PricingCard = ({ data, serviceId, navigate, dispatch }) => {
-  console.log(data, "subscription data")
-  const handleServicePayment = ( cost, stateWiseServiceCharge) => {
+  console.log(data, "subscription data");
+  const handleServicePayment = (cost, stateWiseServiceCharge) => {
     navigate(`/payment/${serviceId}`);
-    dispatch(stePaymentDetails({subscriptionCost: cost, stateWiseServiceCharge}))
-  }
+    dispatch(
+      stePaymentDetails({ subscriptionCost: cost, stateWiseServiceCharge })
+    );
+  };
   return (
     <div className="w-full flex gap-10 justify-center">
       <div className="w-full flex flex-col gap-2 drop-shadow-lg hover:drop-shadow-2xl bg-white px-5 py-6">
         <div>
-          <p className="font-bold text-[#0A1C40] text-[22px] ">{data?.amount}</p>
+          <div className="font-bold flex gap-2 text-[#0A1C40] text-[22px] ">
+            {data?.amount}
+            <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1 ">
+              {data.off}
+            </p>
+          </div>
           <p className="font-semibold text-xs text-[#038624]">
-            {`+ applicable govt. fees ${data?.stateWiseServiceCharge
-              }`}
+            {`+ applicable govt. fees ${data?.stateWiseServiceCharge}`}
           </p>
         </div>
         <p className="pt-6 font-bold uppercase text-sm text-[#565657]">
@@ -174,14 +212,22 @@ const PricingCard = ({ data, serviceId, navigate, dispatch }) => {
             Application within 5 working days or your money back.
           </p>
         </div> */}
-        {data.includes && <div>
-          <p className="font-bold text-xs text-[#565657]">Includes:</p>
-          <div className="py-2 flex flex-col gap-1">
-            {data.includes && data?.includes.map((data) => IconLabel(data))}
+        {data.includes && (
+          <div>
+            <p className="font-bold text-xs text-[#565657]">Includes:</p>
+            <div className="py-2 flex flex-col gap-1">
+              {data.includes && data?.includes.map((data) => IconLabel(data))}
+            </div>
           </div>
-        </div>}
+        )}
         <div className="pt-6 flex justify-center items-center">
-          <Button onClick={() => handleServicePayment( data.amount, data.stateWiseServiceCharge)} className={"w-fit px-4 py-1 !font-normal"} primary={true}>
+          <Button
+            onClick={() =>
+              handleServicePayment(data.amount, data.stateWiseServiceCharge)
+            }
+            className={"w-fit px-4 py-1 !font-normal"}
+            primary={true}
+          >
             Apply Now
           </Button>
         </div>
@@ -199,20 +245,30 @@ const IconLabel = (label) => {
   );
 };
 
-const QuotationCard = ({ quotation, serviceId , dispatch, navigate}) => {
-
-  const handleServicePayment = ( cost, stateWiseServiceCharge) => {
-    dispatch(stePaymentDetails({subscriptionCost: cost, stateWiseServiceCharge : 0}))
+const QuotationCard = ({ quotation, serviceId, dispatch, navigate }) => {
+  const handleServicePayment = (cost, stateWiseServiceCharge) => {
+    dispatch(
+      stePaymentDetails({ subscriptionCost: cost, stateWiseServiceCharge: 0 })
+    );
     navigate(`/payment/${serviceId}`);
-  }
+  };
   return (
     <div className="m-6 p-10 border rounded-lg bg-white shadow-md hover:shadow-lg">
-      <p className="text-sm text-gray-600 mb-2"><strong>Date:</strong> {formatMillisecondsToDate(quotation.quotationDate)}</p>
-      <p className="text-sm text-gray-600 mb-2"><strong>Reference Number:</strong> {quotation.quotationId}</p>
+      <p className="text-sm text-gray-600 mb-2">
+        <strong>Date:</strong>{" "}
+        {formatMillisecondsToDate(quotation.quotationDate)}
+      </p>
+      <p className="text-sm text-gray-600 mb-2">
+        <strong>Reference Number:</strong> {quotation.quotationId}
+      </p>
       {/* <h3 className="text-lg font-semibold text-gray-800 mb-4">{`Quotation - ${quotation.service}`}</h3> */}
       <p className="text-gray-700 mb-4">{quotation.message}</p>
       <div className="text-lg font-semibold text-gray-800 mb-6">{`Plan Price: ${quotation.amount}`}</div>
-      <Button onClick={()=> handleServicePayment(quotation.amount)} primary={true} className="py-2 px-6 rounded !font-medium">
+      <Button
+        onClick={() => handleServicePayment(quotation.amount)}
+        primary={true}
+        className="py-2 px-6 rounded !font-medium"
+      >
         Avail Service
       </Button>
     </div>
