@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { requestChangeManager } from "../actions/dashboard-action";
+import { requestChangeManager, ratingReview, getRatingReviews } from "../actions/dashboard-action";
 import toast from "react-hot-toast";
 
 // Slice
@@ -8,6 +8,7 @@ const dashBoardSlice = createSlice({
   initialState: {
     isChangeManagerLoading: false,
     error: null,
+    isRatingSubmitting : false
   },
   reducers: {
     clearState: (state) => {
@@ -34,6 +35,25 @@ const dashBoardSlice = createSlice({
         const errorMessage = action.payload?.message || "Something went wrong";
         toast.error(errorMessage);
         state.isChangeManagerLoading = false;
+      })
+      
+      .addCase(ratingReview.pending, (state)=>{
+        state.isRatingSubmitting = true
+      })
+      .addCase(ratingReview.fulfilled, (state)=>{
+        state.isRatingSubmitting = false
+      })
+      .addCase(ratingReview.rejected, (state)=>{
+        state.isRatingSubmitting = false
+      })
+      .addCase(getRatingReviews.pending, (state)=>{
+        state.isRatingSubmitting = true
+      })
+      .addCase(getRatingReviews.fulfilled, (state)=>{
+        state.isRatingSubmitting = false
+      })
+      .addCase(getRatingReviews.rejected, (state)=>{
+        state.isRatingSubmitting = false
       });
   },
 });

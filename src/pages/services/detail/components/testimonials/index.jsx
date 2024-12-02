@@ -8,14 +8,15 @@ import "swiper/css/effect-fade";
 // import required modules
 import { Autoplay, Pagination, Navigation, EffectFade } from "swiper/modules";
 import { motion } from "framer-motion";
-import { useRef } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getRatingReviews } from "../../../../../redux/actions/dashboard-action";
 
-export const Testimonials = () => {
-
+export const Testimonials = ({serviceId}) => {
+console.log(serviceId, "serviceIdserviceIdserviceId")
   const {serviceTestimonials, averageRating} = useSelector((state)=> state.serviceDetails); 
   console.log(serviceTestimonials, "serviceTestimonials")
-
+  const dispatch = useDispatch();
   const formattedTestimonials = serviceTestimonials?.map((testimonial)=>{
     return {
       company : testimonial.authorCompany ? authorCompany : "", 
@@ -25,6 +26,9 @@ export const Testimonials = () => {
     }
   })
 
+  useEffect(()=>{
+    dispatch(getRatingReviews(serviceId))
+  }, [])
   console.log(formattedTestimonials, "formattedTestimonial")
   const testimonials = [
     {

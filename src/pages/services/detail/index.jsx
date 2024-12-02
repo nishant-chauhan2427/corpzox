@@ -49,7 +49,7 @@ const ServiceDetail = () => {
           <Advisor
             handleRequest={handleTalkTouOurAdvisors}
             isLoading={isTalkToAdvisorLoading} />
-          <Testimonials />
+          <Testimonials serviceId={serviceId}/>
           <Steps />
           <FAQs />
           <Advisor
