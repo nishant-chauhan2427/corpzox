@@ -84,6 +84,63 @@ export const insightBlog = [
   },
 ];
 
+export const Offerss = [
+  {
+    image: "/images/offers/offers-Details-1.svg",
+    title: "Special Summer Offer",
+    off: "40% OFF",
+    gst: " On GST Services",
+    description:
+      "Enjoy a free consultation with our expert advisors and a state-specific compliance check to ensure smooth setup. Get priority access to fundraising support and expert guidance tailored to your business needs. Our dedicated customer support is here to assist you every step of the way. Offer valid until",
+    offertime: "Offer valid until December 31, 2024—don’t miss out!",
+  },
+  {
+    image: "/images/offers/offers-Details-2.svg",
+    title: "Startup Success Pack",
+    off: "40% OFF",
+    gst: " On GST Services",
+    description:
+      "Enjoy a free consultation with our expert advisors and a state-specific compliance check to ensure smooth setup. Get priority access to fundraising support and expert guidance tailored to your business needs. Our dedicated customer support is here to assist you every step of the way. Offer valid until",
+    offertime: "Offer valid until December 31, 2024—don’t miss out!",
+  },
+  {
+    image: "/images/offers/offers-Details-5.svg",
+    title: "Entrepreneur's Edge",
+    off: "40% OFF",
+    gst: " On GST Services",
+    description:
+      "Enjoy a free consultation with our expert advisors and a state-specific compliance check to ensure smooth setup. Get priority access to fundraising support and expert guidance tailored to your business needs. Our dedicated customer support is here to assist you every step of the way. Offer valid until",
+    offertime: "Offer valid until December 31, 2024—don’t miss out!",
+  },
+  {
+    image: "/images/offers/offers-Details-4.svg",
+    title: "Special Summer Offer",
+    off: "40% OFF",
+    gst: " On GST Services",
+    description:
+      "Enjoy a free consultation with our expert advisors and a state-specific compliance check to ensure smooth setup. Get priority access to fundraising support and expert guidance tailored to your business needs. Our dedicated customer support is here to assist you every step of the way. Offer valid until",
+    offertime: "Offer valid until December 31, 2024—don’t miss out!",
+  },
+  {
+    image: "/images/offers/offers-Details-5.svg",
+    title: "Special Summer Offer",
+    off: "40% OFF",
+    gst: " On GST Services",
+    description:
+      "Enjoy a free consultation with our expert advisors and a state-specific compliance check to ensure smooth setup. Get priority access to fundraising support and expert guidance tailored to your business needs. Our dedicated customer support is here to assist you every step of the way. Offer valid until",
+    offertime: "Offer valid until December 31, 2024—don’t miss out!",
+  },
+  {
+    image: "/images/offers/offers-Details-2.svg",
+    title: "Special Summer Offer",
+    off: "40% OFF",
+    gst: " On GST Services",
+    description:
+      "Enjoy a free consultation with our expert advisors and a state-specific compliance check to ensure smooth setup. Get priority access to fundraising support and expert guidance tailored to your business needs. Our dedicated customer support is here to assist you every step of the way. Offer valid until",
+    offertime: "Offer valid until December 31, 2024—don’t miss out!",
+  },
+];
+
 export const offers = [
   {
     image: "/images/offers/offers-1.svg",

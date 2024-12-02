@@ -21,12 +21,6 @@ const BusinessPreview = () => {
   console.log("DAT",businessId);
 
 
-  const date = new Date(registration?.yearOfStablish);
-  const formattedDate = date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric"
-  });
 
 
   const handleNextStep = async () => {

@@ -1,16 +1,8 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { GoDotFill, GoTriangleDown } from "react-icons/go";
-import { ProgressBar } from "../../../../../components/progressBar";
-import { Heading } from "../../../../../components/heading";
-import { ConfirmationModal } from "../../../../../components/modal/confirmationModal";
-import { p } from "framer-motion/client";
-import { ReactModal } from "../../../../../components/modal";
-import { TextArea } from "../../../../../components/inputs/textarea";
-import { Rating } from "../../../../../components/rating";
-import { Button } from "../../../../../components/buttons";
+import React, { useState } from "react";
+import { PageHeading } from "../../../components/heading";
+import { ServicesProgress } from "../../dashboard/components/services/progress";
 
-export const ServicesProgress = ({ data }) => {
+const ServiceprogressViewAll = ({ data }) => {
   const [dropdownStates, setDropdownStates] = useState(data.map(() => false));
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [otherValue, setOtherVsalue] = useState("");
@@ -64,15 +56,11 @@ export const ServicesProgress = ({ data }) => {
       status: "pending",
     },
   ];
-
   return (
-    <div>
-      <div className="py-2 flex flex-col sm:flex-row justify-between gap-2">
-        <Heading className={"py-0"} tourButton={true}>
-          Your Service Progress Updates
-        </Heading>
-        <Link to={"/services/serviceprogressdetail"} className="font-semibold text-[#606060]">View All</Link>
-      </div>
+    <>
+      <PageHeading title={"Your Service Progress Updates"} back={true}>
+        Your Service Progress Updates
+      </PageHeading>
       {data.length > 0 ? (
         <div className="flex flex-col gap-4">
           {data.map((data, index) => (
@@ -163,48 +151,8 @@ export const ServicesProgress = ({ data }) => {
           </p>
         </div>
       )}
-    </div>
-  );
-};
-
-const Dropdown = ({ isOpen, servicesProgessSteps }) => {
-  return (
-    <>
-      {isOpen && (
-        <div className="p-6">
-          <div className="flex justify-between items-center">
-            <ProgressBar steps={servicesProgessSteps} />
-            {/* {servicesProgessSteps.map((step, index) => (
-              <div
-                key={index}
-                className={`flex flex-col items-center relative text-white`}
-              >
-                <div
-                  className={`w-fit px-1 py-0.5 rounded ${
-                    step.status === "completed"
-                      ? "bg-green-600"
-                      : step.status === "in-progress"
-                      ? "bg-yellow-600"
-                      : "bg-gray-600"
-                  }`}
-                >
-                  <p className="font-normal text-[10px]">{step.label}</p>
-                </div>
-
-                <div className="w-full h-4 bg-gray-300"></div>
-                {step.date && (
-                  <div className="text-[10px] text-gray-500">{step.date}</div>
-                )}
-                {step.estimated && (
-                  <div className="text-[10px] text-gray-500">
-                    {step.estimated}
-                  </div>
-                )}
-              </div>
-            ))} */}
-          </div>
-        </div>
-      )}
     </>
   );
 };
+
+export default ServiceprogressViewAll;
