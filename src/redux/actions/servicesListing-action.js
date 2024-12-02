@@ -108,6 +108,33 @@ export const removeServiceWishlist = createAsyncThunk("removeServiceWishlist", a
         return rejectWithValue(error?.response?.data?.message || error?.message);
     }
 });
+
+
+// Remove Data from Wishlist
+// export const removeServiceWishlistData = createAsyncThunk("removeServiceWishlistData", async (wishListData, { rejectWithValue }) => {
+//     try {
+//         console.log(wishListData,"API CALLING removeServiceWishlistData")
+//         const response = await client.delete(`/user/service-wishlist`,{
+//             headers: {
+//               Accept: "application/json",
+//               "Content-Type": "application/json",
+//               'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+//             },
+//             data:wishListData
+//           });
+//         //  console.log("API CALLING removeServiceWishlistData")
+//         if(response?.data?.code==200||response?.data?.code==201){
+//             wishListData.message=response?.data?.message;
+//             return wishListData;
+//         }else{
+//             return rejectWithValue(response?.data?.message);            
+//         }
+//     } catch (error) {
+//         return rejectWithValue(error?.response?.data?.message || error?.message);
+//     }
+// });
+
+
 export const updateServiceQuickWishlist = createAsyncThunk("updateServiceQuickWishlist", async (wishListData, { rejectWithValue }) => {
     try {
         const response = await client.put(`/user/service-quick-wishlist`,wishListData,{

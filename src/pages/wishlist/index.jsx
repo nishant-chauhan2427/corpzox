@@ -4,24 +4,25 @@ import { ServicesCard } from "../services/listing/components/servicesCard";
 import { servicesListing } from "../../database";
 import { Button } from "../../components/buttons";
 import { useDispatch, useSelector } from "react-redux";
-import { getWishList } from "../../redux/actions/wishlist-actions";
+import { getWishList, removeServiceWishlistData1 } from "../../redux/actions/wishlist-actions";
 import { ServiceCardShimmer } from "../../components/loader/ServiceCardShimmer copy";
-import { removeServiceWishlist } from "../../redux/actions/servicesListing-action";
+import { removeServiceWishlist} from "../../redux/actions/servicesListing-action";
 //removeServiceWishlist
 const Wishlist = () => {
   const dispatch = useDispatch();
   const { loading, wishList, totalCount } = useSelector(
     (state) => state.wishlist
   );
-  console.log(wishList, service?._id,"totalCount12334");
+//  console.log(wishList, service?._id,"totalCount12334");
   let onClickWishList = (service) => {
+    console.log(service,"service123");
     //setIsSubmit(true);
    // if (service?.wishlistCount) {
-      dispatch(removeServiceWishlist({ serviceId: service?._id }));
+      dispatch(removeServiceWishlistData1({ serviceId: service?.serviceId }));
    // } else {
      // dispatch(updateServiceWishlist({ serviceId: service?._id }));
     }//}
-  console.log((wishList, "wishList"));
+ // console.log((wishList, "wishList"));
   useEffect(() => {
     dispatch(getWishList());
   }, [dispatch]);

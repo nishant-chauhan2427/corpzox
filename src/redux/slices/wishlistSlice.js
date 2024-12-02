@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 // import { getWishList } from "../actions/wishlist-actions";
-import { getWishList } from "../actions/wishlist-actions";
+import { getWishList, removeServiceWishlistData1 } from "../actions/wishlist-actions";
 import toast from "react-hot-toast";
+
 
 // Slice
 const wishlistSlice = createSlice({
@@ -31,7 +32,7 @@ const wishlistSlice = createSlice({
         console.log("pending wishlist");
       })
       .addCase(getWishList.fulfilled, (state, action) => {
-        console.log("wishList wishlist", action.payload);
+        console.log("wishList wishlist123", action.payload);
         toast.success(action.payload.message || "Wishlist fetched wishListfully");
         state.loading = false;
         state.isLoading = false;
@@ -47,7 +48,31 @@ const wishlistSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload;
         state.wishList = null;
+      })
+      .addCase(removeServiceWishlistData1.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(removeServiceWishlistData1.fulfilled, (state, action) => {
+        state.loading = false;
+       console.log(action.payload.serviceId,"SERVICE DATA");
+        
+        let newList=state.wishList.filter((service)=>{
+          {console.log(service,"listData12");}
+            if(service?.serviceId!=action.payload?.serviceId)
+              return service
+         });
+
+         state.wishList=newList
+      
+        state.error=action.payload?.message;
+      })
+      .addCase(removeServiceWishlistData1.rejected, (state, action) => {
+        state.loading = false;
+        state.error=action.payload;
+        console.log("error",action);
       });
+      
+      
   },
 });
 
