@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Checkbox } from "../../../../../components/inputs/checkbox";
 import { CiHeart } from "react-icons/ci";
 import { Button } from "../../../../../components/buttons";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { LinkButton } from "../../../../../components/link";
 import { useSelector } from "react-redux";
+import { ImSpinner2 } from "react-icons/im";
 
 export const ServicesCard = ({
   data,
@@ -13,7 +14,13 @@ export const ServicesCard = ({
   onCheckedChange = () => console.log("checked clicked"),
 }) => {
   const location = useLocation();
-  const { isLoading } = useSelector((state) => state.wishlist);
+  const { isLoading, heartloading , childLoading} = useSelector((state) => state.wishlist);
+  const {isAdding} = useSelector((state)=>state.user);
+  
+  console.log(heartloading,"heartloading");
+  useEffect(()=>{
+    console.log(isAdding, 'childloading')
+  },[isAdding])
   const heartAccordingToRoute = ["/wishlist", "/services"];
   const navigate = useNavigate();
   const url = window.location.href
@@ -33,7 +40,6 @@ export const ServicesCard = ({
             >
               <div className="flex justify-between">
                 <div className="flex  gap-2">
-                  {console.log(service,"SERVICE")}
                   <p className="font-bold text-[#0A1C40]">{ url.includes("services") ? service?.name : service?.service[0]?.name}</p>
                   <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1 ">
                   { url.includes("services") ? service?.name : service?.service[0]?.name}
@@ -73,7 +79,7 @@ export const ServicesCard = ({
               </div>
               <div className="flex justify-end pt-5 items-end">
                 <div className="flex items-center  justify-center gap-2">
-                  <button
+                  {childLoading[service.serviceId] ?  <ImSpinner2 className="animate-spin text-black !text-xl" /> : <button
                     onClick={() => {
                       onClick(service);
                       {console.log(service,"Service Onclick");}
@@ -90,9 +96,10 @@ export const ServicesCard = ({
                         color={service?.wishlistCount ? "#FF0000" : "#777777"}
                       />
                     )}
-                  </button>
+                  </button>}
 
                   <LinkButton
+                  
                     type="submit"
                     to={`/services/detail/${service?._id}`}
                     primary={true}

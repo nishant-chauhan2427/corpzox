@@ -30,7 +30,7 @@ const ServicesListing = () => {
   const { category, subCategory, page, limit, totalCount,totalPage,list, wishList } = useSelector(
     (state) => state.service
   );
-  
+  console.log(totalCount,"totalCount Category");
   //const{totalCount}=useSelector((state)=>state.user);
   console.log(category, "totalCount123");
   const location = useLocation();
@@ -113,7 +113,7 @@ const ServicesListing = () => {
                 onClickAddWishlistHandler={onClickAddWishlistHandler}
               />
             )}
-            <ServicesCard
+            <ServicedsCard
               data={list}
               onClick={(service) => onClickWishList(service)}
               onCheckedChange={(val) => onCheckHandler(val)}
@@ -135,7 +135,7 @@ const ServicesListing = () => {
             />
             {list && list.length > 5 && (
               <div className="mt-10 flex justify-center">
-                {list.length == totalCount ? (
+                {list.length == totalPage ? (
                   <></>
                 ) : (
                   <Button primary={true}>Load More </Button>

@@ -29,7 +29,7 @@ function Filtertab() {
             }`}
             onClick={() => dispatch(setSelectedSubCategory(tab))}
           >
-            {tab.sectionTitle}
+            {tab.subSectionTitle}
           </button>
         ))}
       </div>

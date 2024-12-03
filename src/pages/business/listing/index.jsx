@@ -22,7 +22,7 @@ const BusinessListing = () => {
     (state) => state.user
   );
 
-  console.log("User Business",business);
+ // console.log("User Business",business);
   // useEffect(()=>{
   //   dispatch(getUserBusiness({}));
   // },[])

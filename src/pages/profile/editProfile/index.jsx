@@ -33,7 +33,8 @@ const Edit = () => {
     dispatch(submitEditProfile({
       formData: {
         firstName: data.firstName,
-        lastName: data.lastName,
+        lastName: data.lastName,  
+        businessEmail: data.businessEmail,
       },
       navigate,
 
@@ -141,7 +142,7 @@ const Edit = () => {
                         placeholder={"Business Email id"}
                         className={"border-[#D9D9D9] border"}
                         errorContent={errors?.businessEmail?.message}
-                        disabled={true}
+                        //disabled={true}
                       />
                     )}
 

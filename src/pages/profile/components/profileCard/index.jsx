@@ -4,8 +4,13 @@ import { Link } from "react-router-dom";
 import { Button } from "../../../../components/buttons";
 import {Heading } from "../../../../components/heading"
 import { BusinessCardShimmer } from "../../../../components/loader/BusinessCardShimmer";
+import { useSelector } from "react-redux";
 const ProfileCard = ({userData, loading}) => {
-  //console.log(userData, "userData123")
+ // console.log(userData, "userData123")
+ const {
+  user
+
+} = useSelector((state) => state.user);
   return (
     <>
     {
@@ -17,7 +22,7 @@ const ProfileCard = ({userData, loading}) => {
         <div className="flex flex-col gap-4 sm:flex-row justify-between drop-shadow-md bg-[#F4F9FF] border px-4 rounded-2xl py-4 border-[#DFEAF2] ">
           <div className="flex gap-4">
             <div>
-              <img src="/images/profile/profile.svg" width={130} alt="" />
+              <img  src={user?.profile_picture_url ? user?.profile_picture_url :"/images/profile/profile.svg"} width={130} alt="" />
             </div>
             <div className="flex flex-col gap-4 justify-center">
             <p className="text-[#525252] text-base font-semibold sm:text-lg">

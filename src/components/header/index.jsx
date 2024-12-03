@@ -187,7 +187,13 @@ export const Header = ({ className, collapse, setCollapse }) => {
                   onClick={() => setSignedInMenuPopup(!signedInMenuPopup)}
                   className="flex items-center gap-1 sm:gap-2"
                 >
-                  <img src="/images/insights/insight-user.svg" alt="" />
+                  <img
+              className="w-12 h-12 inset-0 rounded-full ltr:absolute ltr:top-1/2 ltr:left-1/2 ltr:-translate-y-1/2 rtl:-translate-y-[31%] ltr:-translate-x-1/2"
+              // src="/images/insights/insight-user.svg"
+              src={user?.profile_picture_url ? user?.profile_picture_url : "/images/insights/insight-user.svg"}
+              alt="profile-pic"
+            />
+                  
                   <div className="hidden sm:flex flex-col items-start">
                     <h5 className="font-semibold text-sm text-white">
                       {user?.name ? user?.name : "User Name"}
