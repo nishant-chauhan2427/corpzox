@@ -36,7 +36,6 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-persist": "^6.0.0",
     "swiper": "^11.1.15",
-    "uuid": "^11.0.3",
     "yup": "^1.4.0"
   },
   "devDependencies": {

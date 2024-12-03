@@ -25,7 +25,7 @@ import offerSlice from "./slices/offerSlice"
 const persistConfig = {
   key: "root",
   storage,
-  blacklist :['service','serviceDetails']
+  blacklist :['service','serviceDetails','wishlist']
 };
 
 // Combine all slices into a single root reducer
