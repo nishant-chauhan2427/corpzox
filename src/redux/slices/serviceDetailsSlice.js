@@ -1,6 +1,7 @@
 import { createSlice, current } from "@reduxjs/toolkit";
-import { getServiceDetails, getStates, getStateWiseServiceCharge, talkToAdvisor,verifyCoupon,paymentStatus, availService } from "../actions/servicesDetails-actions";
+import { getServiceDetails, getStates, getStateWiseServiceCharge, talkToAdvisor, verifyCoupon, paymentStatus, availService } from "../actions/servicesDetails-actions";
 import toast from "react-hot-toast";
+import { act } from "react";
 // Slice
 const serviceDetailSlice = createSlice({
   name: "serviceDetails",
@@ -23,12 +24,13 @@ const serviceDetailSlice = createSlice({
     averageRating: null,
     quotationDetails: [],
     isQuotationAvailable: false,
-    serviceCost : 0, 
-    availServiceData : {}, 
-    isServiceAvailing : false,
-    isPaymentLoading : false,
-    isPaymentSuccessful : false, 
-    totalSavings : 0
+    serviceCost: 0,
+    availServiceData: {},
+    isServiceAvailing: false,
+    isPaymentLoading: false,
+    isPaymentSuccessful: false,
+    totalSavings: 0,
+    isQuotationAvailable: false
   },
   reducers: {
     clearState: (state) => {
@@ -37,9 +39,9 @@ const serviceDetailSlice = createSlice({
       state.success = null;
     },
     stePaymentDetails: (state, action) => {
-      const { subscriptionCost, stateWiseServiceCharge } = action.payload;
+      const { subscriptionCost, stateWiseServiceCharge, totalCost } = action.payload;
       console.log(action.payload)
-      state.cost = subscriptionCost;
+      state.cost = totalCost;
       state.serviceCost = subscriptionCost
       state.serviceCharge = stateWiseServiceCharge
 
@@ -116,26 +118,62 @@ const serviceDetailSlice = createSlice({
         state.coupons = action.payload.coupons
         state.error = null;
         state.serviceTestimonials = action.payload.servicetestimonials;
-        if (action.payload.cost) state.cost = action.payload.cost
+
+        if (!state.cost && action.payload.cost) {
+          state.cost = action.payload.cost;
+        }
+        if (state.serviceCharge) {
+          state.cost = state.serviceCharge + state.subscription[0].amount
+        }
+
+        console.log(state.serviceCharge, "totalCost")
         state.averageRating = action.payload.averageRating
         state.quotationDetails = action.payload.quotations
+console.log(action.payload.quotations.length, "action.payload.quotations.length")
+        if (action.payload.quotations.length > 0) {
+          state.isQuotationAvailable = true;
+        }else{
+          state.isQuotationAvailable = false; 
+        }
+        console.log(state.subscription, "service ")
+        console.log(action.payload.offerservices[0].offers, "offers hehehe")
+        
+        // if(action.payload.offerservices && action.payload.offerservices.length > 0 ){
+        //   state.subscription = state.action.payload.offerservices.map((subscription)=>{
+        //     return {
+        //       title : subscription.offers[0]?.offerTitle, 
+        //       amount : subscription.offers[0]?.amount ? subscription.amount : action.payload.subscription[0].amount, 
+        //       description : subscription.offers[0]?.offerDetail,
+        //     }
+        //   })
+        // }
+      //   if (action.payload.offerservices[0].offers.length > 0) {
+      //     const discount = action.payload.offerservices[0].offers[0].discountPercent; // Get the discount value
+      //     state.subscription = state.subscription.map((item) => {
+      //         return {
+      //             ...item, // Preserve existing properties
+      //             amount: item.amount - (item.amount * discount) / 100, // Apply the discount to update amount
+      //         };
+      //     });
+      // }
+      
         if (action.payload.quotations && action.payload.quotations.length > 0) {
           state.isQuotationAvailable = true
           state.cost = action.payload.quotations[0].amount
         }
         state.availServiceData = {
-          serviceId : action.payload._id,
-          formId  : action.payload.formId, 
-          serviceDetails : {
-            name : action.payload.name,
-            cost : action.payload.cost, 
-            duration : action.payload.duration
-          }, 
-          paymentMode : "Net Banking", 
-          paymentStatus : "PENDING",
-          paymentDate : Date.now(),
+          serviceId: action.payload._id,
+          formId: action.payload.formId,
+          serviceDetails: {
+            name: action.payload.name,
+            cost: action.payload.cost,
+            duration: action.payload.duration
+          },
+          paymentMode: "Net Banking",
+          paymentStatus: "PENDING",
+          paymentDate: Date.now(),
         }
-        state.quotationId = action.payload.quotationId; 
+        state.quotationId = action.payload.quotationId;
         state.formId = action.payload.formId
       })
       .addCase(getServiceDetails.rejected, (state, action) => {
@@ -170,7 +208,7 @@ const serviceDetailSlice = createSlice({
       .addCase(getStateWiseServiceCharge.fulfilled, (state, action) => {
         state.isStateLoading = false;
 
-
+        console.log(action.payload, "action state wise")
         const { estimatedTotal } = action.payload;
 
 
@@ -224,13 +262,13 @@ const serviceDetailSlice = createSlice({
         state.tempCost = state.cost;
         let discount = 0
         if (couponData.cost && state.cost) {
-           discount = (state.tempCost * couponData.cost / 100);
+          discount = (state.tempCost * couponData.cost / 100);
           state.cost = state.tempCost - discount;
           console.log(`Discount of ${discount} applied. New cost: ${state.cost}`);
         }
         state.totalSavings = state.totalSavings + discount;
-
-        console.log(state.appliedCoupons, "applied coupon")
+        state.coupons = state.coupons.filter((coupon) => coupon._id !== couponData.couponId);
+        console.log(state.coupons, "applied coupon")
       })
       .addCase(verifyCoupon.rejected, (state, action) => {
         state.isCouponVerifiedLoading = false;
