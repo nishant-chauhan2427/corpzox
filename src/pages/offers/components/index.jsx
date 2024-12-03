@@ -21,13 +21,13 @@ function OffersDetails() {
   const url = new URL(window.location);
   let page =urlParams.get("page") ||1 ;
 
-  console.log("page",page);
+  // console.log("page",page);
   
   
 
   const [expandedIndex, setExpandedIndex] = useState(null); // To track which offer is expanded
 
-  console.log("expandedIndex", expandedIndex);
+  // console.log("expandedIndex", expandedIndex);
 
   const toggleReadMore = (index) => {
     setExpandedIndex(expandedIndex === index ? null : index); // Toggle expanded state
@@ -45,7 +45,7 @@ function OffersDetails() {
     if(totalCount % offers?.length > 0){
       dispatch(loadMoreOffers(Number(page)+1));
       url.searchParams.set('page', (Number(page)+1));
-      window.history.pushState({}, '', url);
+      // window.history.pushState({}, '', url);
     }else{
       toast.error("No more data found")
     }
@@ -55,7 +55,7 @@ function OffersDetails() {
   useEffect(()=>{
     page = urlParams.get("page") ||1 ;
     url.searchParams.set('page', 1);
-    window.history.pushState({}, '', url);
+    // window.history.pushState({}, '', url);
   },[])
 
 

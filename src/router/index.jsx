@@ -170,7 +170,7 @@ const router = createBrowserRouter([
                 element: <MakeAPayment />,
               },
               {
-                path: "create",
+                path: "create/:applicationId",
                 element: <SelectBusiness />,
               },
               {
