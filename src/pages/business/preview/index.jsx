@@ -63,10 +63,10 @@ const BusinessPreview = () => {
   };
   
 // Recheck the formattedDate
-  const formattedDate= (dateString) => {
-    const date = new Date(dateString);
-    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-  };
+  // const formattedDate= (dateString) => {
+  //   const date = new Date(dateString);
+  //   return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+  // };
   return (
     <>
       <div>

@@ -15,7 +15,7 @@ export const ServicesCard = ({
 }) => {
   const location = useLocation();
   const { isLoading, heartloading , childLoading} = useSelector((state) => state.wishlist);
-  const {isAdding} = useSelector((state)=>state.user);
+  const {isAdding} = useSelector((state)=>state.service);
   
   console.log(heartloading,"heartloading");
   useEffect(()=>{
