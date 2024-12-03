@@ -17,7 +17,6 @@ import { getRatingReviews, ratingReview } from "../../../../../redux/actions/das
 
 export const ServicesProgress = ({ data }) => {
   const [dropdownStates, setDropdownStates] = useState(data.map(() => false));
-  const {dataUpdate } = useSelector((state) => state.user)
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [otherValue, setOtherVsalue] = useState("");
   const [serviceId, setServiceId] = useState("")
