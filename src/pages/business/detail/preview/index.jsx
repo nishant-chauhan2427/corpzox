@@ -20,22 +20,17 @@ const BusinessPreview = () => {
 
   console.log("DAT",businessId);
 
-  const date = new Date(registration?.yearOfStablish);
-  const formattedDate = date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric"
-  });
+
 
 
   const handleNextStep = async () => {
     if (businessId) {
       try {
         setLoading(true);
-        await dispatch(updateAddressDetails({...address, businessId}));
-        await dispatch(updateFinancialDetails({...financial, businessId}));
-        await dispatch(updateKYCDetails({ ...kyc,businessId }));
-        await dispatch(updateFundingDetails({ businessId,...funding}));
+        await dispatch(updateAddressDetails({...address?.businessAddress, ...address?.communicationAddress, businessId}));
+        await dispatch(updateFinancialDetails({...financial?.financialDetails, businessId}));
+        await dispatch(updateKYCDetails({ ...kyc?.kycDetails,businessId }));
+        await dispatch(updateFundingDetails({ businessId,...funding?.fundingRequirement}));
 
         toast.success("Business created successfully!");
         
@@ -61,12 +56,7 @@ const BusinessPreview = () => {
     setConfirmationModal(false);
     navigate("/business");
   };
-  
-// Recheck the formattedDate
-  const formattedDate= (dateString) => {
-    const date = new Date(dateString);
-    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-  };
+
   return (
     <>
       <div>

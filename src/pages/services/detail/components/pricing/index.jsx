@@ -16,7 +16,6 @@ export const Pricing = ({ pricing = true, data, serviceId }) => {
     (state) => state.serviceDetails 
   );
 
-  console.log(subscription, "subscription quiotation")
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { statesList } = useSelector((state) => state.serviceDetails);
@@ -165,7 +164,7 @@ const formattedSubscriptions = subscription?.map((subscription)=>{
           </div>
         ) : (
           <>
-            {quotationDetails.map((data, index) => (
+            {quotationDetails?.map((data, index) => (
               <QuotationCard
                 serviceId={serviceId}
                 key={index}
@@ -185,9 +184,14 @@ const PricingCard = ({ data, serviceId, navigate, dispatch }) => {
   console.log(data, "subscription data");
   const handleServicePayment = (cost, stateWiseServiceCharge) => {
     navigate(`/payment/${serviceId}`);
-    dispatch(
-      stePaymentDetails({ subscriptionCost: cost, stateWiseServiceCharge })
-    );
+    // dispatch(
+    //   stePaymentDetails({ subscriptionCost: cost + stateWiseServiceCharge ? stateWiseServiceCharge : 0, stateWiseServiceCharge })
+    // );
+    dispatch(stePaymentDetails({
+      subscriptionCost: cost,
+      totalCost : cost + (stateWiseServiceCharge || 0), 
+      stateWiseServiceCharge,
+    }))
   };
   return (
     <div className="w-full flex gap-10 justify-center">
@@ -248,7 +252,7 @@ const IconLabel = (label) => {
 const QuotationCard = ({ quotation, serviceId, dispatch, navigate }) => {
   const handleServicePayment = (cost, stateWiseServiceCharge) => {
     dispatch(
-      stePaymentDetails({ subscriptionCost: cost, stateWiseServiceCharge: 0 })
+      stePaymentDetails({ subscriptionCost: cost, stateWiseServiceCharge: stateWiseServiceCharge })
     );
     navigate(`/payment/${serviceId}`);
   };
