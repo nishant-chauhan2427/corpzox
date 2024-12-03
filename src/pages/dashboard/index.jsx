@@ -64,13 +64,13 @@ const Dashboard = () => {
   console.log(formattedRecommendedServices, "formattedRecommendedServices")
   useEffect(() => {
     dispatch(getUser());
-    dispatch(getUserBusiness({}));
-    dispatch(getUserServices({}));
+    // dispatch(getUserBusiness({}));  
+    // dispatch(getUserServices({}));
     dispatch(updateServiveProgress({page:1}));
   }, []);
   useEffect(() => {
-    dispatch(getUserBusiness({ query: searchValue }));
-    dispatch(getUserServices({ query: searchValue }));
+    dispatch(getUserBusiness({ query: searchValue ? searchValue :"" }));
+    dispatch(getUserServices({ query: searchValue ? searchValue :"" }));
   }, [searchValue]);
   useEffect(() => {
     dispatch(recommendedServiceListing())
@@ -90,7 +90,7 @@ const Dashboard = () => {
           {Array.from({ length: 2 }, (_, index) => (
             <RecommendedServiceCardShimmer key={index} />
           ))}
-        </div> : <RecommendedServices data={formattedRecommendedServices} />}
+        </div> : <RecommendedServices data={formattedRecommendedServices} total={formattedRecommendedServices?.length} />}
         <ServicesProgress data={servicesProgress} />
       </section>
     </>

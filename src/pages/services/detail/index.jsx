@@ -16,7 +16,7 @@ import { clearState } from "../../../redux/slices/serviceDetailsSlice";
 const ServiceDetail = () => {
   const { serviceId } = useParams()
   const dispatch = useDispatch();
-  const { success, statesList, subscription, isTalkToAdvisorLoading } = useSelector((state) => state.serviceDetails);
+  const { success, statesList, subscription, isTalkToAdvisorLoading,isQuotationAvailable, isOfferAvailable } = useSelector((state) => state.serviceDetails);
 
  // console.log(success?.subscription, "from component")
   useEffect(() => {
@@ -45,11 +45,11 @@ const ServiceDetail = () => {
           </div>
           <Details data={success} pricing={true} serviceId={serviceId} handleRequest={handleTalkTouOurAdvisors} isLoading={isTalkToAdvisorLoading} />
           <Features />
-          <Pricing data={subscription} pricing={true} serviceId={serviceId} />
+          <Pricing data={subscription} pricing={!isQuotationAvailable} serviceId={serviceId} />
           <Advisor
             handleRequest={handleTalkTouOurAdvisors}
             isLoading={isTalkToAdvisorLoading} />
-          <Testimonials />
+          <Testimonials serviceId={serviceId}/>
           <Steps />
           <FAQs />
           <Advisor

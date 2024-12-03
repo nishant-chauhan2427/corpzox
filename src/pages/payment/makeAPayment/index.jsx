@@ -32,7 +32,7 @@ const MakeAPayment = () => {
 
   const [currentStep, setCurrentStep] = useState(0);
   const { success, cost, appliedCoupons, coupons, availServiceData, isServiceAvailing, totalSavings, serviceCost, serviceCharge } = useSelector((state) => state.serviceDetails);
-  console.log(availServiceData, "cost from slice ")
+  console.log(coupons, "cost from slice ")
   useEffect(() => {
     // PASS DYNAMIC ID HERE
     dispatch(getServiceDetails({ serviceId: serviceId }));
@@ -148,7 +148,7 @@ const MakeAPayment = () => {
               )}
             </div>
 
-            <div className="sm:w-[70%] pb-5 pt-4">
+            {coupons && coupons?.length > 0 && <div className="sm:w-[70%] pb-5 pt-4">
               <p className="font-normal text-[13px] pb-2 text-[#4F5B76]">
                 Coupon Code
               </p>
@@ -265,7 +265,7 @@ const MakeAPayment = () => {
                   </ReactModal>
                 </div>
               </div>
-            </div>
+            </div>}
           </div>
           <div className="sm:w-[40%] mb-2 sm:mt-9 flex flex-col px-4 py-3 border rounded gap-3 border-[#C6C6C6]">
             <PricingDetail totalCost={cost} availServiceData={availServiceData} totalSavings={totalSavings} serviceCost={serviceCost} serviceCharge={serviceCharge} />

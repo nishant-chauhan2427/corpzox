@@ -1,21 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Checkbox } from "../../../../../components/inputs/checkbox";
 import { CiHeart } from "react-icons/ci";
 import { Button } from "../../../../../components/buttons";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { LinkButton } from "../../../../../components/link";
 import { useSelector } from "react-redux";
+import { ImSpinner2 } from "react-icons/im";
 
 export const ServicesCard = ({
-  data = [],
+  data,
 
   onClick = (service) => console.log("Heart icon clicked"),
   onCheckedChange = () => console.log("checked clicked"),
 }) => {
   const location = useLocation();
-  const { isLoading } = useSelector((state) => state.wishlist);
+  const { isLoading, heartloading , childLoading} = useSelector((state) => state.wishlist);
+  const {isAdding} = useSelector((state)=>state.user);
+  
+  console.log(heartloading,"heartloading");
+  useEffect(()=>{
+    console.log(isAdding, 'childloading')
+  },[isAdding])
   const heartAccordingToRoute = ["/wishlist", "/services"];
   const navigate = useNavigate();
+  const url = window.location.href
   //console.log(data,"12345")
   //console.log(data, "Data123");
   const handleNavigate = () => {
@@ -32,9 +40,9 @@ export const ServicesCard = ({
             >
               <div className="flex justify-between">
                 <div className="flex  gap-2">
-                  <p className="font-bold text-[#0A1C40]">{service?.name}</p>
+                  <p className="font-bold text-[#0A1C40]">{ url.includes("services") ? service?.name : service?.service[0]?.name}</p>
                   <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1 ">
-                    {service?.name}
+                  { url.includes("services") ? service?.name : service?.service[0]?.name}
                   </p>
                 </div>
                 <Checkbox
@@ -43,7 +51,7 @@ export const ServicesCard = ({
                 />
               </div>
               <p className="text-base leading-[22px] font-normal text-[#7C7C7C]">
-                {service?.details}
+              { url.includes("services") ? service?.details : service?.service[0]?.details}
               </p>
               <div className="flex flex-col gap-1 pt-1">
                 <div className="flex justify-between sm:w-4/5">
@@ -51,30 +59,30 @@ export const ServicesCard = ({
                     Estimated Time
                   </p>
                   <p className="font-bold text-[12px] text-[#000000]">
-                    {service?.duration}
+                  { url.includes("services") ? service?.duration : service?.service[0]?.duration}
                   </p>
                 </div>
-                <div className="flex justify-between sm:w-4/5">
+                {/* <div className="flex justify-between sm:w-4/5">
                   <p className="font-semibold text-sm text-[#7E7E7E]">
                     Min Requirement
                   </p>
                   <p className="font-bold text-[12px] text-[#000000]">
                     {service?.minRequirement || "_ _"}
                   </p>
-                </div>
+                </div> */}
                 <div className="flex justify-between sm:w-4/5">
                   <p className="font-semibold text-sm text-[#7E7E7E]">Price</p>
                   <p className="font-bold text-[12px] text-[#000000]">
-                    {service?.cost}
+                  { url.includes("services") ? service?.cost : service?.service[0]?.cost}
                   </p>
                 </div>
               </div>
               <div className="flex justify-end pt-5 items-end">
                 <div className="flex items-center  justify-center gap-2">
-                  <button
+                  {childLoading[service.serviceId] ?  <ImSpinner2 className="animate-spin text-black !text-xl" /> : <button
                     onClick={() => {
                       onClick(service);
-                      //{console.log(service,"Service Onclick");}
+                      {console.log(service,"Service Onclick");}
                     }}
                   >
                     {location.pathname === "/wishlist" ? (
@@ -88,9 +96,10 @@ export const ServicesCard = ({
                         color={service?.wishlistCount ? "#FF0000" : "#777777"}
                       />
                     )}
-                  </button>
+                  </button>}
 
                   <LinkButton
+                  
                     type="submit"
                     to={`/services/detail/${service?._id}`}
                     primary={true}

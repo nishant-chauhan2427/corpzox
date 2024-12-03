@@ -128,7 +128,7 @@ const DocumentsListing = () => {
                   <div
                     key={data._id}
                     onClick={() => handleFolderClick(data._id)}
-                    className="relative bg-[#F2F2F2] px-4 py-2 flex justify-between items-center gap-4 border rounded"
+                    className="relative bg-[#F2F2F2] px-4 py-2 flex cursor-pointer justify-between items-center gap-4 border rounded"
                   >
                     <div className="flex items-center gap-4">
                       <img

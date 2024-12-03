@@ -4,27 +4,37 @@ import { ServicesCard } from "../services/listing/components/servicesCard";
 import { servicesListing } from "../../database";
 import { Button } from "../../components/buttons";
 import { useDispatch, useSelector } from "react-redux";
-import { getWishList } from "../../redux/actions/wishlist-actions";
+import { getWishList, removeServiceWishlistData1 } from "../../redux/actions/wishlist-actions";
 import { ServiceCardShimmer } from "../../components/loader/ServiceCardShimmer copy";
-import { removeServiceWishlist } from "../../redux/actions/servicesListing-action";
+import { removeServiceWishlist} from "../../redux/actions/servicesListing-action";
+import { NoData } from "../../components/errors/noData";
+import { ImSpinner2 } from "react-icons/im";
+
 //removeServiceWishlist
 const Wishlist = () => {
   const dispatch = useDispatch();
-  const { loading, wishList, totalCount } = useSelector(
+  const { loading, wishList, totalCount,heartloading } = useSelector(
     (state) => state.wishlist
   );
-  console.log(wishList, service?._id,"totalCount12334");
+  const { isAdding} = useSelector(
+    (state) => state.user
+  );
+  console.log(isAdding,"totalCount12334");
   let onClickWishList = (service) => {
+    console.log(service,"service123");
     //setIsSubmit(true);
    // if (service?.wishlistCount) {
-      dispatch(removeServiceWishlist({ serviceId: service?._id }));
+      dispatch(removeServiceWishlistData1({ serviceId: service?.serviceId }));
    // } else {
      // dispatch(updateServiceWishlist({ serviceId: service?._id }));
+     //{loading ? <ImSpinner2 className="animate-spin text-gray hover:text-white !text-xl" /> : <h2 className="font-bold text-4xl">{number}</h2>}
+
+
     }//}
-  console.log((wishList, "wishList"));
-  useEffect(() => {
-    dispatch(getWishList());
-  }, [dispatch]);
+ // console.log((wishList, "wishList"));
+ useEffect(() => {
+  dispatch(getWishList());
+}, [dispatch]);
   return (
     <>
       <div>
@@ -32,8 +42,7 @@ const Wishlist = () => {
           {" "}
           Wishlist{" "}
         </Heading>
-        {loading ? <ServiceCardShimmer /> : <ServicesCard data={wishList} onClick={(service) => onClickWishList(service)} />}
-
+        {wishList && wishList.length === 0 ? (<NoData/>) : (<ServicesCard data={wishList} onClick={(service) => onClickWishList(service)} />)}
         {wishList && wishList.length > 5 && (
           <div className="mt-10 flex justify-center">
             {wishList.length == totalCount ? (

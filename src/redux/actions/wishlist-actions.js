@@ -28,3 +28,29 @@ export const getWishList = createAsyncThunk(
       }
     }
   );
+
+
+  export const removeServiceWishlistData1 = createAsyncThunk("removeServiceWishlistData1", async (wishListData, { rejectWithValue }) => {
+    console.log("API CALLING removeServiceWishlistData", wishListData)
+    try {
+        console.log("API CALLING removeServiceWishlistData")
+        const response = await client.delete(`/user/service-wishlist`,{
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+            },
+            data:wishListData
+          });
+        //  console.log("API CALLING removeServiceWishlistData")
+        if(response?.data?.code==200||response?.data?.code==201){
+            wishListData.message=response?.data?.message;
+            return wishListData;
+        }else{
+            return rejectWithValue(response?.data?.message);            
+        }
+    } catch (error) {
+      console.log(error, "error")
+        return rejectWithValue(error?.response?.data?.message || error?.message);
+    }
+});

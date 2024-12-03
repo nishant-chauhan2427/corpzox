@@ -18,7 +18,7 @@ const BusinessDetail = () => {
   const {user} = useSelector((state) => state.user);
   const queryParams = new URLSearchParams(location.search);
   const businessId = queryParams.get("id");
-//  console.log("BUSINESS ID",businessId)
+ console.log("BUSINESS ID12",business)
   useEffect(() => {
     if (businessId) {
       console.log("Dispatching action with businessId:", businessId);
@@ -28,7 +28,7 @@ const BusinessDetail = () => {
       console.log("No businessId found");
     }
   },[businessId,dispatch]);
-  console.log(business, loading, error,"BUSINESSSS");
+  console.log(business,"BUSINESSSS");
 
 
   function calculateAge(dateOfEstablishment) {
@@ -106,8 +106,12 @@ const BusinessDetail = () => {
                 {business?.registration?.businessName}
               </h3>
               <p className="font-semibold text-base text-[#343C6A]">
-                Business #4
+                Business #{business?.registration?.businessNumber}
               </p>
+              {/* <p className="font-semibold text-base text-black">
+                  {business?.businessNumber}
+                </p> */}
+                
             </div>
           </div>
           <div>
@@ -129,7 +133,7 @@ const BusinessDetail = () => {
                   Company Status:
                 </p>
                 <p className="font-semibold text-base text-black">
-                  {business?.active ? "Active" : "In Active"}
+                {business?.registration?.active ? "Active" : "In Active"}
                 </p>
               </div>
               <div className="flex justify-between">
@@ -154,7 +158,7 @@ const BusinessDetail = () => {
             </div>
             <div className="flex justify-between">
               <p className="font-medium text-base text-[#000000B2]">
-                Email Id::
+                Email Id:
               </p>
               <p className="font-semibold text-base text-black">
               {user?.email}

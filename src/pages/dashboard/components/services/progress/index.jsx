@@ -13,7 +13,7 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ratingReviewSchema } from "../../../../../validation/ratingReviewValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
-import { ratingReview } from "../../../../../redux/actions/dashboard-action";
+import { getRatingReviews, ratingReview } from "../../../../../redux/actions/dashboard-action";
 
 export const ServicesProgress = ({ data }) => {
   const [dropdownStates, setDropdownStates] = useState(data.map(() => false));
@@ -29,7 +29,9 @@ export const ServicesProgress = ({ data }) => {
       prevState.map((state, i) => (i === index ? !state : state))
     );
   };
-
+  const {
+    dataUpdate
+  } = useSelector((state) => state.user)
   const { control, handleSubmit, reset, formState: { errors, isValid }, } = useForm({
     defaultValues: {
       review: "",
@@ -41,6 +43,12 @@ export const ServicesProgress = ({ data }) => {
     setConfirmationModal(false);
     setServiceId("")
   };
+
+  useEffect(()=>{
+    if(!isRatingSubmitting) setConfirmationModal(false);
+    
+  }, [isRatingSubmitting])
+
   const onConfirmationModalOpen = (data) => {
     console.log(data, "mo idea")
     setServiceId(data)
@@ -132,8 +140,8 @@ export const ServicesProgress = ({ data }) => {
                 </div>
                 <div className="flex gap-2">
 
-                  <Button onClick={()=>{onConfirmationModalOpen(data)}} className="flex items-center  px-4 py-[10px] rounded-full font-semibold text-base text-[#0068FF] bg-[#DBE9FE]">
-                    Rate Your Experience213
+                  <Button onClick={()=>{onConfirmationModalOpen(data._id)}} className="flex items-center  px-4 py-[10px] rounded-full font-semibold text-base text-[#0068FF] bg-[#DBE9FE]">
+                    Rate Your Experience
                   </Button>
 
                   <ConfirmationModal

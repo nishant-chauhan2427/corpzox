@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSubscriptionHistoryCount, getSubscriptions } from "../../../redux/actions/settings-actions";
 import { ImSpinner2 } from "react-icons/im";
 import { TableShimmer } from "../../../components/loader/TableShimmer";
+import { NoData } from "../../../components/errors/noData";
 
 
 
@@ -46,28 +47,57 @@ const SubscriptionHistory = () => {
     dispatch(getSubscriptionHistoryCount({ type: "expired" }))
     dispatch(getSubscriptionHistoryCount({ type: "up-coming" }))
   }, [])
-  const handleNavigation = (button, label) => {
-    switch (button) {
-      case "Previous":{
-        setPackageIndex((prev) =>
-          prev > 0 ? prev - 1 : subscriptionPackage.length - 1
-        );
-        dispatch(dispatch(getSubscriptions({ page: 1, type: label == "Active Subscription" ? "active" : label == "Expired Subscription" ? "expired" : "up-coming" })))
-      }
-        break;
-      case "Next":{
+  // const handleNavigation = (button, label) => {
+  //   switch (button) {
+  //     case "Previous": {
+  //       setPackageIndex((prev) =>
+  //         prev > 0 ? prev - 1 : subscriptionPackage.length - 1
+  //       );
+  //       dispatch(dispatch(getSubscriptions({ page: 1, type: label == "Active Subscription" ? "active" : label == "Expired Subscription" ? "expired" : "up-coming" })))
+  //     }
+  //       break;
+  //     case "Next": {
 
-        setPackageIndex((prev) =>
-          prev < subscriptionPackage.length - 1 ? prev + 1 : 0
-        );
-        console.log(label, "label")
-        dispatch(dispatch(getSubscriptions({ page: 1, type: label == "Active Subscription" ? "active" : label == "Expired Subscription" ? "expired" : "up-coming" })))
-      }
-        break;
-      default:
-        break;
+  //       setPackageIndex((prev) =>
+  //         prev < subscriptionPackage.length - 1 ? prev + 1 : 0
+  //       );
+  //       console.log(label, "label")
+  //       dispatch(dispatch(getSubscriptions({ page: 1, type: label == "Active Subscription" ? "active" : label == "Expired Subscription" ? "expired" : "up-coming" })))
+  //     }
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
+
+  const handleNavigation = (button) => {
+    let newIndex;
+
+    if (button === "Previous") {
+      // Move to previous subscription, wrap around if necessary
+      newIndex = packageIndex > 0 ? packageIndex - 1 : subscriptionPackage.length - 1;
+    } else if (button === "Next") {
+      // Move to next subscription, wrap around if necessary
+      newIndex = packageIndex < subscriptionPackage.length - 1 ? packageIndex + 1 : 0;
     }
+
+    // Update packageIndex
+    setPackageIndex(newIndex);
+
+    // Get the current subscription type (active, expired, upcoming)
+    const currentLabel = subscriptionPackage[newIndex].label;
+
+    // Determine the type for the API call based on the current label
+    const type =
+      currentLabel === "Active Subscription" ? "active" :
+        currentLabel === "Expired Subscription" ? "expired" :
+          "up-coming";
+
+    // Dispatch with the correct type
+    dispatch(getSubscriptions({ page: 1, type }));
   };
+
+
 
   const subscriptionPackage = [
     {
@@ -82,20 +112,25 @@ const SubscriptionHistory = () => {
       label: "Expired Subscription",
       description: "Manage all your expired subscriptions efficiently.",
       loading: isExpiredLoading,
-      data:FormattedSubscriptions ? FormattedSubscriptions : []
+      data: FormattedSubscriptions ? FormattedSubscriptions : []
     },
     {
       number: upcomingCount ? upcomingCount : 0,
       label: "Upcoming Renewals",
       description: "Manage all your upcoming renewals efficiently.",
       loading: isUpcommingLoading,
-      data:FormattedSubscriptions ? FormattedSubscriptions : []
+      data: FormattedSubscriptions ? FormattedSubscriptions : []
     },
   ];
   const currentPackage = subscriptionPackage[packageIndex];
 
   const handleCard = (label) => {
     setPackageType(label)
+    const index = subscriptionPackage.findIndex(
+      (pkg) => pkg.label === label
+    );
+
+    setPackageIndex(index);
     dispatch(dispatch(getSubscriptions({ page: 1, type: label == "Active Subscription" ? "active" : label == "Expired Subscription" ? "expired" : "up-coming" })))
   }
 
@@ -115,7 +150,14 @@ const SubscriptionHistory = () => {
               <h4 className="font-semibold text-lg">
                 {currentPackage.description}
               </h4>
-              {isSubScriptionLoading ? (<TableShimmer />) : <Table columns={columns} data={currentPackage.data} />}
+              {/* {isSubScriptionLoading ? (<TableShimmer />) : <Table columns={columns} data={currentPackage.data} />} */}
+              {isSubScriptionLoading ? (
+                <TableShimmer />
+              ) : currentPackage.data.length === 0 ? (
+                <NoData/>
+              ) : (
+                <Table columns={columns} data={currentPackage.data} />
+              )}
               <div className="flex justify-between items-center gap-3">
                 <p>
                   <b>{currentPackage.data.length}</b> results

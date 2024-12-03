@@ -5,12 +5,14 @@ import {
   getUserServices,
   updateServiceWishlist,
   removeServiceWishlist,
-  recommendedServiceListing
+  recommendedServiceListing,
+  
 } from "../actions/servicesListing-action";
 import toast from "react-hot-toast";
 const initialState = {
   list: [],
   totalPage: 0,
+  isAdding: {},
   page: 1,
   limit: 10,
   loading: false,
@@ -18,7 +20,7 @@ const initialState = {
   isRecommendedServiceLoading : false, 
   recommendedServiceList : [], 
   category: {
-    list: [],
+    list: [], 
     total: 0,
     categoryLoading: false,
     categoryError: null,
@@ -33,8 +35,10 @@ const initialState = {
   },
   wishList: {
     loading: false,
+    //isAdding: {},
     error: null,
-    list:[]
+    list:[],
+    listData:[],
   },
 };
 
@@ -108,7 +112,7 @@ const serviceListingSlice = createSlice({
       .addCase(getUserServices.fulfilled, (state, action) => {
         state.loading = false;
         state.error = action.payload.message;
-        state.totalPage = action.payload.totalPage;
+        state.totalPage = action.payload.total;
         state.list = action.payload?.data;
       })
       .addCase(getUserServices.rejected, (state, action) => {
@@ -118,10 +122,14 @@ const serviceListingSlice = createSlice({
     builder
       .addCase(updateServiceWishlist.pending, (state, action) => {
         state.wishList.loading = true;
+        // console.log(action.meta.arg.serviceId,'updateservicewishlist');
+        state.isAdding[action.meta.arg.serviceId] = true;
       })
       .addCase(updateServiceWishlist.fulfilled, (state, action) => {
         state.wishList.loading = false;
-       // console.log(service._id,"service._id");
+//       console.log(action.payload.data.serviceId,"service._id");3
+console.log("doneeeeeee")
+      state.isAdding[action.payload.data?.serviceId]=false;
        state.list = state.list.map((service) =>
        service?._id === action.payload?.data?.serviceId
          ? { ...service, ...action.payload }
@@ -137,8 +145,13 @@ const serviceListingSlice = createSlice({
       })
       .addCase(updateServiceWishlist.rejected, (state, action) => {
         state.wishList.loading = false;
+        console.log("erorrr rejcttt")
+        console.log("action.meta.arg.serviceId",action.meta.arg.serviceId);
+        state.isAdding = false
         state.wishList.error=action.payload;
       });
+
+
     builder
       .addCase(removeServiceWishlist.pending, (state, action) => {
         state.wishList.loading = true;
@@ -151,7 +164,7 @@ const serviceListingSlice = createSlice({
             }
             return service
          });
-        console.log(state.list)
+       //console.log(state.list)
         state.wishList.error=action.payload?.message;
       })
       .addCase(removeServiceWishlist.rejected, (state, action) => {
@@ -170,7 +183,30 @@ const serviceListingSlice = createSlice({
         state.isRecommendedServiceLoading = false 
         const errorMessage = action.payload?.message || "Something went wrong";
         toast.error(errorMessage);
-      });
+      })
+
+
+      // Slice for Wishlist Remove Data
+      // .addCase(removeServiceWishlistData.pending, (state, action) => {
+      //   state.wishList.loading = true;
+      // })
+      // .addCase(removeServiceWishlistData.fulfilled, (state, action) => {
+      //   state.wishList.loading = false;
+      // //  console.log(action.payload,state.listData,"listData12");
+        
+      //   state.wishList=state.wishList.filter((service)=>{
+      //    // {console.log(service,"listData12");}
+      //       if(service?._id!=action.payload?.serviceId)
+      //       console.log(service._id,"Service1234");
+      //         return service
+      //    });
+      //  // console.log(state.list)
+      //   state.wishList.error=action.payload?.message;
+      // })
+      // .addCase(removeServiceWishlistData.rejected, (state, action) => {
+      //   state.wishList.loading = false;
+      //   state.wishList.error=action.payload;
+      // });
   },
 });
 
