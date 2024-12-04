@@ -11,6 +11,7 @@ export const getUserServicesCatagory = createAsyncThunk("getUserServicesCatagory
               'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
             },
           });
+        //   console.log("API CALLLLLIIIINNNGGGG")
       //  console.log(response,'service-category..');
         if(response?.data?.code==200||response?.data?.code==201){
             return response.data;

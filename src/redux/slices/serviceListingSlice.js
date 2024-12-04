@@ -127,9 +127,8 @@ const serviceListingSlice = createSlice({
       })
       .addCase(updateServiceWishlist.fulfilled, (state, action) => {
         state.wishList.loading = false;
-//       console.log(action.payload.data.serviceId,"service._id");3
-console.log("doneeeeeee")
-      state.isAdding[action.payload.data?.serviceId]=false;
+
+      state.isAdding[action.payload?.data.data?.serviceId]=false;
        state.list = state.list.map((service) =>
        service?._id === action.payload?.data?.serviceId
          ? { ...service, ...action.payload }

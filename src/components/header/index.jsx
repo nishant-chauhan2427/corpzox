@@ -20,6 +20,7 @@ import { Notification } from "../notification";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../../redux/slices/userLoginSlice";
 import { ConfirmationModal } from "../modal/confirmationModal";
+import { persistor } from "../../redux/store";
 
 export const Header = ({ className, collapse, setCollapse }) => {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
@@ -81,13 +82,30 @@ export const Header = ({ className, collapse, setCollapse }) => {
         return "";
     }
   }
+  // import { persistor } from './reduxStore'; // Import persistor from your Redux store configuration
 
+  // export const handleSignOut = () => {
+  //   // Clear persisted data
+  //   persistor.purge().then(() => {
+  //     console.log('Persisted data cleared successfully!');
+  //     // Perform additional sign-out tasks like redirecting to the login page
+  //   });
+  // };
   console.log(user, "jhhj");
 
   const handleLogout =()=>{
 
     dispatch(clearUser()); 
                   navigate("/sign-in"); 
+                  // persistor.purge().then(() => {
+                  //       console.log('Persisted data cleared successfully!');
+                        
+                  //     });
+                  persistor.pause();
+    persistor.flush().then(() => {
+      console.log('Persisted data cleared successfully!');
+      return persistor.purge();
+    });
   }
 
   const handleCancelLogout =()=>{
@@ -175,7 +193,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
             {/* <ThemeSwitch /> */}
 
             {/* <FullScreenButton /> */}
-            <Notification />
+            {/* <Notification /> */}
             <Link to={"/wishlist"}>
               <IconWrapper>
                 <img src="/icons/header/heart.svg" alt="" />
@@ -345,6 +363,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
             </p>
             <div className="flex items-center justify-center gap-4 pt-4">
               {/* <Button primary={true}>Yes</Button> */}
+              
               <Button
                 primary={true}
                 onClick={handleLogout}

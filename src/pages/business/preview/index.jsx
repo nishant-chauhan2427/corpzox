@@ -37,7 +37,7 @@ const BusinessPreview = () => {
         await dispatch(updateKYCDetails({ ...kyc,businessId }));
         await dispatch(updateFundingDetails({ businessId,...funding}));
 
-        toast.success("Business created successfully!");
+       // toast.success("Business created successfully!");
         
         setConfirmationModal(true);
         dispatch(resetBusiness());

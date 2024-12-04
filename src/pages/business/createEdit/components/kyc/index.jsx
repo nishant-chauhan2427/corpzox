@@ -44,6 +44,7 @@ export const KYCDetails = ({ control, errors, handleBlur, trigger,setValue }) =>
                     field.onChange(e); // Default handling
                     trigger("kyc.kycUser");  // Manually trigger validation for this field
                   }}
+                  maxLength={20}
                 />
               )}
             />
@@ -62,6 +63,7 @@ export const KYCDetails = ({ control, errors, handleBlur, trigger,setValue }) =>
                     field.onChange(e); // Default handling
                     trigger("kyc.id");  // Manually trigger validation for this field
                   }}
+                  maxLength={15}
                 />
               )}
             />
@@ -80,6 +82,7 @@ export const KYCDetails = ({ control, errors, handleBlur, trigger,setValue }) =>
                     field.onChange(e); // Default handling
                     trigger("kyc.addressProof");  // Manually trigger validation for this field
                   }}
+                  maxLength={30}
                 />
               )}
             />

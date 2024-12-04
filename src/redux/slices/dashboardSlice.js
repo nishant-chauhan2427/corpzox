@@ -23,7 +23,7 @@ const dashBoardSlice = createSlice({
         state.error = null;
       })
       .addCase(requestChangeManager.fulfilled, (state, action) => {
-        console.log("wishList wishlist", action.payload);
+        //console.log("wishList wishlist", action.payload);
        
         // toast.success(action.payload.message || "Wishlist fetched wishListfully");
         state.isChangeManagerLoading = false;

@@ -15,7 +15,7 @@ export const RecommendedServices = ({ data, total }) => {
   return (
     <div className="">
       <div className="py-2 flex flex-col sm:flex-row justify-between gap-2" onClick={onClickViewAll}>
-        <Heading className={"py-0"} title={"Title"} tourButton={true}>
+        <Heading title={"Dashboard"} className={"py-0"} tourButton={true}>
           Recommended Services  {total == undefined ? "" : "(" + total + ")"}
         </Heading>
         <Link className="font-semibold text-[#606060]">View All</Link>
