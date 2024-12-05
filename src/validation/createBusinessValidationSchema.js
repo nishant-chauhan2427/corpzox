@@ -80,6 +80,7 @@ export const addressSchema = Yup.object().shape({
 export const financialSchema = Yup.object().shape({
   financial: Yup.object().shape({
       capital: Yup.number()
+      
         .required('Capital is required')
         .positive('Capital must be a positive number')
         .test('len', 'Must be between 6 to 10 characters', val => val.toString().length >= 6 &&  val.toString().length <= 10)

@@ -7,6 +7,7 @@ import { NoData } from "../../../components/errors/noData";
 import DocumentViewer from "./Components";
 import { useParams } from "react-router-dom";
 import { getfolderData } from "../../../redux/actions/document-action";
+import { FolderListShimmer } from "../../../components/loader/FolderDataShimmer";
 
 
 
@@ -30,7 +31,7 @@ const DocumentDetail = () => {
     return (
         <div>
             {isdocumentLoading ? (
-                <DocumentListShimmer/>
+                <FolderListShimmer/>
             ) : (
                 <>
                     <div className="flex items-center justify-between">
@@ -41,7 +42,7 @@ const DocumentDetail = () => {
                     </div>
 
 
-                    {listData.length > 0 ? (
+                    {listData.length > 0 && url  ? (
                         // 
                         <DocumentViewer docUrl={url} docName={name}/>
                     ) : (

@@ -1,86 +1,76 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getService, getServiceData, getfolderData } from "../actions/document-action";
+import { getService, getServiceData, getFolderData } from "../actions/document-action";
 
 // Initial State
 const initialState = {
-  documentList: [], // Stores the fetched documents/services
-  fetchingDocumentError: "", // Stores errors during fetching
-  isLoading: false, // Indicates loading state
-  dataList :[],
-  listData:[],
-  isdataLoading: false,
-  isdocumentLoading:false,
+  documentList: [], 
+  fetchingDocumentError: "", 
+  serviceDocumentError: "", 
+  folderDocumentError: "", 
+  isLoading: false, 
+  dataList: [],
+  listData: [],
+  isDataLoading: false,
+  isDocumentLoading: false,
 };
 
-// Document Slice
 const documentSlice = createSlice({
   name: "document",
   initialState,
   reducers: {
-    // Action to clear error messages
     removeDocumentListError: (state) => {
       state.fetchingDocumentError = "";
+      state.serviceDocumentError = "";
+      state.folderDocumentError = "";
+    },
+    clearDocumentList: (state) => {
+      state.documentList = [];
     },
   },
   extraReducers: (builder) => {
     builder
-      // Handle pending state
       .addCase(getService.pending, (state) => {
         state.isLoading = true;
-        state.fetchingDocumentError = ""; // Reset error when loading starts
+        state.fetchingDocumentError = "";
       })
-
-      // Handle fulfilled state
       .addCase(getService.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.documentList = action.payload || []; // Update document list
+        state.documentList = action.payload || [];
       })
-
-      // Handle rejected state
       .addCase(getService.rejected, (state, action) => {
         state.isLoading = false;
         state.fetchingDocumentError =
           action.payload || "An error occurred while fetching services.";
       })
-      .addCase(getServiceData .pending, (state) => {
-        state.isdataLoading= true;
-        state.fetchingDocumentError = ""; // Reset error when loading starts
+      .addCase(getServiceData.pending, (state) => {
+        state.isDataLoading = true;
+        state.serviceDocumentError = ""; 
       })
-
-      // Handle fulfilled state
-      .addCase(getServiceData .fulfilled, (state, action) => {
-        state.isdataLoading= false;
-        state.dataList = action.payload || []; // Update document list
+      .addCase(getServiceData.fulfilled, (state, action) => {
+        state.isDataLoading = false;
+        state.dataList = action.payload || [];
       })
-
-      // Handle rejected state
-      .addCase(getServiceData .rejected, (state, action) => {
-        state.isdataLoading= false;
-        state.fetchingDocumentError =
-          action.payload || "An error occurred while fetching services.";
-
-        state.dataList = []
-
-      }).addCase(getfolderData .pending, (state) => {
-        state.isdocumentLoading= true;
-        state.fetchingDocumentError = ""; // Reset error when loading starts
+      .addCase(getServiceData.rejected, (state, action) => {
+        state.isDataLoading = false;
+        state.serviceDocumentError =
+          action.payload || "An error occurred while fetching service data.";
+        state.dataList = [];
       })
-
-      // Handle fulfilled state
-      .addCase(getfolderData .fulfilled, (state, action) => {
-        state.isdocumentLoading = false;
-        state.listData = action.payload || []; // Update document list
+      .addCase(getFolderData.pending, (state) => {
+        state.isDocumentLoading = true;
+        state.folderDocumentError = ""; 
       })
-
-      // Handle rejected state
-      .addCase(getfolderData .rejected, (state, action) => {
-        state.isdocumentLoading = false;
-        state.fetchingDocumentError =
-          action.payload || "An error occurred while fetching services.";
+      .addCase(getFolderData.fulfilled, (state, action) => {
+        state.isDocumentLoading = false;
+        state.listData = action.payload || [];
+      })
+      .addCase(getFolderData.rejected, (state, action) => {
+        state.isDocumentLoading = false;
+        state.folderDocumentError =
+          action.payload || "An error occurred while fetching documents.";
       });
   },
 });
 
-// Export actions and reducer
-export const { removeDocumentListError } = documentSlice.actions;
+export const { removeDocumentListError, clearDocumentList } = documentSlice.actions;
 export default documentSlice.reducer;

@@ -2,6 +2,7 @@ import { Controller } from "react-hook-form";
 import { Input } from "../../../../../components/inputs";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
+import { validateNumber } from "../../../../../utils";
 
 export const FinancialDetails = ({ control, errors, setValue, handleBlur, trigger }) => {
 
@@ -58,6 +59,7 @@ export const FinancialDetails = ({ control, errors, setValue, handleBlur, trigge
                   required={true}
                   onBlur={handleFieldBlur(`financial.capital`)} // Trigger validation on blur
                   onChange={handleFieldChange(`financial.capital`, field, trigger)} // Trigger validation on change
+                  onKeyDown={validateNumber}
                 />
               )}
             />
@@ -73,6 +75,7 @@ export const FinancialDetails = ({ control, errors, setValue, handleBlur, trigge
                   required={true}
                   onBlur={handleFieldBlur(`financial.revenue`)} // Trigger validation on blur
                   onChange={handleFieldChange(`financial.revenue`, field, trigger)} // Trigger validation on change
+                  onKeyDown={validateNumber}
                 />
               )}
             />
@@ -88,6 +91,7 @@ export const FinancialDetails = ({ control, errors, setValue, handleBlur, trigge
                   required={true}
                   onBlur={handleFieldBlur(`financial.profit`)} // Trigger validation on blur
                   onChange={handleFieldChange(`financial.profit`, field, trigger)} // Trigger validation on change
+                  onKeyDown={validateNumber}
                 />
               )}
             />

@@ -5,6 +5,8 @@ import { ServicesProgress } from "../dashboard/components/services/progress";
 import { servicesProgress, businessListing } from "../../database";
 import { getUser } from "../../redux/actions/dashboard-action";
 import { useDispatch, useSelector } from 'react-redux'
+import BusinessListing from "../business/listing";
+//import{BusinessDetail} from "../business/listing/index";
 const Profile = () => {
 
   const dispatch = useDispatch();
@@ -17,7 +19,9 @@ const Profile = () => {
     <>
       <div className="flex flex-col gap-1">
         <ProfileCard userData={user}  />
-        <Business data={businessListing} />
+        {/* <Business data={businessListing} /> */}
+        <BusinessListing/>
+
         <ServicesProgress data={servicesProgress} />
       </div>
     </>
