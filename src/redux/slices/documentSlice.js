@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getService, getServiceData, getFolderData } from "../actions/document-action";
+import { getService, getServiceData, getfolderData } from "../actions/document-action";
 
 // Initial State
 const initialState = {
@@ -56,15 +56,15 @@ const documentSlice = createSlice({
           action.payload || "An error occurred while fetching service data.";
         state.dataList = [];
       })
-      .addCase(getFolderData.pending, (state) => {
+      .addCase(getfolderData.pending, (state) => {
         state.isDocumentLoading = true;
         state.folderDocumentError = ""; 
       })
-      .addCase(getFolderData.fulfilled, (state, action) => {
+      .addCase(getfolderData.fulfilled, (state, action) => {
         state.isDocumentLoading = false;
         state.listData = action.payload || [];
       })
-      .addCase(getFolderData.rejected, (state, action) => {
+      .addCase(getfolderData.rejected, (state, action) => {
         state.isDocumentLoading = false;
         state.folderDocumentError =
           action.payload || "An error occurred while fetching documents.";
