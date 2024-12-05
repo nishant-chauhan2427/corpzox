@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios'; // Import Axios
 
 function FileField({ index, field, className, onChange }) {
-  const { lebel } = field;
+  const { lebel,isRequired } = field;
   const [uploading, setUploading] = useState(false);
   const [uploadedUrl, setUploadedUrl] = useState(field?.value[0]||'');
 //   console.log("uploadedUrl",uploadedUrl);
@@ -52,7 +52,7 @@ function FileField({ index, field, className, onChange }) {
 
   return (
     <div className={`border rounded-md p-2 ${className}`}>
-      {lebel && <p className="mb-1">{lebel}</p>}
+      {lebel && <p className="mb-1">{lebel} {isRequired? <span className='text-red-600'>*</span>:""} </p>}
       <input
         type="file"
         onChange={handleChange}

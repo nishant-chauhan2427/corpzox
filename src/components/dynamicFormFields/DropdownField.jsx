@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 function DropdownField({ index, field, className, onChange }) {
-  const { options, value } = field;
+  const { options, value ,isRequiredMsg} = field;
 
   const [selectedValue, setSelectedValue] = useState(value || ''); // Initialize with passed value or empty
   const isRequired = true;
@@ -26,6 +26,7 @@ function DropdownField({ index, field, className, onChange }) {
           </option>
         ))}
       </select>
+      {isRequiredMsg && <p className='text-xs text-red-500 mb-3 pl-3'>{field?.isRequiredMsg }</p> }
     </div>
   );
 }
