@@ -25,6 +25,7 @@ import { Offers } from "../../../components/offers";
 import { updateServiveProgress } from "../../../redux/actions/dashboard-action";
 import { NoData } from "../../../components/errors/noData";
 import { ImSpinner2 } from "react-icons/im";
+import { Heading } from "../../../components/heading";
 const ServicesListing = () => {
   const dispatch = useDispatch();
   const { categoryId, subCategoryId } = useParams();
@@ -129,7 +130,7 @@ const ServicesListing = () => {
   return (
     
     <section className="flex sm:flex-row flex-col gap-4 sm:pt-6 pt-3 bg-white">
-      <Heading title={"Service"} > </Heading>
+      <Heading title={"Service"}></Heading>
       <div className="flex justify-center flex-col overflow-hidden">
         <MainTab />
         {servicesMainTab !== 0 ? (
