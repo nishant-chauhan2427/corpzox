@@ -57,6 +57,48 @@ export const addParameter = (obj, url, keyword, value) => {
   }
   return url;
 };
+// Function to validate number keys for input type tel
+const validKey = [
+  "0",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "Backspace",
+];
+
+
+//  export const validateNumber  =(e)=>{
+//   if (e.target.value.endsWith('0') && e.key === '0') {
+//     e.preventDefault(); // Prevent typing another '0'
+//     return;
+//   }
+//     if (!validKey.includes(e.key)) {
+//       e.preventDefault();
+//     }
+//   }
+export const validateNumber = (e) => {
+const inputValue = e.target.value;
+
+// If the first character is '0' and the user tries to type another '0', prevent it
+if (inputValue === '0' && e.key === '0') {
+  e.preventDefault(); // Prevent typing another '0'
+  return;
+}
+
+// Allow backspace, delete, arrow keys, etc.
+const validKey = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete'];
+
+// If the key is not a number or one of the valid control keys, prevent input
+if (!/^[0-9]$/.test(e.key) && !validKey.includes(e.key)) {
+  e.preventDefault();
+}
+};
 
 export const dateFormated = (originalDate) => {
   const dateObj = new Date(originalDate);

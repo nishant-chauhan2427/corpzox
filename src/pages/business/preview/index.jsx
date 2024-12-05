@@ -18,7 +18,7 @@ const BusinessPreview = () => {
   const [loading, setLoading] = useState(false);
   const [formModal,setFormModal] = useState(true);
 
-  console.log("DAT",businessId);
+ // console.log("DAT",businessId);
 
   const date = new Date(registration?.yearOfStablish);
   const formattedDate = date.toLocaleDateString("en-US", {
@@ -26,7 +26,7 @@ const BusinessPreview = () => {
     month: "short",
     day: "numeric"
   });
-
+//console.log(registration,"REG");
 
   const handleNextStep = async () => {
     if (businessId) {

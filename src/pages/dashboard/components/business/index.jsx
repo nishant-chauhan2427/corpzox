@@ -41,6 +41,9 @@ export const Business = ({ data = [], total }) => {
           <p className="font-normal text-[#797979]">
             Create one to start your services
           </p>
+          <LinkButton className = {"px-4 py-1"} to={"/business/create"} primary={true} leftIcon={<IoMdAddCircle />}>
+            New Business
+          </LinkButton>
         </div>
       )}
     </div>

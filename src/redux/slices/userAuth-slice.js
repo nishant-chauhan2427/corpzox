@@ -85,7 +85,8 @@ const authSlice = createSlice({
     },
     updateProfile(state,action){
       state.profile=action.payload
-    }
+    },
+    
   },
   extraReducers: (builder) => {
     //login

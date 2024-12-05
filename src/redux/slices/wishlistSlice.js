@@ -35,7 +35,7 @@ const wishlistSlice = createSlice({
       })
       .addCase(getWishList.fulfilled, (state, action) => {
         //console.log("wishList wishlist123", action.payload);
-        toast.success(action.payload.message || "Wishlist fetched wishListfully");
+       // toast.success(action.payload.message || "Wishlist fetched wishListfully");
         state.loading = false;
         state.isLoading = false;
         state.totalCount = action.payload.length
@@ -59,7 +59,7 @@ const wishlistSlice = createSlice({
       .addCase(removeServiceWishlistData1.fulfilled, (state, action) => {
         state.heartloading = false;
         //console.log(action.payload.serviceId, "SERVICE DATA");
-        console.log(state.childLoading[action.payload.serviceId] , 'chiloaing')
+       // console.log(state.childLoading[action.payload.serviceId] , 'chiloaing')
         state.childLoading[action.payload.serviceId]=false;
         let newList = state.wishList.filter((service) => {
           if (service?.serviceId != action.payload?.serviceId)
