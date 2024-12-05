@@ -13,54 +13,58 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ratingReviewSchema } from "../../../../../validation/ratingReviewValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
-import { getRatingReviews, ratingReview } from "../../../../../redux/actions/dashboard-action";
+import {
+  getRatingReviews,
+  ratingReview,
+} from "../../../../../redux/actions/dashboard-action";
 
 export const ServicesProgress = ({ data }) => {
   const [dropdownStates, setDropdownStates] = useState(data.map(() => false));
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [otherValue, setOtherVsalue] = useState("");
-  const [serviceId, setServiceId] = useState("")
+  const [serviceId, setServiceId] = useState("");
   const [rating, setRating] = useState(0);
-  const dispatch = useDispatch()
-  const { isRatingSubmitting } = useSelector((state) => state.dashboard)
+  const dispatch = useDispatch();
+  const { isRatingSubmitting } = useSelector((state) => state.dashboard);
   const handleServiceDropdown = (index) => {
     setDropdownStates((prevState) =>
       prevState.map((state, i) => (i === index ? !state : state))
     );
   };
+  const { dataUpdate } = useSelector((state) => state.user);
   const {
-    dataUpdate
-  } = useSelector((state) => state.user)
-  const { control, handleSubmit, reset, formState: { errors, isValid }, } = useForm({
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors, isValid },
+  } = useForm({
     defaultValues: {
       review: "",
       rating: 0,
     },
-    resolver: yupResolver(ratingReviewSchema)
+    resolver: yupResolver(ratingReviewSchema),
   });
   const onConfirmationModalClose = () => {
     setConfirmationModal(false);
-    setServiceId("")
+    setServiceId("");
   };
 
-  useEffect(()=>{
-    if(!isRatingSubmitting) setConfirmationModal(false);
-    
-  }, [isRatingSubmitting])
+  useEffect(() => {
+    if (!isRatingSubmitting) setConfirmationModal(false);
+  }, [isRatingSubmitting]);
 
   const onConfirmationModalOpen = (data) => {
-    console.log(data, "mo idea")
-    setServiceId(data)
+    console.log(data, "mo idea");
+    setServiceId(data);
     setConfirmationModal(true);
   };
   const onSubmit = (formData) => {
     console.log("Submitted Data: ", formData);
     // Handle form submission logic
 
-    dispatch(ratingReview({...formData, serviceId}))
+    dispatch(ratingReview({ ...formData, serviceId }));
     reset(); // Reset the form after submission
   };
-
   const servicesProgessSteps = [
     {
       step: 1,
@@ -103,25 +107,29 @@ export const ServicesProgress = ({ data }) => {
 
   return (
     <div>
-      
       <div className="py-2 flex flex-col sm:flex-row justify-between gap-2">
         <Heading className={"py-0"} tourButton={true}>
           Your Service Progress Updates({dataUpdate?.total})
         </Heading>
-        <Link to={"/services/serviceprogressdetail"} className="font-semibold text-[#606060]">View All</Link>
+        <Link
+          to={"/services/serviceprogressdetail"}
+          className="font-semibold text-[#606060]"
+        >
+          View All
+        </Link>
       </div>
       {dataUpdate?.data?.length > 0 ? (
         <div className="flex flex-col gap-4">
           {dataUpdate?.data?.map((data, index) => (
             <div key={index} className="bg-[#F8FAFF] px-4 py-2 rounded-md">
-
               <div className="flex flex-col sm:flex-row items-start justify-between sm:items-center gap-2">
                 <div className="flex flex-col gap-1">
-                  
                   <div className="flex gap-2">
                     <img src="/images/dashboard/service-progress.svg" alt="" />
-                  
-                    <p className="font-bold">Service: {data?.service[0]?.name} </p>
+
+                    <p className="font-bold">
+                      Service: {data?.service[0]?.name}{" "}
+                    </p>
                     <img
                       src="/icons/dashboard/service-error.svg"
                       width={15}
@@ -130,17 +138,21 @@ export const ServicesProgress = ({ data }) => {
                   </div>
                   <div className="flex flex-col gap-2">
                     <h6 className="text-sm text-[#7C7D80]">
-                      <strong>Business:</strong> {data?.businessdetails[0]?.businessName}
+                      <strong>Business:</strong>{" "}
+                      {data?.businessdetails[0]?.businessName}
                     </h6>
                     <p className="text-sm text-[#7C7D80]">
-                      <strong>Step:</strong> {data?.status
-}
+                      <strong>Step:</strong> {data?.status}
                     </p>
                   </div>
                 </div>
                 <div className="flex gap-2">
-
-                  <Button onClick={()=>{onConfirmationModalOpen(data._id)}} className="flex items-center  px-4 py-[10px] rounded-full font-semibold text-base text-[#0068FF] bg-[#DBE9FE]">
+                  <Button
+                    onClick={() => {
+                      onConfirmationModalOpen(data._id);
+                    }}
+                    className="flex items-center  px-4 py-[10px] rounded-full font-semibold text-base text-[#0068FF] bg-[#DBE9FE]"
+                  >
                     Rate Your Experience
                   </Button>
 
@@ -199,7 +211,9 @@ export const ServicesProgress = ({ data }) => {
                                       placeholder="Add Review"
                                     />
                                     {fieldState.error && (
-                                      <p className="text-red-500 text-sm">{fieldState.error.message}</p>
+                                      <p className="text-red-500 text-sm">
+                                        {fieldState.error.message}
+                                      </p>
                                     )}
                                   </>
                                 )}
@@ -222,9 +236,16 @@ export const ServicesProgress = ({ data }) => {
                                 control={control}
                                 render={({ field, fieldState }) => (
                                   <div className="flex flex-col gap-4">
-                                    <Rating {...field} rating={field.value} setRating={field.onChange} size={40} />
+                                    <Rating
+                                      {...field}
+                                      rating={field.value}
+                                      setRating={field.onChange}
+                                      size={40}
+                                    />
                                     {fieldState.error && (
-                                      <p className="text-red-500 text-sm">{fieldState.error.message}</p>
+                                      <p className="text-red-500 text-sm">
+                                        {fieldState.error.message}
+                                      </p>
                                     )}
                                   </div>
                                 )}
@@ -238,7 +259,12 @@ export const ServicesProgress = ({ data }) => {
                               >
                                 Maybe Later
                               </Button>
-                              <Button disabled={!isValid} isLoading={isRatingSubmitting} primary={true} type="submit">
+                              <Button
+                                disabled={!isValid}
+                                isLoading={isRatingSubmitting}
+                                primary={true}
+                                type="submit"
+                              >
                                 Submit
                               </Button>
                             </div>
@@ -249,8 +275,9 @@ export const ServicesProgress = ({ data }) => {
                   </ConfirmationModal>
                   <Button primary={true}>Avail again</Button>
                   <button
-                    className={`${dropdownStates === true && "rotate-180"
-                      } hidden lg:block`}
+                    className={`${
+                      dropdownStates === true && "rotate-180"
+                    } hidden lg:block`}
                     onClick={() => handleServiceDropdown(index)}
                   >
                     <GoTriangleDown size={30} />
