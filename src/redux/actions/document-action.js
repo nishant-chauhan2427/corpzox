@@ -62,6 +62,7 @@ export const getServiceData = createAsyncThunk(
           return rejectWithValue("Unexpected response structure from server");
         }
       } catch (error) {
+        console.log(error, "error fething")
         // Return a meaningful error message to the rejected action
         return rejectWithValue(
           error.response?.data?.message || "Failed to fetch services"

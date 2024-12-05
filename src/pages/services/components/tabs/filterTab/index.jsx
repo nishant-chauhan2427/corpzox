@@ -77,7 +77,7 @@ function Filtertab() {
             }`}
             onClick={() => (handleTab(tab))}
           >
-            {tab.sectionTitle}
+            {tab.subSectionTitle}
           </button>
         ))}
       </div>

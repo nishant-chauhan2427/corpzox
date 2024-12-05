@@ -32,12 +32,12 @@ const BusinessPreview = () => {
     if (businessId) {
       try {
         setLoading(true);
-        await dispatch(updateAddressDetails({...address?.businessAddress, ...address?.communicationAddress, businessId}));
-        await dispatch(updateFinancialDetails({...financial?.financialDetails, businessId}));
-        await dispatch(updateKYCDetails({ ...kyc?.kycDetails,businessId }));
-        await dispatch(updateFundingDetails({ businessId,...funding?.fundingRequirement}));
+        await dispatch(updateAddressDetails({...address, businessId}));
+        await dispatch(updateFinancialDetails({...financial, businessId}));
+        await dispatch(updateKYCDetails({ ...kyc,businessId }));
+        await dispatch(updateFundingDetails({ businessId,...funding}));
 
-        toast.success("Business created successfully!");
+       // toast.success("Business created successfully!");
         
         setConfirmationModal(true);
         dispatch(resetBusiness());
@@ -61,7 +61,12 @@ const BusinessPreview = () => {
     setConfirmationModal(false);
     navigate("/business");
   };
-
+  
+// Recheck the formattedDate
+  // const formattedDate= (dateString) => {
+  //   const date = new Date(dateString);
+  //   return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+  // };
   return (
     <>
       <div>

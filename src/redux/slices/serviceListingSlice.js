@@ -12,16 +12,15 @@ import toast from "react-hot-toast";
 const initialState = {
   list: [],
   totalPage: 0,
+  isAdding: {},
   page: 1,
   limit: 10,
-  
   loading: false,
   error: null,
   isRecommendedServiceLoading : false, 
   recommendedServiceList : [], 
   category: {
-    list: [],
-    
+    list: [], 
     total: 0,
     categoryLoading: false,
     categoryError: null,
@@ -36,6 +35,7 @@ const initialState = {
   },
   wishList: {
     loading: false,
+    //isAdding: {},
     error: null,
     list:[],
     listData:[],
@@ -112,7 +112,7 @@ const serviceListingSlice = createSlice({
       .addCase(getUserServices.fulfilled, (state, action) => {
         state.loading = false;
         state.error = action.payload.message;
-        state.totalPage = action.payload.totalPage;
+        state.totalPage = action.payload.total;
         state.list = action.payload?.data;
       })
       .addCase(getUserServices.rejected, (state, action) => {
@@ -122,10 +122,13 @@ const serviceListingSlice = createSlice({
     builder
       .addCase(updateServiceWishlist.pending, (state, action) => {
         state.wishList.loading = true;
+        // console.log(action.meta.arg.serviceId,'updateservicewishlist');
+        state.isAdding[action.meta.arg.serviceId] = true;
       })
       .addCase(updateServiceWishlist.fulfilled, (state, action) => {
         state.wishList.loading = false;
-       // console.log(service._id,"service._id");
+
+      state.isAdding[action.payload?.data.data?.serviceId]=false;
        state.list = state.list.map((service) =>
        service?._id === action.payload?.data?.serviceId
          ? { ...service, ...action.payload }
@@ -141,8 +144,13 @@ const serviceListingSlice = createSlice({
       })
       .addCase(updateServiceWishlist.rejected, (state, action) => {
         state.wishList.loading = false;
+        console.log("erorrr rejcttt")
+        console.log("action.meta.arg.serviceId",action.meta.arg.serviceId);
+        state.isAdding = false
         state.wishList.error=action.payload;
       });
+
+
     builder
       .addCase(removeServiceWishlist.pending, (state, action) => {
         state.wishList.loading = true;
@@ -155,7 +163,7 @@ const serviceListingSlice = createSlice({
             }
             return service
          });
-        console.log(state.list)
+       //console.log(state.list)
         state.wishList.error=action.payload?.message;
       })
       .addCase(removeServiceWishlist.rejected, (state, action) => {

@@ -41,7 +41,7 @@ const DocumentsListing = () => {
     navigate(`/documents/detail/${_id}`);
   };
 
-  console.log("selected service info",selectedServiceInfo);
+  console.log("selected folder",folders);
 
   const servicesOptions = Array.isArray(services)
     ? services.map((item) => ({
@@ -76,11 +76,11 @@ const DocumentsListing = () => {
             </Heading>
           </div>
 
-          {fetchingDocumentError && (
+          {/* {fetchingDocumentError && (
             <div className="text-red-500 my-2">
               An error occurred: {fetchingDocumentError}
             </div>
-          )}
+          )} */}
 
           <div>
             <Selector
@@ -128,7 +128,7 @@ const DocumentsListing = () => {
                   <div
                     key={data._id}
                     onClick={() => handleFolderClick(data._id)}
-                    className="relative bg-[#F2F2F2] px-4 py-2 flex justify-between items-center gap-4 border rounded"
+                    className="relative bg-[#F2F2F2] px-4 py-2 flex cursor-pointer justify-between items-center gap-4 border rounded"
                   >
                     <div className="flex items-center gap-4">
                       <img

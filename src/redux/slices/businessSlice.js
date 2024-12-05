@@ -7,6 +7,7 @@ const initialState = {
     registration: {
       typeOfBusiness: "",
       businessName: "",
+      businessNumber:"",
       cinNumber: "",
       roleOfCompany: "",
       yearOfStablish: "",
@@ -86,6 +87,8 @@ const businessSlice = createSlice({
           registration: {
             typeOfBusiness: payload.typeOfBusiness || "",
             businessName: payload.businessName || "",
+            businessNumber: payload.businessNumber||"",
+            active :payload.active||"",
             cinNumber: payload.cinNumber || "",
             roleOfCompany: "",  // Placeholder, update if the API provides it
             yearOfStablish: payload.yearOfStablish || "",

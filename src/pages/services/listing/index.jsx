@@ -127,7 +127,9 @@ const ServicesListing = () => {
     // });
   };
   return (
+    
     <section className="flex sm:flex-row flex-col gap-4 sm:pt-6 pt-3 bg-white">
+      <Heading title={"Service"} > </Heading>
       <div className="flex justify-center flex-col overflow-hidden">
         <MainTab />
         {servicesMainTab !== 0 ? (
@@ -164,7 +166,7 @@ const ServicesListing = () => {
             />
             {/* {list && list.length > 5 && (
               <div className="mt-10 flex justify-center">
-                {list.length == totalCount ? (
+                {list.length == totalPage ? (
                   <></>
                 ) : (
                   <Button primary={true}>Load More </Button>
