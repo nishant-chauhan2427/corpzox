@@ -10,62 +10,63 @@ import { Heading } from "../../../components/heading";
 import { BusinessCardShimmer } from "../../../components/loader/BusinessCardShimmer";
 import { getUser } from "../../../redux/actions/dashboard-action";
 import { LinkButton } from "../../../components/link";
+import { resetBusiness } from "../../../redux/slices/businessSlice";
 const BusinessDetail = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { business, loading, error } = useSelector((state) => state.business);
-  const {user} = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   const queryParams = new URLSearchParams(location.search);
   const businessId = queryParams.get("id");
- console.log("BUSINESS ID12",business)
+  console.log("BUSINESS ID12", business)
   useEffect(() => {
     if (businessId) {
       console.log("Dispatching action with businessId:", businessId);
       dispatch(getBusiness({ businessId }));
-      
+
     } else {
       console.log("No businessId found");
     }
-  },[businessId,dispatch]);
-  console.log(business,"BUSINESSSS");
+  }, [businessId, dispatch]);
+  console.log(business, "BUSINESSSS");
 
 
   function calculateAge(dateOfEstablishment) {
-  
+
     const establishedDate = new Date(dateOfEstablishment);
 
     const currentDate = new Date();
-  
+
     let years = currentDate.getFullYear() - establishedDate.getFullYear();
-  
+
     const monthDifference = currentDate.getMonth() - establishedDate.getMonth();
     if (monthDifference < 0 || (monthDifference === 0 && currentDate.getDate() < establishedDate.getDate())) {
-      years--;  
+      years--;
     }
-  
-   
+
+
     const tempEstablishmentDate = new Date(establishedDate);
     tempEstablishmentDate.setFullYear(currentDate.getFullYear());
-  
+
     let days = Math.floor((currentDate - tempEstablishmentDate) / (1000 * 60 * 60 * 24));
-  
+
     if (days < 0) {
       const previousYearEstablishmentDate = new Date(establishedDate);
       previousYearEstablishmentDate.setFullYear(currentDate.getFullYear() - 1);
       days = Math.floor((currentDate - previousYearEstablishmentDate) / (1000 * 60 * 60 * 24));
     }
-  
+
     return `${years} years ${days} days`;
   }
 
   const handleEditBusiness = () => {
     navigate("/business/edit")
   }
-  
+
   return (
     <>
-     { loading ? <><BusinessCardShimmer/></> : <section className="pb-10">
+      {loading ? <><BusinessCardShimmer /></> : <section className="pb-10">
         <div className="flex flex-col gap-4 ">
           <div className="flex flex-col md:flex-row justify-between gap-4 ">
             <Heading
@@ -76,9 +77,14 @@ const BusinessDetail = () => {
               Business Detail
             </Heading>
             <div className="flex gap-2 items-center">
-            <LinkButton className = {"px-4 py-1"} to={"/business/create"} primary={true} leftIcon={<IoMdAddCircle />}>
+              {/* <LinkButton className = {"px-4 py-1"} to={"/business/create"} primary={true} leftIcon={<IoMdAddCircle />}>
             New Business
-          </LinkButton>
+          </LinkButton> */}
+
+              <LinkButton className={"px-4 py-1"} onClick={()=>{ dispatch(resetBusiness());navigate("/business/create")}}  primary={true} leftIcon={<IoMdAddCircle />}>
+                New Business
+              </LinkButton>
+
               {/* <Button primary={true} leftIcon={<IoMdAddCircle />}>
                 New Business
               </Button> */}
@@ -103,7 +109,7 @@ const BusinessDetail = () => {
                 </div>
               </div>
               <h3 className="font-semibold text-2xl text-[#171717]">
-                {(business?.registration?.businessName) ? business?.registration?.businessName:"..."}
+                {(business?.registration?.businessName) ? business?.registration?.businessName : "..."}
               </h3>
               <p className="font-semibold text-base text-[#343C6A]">
                 Business #{business?.registration?.businessNumber}
@@ -111,7 +117,7 @@ const BusinessDetail = () => {
               {/* <p className="font-semibold text-base text-black">
                   {business?.businessNumber}
                 </p> */}
-                
+
             </div>
           </div>
           <div>
@@ -122,7 +128,7 @@ const BusinessDetail = () => {
               </div>
               <div className="flex justify-between">
                 <p className="font-medium text-base text-[#000000B2] ">
-                  
+
                 </p>
                 <p className="font-semibold text-base text-black">
                   {business?.address?.businessAddressL1},{business?.address?.businessAddressCity},{business?.address?.businessAddressPin}
@@ -133,7 +139,7 @@ const BusinessDetail = () => {
                   Company Status:
                 </p>
                 <p className="font-semibold text-base text-black">
-                {business?.registration?.active ? "Active" : "In Active"}
+                  {business?.registration?.active ? "Active" : "In Active"}
                 </p>
               </div>
               <div className="flex justify-between">
@@ -153,7 +159,7 @@ const BusinessDetail = () => {
                 PhoneNo:
               </p>
               <p className="font-semibold text-base text-black">
-                 {user?.phone}
+                {user?.phone}
               </p>
             </div>
             <div className="flex justify-between">
@@ -161,7 +167,7 @@ const BusinessDetail = () => {
                 Email Id:
               </p>
               <p className="font-semibold text-base text-black">
-              {user?.email}
+                {user?.email}
               </p>
             </div>
           </div>
