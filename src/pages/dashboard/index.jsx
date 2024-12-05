@@ -35,10 +35,12 @@ const Dashboard = () => {
   const [accountShowButton, setAccountShowButton] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isFadingOut, setIsFadingOut] = useState(false);
+  const [userInfo, setUserInfo] = useState(() => localStorage.getItem("userInfo"))
   const dispatch = useDispatch();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const searchValue = queryParams.get("search");
+  
   const {
     user = {},
     manager = {},
@@ -48,12 +50,13 @@ const Dashboard = () => {
     service = {},
     serviceLoading,
     servicesError,
+    dataUpdate,
   } = useSelector((state) => state.user);
 
   const { recommendedServiceList, isRecommendedServiceLoading } = useSelector(
     (state) => state.service
   );
-  console.log(isRecommendedServiceLoading, "recommendedServiceList");
+ 
   const formattedRecommendedServices = recommendedServiceList?.map(
     (service) => {
       return {
@@ -62,16 +65,23 @@ const Dashboard = () => {
       };
     }
   );
-  console.log(formattedRecommendedServices, "formattedRecommendedServices");
+
   useEffect(() => {
-    dispatch(getUser());
     // dispatch(getUserBusiness({}));
     // dispatch(getUserServices({}));
-    dispatch(updateServiveProgress({ page: 1 }));
+    dataUpdate &&  dataUpdate?.length === 0 && dispatch(updateServiveProgress({ page: 1 }));
   }, []);
   useEffect(() => {
+    const storedUserInfo = localStorage.getItem("userInfo");
+
+    if (storedUserInfo !== userInfo) {
+      setUserInfo(storedUserInfo); // Update the state with new userInfo
+      dispatch(getUser()); // Dispatch the action
+    }
+  }, [dispatch, userInfo]);
+  useEffect(() => {
     dispatch(getUserBusiness({ query: searchValue ? searchValue : "" }));
-    dispatch(getUserServices({ query: searchValue ? searchValue : "" }));
+    // dispatch(getUserServices({ query: searchValue ? searchValue : "" }));
   }, [searchValue]);
   useEffect(() => {
     dispatch(recommendedServiceListing());

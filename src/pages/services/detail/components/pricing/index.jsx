@@ -124,6 +124,7 @@ const formattedSubscriptions = subscription?.map((subscription)=>{
     label: formattedStates ? formattedStates[0]?.label : "",
     id: formattedStates ? formattedStates[0]?.id : ""
   }
+  console.log(defaultObject, "defaultObject")
   return (
     <section>
       <div className="flex flex-col gap-4">
