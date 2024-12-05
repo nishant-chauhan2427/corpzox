@@ -38,12 +38,20 @@ export const Search = (props) => {
     navigate({ search: params.toString() });
   };
 
+  // const handleClearSearch = () => {
+  //   setQuery("");
+  //   searchParams.set("search", "");
+  //   const params = new URLSearchParams(location.search);
+  //   params.delete("search");
+  //   navigate({ search: params.toString() });
+  // };
   const handleClearSearch = () => {
-    setQuery("");
-    searchParams.set("search", "");
-    const params = new URLSearchParams(location.search);
-    params.delete("search");
-    navigate({ search: params.toString() });
+    setQuery(""); // Clear the search input
+  
+    const params = new URLSearchParams(location.search); // Get the current URL params
+    params.delete("search"); // Delete the "search" key
+  
+    navigate({ search: params.toString() }); // Update the URL with modified params
   };
   let searchEvent = null;
   const handleKeyPress = (e) => {

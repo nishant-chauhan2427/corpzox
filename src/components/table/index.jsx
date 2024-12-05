@@ -40,9 +40,9 @@ export const Table = ({ data, columns, isExpandable = true, actionMenu }) => {
                 {Object.entries(row).map(([key, cell], cellIndex) => (
                   <td
                     key={cellIndex}
-                    className={`py-4 px-1 whitespace-nowrap text-xs capitalize`}
+                    className={`${key == "id" && "hidden"} py-4 px-1 whitespace-nowrap text-xs capitalize`}
                   >
-                    {key == "plan" ? (
+                    {key == "id" ? (
                       <></>
                     ) : (
                       <span
@@ -80,7 +80,7 @@ export const Table = ({ data, columns, isExpandable = true, actionMenu }) => {
                     )}
                   </td>
                 ))}
-                {actionMenu && actionMenu()}
+                {actionMenu && <ActionComponent id={row.id.serviceId} actionMenu={(id) => actionMenu(id)} />}
               </tr>
               {/* Expanded Row (only when expandable is true and row is expanded) */}
               {expandedRow === index && isExpandable && (
@@ -103,4 +103,12 @@ export const Table = ({ data, columns, isExpandable = true, actionMenu }) => {
       </table>
     </div>
   );
+};
+
+
+
+const ActionComponent = ({ id, actionMenu }) => {
+  console.log(id, "sdfsfd");
+  
+  return actionMenu(id);
 };
