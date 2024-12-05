@@ -10,19 +10,27 @@ import { useDispatch, useSelector } from "react-redux";
 import { formatReadableDate } from "../../../utils";
 import { TableShimmer } from "../../../components/loader/TableShimmer";
 import { NoData } from "../../../components/errors/noData";
+import { ConfirmationModal } from "../../../components/modal/confirmationModal";
+import { talkToAdvisor } from "../../../redux/actions/servicesDetails-actions";
 
 const History = () => {
   const dispatch = useDispatch()
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
+  const [serviceId, setServiceId] = useState("")
   const { paymentHistory, isPaymentHistoryLoading, totalTransaction } = useSelector((state) => state.paymentHistory)
+  const {isTalkToAdvisorLoading} = useSelector((state)=> state.serviceDetails)
+  const [confirmationModal, setConfirmationModal] = useState(false);
   const transformedTransactionHistory = paymentHistory?.map((history) => {
     return {
-      transaction_id: history.invoiceNumber,
-      status: history.active ? "Succeeded" : "Declined",
+      id: {
+        serviceId: history?.serviceId
+      },
+      transaction_id: history?.invoiceNumber,
+      status: history?.paymentStatus,
       amount: history?.amount,
       currency: "INR",
-      payment_date: formatReadableDate(history.paymentDate),
+      payment_date: formatReadableDate(history?.paymentDate),
     }
   })
 
@@ -42,10 +50,21 @@ const History = () => {
     setCurrentPage(Number(page));
     dispatch(getPaymentTransaction({ page, query }));
   }, [searchParams, dispatch]);
+  const onConfirmationModalClose = () => {
+    setConfirmationModal(false);
+  };
 
+  // const handleNavigation = (direction) => {
+  //   const newPage = direction === "Next" ? currentPage + 1 : currentPage - 1;
+  //   if (newPage < 1) return; // Prevent navigating to a negative page
+  //   setSearchParams({ page: newPage });
+  // };
   const handleNavigation = (direction) => {
+    const totalPages = Math.ceil(totalTransaction / 10); // Calculate total pages
     const newPage = direction === "Next" ? currentPage + 1 : currentPage - 1;
-    if (newPage < 1) return; // Prevent navigating to a negative page
+
+    if (newPage < 1 || newPage > totalPages) return; // Prevent navigating out of bounds
+
     setSearchParams({ page: newPage });
   };
 
@@ -74,21 +93,27 @@ const History = () => {
   ];
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
-  const handleTalkTouOurAdvisors = () => {
-    console.log("clicked")
-    // const requestData = {
-    //   userId: JSON.parse(localStorage.getItem('userInfo'))?.userId,
-    //   serviceId: serviceId,
-    //   status: "negotiation",
-    //   quotationDate: Date.now()
-    // }
-    // dispatch(talkToAdvisor(requestData))
+  const openCallToAdvisor = (serviceId) => {
+    setServiceId(serviceId);
+ setConfirmationModal(true)
+  }
+  const handleTalkTouOurAdvisors = (serviceId) => {
+    console.log(serviceId, "clicked")
+    const requestData = {
+      userId: JSON.parse(localStorage.getItem('userInfo'))?.userId,
+      serviceId: serviceId,
+      status: "negotiation",
+      quotationDate: Date.now()
+    }
+    dispatch(talkToAdvisor(requestData))
 
   }
-  const actionMenu = () => {
+  useEffect(()=>{
+    if(!isTalkToAdvisorLoading){
+      onConfirmationModalClose()
+    }
+  }, [isTalkToAdvisorLoading])
+  const actionMenu = (id) => {
     return (
       <div className="flex py-2 justify-evenly items-center">
         <ReactModal
@@ -181,7 +206,8 @@ const History = () => {
             </div>
           </div>
         </ReactModal>
-        <ReactModal
+
+        {/* <ReactModal
           crossButton={true}
           className="border-[#FF3B3B] border-[3px] py-2 "
           button={<img src="/icons/payment/calling.svg" alt="" />}
@@ -200,7 +226,10 @@ const History = () => {
               <Button primary={true}> Continue</Button>
             </div>
           </div>
-        </ReactModal>
+        </ReactModal> */}
+        <Button primary={false} onClick={() => openCallToAdvisor(id)}>
+          <img src="/icons/payment/calling.svg" alt="" />
+        </Button>
       </div>
     );
   };
@@ -238,15 +267,33 @@ const History = () => {
             <span className="font-semibold">{totalTransaction ? totalTransaction : 0}</span> results
           </p>
           <div className="flex items-center gap-2 pt-4">
-            <Button onClick={() => handleNavigation("Previous")} outline={true}>
+            <Button disabled={currentPage === 1} onClick={() => handleNavigation("Previous")} outline={true}>
               Previous
             </Button>
-            <Button onClick={() => handleNavigation("Next")} outline={true}>
+            <Button disabled={currentPage === Math.ceil(totalTransaction / 10)} onClick={() => handleNavigation("Next")} outline={true}>
               Next
             </Button>
           </div>
         </div>
       </div>
+      <ConfirmationModal
+        isOpen={confirmationModal}
+        onClose={onConfirmationModalClose}
+      >
+        <div className="flex flex-col gap-2 items-center justify-center ">
+          <img src="/public/icons/payment/callback.svg" width={200} alt="" />
+          <p className="text-3xl font-bold text-[#0A1C40]">
+            Call Back Requested
+          </p>
+          <p className="font-medium text-[16px] text-[#595959]">
+            Thank you for requesting a call-back. Your Assistant <br />
+            Manager will get in touch with you soon.
+          </p>
+          <div className="flex justify-center">
+            <Button primary={true} isLoading={isTalkToAdvisorLoading} onClick={()=> handleTalkTouOurAdvisors(serviceId)}> Continue</Button>
+          </div>
+        </div>
+      </ConfirmationModal>
     </>
   );
 };

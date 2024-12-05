@@ -4,6 +4,7 @@ function DropdownField({ index, field, className, onChange }) {
   const { options, value } = field;
 
   const [selectedValue, setSelectedValue] = useState(value || ''); // Initialize with passed value or empty
+  const isRequired = true;
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
@@ -12,7 +13,7 @@ function DropdownField({ index, field, className, onChange }) {
 
   return (
     <div className={`border rounded-md p-2 ${className}`}>
-      {field.lebel && <p className="mb-1">{field.lebel}</p>}
+      {field.lebel && <p className="mb-1">{field.lebel}{isRequired? <span className='text-red-600'>*</span>:""}</p>}
       <select
         value={selectedValue}
         onChange={handleChange}

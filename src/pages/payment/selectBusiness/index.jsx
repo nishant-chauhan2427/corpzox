@@ -194,11 +194,20 @@ function SelectBusiness() {
   const handleInputValueChange = (index, newValue) => {
     // console.log("handleInputValueChange: ", index, newValue);
 
-
+    
     const field = dynamicForm[index];
     field.value[0] = newValue;
     setDynamicForm([...dynamicForm]);
   }
+
+  const handleInputValueChangeV2 = (index, newValue,err) => {
+    // console.log("handleInputValueChangeV2: ", index, newValue,err);
+    const field = dynamicForm[index];
+    field.value[0] = newValue;
+    field.error = err;
+    setDynamicForm([...dynamicForm]);
+  }
+
   const handleCheckBoxValueChange = (index, newValue) => {
     // console.log("handleCheckBoxValueChange: ", index, newValue);
 
@@ -273,10 +282,10 @@ function SelectBusiness() {
     <div className='flex flex-col'>
       {dynamicForm?.map((field, idx) => {
         switch (field.inputType) {
-          case "text":
-            return <InputField key={idx} onChange={handleInputValueChange} index={idx} field={field} className={fieldStyle} />;
+          case "short_answer":
+            return <InputField key={idx} onChange={handleInputValueChangeV2} index={idx} field={field} className={fieldStyle} />;
           case "paragraph":
-            return <ParagraphField key={idx} onChange={handleInputValueChange} index={idx} field={field} className={fieldStyle} />;
+            return <ParagraphField key={idx} onChange={handleInputValueChangeV2} index={idx} field={field} className={fieldStyle} />;
           case "multiple_choice":
             return <RadioField key={idx} onChange={handleInputValueChange} index={idx} field={field} className={fieldStyle} />;
           case "dropdown":
@@ -294,7 +303,7 @@ function SelectBusiness() {
         type="button"
         outline={true}
         primary={true}
-        disabled={dynamicForm?.some((field) => field.error === true) || isSaving}
+        disabled={(dynamicForm?.some((field,idx) => { if(idx==14 )return false; else return field.error === true})) }
         className={" py-2 "}
         onClick={handleSubmit}
       >

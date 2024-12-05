@@ -136,7 +136,7 @@ console.log(action.payload.quotations.length, "action.payload.quotations.length"
           state.isQuotationAvailable = false; 
         }
         console.log(state.subscription, "service ")
-        console.log(action.payload.offerservices[0].offers, "offers hehehe")
+        console.log(action.payload.offerservices[0]?.offers, "offers hehehe")
         
         // if(action.payload.offerservices && action.payload.offerservices.length > 0 ){
         //   state.subscription = state.action.payload.offerservices.map((subscription)=>{
@@ -147,15 +147,16 @@ console.log(action.payload.quotations.length, "action.payload.quotations.length"
         //     }
         //   })
         // }
-      //   if (action.payload.offerservices[0].offers.length > 0) {
-      //     const discount = action.payload.offerservices[0].offers[0].discountPercent; // Get the discount value
-      //     state.subscription = state.subscription.map((item) => {
-      //         return {
-      //             ...item, // Preserve existing properties
-      //             amount: item.amount - (item.amount * discount) / 100, // Apply the discount to update amount
-      //         };
-      //     });
-      // }
+        console.log(action.payload.offerservices[0]?.offers[0]?.discountPercent, "action.payload.offerservices[0].offers[0].discountPercent");
+        if (action.payload.offerservices[0]?.offers.length > 0) {
+          const discount = action.payload.offerservices[0]?.offers[0]?.discountPercent; // Get the discount value
+          state.subscription = state.subscription.map((item) => {
+              return {
+                  ...item, // Preserve existing properties
+                  amount: item.amount - (item.amount * discount) / 100, // Apply the discount to update amount
+              };
+          });
+      }
       
         if (action.payload.quotations && action.payload.quotations.length > 0) {
           state.isQuotationAvailable = true

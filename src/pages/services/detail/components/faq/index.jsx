@@ -6,7 +6,7 @@ export const FAQs = () => {
   const { success } = useSelector((state) => state.serviceDetails);
   const faqArray = success?.faqservices
   const transformedFaqArray = faqArray?.map((item) => {
-    const { question, answer } = item.faq[0]; 
+    const { question, answer } = item.faq[0];
     return {
       question,
       answer,
@@ -59,7 +59,7 @@ export const FAQs = () => {
 
       {/* FAQ Items */}
       <div className="space-y-4">
-        {transformedFaqArray?.map((faq, index) => (
+        {/* {transformedFaqArray?.map((faq, index) => (
           <div
             key={index}
             className="border border-gray-300 rounded-lg shadow-md"
@@ -93,7 +93,51 @@ export const FAQs = () => {
               </div>
             )}
           </div>
-        ))}
+        ))} */}
+        {!transformedFaqArray || transformedFaqArray.length === 0 ? (
+          <p className="text-center font-medium text-gray-600">
+            Coming Soon!
+          </p>
+        ) : (
+          <div className="space-y-4">
+            {transformedFaqArray.map((faq, index) => (
+              <div
+                key={index}
+                className="border border-gray-300 rounded-lg shadow-md"
+              >
+                <button
+                  onClick={() => toggleFAQ(index)}
+                  className="w-full flex justify-between items-center px-5 py-4 bg-[#DFEAF2] hover:bg-gray-200 text-left font-medium"
+                >
+                  <span className="flex items-center font-semibold text-sm">
+                    <span className="text-blue-500 mr-2">{faq.icon}</span>
+                    {faq.question}
+                  </span>
+                  <span className="text-gray-500">
+                    {openIndex === index ? (
+                      <img
+                        className="rotate-180"
+                        src="/icons/services/dropdown.svg"
+                        alt="Collapse"
+                      />
+                    ) : (
+                      <img src="/icons/services/dropdown.svg" alt="Expand" />
+                    )}
+                  </span>
+                </button>
+                {openIndex === index && (
+                  <div className="px-5 py-3 text-gray-600 bg-[#DFEAF2]">
+                    {faq.answer.split("\n").map((line, idx) => (
+                      <p key={idx} className="mb-2">
+                        {line.trim()}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
