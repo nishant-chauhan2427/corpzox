@@ -59,7 +59,7 @@ const documentSlice = createSlice({
         state.fetchingDocumentError =
           action.payload || "An error occurred while fetching services.";
 
-
+        state.dataList = []
 
       }).addCase(getfolderData .pending, (state) => {
         state.isdocumentLoading= true;

@@ -59,6 +59,7 @@ const wishlistSlice = createSlice({
       .addCase(removeServiceWishlistData1.fulfilled, (state, action) => {
         state.heartloading = false;
         //console.log(action.payload.serviceId, "SERVICE DATA");
+        console.log(state.childLoading[action.payload.serviceId] , 'chiloaing')
         state.childLoading[action.payload.serviceId]=false;
         let newList = state.wishList.filter((service) => {
           if (service?.serviceId != action.payload?.serviceId)

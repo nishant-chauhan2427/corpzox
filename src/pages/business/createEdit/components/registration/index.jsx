@@ -122,6 +122,7 @@ export const RegistrationDetails = ({ control, errors, setValue, touchedFields,h
                   field.onChange(e);  // Default handling
                   trigger("registration.typeOfBusiness");  // Manually trigger validation for this field
                 }}
+                maxLength={50}
               />
             )}
           />
@@ -140,6 +141,7 @@ export const RegistrationDetails = ({ control, errors, setValue, touchedFields,h
                   field.onChange(e);  // Default handling
                   trigger("registration.businessName");  // Manually trigger validation for this field
                 }}
+                maxLength={50}
               />
             )}
           />
@@ -231,6 +233,7 @@ export const RegistrationDetails = ({ control, errors, setValue, touchedFields,h
                   field.onChange(e);  // Default handling
                   trigger("registration.headQuarterLocation");  // Manually trigger validation for this field
                 }}
+                maxLength={50}
               />
             )}
           />

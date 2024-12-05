@@ -41,7 +41,7 @@ const DocumentsListing = () => {
     navigate(`/documents/detail/${_id}`);
   };
 
-  console.log("selected service info",selectedServiceInfo);
+  console.log("selected folder",folders);
 
   const servicesOptions = Array.isArray(services)
     ? services.map((item) => ({
@@ -76,11 +76,11 @@ const DocumentsListing = () => {
             </Heading>
           </div>
 
-          {fetchingDocumentError && (
+          {/* {fetchingDocumentError && (
             <div className="text-red-500 my-2">
               An error occurred: {fetchingDocumentError}
             </div>
-          )}
+          )} */}
 
           <div>
             <Selector

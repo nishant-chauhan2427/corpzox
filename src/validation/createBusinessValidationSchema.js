@@ -7,11 +7,11 @@ export const registrationSchema = Yup.object().shape({
     typeOfBusiness: Yup.string()
       .required("Business Type is required.")
       .min(3, "Business Type must be at least 3 characters.")
-      .max(30,"Business Type must be atmost 30 characters."),
+      .max(50,"Business Type must be atmost 50 characters."),
     businessName: Yup.string()
       .required("Business Name is required.")
       .min(3, "Business Name must be at least 3 characters.")
-      .max(30,"Business Name must be atmost 30 characters."),
+      .max(50,"Business Name must be atmost 50 characters."),
     cinNumber: Yup.string()
       .required("CIN No. is required.")
       .matches(/^[A-Z0-9]{21}$/, "CIN No. must be a valid 21-character code."), // Example pattern for CIN
@@ -25,7 +25,7 @@ export const registrationSchema = Yup.object().shape({
     headQuarterLocation: Yup.string()
       .required("Headquarter Location is required.")
       .min(3, "Location must be at least 3 characters.")
-      .max(30,"Location must be atmost 30 characters."),
+      .max(50,"Location must be atmost 50 characters."),
     industry: Yup.string()
       .required("Industry Type is required."),
     subIndustry: Yup.string()
@@ -47,11 +47,11 @@ export const addressSchema = Yup.object().shape({
       businessAddressL1: Yup.string().
       required("Line 1 is required")
       .min(3, "Line 1 must be at least 3 characters.")
-      .max(30, "Line 1 must be at most 30 characters."),
+      .max(50, "Line 1 must be at most 50 characters."),
       businessAddressL2: Yup.string().
       required("Line 2 is required")
       .min(3, "Line 2 must be at least 3 characters.")
-      .max(30, "Line 2 must be at most 30 characters."),
+      .max(50, "Line 2 must be at most 50 characters."),
       businessAddressPin: Yup.number()
       .required("Pin is required")
       .test('len', 'Must be exactly 6 characters', val => val.toString().length === 6),
@@ -61,11 +61,11 @@ export const addressSchema = Yup.object().shape({
       communicationAddressL1: Yup.string()
       .required("Line 1 is required")
       .min(3, "Line 1 must be at least 3 characters.")
-      .max(30, "Line 1 must be at most 30 characters."),
+      .max(50, "Line 1 must be at most 50 characters."),
       communicationAddressL2: Yup.string()
       .required("Line 2 is required")
       .min(3, "Line 2 must be at least 3 characters.")
-      .max(30, "Line 2 must be at most 30 characters."),
+      .max(50, "Line 2 must be at most 50 characters."),
       communicationAddressPin: Yup.number()
       .required("PIN Code is required")
       .test('len', 'Must be exactly 6 characters', val => val.toString().length === 6),

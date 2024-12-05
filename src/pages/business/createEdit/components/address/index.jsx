@@ -16,7 +16,7 @@ export const AddressDetails = ({ control, errors, setValue, handleBlur, trigger 
       setValue("address.businessAddressPin", business?.address?.businessAddressPin || "");
       setValue("address.businessAddressCity", business?.address?.businessAddressCity || "");
       setValue("address.businessAddressState", business?.address?.businessAddressState || "");
-      
+
       setValue("address.communicationAddressL1", business?.address?.communicationAddressL1 || "");
       setValue("address.communicationAddressL2", business?.address?.communicationAddressL2 || "");
       setValue("address.communicationAddressPin", business?.address?.communicationAddressPin || "");
@@ -73,6 +73,7 @@ export const AddressDetails = ({ control, errors, setValue, handleBlur, trigger 
                     field.onChange(e); // Default handling
                     trigger("address.businessAddressL1"); // Manually trigger validation
                   }}
+                  maxLength={50}
                 />
               )}
             />
@@ -91,27 +92,36 @@ export const AddressDetails = ({ control, errors, setValue, handleBlur, trigger 
                     field.onChange(e);
                     trigger("address.businessAddressL2");
                   }}
+                  maxLength={50}
                 />
               )}
             />
+
             <Controller
-              name="address.businessAddressPin"
+              name="address.businessAddressState"
               control={control}
-              render={({ field }) => (
-                <Input
-                  {...field}
-                  label="PIN Code"
-                  placeholder="Enter your pincode"
-                  errorContent={errors?.address?.businessAddressPin?.message}
-                  required
-                  onBlur={() => handleFieldBlur("address.businessAddressPin")}
-                  onChange={(e) => {
-                    field.onChange(e);
-                    trigger("address.businessAddressPin");
-                  }}
-                />
-              )}
+              render={({ field }) => {
+                const selectedState = stateOption.find((option) => option.value === field.value);
+                return (
+                  <Selector
+                    {...field}
+                    label="State"
+                    placeholder="Select state"
+                    errorContent={errors?.address?.businessAddressState?.message}
+                    options={stateOption}
+                    required
+                    value={selectedState || {}}
+                    onChange={(selectedValue) => {
+                      field.onChange(selectedValue.value);
+                      setValue("address.businessAddressState", selectedValue.value);
+                      trigger("address.businessAddressState"); // Manually trigger validation
+                    }}
+                    onBlur={() => handleFieldBlur("address.businessAddressState")}
+                  />
+                );
+              }}
             />
+
             <Controller
               name="address.businessAddressCity"
               control={control}
@@ -137,29 +147,24 @@ export const AddressDetails = ({ control, errors, setValue, handleBlur, trigger 
               }}
             />
             <Controller
-              name="address.businessAddressState"
+              name="address.businessAddressPin"
               control={control}
-              render={({ field }) => {
-                const selectedState = stateOption.find((option) => option.value === field.value);
-                return (
-                  <Selector
-                    {...field}
-                    label="State"
-                    placeholder="Select state"
-                    errorContent={errors?.address?.businessAddressState?.message}
-                    options={stateOption}
-                    required
-                    value={selectedState || {}}
-                    onChange={(selectedValue) => {
-                      field.onChange(selectedValue.value);
-                      setValue("address.businessAddressState", selectedValue.value);
-                      trigger("address.businessAddressState"); // Manually trigger validation
-                    }}
-                    onBlur={() => handleFieldBlur("address.businessAddressState")}
-                  />
-                );
-              }}
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  label="PIN Code"
+                  placeholder="Enter your pincode"
+                  errorContent={errors?.address?.businessAddressPin?.message}
+                  required
+                  onBlur={() => handleFieldBlur("address.businessAddressPin")}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    trigger("address.businessAddressPin");
+                  }}
+                />
+              )}
             />
+
           </div>
         </div>
 
@@ -185,6 +190,7 @@ export const AddressDetails = ({ control, errors, setValue, handleBlur, trigger 
                     field.onChange(e);
                     trigger("address.communicationAddressL1");
                   }}
+                  maxLength={50}
                 />
               )}
             />
@@ -203,52 +209,12 @@ export const AddressDetails = ({ control, errors, setValue, handleBlur, trigger 
                     field.onChange(e);
                     trigger("address.communicationAddressL2");
                   }}
+                  maxLength={50}
                 />
               )}
             />
-            <Controller
-              name="address.communicationAddressPin"
-              control={control}
-              render={({ field }) => (
-                <Input
-                  {...field}
-                  label="PIN Code"
-                  placeholder="Enter your pincode"
-                  errorContent={errors?.address?.communicationAddressPin?.message}
-                  required
-                  onBlur={() => handleFieldBlur("address.communicationAddressPin")}
-                  onChange={(e) => {
-                    field.onChange(e);
-                    trigger("address.communicationAddressPin");
-                  }}
-                />
-              )}
-            />
-            <Controller
-              name="address.communicationAddressCity"
-              control={control}
-              render={({ field }) => {
-                const selectedCity = cityOption.find((option) => option.value === field.value);
-                return (
-                  <Selector
-                    {...field}
-                    label="City"
-                    placeholder="Select city"
-                    errorContent={errors?.address?.communicationAddressCity?.message}
-                    options={cityOption}
-                    required
-                    value={selectedCity || {}}
-                    onChange={(selectedValue) => {
-                      field.onChange(selectedValue.value);
-                      setValue("address.communicationAddressCity", selectedValue.value);
-                      trigger("address.communicationAddressCity"); // Manually trigger validation
-                    }}
-                    onBlur={() => handleFieldBlur("address.communicationAddressCity")}
-                  />
-                );
-              }}
-            />
-            <Controller
+            
+             <Controller
               name="address.communicationAddressState"
               control={control}
               render={({ field }) => {
@@ -272,6 +238,50 @@ export const AddressDetails = ({ control, errors, setValue, handleBlur, trigger 
                 );
               }}
             />
+            <Controller
+              name="address.communicationAddressCity"
+              control={control}
+              render={({ field }) => {
+                const selectedCity = cityOption.find((option) => option.value === field.value);
+                return (
+                  <Selector
+                    {...field}
+                    label="City"
+                    placeholder="Select city"
+                    errorContent={errors?.address?.communicationAddressCity?.message}
+                    options={cityOption}
+                    required
+                    value={selectedCity || {}}
+                    onChange={(selectedValue) => {
+                      field.onChange(selectedValue.value);
+                      setValue("address.communicationAddressCity", selectedValue.value);
+                      trigger("address.communicationAddressCity"); // Manually trigger validation
+                    }}
+                    onBlur={() => handleFieldBlur("address.communicationAddressCity")}
+                  />
+                  
+                );
+              }}
+            />
+            <Controller
+              name="address.communicationAddressPin"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  label="PIN Code"
+                  placeholder="Enter your pincode"
+                  errorContent={errors?.address?.communicationAddressPin?.message}
+                  required
+                  onBlur={() => handleFieldBlur("address.communicationAddressPin")}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    trigger("address.communicationAddressPin");
+                  }}
+                />
+              )}
+            />
+           
           </div>
         </div>
       </div>
