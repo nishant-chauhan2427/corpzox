@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 function ParagraphField({ index, field, className, onChange }) {
-  const { lebel, value } = field;
+  const { lebel, value,isRequired } = field;
   const [inputValue, setInputValue] = useState(value[0] || '');
 
 //   console.log("ParagraphField",field);
@@ -39,7 +39,7 @@ function ParagraphField({ index, field, className, onChange }) {
 
   return (
     <div className={`border rounded-md p-2 ${className}`}>
-      {lebel && <p className="mb-1">{lebel}</p>}
+      {lebel && <p className="mb-1">{lebel}{isRequired? <span className='text-red-600'>*</span>:""}</p>}
       <textarea
         value={field.value[0]}
         onChange={handleChange}

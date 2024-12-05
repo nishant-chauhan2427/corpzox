@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../../redux/slices/userLoginSlice";
 import { ConfirmationModal } from "../modal/confirmationModal";
 import { persistor } from "../../redux/store";
+import { clearDocumentList } from "../../redux/slices/documentSlice";
 
 export const Header = ({ className, collapse, setCollapse }) => {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
@@ -106,6 +107,8 @@ export const Header = ({ className, collapse, setCollapse }) => {
       console.log('Persisted data cleared successfully!');
       return persistor.purge();
     });
+    // dispatch(clearDocumentList())
+    localStorage.clear()
   }
 
   const handleCancelLogout =()=>{

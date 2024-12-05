@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 function RadioField({ index, field, className,onChange }) {
-    const { options, value } = field;
+    const { options, value, isRequired } = field;
 
     const [selectedValue, setSelectedValue] = useState(value?value[0]:'');    
 
@@ -13,7 +13,7 @@ function RadioField({ index, field, className,onChange }) {
     
     return (
         <div className={` border rounded-md p-2 ${className}`} >
-            {field.lebel && <p>{field.lebel}</p>}
+            {field.lebel && <p>{field.lebel} {isRequired? <span className='text-red-600'>*</span>:""} </p>}
             
             {options?.map((option,idx) => (
                 <label key={option} className=" flex items-center pl-4">

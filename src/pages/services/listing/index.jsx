@@ -25,6 +25,7 @@ import { Offers } from "../../../components/offers";
 import { updateServiveProgress } from "../../../redux/actions/dashboard-action";
 import { NoData } from "../../../components/errors/noData";
 import { ImSpinner2 } from "react-icons/im";
+import { Heading } from "../../../components/heading";
 const ServicesListing = () => {
   const dispatch = useDispatch();
   const { categoryId, subCategoryId } = useParams();

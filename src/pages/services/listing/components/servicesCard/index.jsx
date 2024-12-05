@@ -43,14 +43,18 @@ export const ServicesCard = ({
             >
 
 
-              <div className="flex justify-between">
-                <div className="flex  gap-2">
+<div className="flex justify-between">
+  <div className="flex gap-2">
+    <p className="font-bold text-[#0A1C40]">
+      {url.includes("services") ? service?.name : service?.service?.[0]?.name || "No Service Name"}
+    </p>
+    {(url.includes("services")||url.includes("services")) && service?.offerservices?.[0]?.offers?.[0]?.discountPercent && (
+      <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1">
+        {service.offerservices[0].offers[0].discountPercent} %
+      </p>
+    )}
+  </div>
 
-                  <p className="font-bold text-[#0A1C40]">{url.includes("services") ? service?.name : service?.service[0]?.name}</p>
-                  {service?.offerservices[0]?.offers[0]?.discountPercent && <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1 ">
-                    {url.includes("services") ? `${service?.offerservices[0]?.offers[0]?.discountPercent} %` : ""}
-                  </p>}
-                </div>
 
                 {url.includes("services") ? <Checkbox
                   className="service-checkbox"
