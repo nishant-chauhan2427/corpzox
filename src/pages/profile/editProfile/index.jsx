@@ -42,16 +42,27 @@ const Edit = () => {
   };
 
   useEffect(() => {
-   // dispatch(getUser());
-    const data = (user.name || "").split(" ");
-    //  console.log(data,"data123");
-    // console.log("useer",user);
+  
+    const str = user.name || ''; 
+    console.log(str, 'DATA');
+
+    let data = [];
+    const spaceIndex = str.indexOf(' ');
+
+    if (spaceIndex !== -1) {
+        const firstName = str.substring(0, spaceIndex); 
+        const lastName = str.substring(spaceIndex + 1); 
+        data = [firstName, lastName];
+    } else {
+        data = [str, ''];
+    }
+
     setValue("firstName", data[0]);
     setValue("lastName", data[1]);
     setValue("email", user?.email);
     setValue("businessEmail", user?.busniessEmail ? user?.busniessEmail : "");
-  }, []);
 
+}, [user]); 
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} className="flex gap-4 flex-col">

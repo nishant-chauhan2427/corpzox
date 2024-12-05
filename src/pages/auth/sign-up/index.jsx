@@ -160,6 +160,7 @@ export const Signup = () => {
                       className={"border-[#D9D9D9] border"}
                       errorContent={errors?.email?.message}
                       onBlur={() => handleBlur("email")}
+                      maxLength={50}
                     />
                   )}
                   // rules={{ required: "Email Address is required" }}
