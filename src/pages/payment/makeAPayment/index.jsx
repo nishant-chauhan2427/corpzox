@@ -32,7 +32,7 @@ const MakeAPayment = () => {
 const navigate = useNavigate()
 
   const [currentStep, setCurrentStep] = useState(0);
-  const { success,serviceDetailLoading, cost,originalPrice, appliedCoupons, coupons, availServiceData, isServiceAvailing, totalSavings, serviceCost, serviceCharge } = useSelector((state) => state.serviceDetails);
+  const { success,serviceDetailLoading,isCouponVerifiedLoading, cost,originalPrice, appliedCoupons, coupons, availServiceData, isServiceAvailing, totalSavings, serviceCost, serviceCharge } = useSelector((state) => state.serviceDetails);
   console.log(coupons, "cost from slice ")
   useEffect(() => {
     // PASS DYNAMIC ID HERE
@@ -75,6 +75,11 @@ const navigate = useNavigate()
     setShowAddIcon(!showAddIcon);
   };
 
+  useEffect(() => {
+    if (!isCouponVerifiedLoading) {
+      setModalOpen(false);
+    }
+  }, [isCouponVerifiedLoading]);
   const PaymentTabs = [
     { id: "Card", icon: "/icons/payment/debit.svg", label: "Card" },
     { id: "UPI", icon: "/icons/payment/upi.svg", label: "UPI" },
@@ -270,7 +275,7 @@ const navigate = useNavigate()
             </div>}
           </div>
           <div className="sm:w-[40%] mb-2 sm:mt-9 flex flex-col px-4 py-3 border rounded gap-3 border-[#C6C6C6]">
-            {serviceDetailLoading ? <PricingDetailShimmer/> : <PricingDetail totalCost={cost} originalPrice={originalPrice} availServiceData={availServiceData} totalSavings={totalSavings} serviceCost={serviceCost} serviceCharge={serviceCharge} />}
+            {serviceDetailLoading ? <PricingDetailShimmer/> : <PricingDetail totalCost={cost} originalPrice={originalPrice} availServiceData={availServiceData} totalSavings={totalSavings} serviceCost={serviceCost} serviceCharge={serviceCharge} data={success}/>}
             <div className="flex justify-center items-center pt-4 px-4 gap-2 ">
               {/* <ReactModal
                 className="border-[#FF3B3B] border-[3px] py-2 "

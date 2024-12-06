@@ -196,16 +196,16 @@ const serviceDetailSlice = createSlice({
         );
 
         // Set the original amount if a subscription is found, else use the amount in the object
-        const initialAmount = selectedSubscription ? selectedSubscription.amount : action.payload.amount;
+        const initialAmount = selectedSubscription ? selectedSubscription.amount : action.payload.cost;
 
         state.originalPrice = initialAmount;
         if (!state.cost && action.payload.cost) {
           state.cost = action.payload.cost;
         }
 
-        if (state.serviceCharge) {
-          state.cost = state.serviceCharge + state.subscription[0].amount;
-        }
+        // if (state.serviceCharge) {
+        //   state.cost = state.serviceCharge + state.subscription[0].amount;
+        // }
 
         console.log(state.serviceCharge, "totalCost");
         state.averageRating = action.payload.averageRating;
@@ -221,18 +221,19 @@ const serviceDetailSlice = createSlice({
         console.log(state.subscription, "service");
 
         // Check if there are offers and apply the discount
-        if (action.payload.offerservices[0]?.offers.length > 0) {
-          const discount = action.payload.offerservices[0]?.offers[0]?.discountPercent;
-          state.subscription = state.subscription.map((item) => ({
-            ...item,
-            amount: item.amount - (item.amount * discount) / 100,
-          }));
-        }
+        // if (action.payload.offerservices[0]?.offers.length > 0) {
+        //   const discount = action.payload.offerservices[0]?.offers[0]?.discountPercent;
+        //   state.subscription = state.subscription.map((item) => ({
+        //     ...item,
+        //     amount: item.amount - (item.amount * discount) / 100,
+        //   }));
+        // }
 
         // Check if a quotation is available and set cost
         if (action.payload.quotations && action.payload.quotations.length > 0) {
           state.isQuotationAvailable = true;
           state.cost = action.payload.quotations[0].amount;
+          state.originalPrice =  action.payload.quotations[0].amount;
         }
 
         // Calculate the final price using the reusable function
