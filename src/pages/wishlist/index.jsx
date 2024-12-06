@@ -43,7 +43,7 @@ const Wishlist = () => {
           Wishlist{" "}
         </Heading>
         {wishList && wishList.length === 0 ? (<NoData/>) : (<ServicesCard data={wishList} onClick={(service) => onClickWishList(service)} />)}
-        {wishList && wishList.length > 5 && (
+        {/* {wishList && wishList.length > 5 && (
           <div className="mt-10 flex justify-center">
             {wishList.length == totalCount ? (
               <></>
@@ -51,7 +51,7 @@ const Wishlist = () => {
               <Button primary={true}>Load More </Button>
             )}
           </div>
-        )}
+        )} */}
         {/* <div className="flex items-center justify-center pt-20 ">
           <Button primary={true}>Load More</Button>
         </div> */}

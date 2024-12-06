@@ -342,6 +342,7 @@ const serviceDetailSlice = createSlice({
         const isAlreadyAdded = state.appliedCoupons.some(coupon => coupon.couponId === couponData.couponId);
         if (isAlreadyAdded) {
           console.warn(`Coupon with id ${couponData.couponId} is already applied.`);
+          toast.error("Coupon already applied!")
           return;
         }
 
