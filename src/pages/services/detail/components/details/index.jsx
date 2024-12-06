@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../../../../../components/buttons";
 import { Rating } from "../../../../../components/rating";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const Details = ({
   pricing = true,
@@ -14,9 +14,9 @@ export const Details = ({
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const navigateToService = () => {
-    navigate(`/payment/${serviceId}`);
-  };
+  // const navigateToService = () => {
+  //   navigate(`/payment/${serviceId}`);
+  // };
 
   const { success, serviceDetailLoading } = useSelector(
     (state) => state.serviceDetails
@@ -37,6 +37,14 @@ export const Details = ({
         ).toFixed(2)
       : Number(subscriptionAmount).toFixed(2);
 
+      // const { id: serviceId } = useParams();
+
+      const subscription = success?.subscription?.[0] || null;
+      let subscriptionId = subscription?.id || serviceId;
+    
+      const navigateToService = () => {
+        navigate(`/payment/${subscriptionId}`);
+      };
   return (
     <section className="flex flex-col gap-2">
       <div className="flex flex-col text-start gap-2">
@@ -80,7 +88,7 @@ export const Details = ({
                 "Loading..."
               ) : (
                 <div className="font-extrabold text-2xl text-[#0A1C40] flex gap-2">
-                  ₹ {discountedPrice}
+                  ₹ {subscriptionAmount}
                   {discountPercent > 0 && (
                     <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2">
                       {discountPercent} %
@@ -128,13 +136,13 @@ export const Details = ({
               </div>
             </div>
             <div className="pt-2 flex justify-between items-center gap-2">
-              {/* <Button
+              <Button
                 onClick={navigateToService}
                 className={"text-xs px-2 py-1 rounded-sm"}
                 outline={true}
               >
                 Avail services
-              </Button> */}
+              </Button>
               <Button
                 isLoading={isLoading}
                 onClick={handleRequest}

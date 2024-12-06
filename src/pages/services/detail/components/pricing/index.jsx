@@ -13,7 +13,7 @@ import { formatMillisecondsToDate } from "../../../../../utils";
 export const Pricing = ({ pricing = true, data, serviceId, offer }) => {
   const [isInitialDispatchMade, setIsInitialDispatchMade] = useState(false);
   const { subscription, quotationDetails } = useSelector(
-    (state) => state.serviceDetails 
+    (state) => state.serviceDetails
   );
 
   const navigate = useNavigate();
@@ -28,17 +28,17 @@ export const Pricing = ({ pricing = true, data, serviceId, offer }) => {
     };
   });
 
-const formattedSubscriptions = subscription?.map((subscription)=>{
-  return {
-    title: subscription.title,
-    price: subscription.amount,
-    additional_cost: "+ applicable govt. ₹500",
-    features: [
-      "Fast Application",
-      "Application within 5 working days or your money back.",
-    ],
-  }
-})
+  const formattedSubscriptions = subscription?.map((subscription) => {
+    return {
+      title: subscription.title,
+      price: subscription.amount,
+      additional_cost: "+ applicable govt. ₹500",
+      features: [
+        "Fast Application",
+        "Application within 5 working days or your money back.",
+      ],
+    }
+  })
   const packages = [
     {
       title: "STARTER PACK",
@@ -160,7 +160,7 @@ const formattedSubscriptions = subscription?.map((subscription)=>{
                 serviceId={serviceId}
                 navigate={navigate}
                 dispatch={dispatch}
-                offer ={offer}
+                offer={offer}
               />
             ))}
           </div>
@@ -191,8 +191,8 @@ const PricingCard = ({ data, serviceId, navigate, dispatch, offer }) => {
     // );
     dispatch(stePaymentDetails({
       subscriptionCost: cost,
-      totalCost : cost + (stateWiseServiceCharge || 0), 
-      
+      totalCost: cost + (stateWiseServiceCharge || 0),
+
     }))
     localStorage.setItem("subscriptionId", data?._id)
   };
@@ -203,12 +203,15 @@ const PricingCard = ({ data, serviceId, navigate, dispatch, offer }) => {
           <div className="font-bold flex gap-2 text-[#0A1C40] text-[22px] ">
             {data?.amount}
             {offer && <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1 ">
-             {offer} %
+              {offer} %
             </p>}
           </div>
           <p className="font-semibold text-xs text-[#038624]">
-            {`+ applicable govt. fees ${data?.stateWiseServiceCharge}`}
+            {data?.stateWiseServiceCharge
+              ? ` ${data?.stateWiseServiceCharge} + applicable govt. fees`
+              : `--`}
           </p>
+
         </div>
         <p className="pt-6 font-bold uppercase text-sm text-[#565657]">
           {data.title}
