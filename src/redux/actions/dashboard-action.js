@@ -35,7 +35,6 @@ export const getUserBusiness = createAsyncThunk("getUserBusiness", async ({ page
         'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
       },
     });
-    console.log(response);
     if (response?.data?.code == 200 || response?.data?.code == 201) {
       return response.data;
     } else {

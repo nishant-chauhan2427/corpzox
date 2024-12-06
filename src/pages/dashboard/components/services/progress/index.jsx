@@ -65,7 +65,6 @@ export const ServicesProgress = ({ data }) => {
     dispatch(ratingReview({ ...formData, serviceId }));
     reset(); // Reset the form after submission
   };
-  //
   const servicesProgessSteps = [
     {
       step: 1,
