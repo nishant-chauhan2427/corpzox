@@ -55,6 +55,7 @@ const Wishlist = () => {
         {/* <div className="flex items-center justify-center pt-20 ">
           <Button primary={true}>Load More</Button>
         </div> */}
+        {/* checking service */}
       </div>
     </>
   );
