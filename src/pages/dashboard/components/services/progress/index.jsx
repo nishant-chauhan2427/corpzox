@@ -113,7 +113,7 @@ export const ServicesProgress = ({ data }) => {
           Your Service Progress Updates({dataUpdate?.total})
         </Heading>
         <Link
-          to={"/services/serviceprogressdetail"}
+          to={"/services"}
           className="font-semibold text-[#606060]"
         >
           View All
