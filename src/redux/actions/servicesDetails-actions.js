@@ -115,7 +115,7 @@ export const talkToAdvisor = createAsyncThunk("talkToAdvisor", async (userData, 
     }
 });
 
-export const availService = createAsyncThunk("availService", async (userData, { dispatch, rejectWithValue }) => {
+export const availService = createAsyncThunk("availService", async ({userData, navigate}, { dispatch, rejectWithValue }) => {
     try {
         const response = await client.post(`/application/avail-service`,userData,{
             headers: {
@@ -126,7 +126,11 @@ export const availService = createAsyncThunk("availService", async (userData, { 
           });
         console.log(response,'service-states..');
         if(response?.status==200){
-            dispatch(paymentStatus({  paymentStatus:"CAPTURED",transactionId : response?.data?.data._id}))
+            const userData = {
+                paymentStatus:"CAPTURED",transactionId : response?.data?.data?.resultPayment?._id
+            }
+            // dispatch(paymentStatus({  paymentStatus:"CAPTURED",transactionId : response?.data?.data._id}))
+            dispatch(paymentStatus({userData, navigate , navId : response?.data?.data?.resultApplication?._id}))
             return response.data;
         }else{
             return rejectWithValue(response?.data?.message);            
@@ -136,7 +140,7 @@ export const availService = createAsyncThunk("availService", async (userData, { 
         return rejectWithValue(error?.response?.data?.message || error?.message);
     }
 });
-export const paymentStatus = createAsyncThunk("paymentStatus", async (userData, { rejectWithValue }) => {
+export const paymentStatus = createAsyncThunk("paymentStatus", async ({userData, navigate, navId}, { rejectWithValue }) => {
     try {
         const response = await client.put(`/application/payment-status`,userData,{
             headers: {
@@ -147,6 +151,7 @@ export const paymentStatus = createAsyncThunk("paymentStatus", async (userData, 
           });
         console.log(response,'service-states..');
         if(response?.status==200){
+            navigate(`/payment/create/${navId}`)
             return response.data;
         }else{
             return rejectWithValue(response?.data?.message);            

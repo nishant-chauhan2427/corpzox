@@ -10,7 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { stePaymentDetails } from "../../../../../redux/slices/serviceDetailsSlice";
 import { formatMillisecondsToDate } from "../../../../../utils";
 
-export const Pricing = ({ pricing = true, data, serviceId }) => {
+export const Pricing = ({ pricing = true, data, serviceId, offer }) => {
   const [isInitialDispatchMade, setIsInitialDispatchMade] = useState(false);
   const { subscription, quotationDetails } = useSelector(
     (state) => state.serviceDetails 
@@ -160,6 +160,7 @@ const formattedSubscriptions = subscription?.map((subscription)=>{
                 serviceId={serviceId}
                 navigate={navigate}
                 dispatch={dispatch}
+                offer ={offer}
               />
             ))}
           </div>
@@ -181,7 +182,7 @@ const formattedSubscriptions = subscription?.map((subscription)=>{
   );
 };
 
-const PricingCard = ({ data, serviceId, navigate, dispatch }) => {
+const PricingCard = ({ data, serviceId, navigate, dispatch, offer }) => {
   console.log(data, "subscription data");
   const handleServicePayment = (cost, stateWiseServiceCharge) => {
     navigate(`/payment/${serviceId}`);
@@ -191,8 +192,9 @@ const PricingCard = ({ data, serviceId, navigate, dispatch }) => {
     dispatch(stePaymentDetails({
       subscriptionCost: cost,
       totalCost : cost + (stateWiseServiceCharge || 0), 
-      stateWiseServiceCharge,
+      
     }))
+    localStorage.setItem("subscriptionId", data?._id)
   };
   return (
     <div className="w-full flex gap-10 justify-center">
@@ -200,9 +202,9 @@ const PricingCard = ({ data, serviceId, navigate, dispatch }) => {
         <div>
           <div className="font-bold flex gap-2 text-[#0A1C40] text-[22px] ">
             {data?.amount}
-            <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1 ">
-              {data.off}
-            </p>
+            {offer && <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1 ">
+             {offer} %
+            </p>}
           </div>
           <p className="font-semibold text-xs text-[#038624]">
             {`+ applicable govt. fees ${data?.stateWiseServiceCharge}`}

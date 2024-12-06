@@ -30,7 +30,8 @@ const serviceDetailSlice = createSlice({
     isPaymentLoading: false,
     isPaymentSuccessful: false,
     totalSavings: 0,
-    isQuotationAvailable: false
+    isQuotationAvailable: false,
+    subscriptionId: "",
   },
   reducers: {
     clearState: (state) => {
@@ -109,74 +110,160 @@ const serviceDetailSlice = createSlice({
         state.error = null;
         state.success = null;
       })
+      //       .addCase(getServiceDetails.fulfilled, (state, action) => {
+      //         // toast.success(action.payload.message)
+      //         console.log(action.payload, 'service details')
+      //         state.serviceDetailLoading = false;
+      //         state.success = action.payload;
+      //         state.subscription = action.payload.subscription
+      //         state.coupons = action.payload.coupons
+      //         state.error = null;
+      //         state.serviceTestimonials = action.payload.servicetestimonials;
+
+      //         if (!state.cost && action.payload.cost) {
+      //           state.cost = action.payload.cost;
+      //         }
+      //         if (state.serviceCharge) {
+      //           state.cost = state.serviceCharge + state.subscription[0].amount
+      //         }
+
+      //         console.log(state.serviceCharge, "totalCost")
+      //         state.averageRating = action.payload.averageRating
+      //         state.quotationDetails = action.payload.quotations
+      // console.log(action.payload.quotations.length, "action.payload.quotations.length")
+      //         if (action.payload.quotations.length > 0) {
+      //           state.isQuotationAvailable = true;
+      //         }else{
+      //           state.isQuotationAvailable = false; 
+      //         }
+      //         console.log(state.subscription, "service ")
+      //         console.log(action.payload.offerservices[0]?.offers, "offers hehehe")
+
+      //         // if(action.payload.offerservices && action.payload.offerservices.length > 0 ){
+      //         //   state.subscription = state.action.payload.offerservices.map((subscription)=>{
+      //         //     return {
+      //         //       title : subscription.offers[0]?.offerTitle, 
+      //         //       amount : subscription.offers[0]?.amount ? subscription.amount : action.payload.subscription[0].amount, 
+      //         //       description : subscription.offers[0]?.offerDetail,
+      //         //     }
+      //         //   })
+      //         // }
+      //         console.log(action.payload.offerservices[0]?.offers[0]?.discountPercent, "action.payload.offerservices[0].offers[0].discountPercent");
+      //         if (action.payload.offerservices[0]?.offers.length > 0) {
+      //           const discount = action.payload.offerservices[0]?.offers[0]?.discountPercent; // Get the discount value
+      //           state.subscription = state.subscription.map((item) => {
+      //               return {
+      //                   ...item, // Preserve existing properties
+      //                   amount: item.amount - (item.amount * discount) / 100, // Apply the discount to update amount
+      //               };
+      //           });
+      //       }
+
+      //         if (action.payload.quotations && action.payload.quotations.length > 0) {
+      //           state.isQuotationAvailable = true
+      //           state.cost = action.payload.quotations[0].amount
+      //         }
+      //         state.availServiceData = {
+      //           serviceId: action.payload._id,
+      //           formId: action.payload.formId,
+      //           serviceDetails: {
+      //             name: action.payload.name,
+      //             cost: action.payload.cost,
+      //             duration: action.payload.duration
+      //           },
+      //           paymentMode: "Net Banking",
+      //           paymentStatus: "PENDING",
+      //           paymentDate: Date.now(),
+      //         }
+      //         state.quotationId = action.payload.quotationId;
+      //         state.formId = action.payload.formId
+      //       })
       .addCase(getServiceDetails.fulfilled, (state, action) => {
-        // toast.success(action.payload.message)
-        console.log(action.payload, 'service details')
+        console.log(action.payload, 'service details');
         state.serviceDetailLoading = false;
         state.success = action.payload;
-        state.subscription = action.payload.subscription
-        state.coupons = action.payload.coupons
+        state.subscription = action.payload.subscription;
+        state.coupons = action.payload.coupons;
         state.error = null;
-        state.serviceTestimonials = action.payload.servicetestimonials;
+        // state.serviceTestimonials = action.payload.servicetestimonials;
+        // const originalAmount = action.payload.subscription && action.payload.subscription[0]
+        //   ? action.payload.subscription[0].amount
+        //   : action.payload.amount;
 
+        // state.originalPrice = originalAmount;
+        const selectedSubscription = action.payload.subscription?.find(
+          (sub) => sub._id === localStorage.getItem("subscriptionId")
+        );
+
+        // Set the original amount if a subscription is found, else use the amount in the object
+        const initialAmount = selectedSubscription ? selectedSubscription.amount : action.payload.amount;
+
+        state.originalPrice = initialAmount;
         if (!state.cost && action.payload.cost) {
           state.cost = action.payload.cost;
         }
+
         if (state.serviceCharge) {
-          state.cost = state.serviceCharge + state.subscription[0].amount
+          state.cost = state.serviceCharge + state.subscription[0].amount;
         }
 
-        console.log(state.serviceCharge, "totalCost")
-        state.averageRating = action.payload.averageRating
-        state.quotationDetails = action.payload.quotations
-console.log(action.payload.quotations.length, "action.payload.quotations.length")
+        console.log(state.serviceCharge, "totalCost");
+        state.averageRating = action.payload.averageRating;
+        state.quotationDetails = action.payload.quotations;
+
         if (action.payload.quotations.length > 0) {
           state.isQuotationAvailable = true;
-        }else{
-          state.isQuotationAvailable = false; 
+        } else {
+          state.isQuotationAvailable = false;
         }
-        console.log(state.subscription, "service ")
-        console.log(action.payload.offerservices[0]?.offers, "offers hehehe")
-        
-        // if(action.payload.offerservices && action.payload.offerservices.length > 0 ){
-        //   state.subscription = state.action.payload.offerservices.map((subscription)=>{
-        //     return {
-        //       title : subscription.offers[0]?.offerTitle, 
-        //       amount : subscription.offers[0]?.amount ? subscription.amount : action.payload.subscription[0].amount, 
-        //       description : subscription.offers[0]?.offerDetail,
-        //     }
-        //   })
-        // }
-        console.log(action.payload.offerservices[0]?.offers[0]?.discountPercent, "action.payload.offerservices[0].offers[0].discountPercent");
+
+        console.log(action.payload.quotations.length, "action.payload.quotations.length");
+        console.log(state.subscription, "service");
+
+        // Check if there are offers and apply the discount
         if (action.payload.offerservices[0]?.offers.length > 0) {
-          const discount = action.payload.offerservices[0]?.offers[0]?.discountPercent; // Get the discount value
-          state.subscription = state.subscription.map((item) => {
-              return {
-                  ...item, // Preserve existing properties
-                  amount: item.amount - (item.amount * discount) / 100, // Apply the discount to update amount
-              };
-          });
-      }
-      
-        if (action.payload.quotations && action.payload.quotations.length > 0) {
-          state.isQuotationAvailable = true
-          state.cost = action.payload.quotations[0].amount
+          const discount = action.payload.offerservices[0]?.offers[0]?.discountPercent;
+          state.subscription = state.subscription.map((item) => ({
+            ...item,
+            amount: item.amount - (item.amount * discount) / 100,
+          }));
         }
+
+        // Check if a quotation is available and set cost
+        if (action.payload.quotations && action.payload.quotations.length > 0) {
+          state.isQuotationAvailable = true;
+          state.cost = action.payload.quotations[0].amount;
+        }
+
+        // Calculate the final price using the reusable function
+        const finalPrice = calculateFinalPrice(
+          [action.payload], // Wrap payload in an array to match function expectations
+          localStorage.getItem("subscriptionId") // Use the first subscription ID or adjust as needed
+        );
+
+        if (finalPrice) {
+          state.cost = parseFloat(finalPrice); // Update state cost with final price
+        }
+
         state.availServiceData = {
           serviceId: action.payload._id,
           formId: action.payload.formId,
+          ...(action.payload.quotations[0]?._id && { quotationId: action.payload.quotations[0]?._id }), // Conditionally add quotationId
           serviceDetails: {
             name: action.payload.name,
             cost: action.payload.cost,
-            duration: action.payload.duration
+            duration: action.payload.duration,
           },
+          amount: action.payload.cost,
           paymentMode: "Net Banking",
           paymentStatus: "PENDING",
           paymentDate: Date.now(),
-        }
+          totalCouponDiscount : 0
+        };
         state.quotationId = action.payload.quotationId;
-        state.formId = action.payload.formId
+        state.formId = action.payload.formId;
       })
+
       .addCase(getServiceDetails.rejected, (state, action) => {
         state.serviceDetailLoading = false;
         state.error = action.payload;
@@ -270,6 +357,19 @@ console.log(action.payload.quotations.length, "action.payload.quotations.length"
         state.totalSavings = state.totalSavings + discount;
         state.coupons = state.coupons.filter((coupon) => coupon._id !== couponData.couponId);
         console.log(state.coupons, "applied coupon")
+
+        state.availServiceData = {
+          ...state.availServiceData,
+          totalCouponDiscount: couponData.cost,
+          appliedCoupan: [{
+            couponId: couponData.couponId,
+            amount: state.cost, discountType: "percentage", usage: "Multi Use", couponDiscount: couponData.cost
+          }] // Use the updated cost after applying the discount
+        };
+        console.log(
+          "Updated availServiceData with coupon ID and cost:",
+          state.availServiceData
+        );
       })
       .addCase(verifyCoupon.rejected, (state, action) => {
         state.isCouponVerifiedLoading = false;
@@ -311,7 +411,6 @@ console.log(action.payload.quotations.length, "action.payload.quotations.length"
         state.isServiceAvailing = false;
         console.log(action.payload, "talk to")
         state.isPaymentSuccessful = true
-        toast.success(action.payload.message)
 
       })
       .addCase(paymentStatus.rejected, (state, action) => {
@@ -322,6 +421,46 @@ console.log(action.payload.quotations.length, "action.payload.quotations.length"
       })
   },
 });
+function calculateFinalPrice(data, subscriptionId) {
+  // Check if data is available
+  if (!data || !data.length) {
+    console.error("Invalid data");
+    return null;
+  }
+
+  // Find the subscription based on the provided subscriptionId
+  const subscription = data[0]?.subscription?.find(sub => sub._id === subscriptionId);
+  if (!subscription) {
+    console.error("Subscription ID not found");
+    return null;
+  }
+
+  let finalPrice = subscription.amount;
+
+  // Find any offers for the service
+  const offer = data[0]?.offerservices?.[0]?.offers?.[0];
+  if (offer) {
+    // Apply discount percentage if available
+    if (offer.discountPercent) {
+      finalPrice = finalPrice - (finalPrice * (offer.discountPercent / 100));
+    }
+
+    // Apply direct discount amount if available
+    if (offer.discountPrice) {
+      finalPrice = finalPrice - offer.discountPrice;
+    }
+  }
+
+  // Save the final price to localStorage
+  localStorage.setItem("finalPrice", finalPrice.toFixed(2)); // Save with 2 decimal places for precision
+  console.log(`Final price calculated and saved: ${finalPrice.toFixed(2)}`);
+  return finalPrice.toFixed(2);
+}
+
+// Example Usage:
+const serviceData = {
+  data: [ /* Paste your JSON data here */]
+};
 
 export const { clearState, addCoupons, removeCoupon, stePaymentDetails } = serviceDetailSlice.actions;
 export default serviceDetailSlice.reducer;

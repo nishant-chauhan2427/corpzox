@@ -26,6 +26,9 @@ const History = () => {
       id: {
         serviceId: history?.serviceId
       },
+      _id :{
+        _id: history?._id
+      },
       transaction_id: history?.invoiceNumber,
       status: history?.paymentStatus,
       amount: history?.amount,

@@ -1,6 +1,6 @@
 import { Controller, useForm } from "react-hook-form";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Input } from "../../../components/inputs";
 import { Button } from "../../../components/buttons/button";
 import { FaPlus } from "react-icons/fa";
@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { availService, getServiceDetails, talkToAdvisor, verifyCoupon } from "../../../redux/actions/servicesDetails-actions";
 import { addCoupons, removeCoupon } from "../../../redux/slices/serviceDetailsSlice";
 import { ConfirmationModal } from "../../../components/modal/confirmationModal";
+import { PricingDetailShimmer } from "../../../components/loader/PricingDetailShimmer";
 
 const MakeAPayment = () => {
   const dispatch = useDispatch()
@@ -28,14 +29,15 @@ const MakeAPayment = () => {
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [failureModal, setFailureModal] = useState(false);
 
-
+const navigate = useNavigate()
 
   const [currentStep, setCurrentStep] = useState(0);
-  const { success, cost, appliedCoupons, coupons, availServiceData, isServiceAvailing, totalSavings, serviceCost, serviceCharge } = useSelector((state) => state.serviceDetails);
+  const { success,serviceDetailLoading, cost,originalPrice, appliedCoupons, coupons, availServiceData, isServiceAvailing, totalSavings, serviceCost, serviceCharge } = useSelector((state) => state.serviceDetails);
   console.log(coupons, "cost from slice ")
   useEffect(() => {
     // PASS DYNAMIC ID HERE
     dispatch(getServiceDetails({ serviceId: serviceId }));
+    console.log("called")
   }, [dispatch])
 
   const transformedCouponArray = coupons[0]?.map((item) => {
@@ -87,8 +89,8 @@ const MakeAPayment = () => {
     // if(isServiceAvailing === false){
     //   onConfirmationModalClose()
     // }
-    dispatch(availService({ ...availServiceData, amount: cost, totalCouponDiscount: 0, appliedCoupan: [] }))
-    console.log({ ...availServiceData, amount: cost, totalCouponDiscount: 0, appliedCoupan: [] })
+    const userData = { ...availServiceData, amount : originalPrice }
+    dispatch(availService({userData , navigate}))
   }
 
   const onConfirmationModalClose = () => {
@@ -268,7 +270,7 @@ const MakeAPayment = () => {
             </div>}
           </div>
           <div className="sm:w-[40%] mb-2 sm:mt-9 flex flex-col px-4 py-3 border rounded gap-3 border-[#C6C6C6]">
-            <PricingDetail totalCost={cost} availServiceData={availServiceData} totalSavings={totalSavings} serviceCost={serviceCost} serviceCharge={serviceCharge} />
+            {serviceDetailLoading ? <PricingDetailShimmer/> : <PricingDetail totalCost={cost} originalPrice={originalPrice} availServiceData={availServiceData} totalSavings={totalSavings} serviceCost={serviceCost} serviceCharge={serviceCharge} />}
             <div className="flex justify-center items-center pt-4 px-4 gap-2 ">
               {/* <ReactModal
                 className="border-[#FF3B3B] border-[3px] py-2 "

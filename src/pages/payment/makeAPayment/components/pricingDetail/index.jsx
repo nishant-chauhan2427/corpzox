@@ -1,6 +1,6 @@
 import React from "react";
 
-const PricingDetail = ({totalCost, serviceCost,totalSavings,availServiceData, discountCost, serviceCharge}) => {
+const PricingDetail = ({totalCost, serviceCost,totalSavings,originalPrice,availServiceData, discountCost, serviceCharge}) => {
   console.log( availServiceData, "from componenet")
   
   return (
@@ -17,12 +17,12 @@ const PricingDetail = ({totalCost, serviceCost,totalSavings,availServiceData, di
             Final Price
           </p>
           <div className="flex justify-between">
-            <p className="text-base font-semibold text-[#525252]">Fees</p>
-            <p className="text-base font-semibold  text-[#525252]">₹{serviceCost}</p>
+            <p className="text-base font-semibold text-[#525252]">MRP</p>
+            <p className="text-base font-semibold  text-[#525252]">₹{originalPrice}</p>
           </div>
           <div className="flex justify-between">
             <p className="text-base font-semibold text-[#525252]">
-              Service Charge
+             Service charge
             </p>
             <p className="text-base font-semibold text-[#525252]">₹{serviceCharge}</p>
           </div>

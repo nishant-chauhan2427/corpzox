@@ -69,7 +69,7 @@ const Dashboard = () => {
   useEffect(() => {
     // dispatch(getUserBusiness({}));
     // dispatch(getUserServices({}));
-    dataUpdate &&  dataUpdate?.length === 0 && dispatch(updateServiveProgress({ page: 1 }));
+   dispatch(updateServiveProgress({ page: 1 }));
   }, []);
   useEffect(() => {
     const storedUserInfo = localStorage.getItem("userInfo");
@@ -84,7 +84,7 @@ const Dashboard = () => {
     // dispatch(getUserServices({ query: searchValue ? searchValue : "" }));
   }, [searchValue]);
   useEffect(() => {
-    dispatch(recommendedServiceListing());
+    formattedRecommendedServices && formattedRecommendedServices.length === 0 && dispatch(recommendedServiceListing());
   }, []);
   return (
     <>
