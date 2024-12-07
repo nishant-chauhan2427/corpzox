@@ -26,6 +26,9 @@ const History = () => {
       id: {
         serviceId: history?.serviceId
       },
+      _id :{
+        _id: history?._id
+      },
       transaction_id: history?.invoiceNumber,
       status: history?.paymentStatus,
       amount: history?.amount,
@@ -41,7 +44,7 @@ const History = () => {
     { header: "Amount", accessor: "amount" },
     { header: "P. Method", accessor: "payment_method" },
     { header: "Payment Date", accessor: "payment_date" },
-    { header: "Actions", accessor: "actions" },
+    // { header: "Actions", accessor: "actions" },
   ];
 
   useEffect(() => {
@@ -253,7 +256,7 @@ const History = () => {
                 isExpandable={false}
                 columns={columns}
                 data={transformedTransactionHistory}
-                actionMenu={actionMenu}
+                // actionMenu={actionMenu}
               />
             ) : (
               <div><NoData /></div>

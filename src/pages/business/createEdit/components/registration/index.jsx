@@ -4,7 +4,7 @@ import { Selector } from "../../../../../components/select";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
-export const RegistrationDetails = ({ control, errors, setValue, touchedFields,handleBlur,trigger }) => {
+export const RegistrationDetails = ({ control, errors, setValue, touchedFields,handleBlur,trigger ,isEdit}) => {
   const [subIndustryOptions, setSubIndustryOptions] = useState([]);
   const {business,businessId} = useSelector((state) => state.business);
 
@@ -35,7 +35,7 @@ export const RegistrationDetails = ({ control, errors, setValue, touchedFields,h
 
   useEffect(() => {
     // Ensure to populate the registration data when business is available
-    if (business ) {
+    if ( business ) {
       setValue("registration.businessName", business?.registration?.businessName);
       setValue("registration.typeOfBusiness", business?.registration?.typeOfBusiness);
       setValue("registration.cinNumber", business?.registration?.cinNumber);

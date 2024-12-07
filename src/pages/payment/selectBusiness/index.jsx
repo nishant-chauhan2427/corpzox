@@ -193,10 +193,16 @@ function SelectBusiness() {
 
   const handleInputValueChange = (index, newValue) => {
     // console.log("handleInputValueChange: ", index, newValue);
-
     
     const field = dynamicForm[index];
     field.value[0] = newValue;
+
+    if(field?.isRequired && (field?.value.length<=0)){
+      field.isRequiredMsg = "Required field";
+    }else{
+      field.isRequiredMsg = false;
+    }
+
     setDynamicForm([...dynamicForm]);
   }
 
@@ -205,6 +211,14 @@ function SelectBusiness() {
     const field = dynamicForm[index];
     field.value[0] = newValue;
     field.error = err;
+    
+    if(field?.isRequired && (field?.value.length<=0 || field?.value[0]?.trim() === "")){
+      field.isRequiredMsg = "Required field";
+    }else{
+      field.isRequiredMsg = false;
+    }
+
+
     setDynamicForm([...dynamicForm]);
   }
 
@@ -214,6 +228,13 @@ function SelectBusiness() {
 
     const field = dynamicForm[index];
     field.value = newValue;
+
+    if(field?.isRequired && (field?.value.length<=0)){
+      field.isRequiredMsg = "Required field";
+    }else{
+      field.isRequiredMsg = false;
+    }
+
     setDynamicForm([...dynamicForm]);
   }
 
@@ -221,13 +242,6 @@ function SelectBusiness() {
     // console.log("values:--------------");
     const formData = dynamicForm?.map((field) => {
       const { value } = field;
-      // console.log({
-      //   attributeId:field._id,
-      //   value: value,
-      //   fileName: (value instanceof File)? value.name : field.lebel,
-      //   type: (value instanceof File)? value.type : field.inputType
-      // });
-
       return {
         attributeId: field._id,
         value: value,
@@ -303,7 +317,8 @@ function SelectBusiness() {
         type="button"
         outline={true}
         primary={true}
-        disabled={(dynamicForm?.some((field,idx) => { if(idx==14 )return false; else return field.error === true})) }
+        // disabled={(dynamicForm?.some((field,idx) => {return field.error === true})) }
+        disabled={isSaving || (dynamicForm?.some((field,idx) => field.isRequiredMsg ||field.error === true )) }
         className={" py-2 "}
         onClick={handleSubmit}
       >

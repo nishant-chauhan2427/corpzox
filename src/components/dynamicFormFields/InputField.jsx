@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Input } from '../inputs';
 
 function InputField({ index, field, className, onChange }) {
-  // console.log({ index, field });
+  console.log({ index, field });
   // console.log("field.error",field.error);
   
   const handleOnChange = (e)=>{
@@ -138,8 +138,8 @@ function InputField({ index, field, className, onChange }) {
 
   return (
     <div className={className}>
-      <Input label={field.lebel} onChange={(e) => handleOnChange(e)} value={field.value[0]} className={"border"} />
-      {field.error ? <p className='text-xs text-red-500 mb-3 pl-3'>{field.custom_validation_msg}</p> : ""}
+      <Input required={field?.isRequired} label={field.lebel} onChange={(e) => handleOnChange(e)} value={field.value[0]} className={"border"} />
+      {field?.isRequiredMsg || field.error ? <p className='text-xs text-red-500 mb-3 pl-3'>{field?.isRequiredMsg || field.custom_validation_msg}</p> : ""}
     </div>
   )
 }

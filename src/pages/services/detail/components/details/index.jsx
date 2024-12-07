@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../../../../../components/buttons";
 import { Rating } from "../../../../../components/rating";
-import { talkToAdvisor } from "../../../../../redux/actions/servicesDetails-actions";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const Details = ({
   pricing = true,
@@ -9,9 +9,42 @@ export const Details = ({
   serviceId,
   handleRequest,
   isLoading,
+  stateWiseServiceCharge,
+  offer,
 }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  // const navigateToService = () => {
+  //   navigate(`/payment/${serviceId}`);
+  // };
 
+  const { success, serviceDetailLoading } = useSelector(
+    (state) => state.serviceDetails
+  );
+
+  // Safely retrieve data
+  const subscriptionAmount =
+    success?.subscription?.[0]?.amount || data?.cost || 0;
+
+  const discountPercent =
+    success?.offerservices?.[0]?.offers?.[0]?.discountPercent || offer || 0;
+
+  const discountedPrice =
+    discountPercent > 0
+      ? (
+          Number(subscriptionAmount) -
+          (Number(subscriptionAmount) * discountPercent) / 100
+        ).toFixed(2)
+      : Number(subscriptionAmount).toFixed(2);
+
+      // const { id: serviceId } = useParams();
+
+      const subscription = success?.subscription?.[0] || null;
+      let subscriptionId = subscription?.id || serviceId;
+    
+      const navigateToService = () => {
+        navigate(`/payment/${subscriptionId}`);
+      };
   return (
     <section className="flex flex-col gap-2">
       <div className="flex flex-col text-start gap-2">
@@ -31,7 +64,7 @@ export const Details = ({
                 Select your state to view the applicable govt. fees*
               </p>
               <p className="text-sm">
-                *Subject to fluctuate at the time of application
+                *Subject to fluctuation at the time of application
               </p>
             </div>
             <Button
@@ -43,23 +76,31 @@ export const Details = ({
           </div>
         )}
         <div
-          style={{ backgroundImage: `url(/images/services/service-dummy.svg)` }}
+          style={{
+            backgroundImage: `url(/images/services/service-dummy.svg)`,
+          }}
           className="w-full min-h-[420px] md:w-3/5 rounded-3xl bg-no-repeat bg-cover"
-        >
-          {/* <img src="/images/services/service-dummy.svg" alt="service-image" /> */}
-        </div>
+        ></div>
         {pricing && (
           <div className="w-full md:w-2/5 bg-[#EEEFF3] box-sg rounded-lg px-5 py-6 gap-2 flex flex-col">
             <div>
-              <div className="font-extrabold text-2xl text-[#0A1C40] flex gap-2">
-                ₹{data?.cost}
-                <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 ">
-                  {data?.name}
+              {serviceDetailLoading ? (
+                "Loading..."
+              ) : (
+                <div className="font-extrabold text-2xl text-[#0A1C40] flex gap-2">
+                  ₹ {subscriptionAmount}
+                  {discountPercent > 0 && (
+                    <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2">
+                      {discountPercent} %
+                    </p>
+                  )}
+                </div>
+              )}
+              {stateWiseServiceCharge && (
+                <p className="text-xs text-[#0A1C40]">
+                  {stateWiseServiceCharge} + Applicable govt. fees
                 </p>
-              </div>
-              <p className="text-xs text-[#0A1C40]">
-                {data?.cost} + Applicable govt. fees
-              </p>
+              )}
             </div>
             <div className="py-2">
               <p className="font-bold text-base text-[#0A1C40]">
@@ -77,21 +118,29 @@ export const Details = ({
               </p>
             </div>
             <div className="py-4 flex justify-between items-center">
-              <div className="flex flex-col gap-1">
-                <p className="font-extrabold text-xl text-[#0A1C40]">4.6/5</p>
-                <Rating rating={4} />
-                <p className="text-[11px]">Based on 102 reviews</p>
-              </div>
+              {data?.rating && (
+                <div className="flex flex-col gap-1">
+                  <p className="font-extrabold text-xl text-[#0A1C40]">{data?.rating}/5</p>
+                  <Rating rating={data?.rating} />
+                  <p className="text-[11px]">Based on 102 reviews</p>
+                </div>
+              )}
               <div className="flex flex-col">
                 <div className="flex items-end font-medium text-[13px] text-[#0A1C40]">
-                  <strong className="text-lg leading-6">10</strong>
-                  <span>Working days</span>
+                  <strong className="text-lg leading-6">
+                    {data?.duration}
+                  </strong>
+                  <span>Months</span>
                 </div>
                 <p className="text-xs text-[#0A1C40]">Estimated Time</p>
               </div>
             </div>
             <div className="pt-2 flex justify-between items-center gap-2">
-              <Button className={"text-xs px-2 py-1 rounded-sm"} outline={true}>
+              <Button
+                onClick={navigateToService}
+                className={"text-xs px-2 py-1 rounded-sm"}
+                outline={true}
+              >
                 Avail services
               </Button>
               <Button

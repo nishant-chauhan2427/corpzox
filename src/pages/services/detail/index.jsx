@@ -16,13 +16,13 @@ import { clearState } from "../../../redux/slices/serviceDetailsSlice";
 const ServiceDetail = () => {
   const { serviceId } = useParams()
   const dispatch = useDispatch();
-  const { success, statesList, subscription, isTalkToAdvisorLoading,isQuotationAvailable, isOfferAvailable } = useSelector((state) => state.serviceDetails);
+  const { success, statesList, subscription,stateWiseServiceCharge, isTalkToAdvisorLoading, isQuotationAvailable, isOfferAvailable } = useSelector((state) => state.serviceDetails);
 
- // console.log(success?.subscription, "from component")
+  console.log(success, "from component")
   useEffect(() => {
-    // dispatch(getServiceDetails({serviceId : serviceId ||  "66e17336b029b506bdd35f34"}));
+    
     dispatch(getServiceDetails({ serviceId: serviceId }));
-    // dispatch(getStates()); 
+   
   }, [dispatch])
 
   const handleTalkTouOurAdvisors = () => {
@@ -43,14 +43,14 @@ const ServiceDetail = () => {
             <Heading backButton={true}>Service Detail</Heading>
             <LinkButton primary={true}>Contact</LinkButton>
           </div>
-          <Details data={success} pricing={true} serviceId={serviceId} handleRequest={handleTalkTouOurAdvisors} isLoading={isTalkToAdvisorLoading} />
+          <Details data={success} stateWiseServiceCharge={stateWiseServiceCharge?.estimatedTotal}  pricing={true} serviceId={serviceId} offer={success?.offerservices?.[0]?.offers?.[0]?.discountPercent} handleRequest={handleTalkTouOurAdvisors} isLoading={isTalkToAdvisorLoading} />
           <Features />
-          <Pricing data={subscription} pricing={!isQuotationAvailable} serviceId={serviceId} />
+          <Pricing data={subscription} pricing={!isQuotationAvailable} serviceId={serviceId} offer={success?.offerservices?.[0]?.offers?.[0]?.discountPercent}/>
           <Advisor
             handleRequest={handleTalkTouOurAdvisors}
             isLoading={isTalkToAdvisorLoading} />
-          <Testimonials serviceId={serviceId}/>
-          <Steps />
+          <Testimonials serviceId={serviceId} />
+          <Steps data={success?.servicesteps}/>
           <FAQs />
           <Advisor
             label="Still have questions?"

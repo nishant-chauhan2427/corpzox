@@ -17,7 +17,7 @@ export const BusinessCard = ({ data }) => {
         <BusinessCardShimmer />
       ) : (
         <div className="p-4 bg-[#F3F7FF] rounded-xl hover:shadow-lg">
-          <div className="flex flex-col gap-2 bg-white rounded-xl p-2">
+          <div onClick={()=>navigate(`/business/detail?id=${data?._id}`)} className="flex flex-col gap-2 hover:cursor-pointer bg-white rounded-xl p-2">
             <div className="flex items-end gap-2">
               <div className="p-2 bg-[#F3F7FF] rounded-xl flex justify-center items-center">
                 <img

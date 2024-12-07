@@ -164,9 +164,9 @@ export const SignIn = () => {
                     type={"email"}
                     placeholder={"Email Id / Phone No."}
                     className={"border-[#D9D9D9] border"}
-                    // errorContent={errors?.email?.message}
+                   errorContent={errors?.email?.message}
                     onBlur={() => handleBlur("email")}
-                    maxLength={25}
+                    maxLength={50}
                   />
                 )}
                 rules={{ required: "Email Address is required" }}

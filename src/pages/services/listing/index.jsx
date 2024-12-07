@@ -25,6 +25,7 @@ import { Offers } from "../../../components/offers";
 import { updateServiveProgress } from "../../../redux/actions/dashboard-action";
 import { NoData } from "../../../components/errors/noData";
 import { ImSpinner2 } from "react-icons/im";
+import { Heading } from "../../../components/heading";
 const ServicesListing = () => {
   const dispatch = useDispatch();
   const { categoryId, subCategoryId } = useParams();
@@ -45,25 +46,27 @@ const ServicesListing = () => {
     dispatch(getUserServicesCatagory({}));
 
   }, []);
-  // useEffect(() => {
-  //   if (category?.selectedCategory?.categoryId) {
-  //     dispatch(
-  //       getUserServicesSubCatagory({
-  //         categoryId: category?.selectedCategory?.categoryId,
-  //       })
-  //     );
-  //   }
-  // }, [category.selectedCategory]);
   useEffect(() => {
-    const categoryId = searchParams.get("categoryId");
-    if (category?.selectedCategory?.categoryId || categoryId) {
+    if (category?.selectedCategory?.categoryId) {
       dispatch(
         getUserServicesSubCatagory({
-          categoryId: category?.selectedCategory?.categoryId ? category?.selectedCategory?.categoryId : categoryId,
+          categoryId: category?.selectedCategory?.categoryId,
         })
       );
     }
-  }, [searchParams]);
+  }, [category.selectedCategory]);
+  
+  // from paramsd
+  // useEffect(() => {
+  //   const categoryId = searchParams.get("categoryId");
+  //   if (category?.selectedCategory?.categoryId || categoryId) {
+  //     dispatch(
+  //       getUserServicesSubCatagory({
+  //         categoryId: category?.selectedCategory?.categoryId ? category?.selectedCategory?.categoryId : categoryId,
+  //       })
+  //     );
+  //   }
+  // }, [searchParams]);
   // useEffect(() => {
   //   if (category?.selectedCategory && subCategory?.selectedSubCategory) {
   //     dispatch(
@@ -102,7 +105,7 @@ const ServicesListing = () => {
   // },[searchValue])
   useEffect(() => {
     if (isSubmit && !wishList?.loading) {
-      toast.success(wishList?.error);
+     // toast.success(wishList?.error);
     }
   }, [wishList?.loading]);
 
@@ -127,9 +130,7 @@ const ServicesListing = () => {
     // });
   };
   return (
-    
     <section className="flex sm:flex-row flex-col gap-4 sm:pt-6 pt-3 bg-white">
-      <Heading title={"Service"} > </Heading>
       <div className="flex justify-center flex-col overflow-hidden">
         <MainTab />
         {servicesMainTab !== 0 ? (
@@ -166,7 +167,7 @@ const ServicesListing = () => {
             />
             {/* {list && list.length > 5 && (
               <div className="mt-10 flex justify-center">
-                {list.length == totalPage ? (
+                {list.length == totalCount ? (
                   <></>
                 ) : (
                   <Button primary={true}>Load More </Button>
