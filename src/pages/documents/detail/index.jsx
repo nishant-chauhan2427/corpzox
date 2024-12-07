@@ -22,6 +22,8 @@ const DocumentDetail = () => {
     const name = listData[0]?.lebel
     //const count
     //console.log(listData.value[0],"123");`
+
+    console.log(listData, "listData")
     useEffect(() => {
         if (id) {
           dispatch(getfolderData(id));   
@@ -43,8 +45,9 @@ const DocumentDetail = () => {
 
 
                     {listData.length > 0 && url  ? (
-                        // 
-                        <DocumentViewer docUrl={url} docName={name}/>
+                        
+                       //listData.map((item)=>{return(<DocumentViewer docUrl={item.url} docName={item.name}/>)})
+                       <DocumentViewer docUrl={url} docName={name}/>
                     ) : (
                         <NoData></NoData>
                     )}
