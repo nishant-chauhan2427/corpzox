@@ -27,7 +27,7 @@ export const RecommendedServices = ({ data, total }) => {
         {data?.slice(0, 2).map((data, index) => (
           <button
             key={index}
-            className="flex justify-between items-center bg-[#F3F7FF] gap-2 w-full p-2 rounded-lg"
+            className="flex justify-between items-center bg-[#f3f7ff] stroke-[#dfeaf2] stroke-1 gap-2 w-full p-2 rounded-lg"
           >
             <div className="flex items-center gap-2">
               <img

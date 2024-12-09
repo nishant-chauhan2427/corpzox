@@ -119,7 +119,7 @@ export const ServicesProgress = ({ data }) => {
     <div>
       <div className="py-2 flex flex-col sm:flex-row justify-between gap-2">
         <Heading className={"py-0"} tourButton={true}>
-          Your Service Progress Updates({dataUpdate?.total})
+          Your Service are Completed({dataUpdate?.total})
         </Heading>
         <Link to={"/services"} className="font-medium text-sm text-[#797979]">
           View All
@@ -128,7 +128,7 @@ export const ServicesProgress = ({ data }) => {
       {dataUpdate?.data?.length > 0 ? (
         <div className="flex flex-col gap-4">
           {dataUpdate?.data?.map((data, index) => (
-            <div key={index} className="bg-[#F8FAFF] px-4 py-2 rounded-md">
+            <div key={index} className="bg-[#f3f7ff] stroke-[#dfeaf2] stroke-1 px-4 py-2 rounded-md">
               <div className="flex flex-col sm:flex-row items-start justify-between sm:items-center gap-2">
                 <div className="flex flex-col gap-1">
                   <div className="flex gap-2">
@@ -350,7 +350,7 @@ export const ServicesProgress = ({ data }) => {
                     } hidden lg:block`}
                     onClick={() => handleServiceDropdown(index)}
                   >
-                    <GoTriangleDown size={20} />
+                    <GoTriangleDown size={15} />
                   </button>
                 </div>
               </div>
