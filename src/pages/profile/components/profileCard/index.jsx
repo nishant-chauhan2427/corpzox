@@ -17,7 +17,7 @@ const ProfileCard = ({userData, loading}) => {
       loading ? <BusinessCardShimmer/> : 
       <div className="pb-4">
         {/* <div className="flex items-center py-6 gap-4 font-semibold text-2xl text-[#0A1C40"> */}
-          <Heading title={"Profile"} backButton={true}>Profil</Heading>
+          <Heading title={"Profile"} backButton={true}>Profile</Heading>
         {/* </div> */}
         <div className="flex flex-col gap-4 sm:flex-row justify-between drop-shadow-md bg-[#F4F9FF] border px-4 rounded-2xl py-4 border-[#DFEAF2] ">
           <div className="flex gap-4">

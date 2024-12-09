@@ -28,6 +28,37 @@ export const submitEditProfile = createAsyncThunk(
     }
 );
 
+//Update Profile Picture
+
+export const updateProfilePicture = createAsyncThunk(
+  "profile/updateProfilePicture",
+  async ({file,navigate}, { rejectWithValue }) => {
+   console.log(formData,"DATAQ");
+      try {
+          const response = await client.put("/user/auth/upload-file", file, {
+              headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json",
+                  'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+              },
+          });
+         // console.log(response, "edit response")
+          //console.log(response.data.message, "edit response")
+          if(response.data.code===200){
+
+           // toast.success(response.data.message)
+           navigate("/profile");
+          }
+          return response.data;
+      } catch (error) {
+          return rejectWithValue(error.response?.data || "Something went wrong");
+      }
+  }
+);
+
+
+
+
 export const fetchWishlist = createAsyncThunk(
     "profile/fetchWishlist",
     async (_, { rejectWithValue }) => {
