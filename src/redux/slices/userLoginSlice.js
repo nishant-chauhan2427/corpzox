@@ -49,7 +49,9 @@ const userSlice = createSlice({
             state.loading = true;
           }).addCase(getUser.fulfilled, (state, action) => {
             state.loading = false;
-           // console.log(action.payload,"action.payload23");
+            console.log(action.payload?.agent_data?.[0]?.manager_data?.[0].
+              name
+              ,"action.payload23");
             // state.isVerificationSuccessfull = true;
             
             state.error = action.payload.message;

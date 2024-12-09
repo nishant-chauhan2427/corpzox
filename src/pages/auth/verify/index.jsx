@@ -25,6 +25,7 @@ export const Verify = () => {
   const navigate = useNavigate();
   const inputRefs = useRef([]);
   const { profile } = useSelector((state) => state.auth);
+  console.log(profile[0]?.otp,"profile");
   useEffect(() => {
     setTimer(30);
   }, []);
@@ -49,7 +50,7 @@ export const Verify = () => {
     if (isVerify && !isVerifying) {
       setIsVerify(false);
       if (verifyingError) {
-        toast.error(verifyingError);
+        // toast.error(verifyingError);
       } else {
         toast.success(verifyMessage);
         navigate("/dashboard");
@@ -170,8 +171,9 @@ export const Verify = () => {
                         />
                       ))}
                     </div>
+                   
                     <div className="text-red-500 mt-2 font-medium text-sm text-center">
-                      Wrong OTP!
+                      {verifyingError}
                     </div>
                   </div>
                   <div className="h-1"></div>

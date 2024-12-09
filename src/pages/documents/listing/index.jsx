@@ -72,7 +72,8 @@ const DocumentsListing = () => {
         <>
           <div className="flex flex-col md:flex-row justify-between gap-4">
             <Heading backButton={true} title={"Documents"} tourButton={true}>
-              Documents ({folders.length})
+            Documents  {folders?.length ? `(${folders.length})` : ""}
+           
             </Heading>
           </div>
 
@@ -81,7 +82,7 @@ const DocumentsListing = () => {
               An error occurred: {fetchingDocumentError}
             </div>
           )} */}
-
+          
           <div>
             <Selector
               className={"!min-w-52 !max-w-fit"}
