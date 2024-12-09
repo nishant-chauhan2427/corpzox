@@ -40,12 +40,16 @@ export const BusinessCard = ({ data }) => {
             <div className="flex flex-col gap-1 w-[100%]">
               {labelValue("Type:", data.typeOfBusiness)}
               {labelValue(
-                "",
-                data?.businessAddressCity && data?.businessAddressState
+                "Registered Office:",
+                (data?.businessAddressCity && data?.businessAddressState
                   ? `${data?.businessAddressCity},${data?.businessAddressState}`
                   : data?.businessAddressCity
                   ? data?.businessAddressCity
-                  : data?.businessAddressState
+                  : data?.businessAddressState)  ? (data?.businessAddressCity && data?.businessAddressState
+                    ? `${data?.businessAddressCity},${data?.businessAddressState}`
+                    : data?.businessAddressCity
+                    ? data?.businessAddressCity
+                    : data?.businessAddressState) : "-------"
               )}
               {labelValue(
                 "Company Status:",

@@ -7,7 +7,6 @@ import { servicesListing } from "../../../database";
 import Filtertab from "../../../pages/services/components/tabs/filterTab";
 import { SelectAllTabs } from "../components/tabs/selectAllTab/index";
 import { useSelector, useDispatch } from "react-redux";
-import Heading from "../../../components/heading"
 import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import {
   getUserServicesCatagory,

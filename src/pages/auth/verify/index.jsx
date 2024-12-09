@@ -50,7 +50,7 @@ export const Verify = () => {
     if (isVerify && !isVerifying) {
       setIsVerify(false);
       if (verifyingError) {
-        // toast.error(verifyingError);
+        toast.error(verifyingError);
       } else {
         toast.success(verifyMessage);
         navigate("/dashboard");
@@ -172,9 +172,9 @@ export const Verify = () => {
                       ))}
                     </div>
                    
-                    <div className="text-red-500 mt-2 font-medium text-sm text-center">
-                      {verifyingError}
-                    </div>
+                    {/* <div className="text-red-500 mt-2 font-medium text-sm text-center">
+                     {verifyingError}
+                    </div> */}
                   </div>
                   <div className="h-1"></div>
                   <div className="w-full flex flex-col justify-center items-center">
