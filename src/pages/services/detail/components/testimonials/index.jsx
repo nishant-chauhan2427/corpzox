@@ -11,22 +11,26 @@ import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getRatingReviews } from "../../../../../redux/actions/dashboard-action";
+import { ServiceDetailsRatingCard } from "../../../../../components/loader/ServiceDetailsRatingCard";
 
-export const Testimonials = ({serviceId}) => {
-console.log(serviceId, "serviceIdserviceIdserviceId")
-  const {serviceTestimonials, averageRating} = useSelector((state)=> state.serviceDetails); 
-  console.log(serviceTestimonials, "serviceTestimonials")
+export const Testimonials = ({ serviceId }) => {
+  console.log(serviceId, "serviceIdserviceIdserviceId")
+  const { serviceTestimonials, averageRating, success, ratingReviewList } = useSelector((state) => state.serviceDetails);
+  console.log(ratingReviewList, "serviceTestimonials")
+  const {isRatingLoading} = useSelector((state)=> state.dashboard)
   const dispatch = useDispatch();
-  const formattedTestimonials = serviceTestimonials?.map((testimonial)=>{
+  const formattedTestimonials = serviceTestimonials?.map((testimonial) => {
     return {
-      company : testimonial.authorCompany ? authorCompany : "", 
-      feedback : testimonial.authorDescription,
-      client : testimonial.authorName,
-      image : testimonial.authorImage
+      company: testimonial.authorCompany ? authorCompany : "",
+      feedback: testimonial.authorDescription,
+      client: testimonial.authorName,
+      image: testimonial.authorImage
     }
   })
 
-  useEffect(()=>{
+  const formattedRatting = ratingReviewList ?ratingReviewList[0] : {}
+  const ratingDetails = success?.total_rating_count?.length > 0 ? success.total_rating_count[0] : null;
+  useEffect(() => {
     dispatch(getRatingReviews(serviceId))
   }, [])
   console.log(formattedTestimonials, "formattedTestimonial")
@@ -83,14 +87,12 @@ console.log(serviceId, "serviceIdserviceIdserviceId")
   };
 
   const ratings = [
-    { title: "Service Quality", score: 2.7 },
-    { title: "Professional Behaviour", score: 4.7 },
-    { title: "On-Time Delivery", score: 1.7 },
-    { title: "Transparent Pricing", score: 4.7 },
-    { title: "Value For Money", score: 4.7 },
+    { title: "Service Quality", score: formattedRatting ? formattedRatting.avgServiceQualityRating : "" },
+    { title: "Professional Behaviour", score: formattedRatting ? formattedRatting.avgProfessionalBehaviourRating      : "" },
+    { title: "On-Time Delivery", score: formattedRatting ? formattedRatting.avgOnTimeDeliveryRating : ""  },
+    { title: "Transparent Pricing", score: formattedRatting ? formattedRatting.avgTransparentPricingRating : ""  },
+    { title: "Value For Money", score: formattedRatting ? formattedRatting.avgValueForMoneyRating : ""  },
   ];
-
-  const overallRating = { score: 4.6, reviews: 102 };
 
   const progressCircle = useRef(null);
   const progressContent = useRef(null);
@@ -106,7 +108,7 @@ console.log(serviceId, "serviceIdserviceIdserviceId")
       </h4>
 
       {/* Rating Section */}
-      <div className="bg-[#0E38BD] rounded-md p-5 flex flex-col md:flex-row justify-between gap-4 items-center mb-8">
+      {isRatingLoading ?<ServiceDetailsRatingCard/>:<div className="bg-[#0E38BD] rounded-md p-5 flex flex-col md:flex-row justify-between gap-4 items-center mb-8">
         <div className="flex flex-wrap justify-center">
           {ratings.map((rating, index) => (
             <div
@@ -130,12 +132,12 @@ console.log(serviceId, "serviceIdserviceIdserviceId")
         </div>
         <div className="flex flex-col items-start">
           <div className="flex items-center gap-2 text-xl ">
-            <p className="font-bold text-white">{averageRating}/5</p>
+            <p className="font-bold text-white">{ratingDetails?.average}/5</p>
             <Rating rating={4} />
           </div>
-          <p className="font-semibold text-[11px] text-white">{`Based on ${overallRating.reviews} reviews`}</p>
+          <p className="font-semibold text-[11px] text-white">{`Based on ${ratingDetails?.count} reviews`}</p>
         </div>
-      </div>
+      </div>}
 
       {/* Testimonial Cards */}
       <div className="w-full overflow-hidden">

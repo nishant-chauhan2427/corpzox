@@ -13,10 +13,7 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ratingReviewSchema } from "../../../../../validation/ratingReviewValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getRatingReviews,
-  ratingReview,
-} from "../../../../../redux/actions/dashboard-action";
+import { ratingReview } from "../../../../../redux/actions/servicesDetails-actions";
 
 export const ServicesProgress = ({ data }) => {
   const [dropdownStates, setDropdownStates] = useState(data.map(() => false));
@@ -25,7 +22,8 @@ export const ServicesProgress = ({ data }) => {
   const [serviceId, setServiceId] = useState("");
   const [rating, setRating] = useState(0);
   const dispatch = useDispatch();
-  const { isRatingSubmitting } = useSelector((state) => state.dashboard);
+ 
+  const {isRatingAdding} = useSelector((state)=> state.serviceDetails)
   const handleServiceDropdown = (index) => {
     setDropdownStates((prevState) =>
       prevState.map((state, i) => (i === index ? !state : state))
@@ -39,8 +37,12 @@ export const ServicesProgress = ({ data }) => {
     formState: { errors, isValid },
   } = useForm({
     defaultValues: {
+      serviceQualityRating: 0,
+      professionalBehaviourRating: 0,
+      onTimeDeliveryRating: 0,
+      transparentPricingRating: 0,
+      valueForMoneyRating: 0,
       review: "",
-      rating: 0,
     },
     resolver: yupResolver(ratingReviewSchema),
   });
@@ -50,8 +52,8 @@ export const ServicesProgress = ({ data }) => {
   };
 
   useEffect(() => {
-    if (!isRatingSubmitting) setConfirmationModal(false);
-  }, [isRatingSubmitting]);
+    if (!isRatingAdding) setConfirmationModal(false);
+  }, [isRatingAdding]);
 
   const onConfirmationModalOpen = (data) => {
     console.log(data, "mo idea");
@@ -61,13 +63,20 @@ export const ServicesProgress = ({ data }) => {
   const onSubmit = (formData) => {
     console.log("Submitted Data: ", formData);
     // Handle form submission logic
-
+    console.log("Submitted Data: ", {
+      serviceQualityRating: formData.serviceQualityRating,
+      professionalBehaviourRating: formData.professionalBehaviourRating,
+      onTimeDeliveryRating: formData.onTimeDeliveryRating,
+      transparentPricingRating: formData.transparentPricingRating,
+      valueForMoneyRating: formData.valueForMoneyRating,
+      review: formData.review,
+    });
     dispatch(ratingReview({ ...formData, serviceId }));
     reset(); // Reset the form after submission
   };
 
   // 
-  
+
   const servicesProgessSteps = [
     {
       step: 1,
@@ -168,29 +177,119 @@ export const ServicesProgress = ({ data }) => {
                         <p className="text-[32px]  text-[#232323] font-bold">
                           Rate Your Experience!
                         </p>
-                        {/* <div className="pt-4 pb-5">
-                          <label
-                            htmlFor="Review"
-                            className="flex text-lg font-bold text-[#0A1C40]"
-                          >
-                            Review
-                          </label>
-                          <TextArea
-                            className="min-h-20 placeholder:text-xl border bg-white border-[#D9D9D9]"
-                            placeholder="Add Review"
-                          />
-                        </div>
-                        <div className="flex justify-center items-center pb-20">
-                          <Rating size={40} rating={4} />
-                        </div>
-                        <div className="flex justify-end gap-4">
-                          <Button outline={true}>Maybe Later </Button>
-                          <Button primary={true} disabled={true}>
-                            Submit{" "}
-                          </Button>
-                        </div> */}
                         <form onSubmit={handleSubmit(onSubmit)}>
                           <div>
+
+                            <div className="flex justify-between items-center pb-5">
+                              <label className="text-sm font-semibold text-gray-600">
+                                Service Quality
+                              </label>
+                              <Controller
+                                name="serviceQualityRating"
+                                control={control}
+                                render={({ field, fieldState }) => (
+                                  <div className="flex flex-col gap-4">
+                                    <Rating
+                                      {...field}
+                                      rating={field.value}
+                                      setRating={field.onChange}
+                                      size={40}
+                                    />
+                                    {fieldState.error && (
+                                      <p className="text-red-500 text-sm">{fieldState.error.message}</p>
+                                    )}
+                                  </div>
+                                )}
+                              />
+                            </div>
+                            <div className="flex justify-between items-center pb-5">
+                              <label className="text-sm font-semibold text-gray-600">
+                                Professional Behavior
+                              </label>
+                              <Controller
+                                name="professionalBehaviourRating"
+                                control={control}
+                                render={({ field, fieldState }) => (
+                                  <div className="flex flex-col gap-4">
+                                    <Rating
+                                      {...field}
+                                      rating={field.value}
+                                      setRating={field.onChange}
+                                      size={40}
+                                    />
+                                    {fieldState.error && (
+                                      <p className="text-red-500 text-sm">{fieldState.error.message}</p>
+                                    )}
+                                  </div>
+                                )}
+                              />
+                            </div>
+                            <div className="flex justify-between items-center pb-5">
+                              <label className="text-sm font-semibold text-gray-600">
+                                On-Time Delivery
+                              </label>
+                              <Controller
+                                name="onTimeDeliveryRating"
+                                control={control}
+                                render={({ field, fieldState }) => (
+                                  <div className="flex flex-col gap-4">
+                                    <Rating
+                                      {...field}
+                                      rating={field.value}
+                                      setRating={field.onChange}
+                                      size={40}
+                                    />
+                                    {fieldState.error && (
+                                      <p className="text-red-500 text-sm">{fieldState.error.message}</p>
+                                    )}
+                                  </div>
+                                )}
+                              />
+                            </div>
+                            <div className="flex justify-between items-center pb-5">
+                              <label className="text-sm font-semibold text-gray-600">
+                                Transparent pricing
+                              </label>
+                              <Controller
+                                name="transparentPricingRating"
+                                control={control}
+                                render={({ field, fieldState }) => (
+                                  <div className="flex flex-col gap-4">
+                                    <Rating
+                                      {...field}
+                                      rating={field.value}
+                                      setRating={field.onChange}
+                                      size={40}
+                                    />
+                                    {fieldState.error && (
+                                      <p className="text-red-500 text-sm">{fieldState.error.message}</p>
+                                    )}
+                                  </div>
+                                )}
+                              />
+                            </div>
+                            <div className="flex justify-between items-center pb-5">
+                              <label className="text-sm font-semibold text-gray-600">
+                                Value for Money
+                              </label>
+                              <Controller
+                                name="valueForMoneyRating"
+                                control={control}
+                                render={({ field, fieldState }) => (
+                                  <div className="flex flex-col gap-4">
+                                    <Rating
+                                      {...field}
+                                      rating={field.value}
+                                      setRating={field.onChange}
+                                      size={40}
+                                    />
+                                    {fieldState.error && (
+                                      <p className="text-red-500 text-sm">{fieldState.error.message}</p>
+                                    )}
+                                  </div>
+                                )}
+                              />
+                            </div>
                             <div className="pt-4 pb-5">
                               <label
                                 htmlFor="Review"
@@ -202,11 +301,6 @@ export const ServicesProgress = ({ data }) => {
                                 name="review"
                                 control={control}
                                 render={({ field, fieldState }) => (
-                                  // <TextArea
-                                  //   {...field}
-                                  //   className="min-h-20 placeholder:text-xl border bg-white border-[#D9D9D9]"
-                                  //   placeholder="Add Review"
-                                  // />
                                   <>
                                     <TextArea
                                       {...field}
@@ -222,38 +316,6 @@ export const ServicesProgress = ({ data }) => {
                                 )}
                               />
                             </div>
-                            <div className="flex justify-center items-center pb-5">
-                              {/* <Controller
-                                name="rating"
-                                control={control}
-                                render={({ field }) => (
-                                  <Rating
-                                    rating={field.value} // Bind the value to the form state
-                                    setRating={(value) => field.onChange(value)} // Update the form state on change
-                                    size={40}
-                                  />
-                                )}
-                              /> */}
-                              <Controller
-                                name="rating"
-                                control={control}
-                                render={({ field, fieldState }) => (
-                                  <div className="flex flex-col gap-4">
-                                    <Rating
-                                      {...field}
-                                      rating={field.value}
-                                      setRating={field.onChange}
-                                      size={40}
-                                    />
-                                    {fieldState.error && (
-                                      <p className="text-red-500 text-sm">
-                                        {fieldState.error.message}
-                                      </p>
-                                    )}
-                                  </div>
-                                )}
-                              />
-                            </div>
                             <div className="flex justify-end gap-4">
                               <Button
                                 outline={true}
@@ -264,7 +326,7 @@ export const ServicesProgress = ({ data }) => {
                               </Button>
                               <Button
                                 disabled={!isValid}
-                                isLoading={isRatingSubmitting}
+                                isLoading={isRatingAdding}
                                 primary={true}
                                 type="submit"
                               >
@@ -278,9 +340,8 @@ export const ServicesProgress = ({ data }) => {
                   </ConfirmationModal>
                   <Button primary={true}>Avail again</Button>
                   <button
-                    className={`${
-                      dropdownStates === true && "rotate-180"
-                    } hidden lg:block`}
+                    className={`${dropdownStates === true && "rotate-180"
+                      } hidden lg:block`}
                     onClick={() => handleServiceDropdown(index)}
                   >
                     <GoTriangleDown size={30} />

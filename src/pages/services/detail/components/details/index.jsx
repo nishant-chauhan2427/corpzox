@@ -110,12 +110,15 @@ export const Details = ({
             </div>
             <div className="py-2">
               <p className="font-bold text-xs text-[#0A1C40]">
-                Money-Back Guarantee:{" "}
+                Service Details{" "}
               </p>
-              <p className="text-[10px]">
+              {/* <p className="text-[10px]">
                 Guaranteed submission in 3 working days or your money back. T&C
                 Apply
-              </p>
+              </p> */}
+              {
+                <p className="text-[11px] text-[#0A1C40]">{data?.details}</p>
+              }
             </div>
             <div className="py-4 flex justify-between items-center">
               {data?.rating && (

@@ -1,5 +1,5 @@
 import { createSlice, current } from "@reduxjs/toolkit";
-import { getServiceDetails, getStates, getStateWiseServiceCharge, talkToAdvisor, verifyCoupon, paymentStatus, availService } from "../actions/servicesDetails-actions";
+import { getServiceDetails, getStates,ratingReview, getStateWiseServiceCharge,getRatingDetails, talkToAdvisor, verifyCoupon, paymentStatus, availService } from "../actions/servicesDetails-actions";
 import toast from "react-hot-toast";
 import { act } from "react";
 // Slice
@@ -32,6 +32,9 @@ const serviceDetailSlice = createSlice({
     totalSavings: 0,
     isQuotationAvailable: false,
     subscriptionId: "",
+    isRatingReviewLoading : false,
+    isRatingAdding : false,
+    ratingReviewList : []
   },
   reducers: {
     clearState: (state) => {
@@ -110,74 +113,6 @@ const serviceDetailSlice = createSlice({
         state.error = null;
         state.success = null;
       })
-      //       .addCase(getServiceDetails.fulfilled, (state, action) => {
-      //         // toast.success(action.payload.message)
-      //         console.log(action.payload, 'service details')
-      //         state.serviceDetailLoading = false;
-      //         state.success = action.payload;
-      //         state.subscription = action.payload.subscription
-      //         state.coupons = action.payload.coupons
-      //         state.error = null;
-      //         state.serviceTestimonials = action.payload.servicetestimonials;
-
-      //         if (!state.cost && action.payload.cost) {
-      //           state.cost = action.payload.cost;
-      //         }
-      //         if (state.serviceCharge) {
-      //           state.cost = state.serviceCharge + state.subscription[0].amount
-      //         }
-
-      //         console.log(state.serviceCharge, "totalCost")
-      //         state.averageRating = action.payload.averageRating
-      //         state.quotationDetails = action.payload.quotations
-      // console.log(action.payload.quotations.length, "action.payload.quotations.length")
-      //         if (action.payload.quotations.length > 0) {
-      //           state.isQuotationAvailable = true;
-      //         }else{
-      //           state.isQuotationAvailable = false; 
-      //         }
-      //         console.log(state.subscription, "service ")
-      //         console.log(action.payload.offerservices[0]?.offers, "offers hehehe")
-
-      //         // if(action.payload.offerservices && action.payload.offerservices.length > 0 ){
-      //         //   state.subscription = state.action.payload.offerservices.map((subscription)=>{
-      //         //     return {
-      //         //       title : subscription.offers[0]?.offerTitle, 
-      //         //       amount : subscription.offers[0]?.amount ? subscription.amount : action.payload.subscription[0].amount, 
-      //         //       description : subscription.offers[0]?.offerDetail,
-      //         //     }
-      //         //   })
-      //         // }
-      //         console.log(action.payload.offerservices[0]?.offers[0]?.discountPercent, "action.payload.offerservices[0].offers[0].discountPercent");
-      //         if (action.payload.offerservices[0]?.offers.length > 0) {
-      //           const discount = action.payload.offerservices[0]?.offers[0]?.discountPercent; // Get the discount value
-      //           state.subscription = state.subscription.map((item) => {
-      //               return {
-      //                   ...item, // Preserve existing properties
-      //                   amount: item.amount - (item.amount * discount) / 100, // Apply the discount to update amount
-      //               };
-      //           });
-      //       }
-
-      //         if (action.payload.quotations && action.payload.quotations.length > 0) {
-      //           state.isQuotationAvailable = true
-      //           state.cost = action.payload.quotations[0].amount
-      //         }
-      //         state.availServiceData = {
-      //           serviceId: action.payload._id,
-      //           formId: action.payload.formId,
-      //           serviceDetails: {
-      //             name: action.payload.name,
-      //             cost: action.payload.cost,
-      //             duration: action.payload.duration
-      //           },
-      //           paymentMode: "Net Banking",
-      //           paymentStatus: "PENDING",
-      //           paymentDate: Date.now(),
-      //         }
-      //         state.quotationId = action.payload.quotationId;
-      //         state.formId = action.payload.formId
-      //       })
       .addCase(getServiceDetails.fulfilled, (state, action) => {
         console.log(action.payload, 'service details');
         state.serviceDetailLoading = false;
@@ -420,6 +355,26 @@ const serviceDetailSlice = createSlice({
         toast.error(action.payload)
         state.isPaymentSuccessful = false
         console.log(action.payload, "rejected")
+      })
+      .addCase(getRatingDetails.pending, (state)=>{
+        state.isRatingReviewLoading = true;
+      })
+      .addCase(getRatingDetails.fulfilled, (state, action)=>{
+        state.isRatingReviewLoading = false;
+        state.ratingReviewList = action.payload;
+      })
+      .addCase(getRatingDetails.rejected, (state)=>{
+        state.isRatingReviewLoading = false;
+      })
+      .addCase(ratingReview.pending, (state)=>{
+        state.isRatingAdding = true;
+      })
+      .addCase(ratingReview.fulfilled, (state, action)=>{
+        state.isRatingAdding = false;
+      })
+      .addCase(ratingReview.rejected, (state, action)=>{
+        state.isRatingAdding = false;
+        toast.error(action.payload)
       })
   },
 });
