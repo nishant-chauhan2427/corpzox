@@ -142,7 +142,7 @@ export const Verify = () => {
             <div className="flex flex-col  justify-between ">
               <div>
                 <DualHeadingTwo
-                  containerClassName={"text-left pt-5"}
+                  containerClassName={"text-left pt-2"}
                   heading={"Verification Code"}
                   subHeading={
                     "We have sent you an OTP on your registered mobile no. and email id"

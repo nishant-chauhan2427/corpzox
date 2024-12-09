@@ -151,7 +151,7 @@ export const SignIn = () => {
             />
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="flex flex-col gap-4 pt-5"
+              className="flex flex-col gap-3 pt-5"
             >
               <Controller
                 name="email"

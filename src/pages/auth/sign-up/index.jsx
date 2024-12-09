@@ -86,7 +86,7 @@ export const Signup = () => {
         <div className="w-full  flex  ">
           <div className="w-full flex flex-col">
             <DualHeadingTwo
-              containerClassName={"text-left pt-5"}
+              containerClassName={"text-left pt-2"}
               heading={"Sign Up"}
               subHeading={"Welcome to CorpZO. Please sign up here!"}
             />
