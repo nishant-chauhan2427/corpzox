@@ -14,7 +14,7 @@ export const RecommendedServices = ({ data, total }) => {
   console.log(total,"ˇTotal Service");
   return (
     <div className="">
-      <div className="py-2 flex flex-col sm:flex-row justify-between gap-2" >
+      <div className="py-2 flex flex-row sm:flex-row justify-between gap-2" >
         <Heading title={"Dashboard"} className={"py-0"} tourButton={true}>
           Recommended Services  {total == undefined ? "" : "(" + total + ")"}
         </Heading>
@@ -36,7 +36,7 @@ export const RecommendedServices = ({ data, total }) => {
               />
               <div className="flex  flex-col text-start">
                 <p className="font-semibold text-[#171717]">{data.name}</p>
-                <p className="font-medium text-[12px]">{data?.details?.length > 30 ? data?.details?.slice(0,30)+"..." : data?.details} </p>
+                <p className="font-medium text-[12px]">{data?.details?.length > 50 ? data?.details?.slice(0,40)+"..." : data?.details} </p>
               </div>
             </div>
             <div className="border-l h-full flex justify-center items-center">

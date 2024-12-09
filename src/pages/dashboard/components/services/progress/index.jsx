@@ -117,8 +117,8 @@ export const ServicesProgress = ({ data }) => {
 
   return (
     <div>
-      <div className="py-2 flex flex-col sm:flex-row justify-between gap-2">
-        <Heading className={"py-0"} tourButton={true}>
+      <div className="py-2 flex flex-row sm:flex-row justify-between gap-2">
+        <Heading className={"py-0 "} tourButton={true}>
           Your Service are Completed({dataUpdate?.total})
         </Heading>
         <Link to={"/services"} className="font-medium text-sm text-[#797979]">
@@ -133,7 +133,6 @@ export const ServicesProgress = ({ data }) => {
                 <div className="flex flex-col gap-1">
                   <div className="flex gap-2">
                     <img src="/images/dashboard/service-progress.svg" alt="" />
-
                     <p className="font-medium">
                       Service: {data?.service[0]?.name}{" "}
                     </p>
