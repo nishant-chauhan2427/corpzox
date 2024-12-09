@@ -96,15 +96,15 @@ export const Signup = () => {
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-5">
                 <Controller
-                  name="firstName"
+                  name="full"
                   control={control}
                   defaultValue=""
                   render={({ field }) => (
                     <Input
                       {...field}
-                      label={"First name"}
+                      label={"Full name"}
                       type={"name"}
-                      placeholder={"First Name"}
+                      placeholder={"Full Name"}
                       className={"border-[#D9D9D9] border"}
                       errorContent={errors?.firstName?.message}
                       onBlur={() => handleBlur("name")}
@@ -113,6 +113,20 @@ export const Signup = () => {
                   // rules={{ required: "Email Address is required" }}
                 />
                 <Controller
+                  name="phone"
+                  control={control}
+                  render={({ field }) => (
+                    <PhoneNumberInput
+                      {...field}
+                      // label={"Phone Number"}
+                      country={"in"}
+                      placeholder={"Phone No."}
+                      touched={true}
+                      errorContent={errors?.phoneNumber?.message}
+                    />
+                  )}
+                />
+                {/* <Controller
                   name="lastName"
                   control={control}
                   defaultValue=""
@@ -128,10 +142,10 @@ export const Signup = () => {
                     />
                   )}
                   // rules={{ required: "Email Address is required" }}
-                />
+                /> */}
               </div>
               <div className="">
-                <Controller
+                {/* <Controller
                   name="phone"
                   control={control}
                   render={({ field }) => (
@@ -144,7 +158,7 @@ export const Signup = () => {
                       errorContent={errors?.phoneNumber?.message}
                     />
                   )}
-                />
+                /> */}
               </div>
               <div className="-mt-2 flex flex-col gap-3">
                 <Controller

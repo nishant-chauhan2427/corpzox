@@ -152,7 +152,7 @@ export const Verify = () => {
                   onSubmit={handleSubmit}
                   className="w-full sm:w-[100%] mt-8 flex flex-col gap-2"
                 >
-                  <div className=" w-[90%] flex flex-col sm:pb-20">
+                  <div className=" w-full flex flex-col sm:pb-16 sm:pt-5 gap-4">
                     <div className="w-full flex justify-between items-start gap-2  ">
                       {otp.map((digit, index) => (
                         <input
@@ -185,7 +185,7 @@ export const Verify = () => {
                       {timer > 0 ? (
                         <p className="!text-[#969696] font-normal text-sm">
                           Resend Code{" "}
-                          <span className="!font-semibold text-[#5753FF] text-sm">
+                          <span className="!font-semibold text-[#F1359C] text-sm">
                             00:{timer}
                           </span>{" "}
                         </p>
@@ -208,13 +208,13 @@ export const Verify = () => {
                 </form>
               </div>
               <div>
-                <div className="text-center flex  justify-center gap-2  sm: pt-20 font-normal text-[#6C6C6C]">
+                <div className="text-center flex  justify-center gap-2   pt-4 font-normal text-[#6C6C6C]">
                   <p>
                     Need an account?
                     <Link
                       to={"/sign-up"}
-                      className="p-2 text-[#5753FF] font-semibold "
-                    >
+                      className="p-2 text-[#F1359C] font-semibold "
+                      >
                       Create one
                     </Link>
                   </p>

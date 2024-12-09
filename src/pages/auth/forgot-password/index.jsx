@@ -156,7 +156,7 @@ export const ForgotPassword = () => {
           {isOtpScreen ? (
             <div>
               <DualHeadingTwo
-                containerClassName={"text-left pt-5"}
+                containerClassName={"text-left pt-2"}
                 heading={"Verification Code"}
                 subHeading={
                   "We have sent you an OTP on your registered mobile no. and Email Id"
@@ -164,9 +164,9 @@ export const ForgotPassword = () => {
               />
               <form
                 onSubmit={handleOtpSubmit}
-                className="w-full sm:w-[100%] sm:mt-8 flex flex-col gap-2"
+                className="w-full sm:w-[100%] sm:mt-5 flex flex-col gap-2"
               >
-                <div className="w-[90%] flex flex-col sm:pb-20">
+                <div className="w-full flex flex-col sm:pt-5 sm:pb-16 sm:gap-4">
                   <div className="w-full flex justify-between items-start gap-2  ">
                     {otp.map((digit, index) => (
                       <input
@@ -222,7 +222,7 @@ export const ForgotPassword = () => {
           ) : (
             <div>
               <DualHeadingTwo
-                containerClassName={"text-left pt-5"}
+                containerClassName={"text-left pt-2"}
                 heading={"Forgot Password"}
                 subHeading={
                   "Please enter your registered email id to reset password."
@@ -230,7 +230,7 @@ export const ForgotPassword = () => {
               />
               <form
                 onSubmit={handleSubmit(handleEmailSubmit)}
-                className="flex flex-col gap-2 pt-5"
+                className="flex flex-col gap-7 pt-5"
               >
                 <Controller
                   name="email"
@@ -275,7 +275,7 @@ export const ForgotPassword = () => {
               </form>
             </div>
           )}
-          <div className="text-center  flex justify-center gap-2 pt-20 font-normal text-[#6C6C6C]">
+          <div className="text-center  flex justify-center gap-2 pt-4 font-normal text-[#6C6C6C]">
             <p>
               Need an account?
               <Link
