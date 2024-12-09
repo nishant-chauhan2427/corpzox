@@ -107,7 +107,7 @@ const dispatch = useDispatch()
     return (
       <div className="flex py-2 justify-evenly items-center">
         <Button primary={false} onClick={() => openViewTransactionDetails(_id)}>
-          <img src="/icons/payment/calling.svg" alt="" />
+          <img src="/icons/payment/print.svg" alt="" />
         </Button>
         <Button primary={false} onClick={() => openCallToAdvisor(id)}>
           <img src="/icons/payment/calling.svg" alt="" />
