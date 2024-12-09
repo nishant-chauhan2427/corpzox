@@ -89,7 +89,7 @@ const Dashboard = () => {
   return (
     <>
       <Heading title={"Dashboard"}></Heading>
-      <section className="py-4 flex flex-col gap-4 sm:mr-7">
+      <section className="py-4 flex flex-col gap-4 ">
         <div className="py-2 flex flex-col md:flex-row justify-between gap-4">
           <div className="flex flex-col sm:flex-row gap-4 w-full">
             <Profile user={user} />

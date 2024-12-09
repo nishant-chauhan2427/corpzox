@@ -44,12 +44,12 @@ export const PrimaryLayout = () => {
           className={`lg:ps-48 w-full overflow-hidden`}
         >
           <motion.div className="px-4 lg:pr-0 bg-[#ffffff] dark:dark:bg-slate-800 flex gap-5">
-            <div className="w-full md:w-3/4">
+            <div className="w-full lg:w-3/4">
               <Outlet />
             </div>
             <RightSidebar
               className={
-                "w-full md:w-1/4  hidden md:flex flex-col gap-4 md:sticky top-0 right-0"
+                "w-full md:w-1/4 hidden lg:flex flex-col gap-4 md:sticky top-0 right-0"
               }
             />
           </motion.div>
