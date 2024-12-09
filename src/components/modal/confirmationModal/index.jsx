@@ -23,7 +23,7 @@ export const ConfirmationModal = ({
         exit={{ scale: 0, translateY: 500 }}
         className={`${
           containerClassName && containerClassName
-        } fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-[1005]`}
+        } fixed inset-0 bg-opacity-50 flex items-center justify-center z-[1005]`}
       >
         <div
           className={`${

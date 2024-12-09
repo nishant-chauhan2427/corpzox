@@ -150,6 +150,13 @@ function SelectBusiness() {
   const [isSaving, setIsSaving] = useState(false);
 
 
+  const [allBusiness, setAllBusiness] = useState(null);
+  const [selectedBusinessId, setSelectedBusinessId] = useState(null);
+
+  const handleBusinessChange = (event) => {
+    setSelectedBusinessId(event.target.value);
+  };
+
 
   // console.log("loading", loading);
   // console.log("dynamicForm", dynamicForm);
@@ -193,28 +200,30 @@ function SelectBusiness() {
 
   const handleInputValueChange = (index, newValue) => {
     // console.log("handleInputValueChange: ", index, newValue);
-    
+
+    //Fomatting from newValue =[{name:"name1",value:"val1"}] to newValue = ["val1"]
+
     const field = dynamicForm[index];
     field.value[0] = newValue;
 
-    if(field?.isRequired && (field?.value.length<=0)){
+    if (field?.isRequired && (field?.value.length <= 0)) {
       field.isRequiredMsg = "Required field";
-    }else{
+    } else {
       field.isRequiredMsg = false;
     }
 
     setDynamicForm([...dynamicForm]);
   }
 
-  const handleInputValueChangeV2 = (index, newValue,err) => {
+  const handleInputValueChangeV2 = (index, newValue, err) => {
     // console.log("handleInputValueChangeV2: ", index, newValue,err);
     const field = dynamicForm[index];
     field.value[0] = newValue;
     field.error = err;
-    
-    if(field?.isRequired && (field?.value.length<=0 || field?.value[0]?.trim() === "")){
+
+    if (field?.isRequired && (field?.value.length <= 0 || field?.value[0]?.trim() === "")) {
       field.isRequiredMsg = "Required field";
-    }else{
+    } else {
       field.isRequiredMsg = false;
     }
 
@@ -229,9 +238,9 @@ function SelectBusiness() {
     const field = dynamicForm[index];
     field.value = newValue;
 
-    if(field?.isRequired && (field?.value.length<=0)){
+    if (field?.isRequired && (field?.value.length <= 0)) {
       field.isRequiredMsg = "Required field";
-    }else{
+    } else {
       field.isRequiredMsg = false;
     }
 
@@ -239,6 +248,11 @@ function SelectBusiness() {
   }
 
   const handleSubmit = async () => {
+
+    if(!selectedBusinessId){
+      toast.error("Please select business");
+      return;
+    }
     // console.log("values:--------------");
     const formData = dynamicForm?.map((field) => {
       const { value } = field;
@@ -256,15 +270,17 @@ function SelectBusiness() {
     try {
       // Simulate API calls for each child
       setIsSaving(true);
-      const savePromises = Object.entries(formData).map(([key, payload]) => {
 
-        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-        const token = userInfo?.token;
-
-        if (!token) {
+      //Auth
+      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      const token = userInfo?.token;
+      if (!token) {
           return rejectWithValue("No token found");
         }
 
+
+      //Save FormData API calls
+      const savePromises = Object.entries(formData).map(([key, payload]) => {
         // console.log("saved:payload",payload);
 
         return axios.put(`https://corpzo.onrender.com/api/application/form-value`, payload, {
@@ -279,14 +295,59 @@ function SelectBusiness() {
       });
 
       await Promise.all(savePromises); // Wait for all API calls to complete
+
+
+      //Save selected Business API
+      axios.put(`https://corpzo.onrender.com/api/application/application-business`, {
+        applicationId:applicationId,
+        businessId:selectedBusinessId
+      }, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`,
+        }
+      });
+      
+
+
       toast.success("Form Saved")
     } catch (error) {
-      console.error("Error saving data:", error);
+      toast.error("Error while saving form")
+      console.error("Error while saving form:", error);
     } finally {
       setIsSaving(false);
     }
 
   }
+
+  useEffect(() => {
+    const getAllBusiness = async () => {
+      try {
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        const token = userInfo?.token;
+
+        if (!token) {
+          return rejectWithValue("No token found");
+        }
+
+        const response = await client.get("/business/user-business-card", {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        setAllBusiness(response.data?.data);
+      } catch (err) {
+        console.log(err, "get business list error");
+        setError(err);
+      } finally {
+      }
+    }
+
+    getAllBusiness();
+  }, []);
 
   if (loading) return <FormShimmer className={"m-3"} count={6} />
 
@@ -294,8 +355,27 @@ function SelectBusiness() {
 
   return (
     <div className='flex flex-col'>
+
+      <div className='w-full my-2'>
+        <select
+          name="businessDropdown"
+          id="businessDropdown"
+          className='w-full p-3 border hover:shadow-md'
+          value={selectedBusinessId}
+          onChange={handleBusinessChange}
+        >
+          <option value="" disabled selected>Select Business</option>
+          {allBusiness?.map((business) => (
+            <option key={business._id} value={business._id}>
+              {business.businessName}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <hr />
       {dynamicForm?.map((field, idx) => {
-        switch (field.inputType) {
+        switch (field?.inputType) {
           case "short_answer":
             return <InputField key={idx} onChange={handleInputValueChangeV2} index={idx} field={field} className={fieldStyle} />;
           case "paragraph":
@@ -318,11 +398,11 @@ function SelectBusiness() {
         outline={true}
         primary={true}
         // disabled={(dynamicForm?.some((field,idx) => {return field.error === true})) }
-        disabled={isSaving || (dynamicForm?.some((field,idx) => field.isRequiredMsg ||field.error === true )) }
+        disabled={isSaving || (dynamicForm?.some((field, idx) => field?.isRequiredMsg || field?.error === true))}
         className={" py-2 "}
         onClick={handleSubmit}
       >
-        {isSaving?"Saving...":"Submit"}
+        {isSaving ? "Saving..." : "Submit"}
       </Button>
     </div>
   )

@@ -19,7 +19,7 @@ export const Offers = () => {
   useEffect(()=>{
     console.log("Offer page render");
     
-    dispatch(getOffers());
+    dispatch(getOffers({}));
   },[])
 
   if(isLoading) return <OfferShimmer count={2}/>

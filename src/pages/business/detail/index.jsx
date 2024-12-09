@@ -11,6 +11,7 @@ import { BusinessCardShimmer } from "../../../components/loader/BusinessCardShim
 import { getUser } from "../../../redux/actions/dashboard-action";
 import { LinkButton } from "../../../components/link";
 import { resetBusiness } from "../../../redux/slices/businessSlice";
+import { TableShimmer } from "../../../components/loader/TableShimmer";
 const BusinessDetail = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -66,7 +67,7 @@ const BusinessDetail = () => {
 
   return (
     <>
-      {loading ? <><BusinessCardShimmer /></> : <section className="pb-10">
+      {loading ? <><TableShimmer /><TableShimmer /></> : <section className="pb-10">
         <div className="flex flex-col gap-4 ">
           <div className="flex flex-col md:flex-row justify-between gap-4 ">
             <Heading

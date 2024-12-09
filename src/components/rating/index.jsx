@@ -11,8 +11,6 @@ export const Rating = ({ totalStars = 5 ,rating,setRating, size}) => {
     <div className="flex items-center space-x-1">
       {Array.from({ length: totalStars }, (_, index) => {
         const starValue = index + 1;
-  console.log(starValue, "star val")
-
         return (
           <motion.div
             key={starValue}

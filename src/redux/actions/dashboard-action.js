@@ -120,34 +120,6 @@ export const requestChangeManager = createAsyncThunk(
 );
 
 
-export const ratingReview = createAsyncThunk(
-  "ratingReview",
-  async (ratingData, { rejectWithValue }) => {
-    try {
-      const response = await client.post(
-        `user/rating-review`,
-        ratingData,
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
-          },
-        }
-      );
-
-      if (response?.data?.code === 200 || response?.data?.code === 201) {
-        return response.data;
-      } else {
-        return rejectWithValue(response?.data?.message);
-      }
-    } catch (error) {
-      console.log(error, "error manager");
-      return rejectWithValue(error?.response?.data?.message);
-    }
-  }
-);
-
 
 
 export const getRatingReviews = createAsyncThunk(
