@@ -9,7 +9,7 @@ import { Input } from "../../../components/inputs";
 import { Heading } from "../../../components/heading";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../../redux/actions/dashboard-action";
-import { submitEditProfile } from "../../../redux/actions/profile-actions";
+import { submitEditProfile, updateProfilePicture } from "../../../redux/actions/profile-actions";
 import { profileValidationSchema } from "./editProfileValidationSchema";
 import Cropper from "react-easy-crop";
 
@@ -99,8 +99,6 @@ console.log(user,"PICTURE");
         setImageFile(file); 
       };
       reader.readAsDataURL(file);
-
-      console.log("reader",reader);
       
     }
   };
@@ -108,7 +106,10 @@ console.log(user,"PICTURE");
 const url = user?.profile_picture_url
 
   const handleSave = async () => {
+    //console.log("1234567");
+    dispatch(updateProfilePicture(file, navigate));
     if (croppedAreaPixels) {
+     
       const croppedImg = await getCroppedImg(
         url,
         crop,

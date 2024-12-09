@@ -2,7 +2,9 @@ import React from "react";
 import { NoData } from "../../../../components/errors/noData";
 const DocumentViewer = ({ docUrl, docName, isLoading }) => {
   const getFileExtension = (url) => {
+    //if(JSON.stringify(url) === '{}'){
     return url?.split(".")?.pop()?.toLowerCase();
+   // }
   };
 
   const renderDocumentContent = () => {

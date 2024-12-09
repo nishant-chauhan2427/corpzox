@@ -33,20 +33,26 @@ const DocumentDetail = () => {
                     <div className="flex items-center justify-between">
                         <Heading backButton={true}>Document Detail</Heading>
                         <div className="flex items-center gap-2">
-                            {url  ? (<Search placeholder={"Search Files"} />):<></>}
+                            {url?.length>0  ? (<Search placeholder={"Search Files"} />):<></>}
                             {/* <Search placeholder={"Search Files"} /> */}
                         </div>
                     </div>
 
-                    {listData.length > 0 && url ? (
+                    {listData?.length > 0 && url ? (
                         listData.map((item, index) => {
                             if (item?.value && Array.isArray(item.value)) {
                                 return item.value.map((docValue, docIndex) => (
-                                    <DocumentViewer
+                                    <>
+                                    {docValue.length>0 ?  <DocumentViewer
+                                    //{docValue.length>0 ?<>:<></>}
                                         key={`${index}-${docIndex}`} // Adding a unique key for each item
                                         docUrl={docValue} // Use the individual value from item.value
                                         docName={item?.lebel || `Document ${docIndex + 1}`} // Fallback for label if not available
-                                    />
+                                    />: <NoData></NoData>}
+                                    
+                                    
+                                    </>
+                                    
                                 ));
                             } else {
                                 return <NoData key={index} />;
