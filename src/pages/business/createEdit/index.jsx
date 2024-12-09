@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { registrationDetails, updateRegistrationDetails } from "../../../redux/actions/business-action";
 import { addressSchema, financialSchema, fundingSchema, kycSchema, registrationSchema } from "../../../validation/createBusinessValidationSchema";
 
-const CreateBusiness = () => {
+const CreateBusiness = ({isEdit}) => {
   const [currentStep, setCurrentStep] = useState(0);
   const navigate = useNavigate();
   const {business,businessId} = useSelector((state) => state.business);
@@ -53,7 +53,7 @@ const CreateBusiness = () => {
   } = useForm({
     mode: "onChange",
     resolver: yupResolver(getValidationSchema(currentStep)),
-     defaultValues: business || {},
+      defaultValues: business || {},
   });
 
   const handleBlur = async (field) => {
@@ -78,6 +78,7 @@ const CreateBusiness = () => {
       touchedFields={touchedFields}
       handleBlur= {handleBlur}
       trigger = {trigger}
+      isEdit={isEdit}
     />, key: 'registration'},
     {component: <AddressDetails setValue={setValue} control={control} errors={errors} handleBlur= {handleBlur}
     trigger = {trigger}
@@ -90,9 +91,9 @@ const CreateBusiness = () => {
     trigger = {trigger}/>, key: "funding"},
   ];
 
-  useEffect(() => {
-    trigger(); 
-  }, [currentStep, setValue, trigger]);
+  // useEffect(() => {
+  //   trigger(); 
+  // }, [currentStep, setValue, trigger]);
   
   
   useEffect(() => {
@@ -104,7 +105,10 @@ const CreateBusiness = () => {
   }, [currentStep, business, setValue]);
 
   // useEffect(() =>{
-  //   dispatch(resetBusiness());
+  //   if(!isEdit && !businessId){
+  //     dispatch(resetBusiness());
+  //   }
+   
   // })
 
   // Handle step navigation

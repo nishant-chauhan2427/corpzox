@@ -19,13 +19,14 @@ import documentSlice from "./slices/documentSlice";
 import paymentHistoryReducer from "./slices/paymentHistorySlice"
 import dashboardReducer from "./slices/dashboardSlice"
 import offerSlice from "./slices/offerSlice"
+import businessPageSlice from "./slices/businessPageSlice";
 
 
 // Persist configuration
 const persistConfig = {
   key: "root",
   storage,
-  blacklist :['service','serviceDetails','wishlist','document']
+  blacklist :['service','serviceDetails','wishlist','document',]
 };
 
 // Combine all slices into a single root reducer
@@ -44,6 +45,7 @@ const rootReducer = combineReducers({
   paymentHistory : paymentHistoryReducer,
   dashboard : dashboardReducer,
   offers: offerSlice,
+  businessList : businessPageSlice
 });
 
 // Create a persisted reducer

@@ -13,6 +13,7 @@ const initialState = {
   list: [],
   totalPage: 0,
   isAdding: {},
+  isfetching:false,
   page: 1,
   limit: 10,
   loading: false,
@@ -122,18 +123,30 @@ const serviceListingSlice = createSlice({
     builder
       .addCase(updateServiceWishlist.pending, (state, action) => {
         state.wishList.loading = true;
+        console.log(action.payload," WERERE PENDING");
+        state.isfetching=true;
         // console.log(action.meta.arg.serviceId,'updateservicewishlist');
         state.isAdding[action.meta.arg.serviceId] = true;
       })
       .addCase(updateServiceWishlist.fulfilled, (state, action) => {
+        console.log(action.payload," WERERE UPDATE");
         state.wishList.loading = false;
+        state.isfetching=false;
 
       state.isAdding[action.payload?.data.data?.serviceId]=false;
-       state.list = state.list.map((service) =>
-       service?._id === action.payload?.data?.serviceId
-         ? { ...service, ...action.payload }
-         :service
-     );
+    //    state.list = state.list.map((service) =>
+    //    service?._id === action.payload?.data?.serviceId
+    //      ? { ...service, ...action.payload }
+    //      :service
+    //  );
+// console.log(action.payload," WERERE UPDATE");
+
+     state.list=state.list.map((service)=>{
+      if(service?._id==action.payload?.data?.serviceId){
+        service.wishlistCount=1;
+      }
+      return service
+   });
         // state.list=state.list.map((service)=>{
         //    if(service?._id!=action.payload?.data?.serviceId){
         //     return service
@@ -144,8 +157,10 @@ const serviceListingSlice = createSlice({
       })
       .addCase(updateServiceWishlist.rejected, (state, action) => {
         state.wishList.loading = false;
-        console.log("erorrr rejcttt")
-        console.log("action.meta.arg.serviceId",action.meta.arg.serviceId);
+        // console.log(action.payload," WERERE REHECTED ");
+        state.isfetching=false;
+        // console.log("erorrr rejcttt")
+        // console.log("action.meta.arg.serviceId",action.meta.arg.serviceId);
         state.isAdding = false
         state.wishList.error=action.payload;
       });

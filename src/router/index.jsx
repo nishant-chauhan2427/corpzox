@@ -118,7 +118,7 @@ const router = createBrowserRouter([
               },
               {
                 path: "edit",
-                element: <CreateBusiness />,
+                element: <CreateBusiness isEdit={true}/>,
               },
               {
                 path: "preview",

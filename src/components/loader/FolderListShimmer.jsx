@@ -1,10 +1,7 @@
-export const BusinessCardShimmer = ({ className,count=1 }) => {
-  //count : is responsible to render this same component count times
-  return (
-    <>
-      {Array.from({ length: count }).map((_, index) => (
+export const FolderListShimmer = ({ className }) => {
+    return (
+      <>
         <div
-          key={index} // Adding a unique key for each iteration
           className={`${className} relative w-full rounded-md overflow-hidden`}
         >
           <div className="px-3 pt-3 pb-1 bg-gray-300 dark:bg-gray-700 h-40 animate-pulse rounded-xl">
@@ -22,7 +19,6 @@ export const BusinessCardShimmer = ({ className,count=1 }) => {
             </div>
           </div>
         </div>
-      ))}
-    </>
-  );
-};
+      </>
+    );
+  };

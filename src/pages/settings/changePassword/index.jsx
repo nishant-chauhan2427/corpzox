@@ -195,8 +195,7 @@ const ChangePassword = () => {
         <>
           <h4 className="font-bold text-2xl">OTP Verification</h4>
           <p className="text-sm text-[#525252]">
-            We have sent you an OTP on your registered mobile no.
-            <br /> and email id
+            We have sent you an OTP on your registered mobile no and email id
           </p>
           <form
             onSubmit={handleVerify}

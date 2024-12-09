@@ -1,4 +1,4 @@
-export const BusinessCardShimmer = ({ className,count=1 }) => {
+export const ServiceDetailsRatingCard = ({ className,count=1 }) => {
   //count : is responsible to render this same component count times
   return (
     <>

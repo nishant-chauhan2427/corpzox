@@ -13,54 +13,68 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ratingReviewSchema } from "../../../../../validation/ratingReviewValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
-import { getRatingReviews, ratingReview } from "../../../../../redux/actions/dashboard-action";
+import { ratingReview } from "../../../../../redux/actions/servicesDetails-actions";
 
 export const ServicesProgress = ({ data }) => {
   const [dropdownStates, setDropdownStates] = useState(data.map(() => false));
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [otherValue, setOtherVsalue] = useState("");
-  const [serviceId, setServiceId] = useState("")
+  const [serviceId, setServiceId] = useState("");
   const [rating, setRating] = useState(0);
-  const dispatch = useDispatch()
-  const { isRatingSubmitting } = useSelector((state) => state.dashboard)
+  const dispatch = useDispatch();
+ 
+  const {isRatingAdding} = useSelector((state)=> state.serviceDetails)
   const handleServiceDropdown = (index) => {
     setDropdownStates((prevState) =>
       prevState.map((state, i) => (i === index ? !state : state))
     );
   };
+  const { dataUpdate } = useSelector((state) => state.user);
   const {
-    dataUpdate
-  } = useSelector((state) => state.user)
-  const { control, handleSubmit, reset, formState: { errors, isValid }, } = useForm({
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors, isValid },
+  } = useForm({
     defaultValues: {
+      serviceQualityRating: 0,
+      professionalBehaviourRating: 0,
+      onTimeDeliveryRating: 0,
+      transparentPricingRating: 0,
+      valueForMoneyRating: 0,
       review: "",
-      rating: 0,
     },
-    resolver: yupResolver(ratingReviewSchema)
+    resolver: yupResolver(ratingReviewSchema),
   });
   const onConfirmationModalClose = () => {
     setConfirmationModal(false);
-    setServiceId("")
+    setServiceId("");
   };
 
-  useEffect(()=>{
-    if(!isRatingSubmitting) setConfirmationModal(false);
-    
-  }, [isRatingSubmitting])
+  useEffect(() => {
+    if (!isRatingAdding) setConfirmationModal(false);
+  }, [isRatingAdding]);
 
   const onConfirmationModalOpen = (data) => {
-    console.log(data, "mo idea")
-    setServiceId(data)
+    console.log(data, "mo idea");
+    setServiceId(data);
     setConfirmationModal(true);
   };
   const onSubmit = (formData) => {
     console.log("Submitted Data: ", formData);
     // Handle form submission logic
-
-    dispatch(ratingReview({...formData, serviceId}))
+    console.log("Submitted Data: ", {
+      serviceQualityRating: formData.serviceQualityRating,
+      professionalBehaviourRating: formData.professionalBehaviourRating,
+      onTimeDeliveryRating: formData.onTimeDeliveryRating,
+      transparentPricingRating: formData.transparentPricingRating,
+      valueForMoneyRating: formData.valueForMoneyRating,
+      review: formData.review,
+    });
+    dispatch(ratingReview({ ...formData, serviceId }));
     reset(); // Reset the form after submission
   };
-
+  
   const servicesProgessSteps = [
     {
       step: 1,
@@ -103,25 +117,29 @@ export const ServicesProgress = ({ data }) => {
 
   return (
     <div>
-      
       <div className="py-2 flex flex-col sm:flex-row justify-between gap-2">
         <Heading className={"py-0"} tourButton={true}>
           Your Service Progress Updates({dataUpdate?.total})
         </Heading>
-        <Link to={"/services/serviceprogressdetail"} className="font-semibold text-[#606060]">View All</Link>
+        <Link
+          to={"/services"}
+          className="font-semibold text-[#606060]"
+        >
+          View All
+        </Link>
       </div>
       {dataUpdate?.data?.length > 0 ? (
         <div className="flex flex-col gap-4">
           {dataUpdate?.data?.map((data, index) => (
             <div key={index} className="bg-[#F8FAFF] px-4 py-2 rounded-md">
-
               <div className="flex flex-col sm:flex-row items-start justify-between sm:items-center gap-2">
                 <div className="flex flex-col gap-1">
-                  
                   <div className="flex gap-2">
                     <img src="/images/dashboard/service-progress.svg" alt="" />
-                  
-                    <p className="font-bold">Service: {data?.service[0]?.name} </p>
+
+                    <p className="font-bold">
+                      Service: {data?.service[0]?.name}{" "}
+                    </p>
                     <img
                       src="/icons/dashboard/service-error.svg"
                       width={15}
@@ -130,17 +148,21 @@ export const ServicesProgress = ({ data }) => {
                   </div>
                   <div className="flex flex-col gap-2">
                     <h6 className="text-sm text-[#7C7D80]">
-                      <strong>Business:</strong> {data?.businessdetails[0]?.businessName}
+                      <strong>Business:</strong>{" "}
+                      {data?.businessdetails[0]?.businessName}
                     </h6>
                     <p className="text-sm text-[#7C7D80]">
-                      <strong>Step:</strong> {data?.status
-}
+                      <strong>Step:</strong> {data?.status}
                     </p>
                   </div>
                 </div>
                 <div className="flex gap-2">
-
-                  <Button onClick={()=>{onConfirmationModalOpen(data._id)}} className="flex items-center  px-4 py-[10px] rounded-full font-semibold text-base text-[#0068FF] bg-[#DBE9FE]">
+                  <Button
+                    onClick={() => {
+                      onConfirmationModalOpen(data._id);
+                    }}
+                    className="flex items-center  px-4 py-[10px] rounded-full font-semibold text-base text-[#0068FF] bg-[#DBE9FE]"
+                  >
                     Rate Your Experience
                   </Button>
 
@@ -153,29 +175,119 @@ export const ServicesProgress = ({ data }) => {
                         <p className="text-[32px]  text-[#232323] font-bold">
                           Rate Your Experience!
                         </p>
-                        {/* <div className="pt-4 pb-5">
-                          <label
-                            htmlFor="Review"
-                            className="flex text-lg font-bold text-[#0A1C40]"
-                          >
-                            Review
-                          </label>
-                          <TextArea
-                            className="min-h-20 placeholder:text-xl border bg-white border-[#D9D9D9]"
-                            placeholder="Add Review"
-                          />
-                        </div>
-                        <div className="flex justify-center items-center pb-20">
-                          <Rating size={40} rating={4} />
-                        </div>
-                        <div className="flex justify-end gap-4">
-                          <Button outline={true}>Maybe Later </Button>
-                          <Button primary={true} disabled={true}>
-                            Submit{" "}
-                          </Button>
-                        </div> */}
                         <form onSubmit={handleSubmit(onSubmit)}>
                           <div>
+
+                            <div className="flex justify-between items-center pb-5">
+                              <label className="text-sm font-semibold text-gray-600">
+                                Service Quality
+                              </label>
+                              <Controller
+                                name="serviceQualityRating"
+                                control={control}
+                                render={({ field, fieldState }) => (
+                                  <div className="flex flex-col gap-4">
+                                    <Rating
+                                      {...field}
+                                      rating={field.value}
+                                      setRating={field.onChange}
+                                      size={40}
+                                    />
+                                    {fieldState.error && (
+                                      <p className="text-red-500 text-sm">{fieldState.error.message}</p>
+                                    )}
+                                  </div>
+                                )}
+                              />
+                            </div>
+                            <div className="flex justify-between items-center pb-5">
+                              <label className="text-sm font-semibold text-gray-600">
+                                Professional Behavior
+                              </label>
+                              <Controller
+                                name="professionalBehaviourRating"
+                                control={control}
+                                render={({ field, fieldState }) => (
+                                  <div className="flex flex-col gap-4">
+                                    <Rating
+                                      {...field}
+                                      rating={field.value}
+                                      setRating={field.onChange}
+                                      size={40}
+                                    />
+                                    {fieldState.error && (
+                                      <p className="text-red-500 text-sm">{fieldState.error.message}</p>
+                                    )}
+                                  </div>
+                                )}
+                              />
+                            </div>
+                            <div className="flex justify-between items-center pb-5">
+                              <label className="text-sm font-semibold text-gray-600">
+                                On-Time Delivery
+                              </label>
+                              <Controller
+                                name="onTimeDeliveryRating"
+                                control={control}
+                                render={({ field, fieldState }) => (
+                                  <div className="flex flex-col gap-4">
+                                    <Rating
+                                      {...field}
+                                      rating={field.value}
+                                      setRating={field.onChange}
+                                      size={40}
+                                    />
+                                    {fieldState.error && (
+                                      <p className="text-red-500 text-sm">{fieldState.error.message}</p>
+                                    )}
+                                  </div>
+                                )}
+                              />
+                            </div>
+                            <div className="flex justify-between items-center pb-5">
+                              <label className="text-sm font-semibold text-gray-600">
+                                Transparent pricing
+                              </label>
+                              <Controller
+                                name="transparentPricingRating"
+                                control={control}
+                                render={({ field, fieldState }) => (
+                                  <div className="flex flex-col gap-4">
+                                    <Rating
+                                      {...field}
+                                      rating={field.value}
+                                      setRating={field.onChange}
+                                      size={40}
+                                    />
+                                    {fieldState.error && (
+                                      <p className="text-red-500 text-sm">{fieldState.error.message}</p>
+                                    )}
+                                  </div>
+                                )}
+                              />
+                            </div>
+                            <div className="flex justify-between items-center pb-5">
+                              <label className="text-sm font-semibold text-gray-600">
+                                Value for Money
+                              </label>
+                              <Controller
+                                name="valueForMoneyRating"
+                                control={control}
+                                render={({ field, fieldState }) => (
+                                  <div className="flex flex-col gap-4">
+                                    <Rating
+                                      {...field}
+                                      rating={field.value}
+                                      setRating={field.onChange}
+                                      size={40}
+                                    />
+                                    {fieldState.error && (
+                                      <p className="text-red-500 text-sm">{fieldState.error.message}</p>
+                                    )}
+                                  </div>
+                                )}
+                              />
+                            </div>
                             <div className="pt-4 pb-5">
                               <label
                                 htmlFor="Review"
@@ -187,11 +299,6 @@ export const ServicesProgress = ({ data }) => {
                                 name="review"
                                 control={control}
                                 render={({ field, fieldState }) => (
-                                  // <TextArea
-                                  //   {...field}
-                                  //   className="min-h-20 placeholder:text-xl border bg-white border-[#D9D9D9]"
-                                  //   placeholder="Add Review"
-                                  // />
                                   <>
                                     <TextArea
                                       {...field}
@@ -199,34 +306,11 @@ export const ServicesProgress = ({ data }) => {
                                       placeholder="Add Review"
                                     />
                                     {fieldState.error && (
-                                      <p className="text-red-500 text-sm">{fieldState.error.message}</p>
+                                      <p className="text-red-500 text-sm">
+                                        {fieldState.error.message}
+                                      </p>
                                     )}
                                   </>
-                                )}
-                              />
-                            </div>
-                            <div className="flex justify-center items-center pb-5">
-                              {/* <Controller
-                                name="rating"
-                                control={control}
-                                render={({ field }) => (
-                                  <Rating
-                                    rating={field.value} // Bind the value to the form state
-                                    setRating={(value) => field.onChange(value)} // Update the form state on change
-                                    size={40}
-                                  />
-                                )}
-                              /> */}
-                              <Controller
-                                name="rating"
-                                control={control}
-                                render={({ field, fieldState }) => (
-                                  <div className="flex flex-col gap-4">
-                                    <Rating {...field} rating={field.value} setRating={field.onChange} size={40} />
-                                    {fieldState.error && (
-                                      <p className="text-red-500 text-sm">{fieldState.error.message}</p>
-                                    )}
-                                  </div>
                                 )}
                               />
                             </div>
@@ -238,7 +322,12 @@ export const ServicesProgress = ({ data }) => {
                               >
                                 Maybe Later
                               </Button>
-                              <Button disabled={!isValid} isLoading={isRatingSubmitting} primary={true} type="submit">
+                              <Button
+                                disabled={!isValid}
+                                isLoading={isRatingAdding}
+                                primary={true}
+                                type="submit"
+                              >
                                 Submit
                               </Button>
                             </div>

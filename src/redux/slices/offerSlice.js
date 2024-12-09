@@ -9,6 +9,7 @@ const offerSlice = createSlice({
     loading: false,
     error: null,
     offers: null,
+    page:0,
     isDeactivate: false,
     isLoading: false,
     totalCount: null,
@@ -39,6 +40,7 @@ const offerSlice = createSlice({
         state.isLoading = false;
         state.totalCount=action.payload?.totalCount;
         state.offers = action.payload?.offers;
+        state.page =1;
         state.error = null;
       })
       .addCase(getOffers.rejected, (state, action) => {
@@ -61,12 +63,14 @@ const offerSlice = createSlice({
         console.log("getOffers.fulfilled",action.payload);
 
         state.loadingMore = false;
-        if(action.payload?.offers?.length <=0 ){
-            toast.error("No more offer found")
-        }else{
-            state.offers = state.offers?.concat(action.payload?.offers);
-            state.totalCount=action.payload?.totalCount;
-        }
+        state.totalCount = action.payload?.totalCount;
+        
+        if (state.offers) {
+          state.offers = [...state.offers, ...action.payload?.offers];
+          if (action.payload?.data?.length > 0) {
+              state.page = state.page + 1;
+          }
+      }
        
         state.error = null;
       })
