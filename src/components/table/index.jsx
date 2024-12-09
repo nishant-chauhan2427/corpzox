@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Pagination from "../Pagination";
 
 // Table component
 export const Table = ({ data, columns, isExpandable = true, actionMenu }) => {
@@ -101,6 +102,7 @@ export const Table = ({ data, columns, isExpandable = true, actionMenu }) => {
           ))}
         </tbody>
       </table>
+      <Pagination/>
     </div>
   );
 };
