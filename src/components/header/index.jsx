@@ -166,7 +166,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
             {getPageHeading(pathname)}
           </h1>
           {/* Search */}
-          {!pathname.includes("documents") && <Search
+          {(!pathname.includes("documents") && !pathname.includes("dashboar") )&& <Search
             placeholder={`Search ${getPageHeading(pathname)}`}
             containerClassName={
               "hidden lg:block w-full h-10 lg:!max-w-lg !bg-[#3D485F] !rounded-full overflow-hidden"
@@ -217,7 +217,8 @@ export const Header = ({ className, collapse, setCollapse }) => {
                   
                   <div className="hidden sm:flex flex-col items-start">
                     <h5 className="font-semibold text-sm text-white">
-                      {user?.name ? user?.name : "User Name"}
+                    {user?.name ? (user.name.slice(0, 25) + (user.name.length > 25 ? "..." : "")) : "User Name"}
+
                     </h5>
                     <p className="text-[9px] text-white">
                       {user?.name ? user?.email : "Designation"}

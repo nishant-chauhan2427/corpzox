@@ -51,7 +51,7 @@ export const Profile = ({user={}}) => {
   //   +basicPercentage,
   //   +financePercentage
   // );
-  console.log(user, "user")
+  //console.log(user, "user")
   let calculatePercentageHandler=()=>{
     let count=0;
     Object.keys(user).forEach((data)=>{
@@ -92,7 +92,7 @@ export const Profile = ({user={}}) => {
       </div>
       <div>
         <p className="font-bold text-2xl">{percentage}%</p>
-        <p className="font-semibold text-sm text-[#232323]">{user?.name}</p>
+        <p className="font-semibold text-sm text-[#232323]"> {user?.name ? (user.name.slice(0, 25) + (user.name.length > 25 ? "..." : "")) : "User Name"}</p>
         <Link to={"/profile"} className="font-semibold text-[10px] text-[#FF4141]">
           Complete Your Profile
         </Link>
