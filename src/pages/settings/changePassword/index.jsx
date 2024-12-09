@@ -3,8 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Input } from "../../../components/inputs";
 import { Button } from "../../../components/buttons";
 import { ConfirmationModal } from "../../../components/modal/confirmationModal";
-import toast from "react-hot-toast";
-import changePasswordSchema from "./changePasswordValidationSchema"
+import changePasswordSchema from "../../../validation/changePasswordSchema"
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
 import { changePassword } from "../../../redux/actions/settings-actions";
@@ -19,24 +18,29 @@ const ChangePassword = () => {
   const inputRefs = useRef([]);
 
   const {isPasswordChanging} = useSelector((state)=> state.settings);
-  console.log(isPasswordChanging, "isPasswordChanging")
+ 
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors, isValid },
     setValue,
     watch,
   } = useForm({
     mode: "onChange",
     resolver: yupResolver(changePasswordSchema),
-    defaultValues: {},
+    defaultValues: {
+      password : "",
+      confirmPassword : "", 
+      oldPassword : "" 
+    },
   });
 
   let error;
 
   const onSubmit = (data) => {
     // setConfirmationModal(true);
-    console.log(data)
+    
     const passwordData = {
       newPassword : data.confirmPassword,
       oldPassword : data.password
@@ -123,7 +127,15 @@ const ChangePassword = () => {
     event.preventDefault();
     setTimer(30);
   };
-
+  useEffect(() => {
+    if (!isPasswordChanging) {
+      reset({
+        password: "",
+        confirmPassword: "",
+        newPassword: ""
+      });
+    }
+  }, [isPasswordChanging]);
   return (
     <>
       <div className="mt-4 w-full">

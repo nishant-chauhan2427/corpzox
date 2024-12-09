@@ -25,6 +25,7 @@ export const Verify = () => {
   const navigate = useNavigate();
   const inputRefs = useRef([]);
   const { profile } = useSelector((state) => state.auth);
+  console.log(profile[0]?.otp,"profile");
   useEffect(() => {
     setTimer(30);
   }, []);
@@ -170,9 +171,10 @@ export const Verify = () => {
                         />
                       ))}
                     </div>
-                    <div className="text-red-500 mt-2 font-medium text-sm text-center">
-                      Wrong OTP!
-                    </div>
+                   
+                    {/* <div className="text-red-500 mt-2 font-medium text-sm text-center">
+                     {verifyingError}
+                    </div> */}
                   </div>
                   <div className="h-1"></div>
                   <div className="w-full flex flex-col justify-center items-center">
