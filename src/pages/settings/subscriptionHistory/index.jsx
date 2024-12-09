@@ -8,6 +8,7 @@ import { getSubscriptionHistoryCount, getSubscriptions } from "../../../redux/ac
 import { ImSpinner2 } from "react-icons/im";
 import { TableShimmer } from "../../../components/loader/TableShimmer";
 import { NoData } from "../../../components/errors/noData";
+import Pagination from "../../../components/Pagination";
 
 
 
@@ -25,7 +26,7 @@ const SubscriptionHistory = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const { activeCount, isActiveLoading, expiredCount, upcomingCount, isExpiredLoading, isUpcommingLoading, subscriptionsData, isSubScriptionLoading } = useSelector((state) => state.settings);
+  const { activeCount, isActiveLoading, expiredCount, upcomingCount, isExpiredLoading, isUpcommingLoading, subscriptionsData, subscriptionTotal, isSubScriptionLoading } = useSelector((state) => state.settings);
   console.log(subscriptionsData, "subscriptionsData")
 
   const FormattedSubscriptions = subscriptionsData?.map((subscription) => {
@@ -154,16 +155,16 @@ const SubscriptionHistory = () => {
               {isSubScriptionLoading ? (
                 <TableShimmer />
               ) : currentPackage.data.length === 0 ? (
-                <NoData/>
+                <NoData />
               ) : (
                 <Table columns={columns} data={currentPackage.data} />
               )}
               <div className="flex justify-between items-center gap-3">
                 <p>
-                  <b>{currentPackage.data.length}</b> results
+                  <b>{subscriptionTotal}</b> results
                 </p>
                 <div className="flex items-center gap-2">
-                  <Button
+                  {/* <Button
                     onClick={() => handleNavigation("Previous", currentPackage.label)}
                     outline={true}
                   >
@@ -174,7 +175,8 @@ const SubscriptionHistory = () => {
                     outline={true}
                   >
                     Next
-                  </Button>
+                  </Button> */}
+                  {!isSubScriptionLoading && subscriptionTotal > 10 && <Pagination totalItems={subscriptionTotal} itemsPerPage={10} />}
                 </div>
               </div>
             </div>

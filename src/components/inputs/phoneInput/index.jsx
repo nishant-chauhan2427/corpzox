@@ -25,7 +25,7 @@ export const PhoneNumberInput = ({
 }) => {
   return (
     <div>
-      <div className={`${containerClassName} w-full flex flex-col gap-1`}>
+      <div className={`${containerClassName} w-full flex flex-col `}>
         <div className="flex items-center gap-1 relative">
           <label
             className={`${
@@ -55,7 +55,7 @@ export const PhoneNumberInput = ({
             // } w-full border-none`}
             inputClass={`${
               inputClass && inputClass
-            } !w-full h-10 border-[#D9D9D9] border rounded-md shadow-sm dark:text-white ${
+            } !w-full h-12 border-[#D9D9D9] border rounded-md shadow-sm dark:text-white ${
               errorContent && touched ? "border-error" : "border-[#D6D6D6]"
             }`}
             searchClass={`${

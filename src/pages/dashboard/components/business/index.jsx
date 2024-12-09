@@ -19,10 +19,10 @@ export const Business = ({ data = [], total }) => {
             leftIcon={<IoMdAddCircle />}
             to={"/business/create"}
           >
-            New Business
+            Add Business
           </LinkButton>
-          <Link className="font-semibold text-[#606060]" to={"/business"}>
-            View all
+          <Link className="font-medium text-sm text-[#797979]" to={"/business"}>
+            View All
           </Link>
         </div>
       </div>
@@ -42,7 +42,7 @@ export const Business = ({ data = [], total }) => {
             Create one to start your services
           </p>
           <LinkButton className = {"px-4 py-1"} to={"/business/create"} primary={true} leftIcon={<IoMdAddCircle />}>
-            New Business
+            Add Business
           </LinkButton>
         </div>
       )}

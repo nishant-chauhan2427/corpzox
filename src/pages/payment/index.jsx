@@ -1,9 +1,11 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { Heading } from "../../components/heading";
 import { RouteProgressBar } from "../../components/progressBar/routeBased";
+import { useSelector } from "react-redux";
 
 const Payments = () => {
   const { pathname } = useLocation();
+  const { totalTransaction } = useSelector((state) => state.paymentHistory)
 
   function getPageHeading(pathname) {
     switch (true) {
@@ -14,7 +16,7 @@ const Payments = () => {
       case pathname === "/payment/preview":
         return "Preview Payment";
       case pathname === "/payment/history":
-        return "Payment History";
+        return `Payment History (${totalTransaction})`;
       default:
         return "";
     }

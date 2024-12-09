@@ -18,7 +18,7 @@ export const RecommendedServices = ({ data, total }) => {
         <Heading title={"Dashboard"} className={"py-0"} tourButton={true}>
           Recommended Services  {total == undefined ? "" : "(" + total + ")"}
         </Heading>
-        <Link to={"/services"} className="font-semibold text-[#606060]">View All</Link>
+        <Link to={"/services"}  className="font-medium text-sm text-[#797979]">View All</Link>
       </div>
       <div
         className="grid grid-cols-1 sm:grid-cols-2 rounded-lg 

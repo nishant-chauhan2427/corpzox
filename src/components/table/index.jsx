@@ -59,9 +59,9 @@ export const Table = ({ data, columns, isExpandable = true, actionMenu }) => {
                               cell === "Inactive" ||
                               cell === "Not leased"
                             ? "bg-yellow-200 text-yellow-700"
-                            : cell === "Expired"
+                            : cell === "PENDING"
                             ? "bg-gray-200 text-gray-700"
-                            : cell === "Modification-Required"
+                            : cell === "EXPIRED"
                             ? " bg-pink-200 text-pink-700"
                             : cell === "Vacant"
                             ? " bg-green-200 text-green-700"
@@ -81,7 +81,7 @@ export const Table = ({ data, columns, isExpandable = true, actionMenu }) => {
                     )}
                   </td>
                 ))}
-                {actionMenu && <ActionComponent id={row.id.serviceId} actionMenu={(id) => actionMenu(id)} />}
+                {actionMenu && <ActionComponent id={row.id.serviceId} _id={row._id._id} actionMenu={(id, _id) => actionMenu(id, _id)} />}
               </tr>
               {/* Expanded Row (only when expandable is true and row is expanded) */}
               {expandedRow === index && isExpandable && (
@@ -102,15 +102,13 @@ export const Table = ({ data, columns, isExpandable = true, actionMenu }) => {
           ))}
         </tbody>
       </table>
-      <Pagination/>
+    
     </div>
   );
 };
 
 
 
-const ActionComponent = ({ id, actionMenu }) => {
-  console.log(id, "sdfsfd");
-  
-  return actionMenu(id);
+const ActionComponent = ({ id,_id, actionMenu }) => {
+  return actionMenu(id, _id);
 };

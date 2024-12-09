@@ -143,7 +143,7 @@ export const SignIn = () => {
       <AuthLayout>
         <img className="sm:w-32 w-36" src="logo.svg" alt="CORPZO Logo" />
         <div className="w-full flex">
-          <div className="w-full flex flex-col">
+          <div className="w-full flex flex-col ">
             <DualHeadingTwo
               containerClassName={"text-left pt-2"}
               heading={"Sign In"}
@@ -164,7 +164,7 @@ export const SignIn = () => {
                     type={"email"}
                     placeholder={"Email Id / Phone No."}
                     className={"border-[#D9D9D9] border"}
-                   errorContent={errors?.email?.message}
+                    errorContent={errors?.email?.message}
                     onBlur={() => handleBlur("email")}
                     maxLength={50}
                   />
@@ -246,9 +246,8 @@ export const SignIn = () => {
                 <p className="text-base text-[#6E6E6E] font-medium">or</p>
                 <div className="border-t w-full border-[#D9D9D9]"></div>
               </div>
-              <div className="flex items-center justify-center rounded p-2  text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
+              {/* <div className="flex items-center justify-center rounded p-2  text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
                 <div className="flex gap-2">
-                  {/* Sign in with Google <img src="google.svg" alt="" /> */}
                   <GoogleLogin
                     clientId="1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com"
                     onSuccess={googleLogin}
@@ -257,9 +256,33 @@ export const SignIn = () => {
                     scope="openid profile email"
                   />
                 </div>
-                {/* <img src="" alt="" /> */}
-              </div>
+              </div> */}
 
+              <div className="flex items-center justify-center rounded p-2 text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
+                <div className="flex gap-2">
+                  <GoogleLogin
+                    clientId="1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com"
+                    onSuccess={googleLogin}
+                    onError={() => console.log("Errors")}
+                    cookiePolicy={"single_host_origin"}
+                    scope="openid profile email"
+                    render={(renderProps) => (
+                      <button
+                        onClick={renderProps.onClick}
+                        disabled={renderProps.disabled}
+                        className="flex items-center gap-2"
+                      >
+                        <img
+                          src="google.svg"
+                          alt="Google Logo"
+                          className="w-5 h-5"
+                        />
+                        Sign in with Google
+                      </button>
+                    )}
+                  />
+                </div>
+              </div>
               <div className="text-center flex  justify-center gap-2 font-normal text-[#6C6C6C]">
                 <p>
                   Need an account?

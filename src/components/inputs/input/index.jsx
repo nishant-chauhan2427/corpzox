@@ -49,7 +49,6 @@ export const Input = ({
     }
   }, [label]);
 
-
   return (
     <div className={containerClassName}>
       <div className="w-full flex flex-col">
@@ -62,13 +61,13 @@ export const Input = ({
           >
             {label}
           </label> */}
-          {updatedInfoContent && (
+          {/* {updatedInfoContent && (
             <IoInformationCircleOutline
               className="text-primary text-[10px] focus:outline-none absolute right-2 top-4 z-40 "
               data-tooltip-id="my-tooltip"
               data-tooltip-content={updatedInfoContent}
             />
-          )}
+          )} */}
         </div>
         <div className="w-full relative ">
           <input
@@ -116,7 +115,7 @@ export const Input = ({
         </div>
       </div>
       {errorContent && (
-        <div className="h-1 mb-2">
+        <div className="h-1 pt-1 mb-3">
           <p className=" text-error text-xs">{errorContent}</p>
         </div>
       )}

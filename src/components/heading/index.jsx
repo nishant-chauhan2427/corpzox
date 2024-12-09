@@ -23,7 +23,7 @@ export const Heading = ({
         <h2
           className={`${
             className ? className : "py-4"
-          } flex items-center gap-4 font-semibold text-xl text-[#0A1C40]`}
+          } flex items-center gap-4 font-semibold text-lg text-[#0A1C40]`}
         >
           {backButton && (
             <button onClick={() => navigate(-1)}>
