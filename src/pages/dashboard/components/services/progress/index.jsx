@@ -343,7 +343,7 @@ export const ServicesProgress = ({ data }) => {
                       </div>
                     </>
                   </ConfirmationModal>
-                  <Button primary={true}>Avail again</Button>
+                  <Button className="" primary={true}>Avail again</Button>
                   <button
                     className={`${
                       dropdownStates === true && "rotate-180"

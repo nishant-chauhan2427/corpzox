@@ -36,12 +36,12 @@ export const Offers = () => {
 
         {offers?offers?.slice(0,2)?.map((offer, index) => (
           <div className="!rounded-lg overflow-hidden">
-            <div key={index} className="flex !rounded-lg  hover:shadow-lg  ">
+            <div key={index} className="flex !rounded-lg px-2 py-2 bg-[#EEEFF3] hover:shadow-lg  ">
               <div
                 style={{ backgroundImage: `url(https://img.freepik.com/free-vector/sale-banner-badge-your-business_1017-17476.jpg?t=st=1733120748~exp=1733124348~hmac=3266181d7b16db95a0892692767f76a818da9797d6972f8a04a1444b953ec2b1&w=826)` }}
                 className={`w-[60%]  bg-cover bg-right overflow-hidden`}
               ></div>
-              <div className="flex w-[60%] flex-col gap-1 bg-[#f9f9f9] pl-3 py-4">
+              <div className="flex w-[60%] flex-col  gap-1 bg-[#EEEFF3] pl-3 py-4">
                 <div className="flex ">
                   <p className="font-bold text-[12px]  text-[#1A202E] ">
                     {offer.offerTitle}
