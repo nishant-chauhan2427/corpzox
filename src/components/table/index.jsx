@@ -40,9 +40,9 @@ export const Table = ({ data, columns, isExpandable = true, actionMenu }) => {
                 {Object.entries(row).map(([key, cell], cellIndex) => (
                   <td
                     key={cellIndex}
-                    className={`${key == "id" && "hidden"} py-4 px-1 whitespace-nowrap text-xs capitalize`}
+                    className={`${(key == "id" || key =="_id") && "hidden"} py-4 px-1 whitespace-nowrap text-xs capitalize`}
                   >
-                    {key == "id" ? (
+                    {key == "id" || key == "_id" ? (
                       <></>
                     ) : (
                       <span
@@ -64,7 +64,7 @@ export const Table = ({ data, columns, isExpandable = true, actionMenu }) => {
                             ? " bg-pink-200 text-pink-700"
                             : cell === "Vacant"
                             ? " bg-green-200 text-green-700"
-                            : cell === "Approved"
+                            : cell === "CAPTURED"
                             ? " bg-green-200 text-green-700"
                             : cell === "Started"
                             ? " bg-yellow-200 text-yellow-700"

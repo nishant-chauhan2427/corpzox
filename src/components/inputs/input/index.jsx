@@ -44,10 +44,10 @@ export const Input = ({
   };
 
   useEffect(() => {
-    if (errorContent) {
-      setUpdatedInfoContent(errorContent);
+    if (label) {
+      setUpdatedInfoContent(label);
     }
-  }, [errorContent]);
+  }, [label]);
 
 
   return (

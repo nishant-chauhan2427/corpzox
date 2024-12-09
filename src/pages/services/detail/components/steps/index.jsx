@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const Steps = () => {
+export const Steps = ({data}) => {
   const [expandedIndex, setExpandedIndex] = useState(null);
 
   const toggleFAQ = (index) => {
@@ -69,7 +69,7 @@ export const Steps = () => {
         </h4>
 
         <div className="space-y-4">
-          {faqData.map((faq, index) => (
+          {data?.map((faq, index) => (
             <div
               key={index}
               className="border border-gray-200 rounded-lg shadow-sm"
@@ -78,7 +78,7 @@ export const Steps = () => {
                 onClick={() => toggleFAQ(index)}
                 className="w-full flex justify-between items-center px-5 py-3 text-left text-gray-700 font-bold text-sm hover:bg-gray-100"
               >
-                {faq.question}
+                {faq.title}
                 <span className="text-gray-500">
                   {expandedIndex === index ? (
                     <img
@@ -92,7 +92,7 @@ export const Steps = () => {
               </button>
               {expandedIndex === index && (
                 <div className="px-5 py-3 text-xs bg-gray-50 text-gray-600">
-                  {faq.answer}
+                  {faq.details}
                 </div>
               )}
             </div>

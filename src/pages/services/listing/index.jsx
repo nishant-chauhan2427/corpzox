@@ -105,7 +105,7 @@ const ServicesListing = () => {
   // },[searchValue])
   useEffect(() => {
     if (isSubmit && !wishList?.loading) {
-      toast.success(wishList?.error);
+     // toast.success(wishList?.error);
     }
   }, [wishList?.loading]);
 

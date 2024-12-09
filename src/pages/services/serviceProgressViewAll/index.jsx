@@ -88,7 +88,7 @@ const ServiceprogressViewAll = ({ data }) => {
                     </p>
                   </div>
                 </div>
-                <div className="flex gap-2">
+                {/* <div className="flex gap-2">
                   <ReactModal
                     crossButton={true}
                     className="border-[#FF3B3B] border-[3px] py-2 w-[55%]"
@@ -103,19 +103,12 @@ const ServiceprogressViewAll = ({ data }) => {
                         <p className="text-[32px]  text-[#232323] font-bold">
                           Rate Your Experience!
                         </p>
-                        <div className="pt-4 pb-5">
-                          <label
-                            htmlFor="Review"
-                            className="flex text-lg font-bold text-[#0A1C40]"
-                          >
-                            Review
-                          </label>
-                          <TextArea
-                            className="min-h-20 placeholder:text-xl border bg-white border-[#D9D9D9]"
-                            placeholder="Add Review"
-                          />
-                        </div>
+                       
                         <div className="flex justify-center items-center pb-20">
+                          <Rating size={40} rating={4} />
+                          <Rating size={40} rating={4} />
+                          <Rating size={40} rating={4} />
+                          <Rating size={40} rating={4} />
                           <Rating size={40} rating={4} />
                         </div>
                         <div className="flex justify-end gap-4">
@@ -136,7 +129,7 @@ const ServiceprogressViewAll = ({ data }) => {
                   >
                     <GoTriangleDown size={30} />
                   </button>
-                </div>
+                </div> */}
               </div>
               <Dropdown
                 isOpen={dropdownStates[index]} // Pass the state for this specific dropdown
