@@ -123,7 +123,7 @@ export const ServicesProgress = ({ data }) => {
         </Heading>
         <Link
           to={"/services"}
-          className="font-semibold text-[#606060]"
+           className="font-medium text-sm text-[#797979]"
         >
           View All
         </Link>

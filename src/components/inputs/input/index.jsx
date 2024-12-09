@@ -115,7 +115,7 @@ export const Input = ({
         </div>
       </div>
       {errorContent && (
-        <div className="h-1 mb-2">
+        <div className="h-1 pt-1 mb-3">
           <p className=" text-error text-xs">{errorContent}</p>
         </div>
       )}

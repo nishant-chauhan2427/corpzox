@@ -25,7 +25,7 @@ export const PhoneNumberInput = ({
 }) => {
   return (
     <div>
-      <div className={`${containerClassName} w-full flex flex-col gap-1`}>
+      <div className={`${containerClassName} w-full flex flex-col `}>
         <div className="flex items-center gap-1 relative">
           <label
             className={`${
