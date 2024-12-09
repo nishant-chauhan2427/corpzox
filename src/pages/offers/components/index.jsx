@@ -14,15 +14,13 @@ import toast from "react-hot-toast";
 function OffersDetails() {
   const dispatch = useDispatch();
 
-  const { offers, totalCount, isLoading,loadingMore, error } = useSelector((state) => state.offers);
+  const { offers,page, totalCount, isLoading,loadingMore, error } = useSelector((state) => state.offers);
   
   const urlParams = new URLSearchParams( useLocation().search);
   const navigate = useNavigate();
   const url = new URL(window.location);
-  let page =urlParams.get("page") ||1 ;
+  // let page =urlParams.get("page") ||1 ;
 
-  // console.log("page",page);
-  
   
 
   const [expandedIndex, setExpandedIndex] = useState(null); // To track which offer is expanded
@@ -41,22 +39,22 @@ function OffersDetails() {
     return date.toLocaleDateString('en-US', options);
   }
 
-  const handleLoadMore = () =>{
-    if(totalCount % offers?.length > 0){
-      dispatch(loadMoreOffers(Number(page)+1));
-      url.searchParams.set('page', (Number(page)+1));
-      // window.history.pushState({}, '', url);
-    }else{
-      toast.error("No more data found")
-    }
+  // const handleLoadMore = () =>{
+  //   if(totalCount % offers?.length > 0){
+  //     dispatch(loadMoreOffers({page:Number(page)+1}));
+  //     // url.searchParams.set('page', (Number(page)+1));
+  //     // window.history.pushState({}, '', url);
+  //   }else{
+  //     toast.error("No more data found")
+  //   }
    
-  }
+  // }
 
-  useEffect(()=>{
-    page = urlParams.get("page") ||1 ;
-    url.searchParams.set('page', 1);
-    // window.history.pushState({}, '', url);
-  },[])
+  // useEffect(()=>{
+  //   page = urlParams.get("page") ||1 ;
+  //   url.searchParams.set('page', 1);
+  //   // window.history.pushState({}, '', url);
+  // },[])
 
 
   if (isLoading) return <OfferShimmer className={"my-4"} count={7} />
@@ -108,7 +106,7 @@ function OffersDetails() {
 
         {totalCount % offers?.length > 0 ?
         <div className="w-full flex justify-center items-center mb-4">
-          <Button onClick={handleLoadMore} disabled={loadingMore} className="flex items-center sm:gap-2 p-2 hover:text-lg hover:shadow-lg" primary={true}>
+          <Button onClick={()=> dispatch( loadMoreOffers({page: (page+1)}) )} disabled={loadingMore} className="flex items-center sm:gap-2 p-2 hover:text-lg hover:shadow-lg" primary={true}>
             {loadingMore?"loading...":"Load more.."}
           </Button>
         </div>:""

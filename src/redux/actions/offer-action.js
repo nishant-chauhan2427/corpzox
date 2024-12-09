@@ -3,10 +3,15 @@ import client from "../axios-baseurl";
 
 export const getOffers = createAsyncThunk(
     "offer/getOffers",
-    async (_, { rejectWithValue }) => {
+    async ({page=1,query}, { rejectWithValue }) => {
         console.log("Action : getOffers");
         
       try {
+
+        let params = new URLSearchParams();
+        if (page) params.append('page', page);
+        if (query) params.append('query', query);
+
         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
         const token = userInfo?.token;
         console.log(token, "token")
@@ -21,6 +26,7 @@ export const getOffers = createAsyncThunk(
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`,
           },
+          params:params
         });
         console.log("getOffers",response.data.data);
         return response.data.data;
@@ -35,9 +41,14 @@ export const getOffers = createAsyncThunk(
   
 export const loadMoreOffers = createAsyncThunk(
     "offer/loadMoreOffers",
-    async (page, { rejectWithValue }) => {
+    async ({ page, sort_by = 'date_desc', query }, { rejectWithValue }) => {
         console.log("Action : loadMoreOffers");
+        // let params = new URLSearchParams(new URL(window.location.href).search);
+        // console.log("params",params.get("search"));
         
+      let params = new URLSearchParams();
+      if (page) params.append('page', page);
+      if (query) params.append('query', query);
       try {
         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
         const token = userInfo?.token;
@@ -53,7 +64,7 @@ export const loadMoreOffers = createAsyncThunk(
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`,
           },
-          params:{page:page}
+          params:params
         });
         console.log("loadMoreOffers",response.data.data);
         return response.data.data;
