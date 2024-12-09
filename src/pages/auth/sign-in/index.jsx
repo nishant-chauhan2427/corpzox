@@ -143,7 +143,7 @@ export const SignIn = () => {
       <AuthLayout>
         <img className="sm:w-32 w-36" src="logo.svg" alt="CORPZO Logo" />
         <div className="w-full flex">
-          <div className="w-full flex flex-col">
+          <div className="w-full flex flex-col ">
             <DualHeadingTwo
               containerClassName={"text-left pt-2"}
               heading={"Sign In"}
@@ -164,7 +164,7 @@ export const SignIn = () => {
                     type={"email"}
                     placeholder={"Email Id / Phone No."}
                     className={"border-[#D9D9D9] border"}
-                   errorContent={errors?.email?.message}
+                    errorContent={errors?.email?.message}
                     onBlur={() => handleBlur("email")}
                     maxLength={50}
                   />

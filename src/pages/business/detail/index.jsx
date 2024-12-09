@@ -129,7 +129,7 @@ const BusinessDetail = () => {
               </div>
               <div className="flex justify-between">
                 <p className="font-medium text-base text-[#000000B2] ">
-
+                  Registered Office:
                 </p>
                 <p className="font-semibold text-base text-black">
                   {business?.address?.businessAddressL1},{business?.address?.businessAddressCity},{business?.address?.businessAddressPin}
@@ -137,7 +137,7 @@ const BusinessDetail = () => {
               </div>
               <div className="flex justify-between">
                 <p className="font-medium text-base text-[#000000B2] ">
-                  Company Status:
+                  Company Status12:
                 </p>
                 <p className="font-semibold text-base text-black">
                   {business?.registration?.active ? "Active" : "In Active"}

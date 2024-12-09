@@ -20,7 +20,7 @@ const DocumentsListing = () => {
     dataList: folders = [],
     isLoading,
     isdocumentLoading,
-    isdataLoading,
+    isDataLoading,
     fetchingDocumentError,
   } = useSelector((state) => state.document);
   //console.log(folders.length, "services 123");
@@ -119,7 +119,7 @@ const DocumentsListing = () => {
           </div>
 
           <div className="py-4">
-  {isdataLoading ? (
+  {isDataLoading ? (
     <div className="flex justify-center items-center py-8">
       <DocumentListShimmer />
     </div>
