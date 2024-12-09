@@ -67,7 +67,7 @@ export const Profile = ({user={}}) => {
     }
   },[user])
   return (
-    <div className="w-full sm:w-fit pl-[11px] pr-[33px] py-[17px] flex gap-4 bg-white border items-center border-[#DFEAF2] rounded-[18px]">
+    <div className="w-full sm:w-fit pl-[11px] pr-[33px] py-[9px] flex gap-4 bg-white border items-center border-[#DFEAF2] rounded-[18px]">
       <div className="w-16 relative">
         <CircularProgressbarWithChildren
           styles={buildStyles({
@@ -91,9 +91,9 @@ export const Profile = ({user={}}) => {
         </CircularProgressbarWithChildren>
       </div>
       <div>
-        <p className="font-bold text-2xl">{percentage}%</p>
+        <p className="font-bold text-lg">{percentage}%</p>
         <p className="font-semibold text-sm text-[#232323]"> {user?.name ? (user.name.slice(0, 25) + (user.name.length > 25 ? "..." : "")) : "User Name"}</p>
-        <Link to={"/profile"} className="font-semibold text-[10px] text-[#FF4141]">
+        <Link to={"/profile"} className="font-semibold text-[11px] text-[#FF4141]">
           Complete Your Profile
         </Link>
       </div>
