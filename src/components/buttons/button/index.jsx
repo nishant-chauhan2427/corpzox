@@ -35,7 +35,7 @@ export const Button = ({
           : ""
       } ${
         primary && !disabled && !isLoading
-          ? "bg-[#FFD700] font-medium text-black text-sm hover:bg-[#FFD700] hover:bg-opacity-80 rounded-[5px]"
+          ? "bg-[#FFD700] font-medium text-[#0A1C40] text-sm hover:bg-[#FFD700] hover:bg-opacity-80 rounded-[5px]"
           : ""
       } ${
         gradientBtn && !disabled && !isLoading

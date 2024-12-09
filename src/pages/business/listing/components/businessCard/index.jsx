@@ -16,7 +16,7 @@ export const BusinessCard = ({ data }) => {
       {data.length > 0 ? (
         <BusinessCardShimmer />
       ) : (
-        <div className="p-4 bg-[#F3F7FF] rounded-xl hover:shadow-lg ">
+        <div className="p-4 bg-[#f3f7ff] stroke-[#dfeaf2] stroke-1	 rounded-xl hover:shadow-lg ">
           <div onClick={()=>navigate(`/business/detail?id=${data?._id}`)} className="flex flex-col gap-2 hover:cursor-pointer bg-white rounded-xl p-2">
             <div className="flex items-center gap-2">
               <div className="p-2 bg-[#F3F7FF] rounded-xl flex justify-center items-center">
@@ -28,12 +28,12 @@ export const BusinessCard = ({ data }) => {
               </div>
               <div>
                 <Link to={`/business/detail?id=${data?._id}`}>
-                  <h4 className="font-bold text-base text-[#171717] break-all">
+                  <h4 className="font-bold text-lg text-[#171717] break-all">
                     {data.businessName}
                   </h4>
                 </Link>
                 <p className="font-semibold text-[12px] text-[#343C6A]">
-                  {data.businesSubTitle}{" "}
+                  {data.businesSubTitle}
                 </p>
               </div>
             </div>
@@ -71,16 +71,16 @@ export const BusinessCard = ({ data }) => {
                   width={20}
                   alt=""
                 />
-                <p className="font-bold text-[12px] text-[#FF3B3B]">CRITICAL</p>
+                <p className="font-semibold text-[12px] text-[#FF3B3B]">CRITICAL</p>
               </div>
               <div className="flex gap-1 items-center">
                 <img src="images/settinn-icon.svg" width={20} alt="" />
-                <p className="font-bold text-[12px] text-[#007453]">
+                <p className="font-semibold text-[12px] text-[#007453]">
                   {data?.totalService} ACTIVE SERVICES
                 </p>
               </div>
             </div>
-            <Button className={"w-fit px-4 py-2 text-[12px]"} primary={true} onClick={handleServices}>
+            <Button className={"w-fit px-4 py-2 !font-medium !text-[12px]"} primary={true} onClick={handleServices}>
               Add Service
             </Button>
           </div>

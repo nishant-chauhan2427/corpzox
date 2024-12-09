@@ -343,14 +343,14 @@ export const ServicesProgress = ({ data }) => {
                       </div>
                     </>
                   </ConfirmationModal>
-                  <Button className="" primary={true}>Avail again</Button>
+                  <Button className="!text-xs px-4" primary={true}>Avail again</Button>
                   <button
                     className={`${
                       dropdownStates === true && "rotate-180"
                     } hidden lg:block`}
                     onClick={() => handleServiceDropdown(index)}
                   >
-                    <GoTriangleDown size={30} />
+                    <GoTriangleDown size={20} />
                   </button>
                 </div>
               </div>
