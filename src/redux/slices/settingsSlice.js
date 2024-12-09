@@ -18,6 +18,7 @@ const settingsSlice = createSlice({
     isUpcommingLoading : false,
     subscriptionsData : [], 
     isSubScriptionLoading : false,
+    subscriptionTotal : 0 
   },
   reducers: {
     clearState: (state) => {
@@ -136,7 +137,8 @@ const settingsSlice = createSlice({
       })
       .addCase(getSubscriptions.fulfilled, (state, action) => {
         state.isSubScriptionLoading = false;
-        state.subscriptionsData = action.payload;
+        state.subscriptionsData = action.payload.subscriptionList;
+        state.subscriptionTotal = action.payload.subscriptionTotal;
         state.error = null;
       })
       .addCase(getSubscriptions.rejected, (state, action) => {

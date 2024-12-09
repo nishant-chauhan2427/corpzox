@@ -102,7 +102,7 @@ export const Table = ({ data, columns, isExpandable = true, actionMenu }) => {
           ))}
         </tbody>
       </table>
-      <Pagination/>
+    
     </div>
   );
 };
