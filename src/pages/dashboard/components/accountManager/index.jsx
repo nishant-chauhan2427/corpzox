@@ -4,29 +4,29 @@ import { CiMenuKebab } from "react-icons/ci";
 import { IoMdCall } from "react-icons/io";
 import { useOutsideClick } from "../../../../utils";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { requestChangeManager } from "../../../../redux/actions/dashboard-action";
 
 export const AccountManager = ({ manager, sidebar }) => {
   const [accountShowButton, setAccountShowButton] = useState(false);
   const dispatch = useDispatch();
   const accountShowButtonRef = useRef();
+  const { user } = useSelector((state) => state.user);
 
   const handleAccountShowBtn = () => {
     setAccountShowButton((previous) => !previous);
   };
-
+  
   useOutsideClick(accountShowButtonRef, handleAccountShowBtn);
-  console.log(manager, "manager");
+ // console.log(manager, "manager1234");
 
-  const requestManagerChange=()=>{
+  const requestManagerChange = () => {
     dispatch(requestChangeManager())
     handleAccountShowBtn()
   }
   return (
     <div
-      className={`${
-        sidebar ? "relative px-2 py-4 bg-[url('/images/dashboard/am-bg.svg')] bg-no-repeat bg-cover items-start gap-2" : "bg-white px-[17px] py-[17px] gap-4"} w-full sm:w-auto flex border border-[#DFEAF2] rounded-2xl`}
+      className={`${sidebar ? "relative px-2 py-4 bg-[url('/images/dashboard/am-bg.svg')] bg-no-repeat bg-cover items-start gap-2" : "bg-white px-[17px] py-[17px] gap-4"} w-full sm:w-auto flex border border-[#DFEAF2] rounded-2xl`}
     >
       <div className="flex items-center">
         <img
@@ -43,8 +43,11 @@ export const AccountManager = ({ manager, sidebar }) => {
         </p> */}
         <p className={`${sidebar ? "text-xs text-white" : "text-sm text-[#232323] -mt-1"} font-semibold`}>
           <p>Manager Name :</p>
-          {manager?.name ? manager?.name : "____________"}
+          {user?.agent_data?.[0]?.manager_data?.[0].
+            name ? user?.agent_data?.[0]?.manager_data?.[0].
+            name : "____________"}
         </p>
+
         <div className="pt-2 flex gap-2">
           <Link
             to="mailto:example@example.com"

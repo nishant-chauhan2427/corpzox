@@ -12,11 +12,9 @@ import { list } from "postcss";
 const DocumentDetail = () => {
     const { isDocumentLoading, listData = [] } = useSelector((state) => state.document);
     const dispatch = useDispatch();
-    const { id } = useParams(); 
-    const url = listData[0]?.value[0];
-    const name = listData[0]?.lebel
-    //const count
-    //console.log(listData.value[0],"123");`
+    const { id } = useParams();
+    const url = listData?.[0]?.value?.[0];
+
     useEffect(() => {
         if (id) {
             dispatch(getfolderData(id));
@@ -40,12 +38,22 @@ const DocumentDetail = () => {
                         </div>
                     </div>
 
-
-                    {listData.length > 0 && url  ? (
-                        // 
-                        <DocumentViewer docUrl={url} docName={name}/>
+                    {listData.length > 0 && url ? (
+                        listData.map((item, index) => {
+                            if (item?.value && Array.isArray(item.value)) {
+                                return item.value.map((docValue, docIndex) => (
+                                    <DocumentViewer
+                                        key={`${index}-${docIndex}`} // Adding a unique key for each item
+                                        docUrl={docValue} // Use the individual value from item.value
+                                        docName={item?.lebel || `Document ${docIndex + 1}`} // Fallback for label if not available
+                                    />
+                                ));
+                            } else {
+                                return <NoData key={index} />;
+                            }
+                        })
                     ) : (
-                        <NoData></NoData>
+                        <NoData /> 
                     )}
                 </>
             )}

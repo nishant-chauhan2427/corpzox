@@ -122,6 +122,7 @@ const ServicesListing = () => {
   };
   let onClickAddWishlistHandler = () => {
     dispatch(updateServiceQuickWishlist({ serviceIdArray: wishList?.list }));
+    console.log(wishList?.list ,"wishList?.list ");
   };
   let onChangeSelectAllHandler = () => {
     dispatch(onChangeSelectAllHandler());
