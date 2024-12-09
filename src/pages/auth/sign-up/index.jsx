@@ -253,7 +253,7 @@ export const Signup = () => {
                 </div>
                 <div className="text-center flex  justify-center gap-2 font-normal text-[#6C6C6C]">
                   <p>
-                    Allready have an account?
+                    Already have an account?
                     <Link
                       to={"/sign-in"}
                       className="p-2 text-[#F1359C] font-semibold "

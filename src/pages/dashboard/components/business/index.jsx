@@ -8,7 +8,7 @@ import { LinkButton } from "../../../../components/link";
 export const Business = ({ data = [], total }) => {
   
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ">
       <div className="py-2 flex flex-col sm:flex-row justify-between gap-2">
         <Heading className={"py-0"} title={"Dashboard"} tourButton={true}>
           Your Business ({data.length})
@@ -27,7 +27,7 @@ export const Business = ({ data = [], total }) => {
         </div>
       </div>
       {data.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 ">
           {data.slice(0, 2).map((data, index) => (
             <BusinessCard key={index} data={data} />
           ))}

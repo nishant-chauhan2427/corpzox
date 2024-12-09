@@ -34,9 +34,9 @@ export const RecommendedServices = ({ data, total }) => {
                 src="/images/dashboard/recommended-services.svg"
                 alt="recommended-services"
               />
-              <div>
+              <div className="flex  flex-col text-start">
                 <p className="font-semibold text-[#171717]">{data.name}</p>
-                <p className="font-semibold text-[11px]">{data.details} </p>
+                <p className="font-medium text-[12px]">{data?.details?.length > 30 ? data?.details?.slice(0,30)+"..." : data?.details} </p>
               </div>
             </div>
             <div className="border-l h-full flex justify-center items-center">
