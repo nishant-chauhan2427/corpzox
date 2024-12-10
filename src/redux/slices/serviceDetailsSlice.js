@@ -204,6 +204,7 @@ const serviceDetailSlice = createSlice({
         state.serviceDetailLoading = false;
         state.error = action.payload;
         state.success = null;
+        toast.error(action.payload)
         console.log(action.payload, "rejected")
       })
       .addCase(getStates.pending, (state) => {

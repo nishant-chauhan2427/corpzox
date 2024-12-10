@@ -130,6 +130,7 @@ const ServicesListing = () => {
 
     // });
   };
+
   return (
     <section className="flex sm:flex-row flex-col gap-4 sm:pt-6 pt-3 bg-white">
       <div className="flex justify-center flex-col overflow-hidden">

@@ -1,6 +1,6 @@
 import { Search } from "../search";
 import { Button } from "../buttons";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useRef, useState } from "react";
 import { FiLogOut } from "react-icons/fi";
 import { headerLinks } from "../../database";
@@ -27,6 +27,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const [signedInMenuPopup, setSignedInMenuPopup] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams()
 
   const user = useSelector((state) => state.user.user);
 
@@ -113,12 +114,37 @@ export const Header = ({ className, collapse, setCollapse }) => {
   const handleCancelLogout = () => {
     onConfirmationModalClose();
   };
+  // const clearSearch = () => {
+  //   // Get the current URL
+  //   const currentUrl = new URL(window.location.href);
+
+  //   // Remove the 'search' query parameter
+  //   currentUrl.searchParams.delete("search");
+
+  //   // Update the URL without reloading the page
+  //   window.history.replaceState(null, "", currentUrl.toString());
+
+  //   console.log(currentUrl.toString(), "Updated URL");
+  //   navigate(currentUrl.toString())
+  // };
+  const clearSearch = () => {
+    // Log the current 'search' query parameter
+    console.log(searchParams.get("search"));
+  
+    // Remove the 'search' query parameter by deleting it
+    searchParams.delete("search");
+  
+    // Update the URL with the modified search parameters
+    setSearchParams(searchParams);
+  
+    console.log("Search parameter removed:", searchParams.toString());
+  };
+  
 
   return (
     <header
-      className={`${
-        className && className
-      } bg-[#0A1C40] dark:bg-slate-900 lg:ps-[14rem] px-2 lg:px-4 py-4 z-[1000]`}
+      className={`${className && className
+        } bg-[#0A1C40] dark:bg-slate-900 lg:ps-[14rem] px-2 lg:px-4 py-4 z-[1000]`}
     >
       <div className="relative flex justify-between items-center">
         {/* Left Side Menu */}
@@ -163,9 +189,11 @@ export const Header = ({ className, collapse, setCollapse }) => {
             {getPageHeading(pathname)}
           </h1>
           {/* Search */}
+          <button onClick={clearSearch}>Clear Search</button>
           {!pathname.includes("documents") &&
             !pathname.includes("dashboar") && (
               <Search
+                clearSerarch={clearSearch}
                 placeholder={`Search ${getPageHeading(pathname)}`}
                 containerClassName={
                   "hidden lg:block w-full h-10 lg:!max-w-lg !bg-[#3D485F] !rounded-full overflow-hidden"
@@ -180,9 +208,8 @@ export const Header = ({ className, collapse, setCollapse }) => {
           <div className="hidden lg:flex items-center gap-4">
             {headerLinks?.map((data, index) => (
               <Link
-                className={`${
-                  window.location.pathname.includes(data.url) && "text-primary"
-                } hover:text-primary`}
+                className={`${window.location.pathname.includes(data.url) && "text-primary"
+                  } hover:text-primary`}
                 to={data.url}
                 key={index}
               >
@@ -224,7 +251,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
                     <h5 className="font-semibold text-sm text-white">
                       {user?.name
                         ? user.name.slice(0, 25) +
-                          (user.name.length > 25 ? "..." : "")
+                        (user.name.length > 25 ? "..." : "")
                         : "User Name"}
                     </h5>
                     <p className="text-[9px] text-white">

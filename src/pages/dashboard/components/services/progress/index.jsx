@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { GoDotFill, GoTriangleDown } from "react-icons/go";
 import { ProgressBar } from "../../../../../components/progressBar";
 import { Heading } from "../../../../../components/heading";
@@ -137,9 +137,9 @@ export const ServicesProgress = ({ data }) => {
                   <div className="flex gap-2">
                     <img src="/images/dashboard/service-progress.svg" alt="" />
 
-                    <p className="font-bold">
+                    <NavLink to={`/payment/create/${data._id}`} className="font-bold text-[#0068FF]">
                       Service: {data?.service[0]?.name}{" "}
-                    </p>
+                    </NavLink>
                     <img
                       src="/icons/dashboard/service-error.svg"
                       width={15}
@@ -149,7 +149,7 @@ export const ServicesProgress = ({ data }) => {
                   <div className="flex flex-col gap-2">
                     <h6 className="text-sm text-[#7C7D80]">
                       <strong>Business:</strong>{" "}
-                      {data?.businessdetails[0]?.businessName}
+                      {data?.businessdetails[0]?.businessName ? data?.businessdetails[0]?.businessName : "__" }
                     </h6>
                     <p className="text-sm text-[#7C7D80]">
                       <strong>Step:</strong> {data?.status}
@@ -336,7 +336,7 @@ export const ServicesProgress = ({ data }) => {
                       </div>
                     </>
                   </ConfirmationModal>
-                  <Button primary={true}>Avail again</Button>
+                  <NavLink to={`/services/detail/${data._id}`} primary={true}>Avail again</NavLink>
                   <button
                     className={`${dropdownStates === true && "rotate-180"
                       } hidden lg:block`}
