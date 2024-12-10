@@ -18,7 +18,8 @@ const settingsSlice = createSlice({
     isUpcommingLoading : false,
     subscriptionsData : [], 
     isSubScriptionLoading : false,
-    subscriptionTotal : 0 
+    subscriptionTotal : 0, 
+    changePasswordError : false
   },
   reducers: {
     clearState: (state) => {
@@ -33,6 +34,7 @@ const settingsSlice = createSlice({
         state.isPasswordChanging = true;
         state.error = null;
         state.success = null;
+        state.changePasswordError = false
       })
       .addCase(changePassword.fulfilled, (state, action) => {
         state.isPasswordChanging = false;
@@ -40,8 +42,9 @@ const settingsSlice = createSlice({
         if(action.payload.code === 404){
           toast.error(action.payload.message);  
           state.isPasswordChanging = false;
+          state.changePasswordError = true
         }else{
-
+          state.changePasswordError = false
           toast.success(action.payload.message);
         }
        
@@ -54,6 +57,7 @@ const settingsSlice = createSlice({
         toast.error(action.payload.message || "Password change failed");
         state.error = action.payload;
         state.success = null;
+        state.changePasswordError = true
       })
       .addCase(deactivateAccount.pending, (state) => {
         state.isDeactivate = true;
