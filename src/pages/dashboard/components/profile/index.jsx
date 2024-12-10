@@ -93,9 +93,20 @@ export const Profile = ({user={}}) => {
       <div>
         <p className="font-bold text-lg">{percentage}%</p>
         <p className="font-semibold text-sm text-[#232323]"> {user?.name ? (user.name.slice(0, 25) + (user.name.length > 25 ? "..." : "")) : "User Name"}</p>
-        <Link to={"/profile"} className="font-semibold text-[11px] text-[#FF4141]">
+        {/* <Link to={"/profile"} className="font-semibold text-[11px] text-[#FF4141]">
           Complete Your Profile
-        </Link>
+        </Link> */}
+       {percentage !== 100 ? (
+  <Link to="/profile" className="font-semibold text-[11px] text-[#FF4141]">
+    Complete Your Profile
+  </Link>
+) : (
+  <Link to="/profile" className="font-semibold text-[11px] text-[#FF4141]">
+    Edit Your Profile
+  </Link>
+)}
+
+
       </div>
     </div>
   );
