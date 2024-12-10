@@ -110,6 +110,7 @@ const BusinessDetail = () => {
                 </div>
               </div>
               <h3 className="font-semibold text-2xl text-[#171717]">
+                {console.log(business,"Business123456")}
                 {(business?.registration?.businessName) ? business?.registration?.businessName : "..."}
               </h3>
               <p className="font-semibold text-base text-[#343C6A]">

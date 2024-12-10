@@ -28,8 +28,14 @@ export const BusinessCard = ({ data }) => {
               </div>
               <div>
                 <Link to={`/business/detail?id=${data?._id}`}>
+<<<<<<< HEAD
+                  <h4 className="font-bold text-base text-[#171717] break-all">
+                    {(data?.businessName)?  data?.businessName:"______"}
+                    
+=======
                   <h4 className="font-bold text-lg text-[#171717] break-all">
                     {data.businessName}
+>>>>>>> deece5e80bc6c18000f20ccb35fa0fe174e249eb
                   </h4>
                 </Link>
                 <p className="font-semibold text-[12px] text-[#343C6A]">
