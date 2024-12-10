@@ -53,11 +53,12 @@ export const Search = (props) => {
   const handleClearSearch = () => {
     if( props.clearSerarch){
       props.clearSerarch()
+      setQuery(""); 
     }else{
       const updatedParams = new URLSearchParams(location.search);
       updatedParams.delete("search"); 
       setSearchParams(updatedParams); 
-      setQuery(""); 
+      
     }
    
   };
