@@ -23,23 +23,23 @@ export const Button = ({
       disabled={disabled || isLoading}
       onClick={onClick}
       className={`${className ? className : "px-4 py-1"}
-      ${disabled ? "!bg-[#FFEF9A] hover:bg-slate-500 rounded" : null} ${
-        isLoading ? "!bg-[#FFEF9A] hover:bg-slate-500 rounded" : ""
+      ${disabled ? "!bg-[#FFEF9A] hover:bg-slate-500 rounded-[5px]" : null} ${
+        isLoading ? "!bg-[#FFEF9A] hover:bg-slate-500 rounded-[5px]" : ""
       } ${
         simpleLink && !disabled && !isLoading
-          ? "text-primaryText font-medium  hover:text-gray-700 rounded"
+          ? "text-primaryText font-medium text-sm  hover:text-gray-700 rounded-[5px]"
           : ""
       } ${
         outline && !disabled && !isLoading
-          ? "text-[#4B5563] rounded-lg border border-[#4B5563] dark:border-gray-700"
+          ? "text-[#4B5563] rounded-[5px] border text-sm font-medium border-[#4B5563] dark:border-gray-700"
           : ""
       } ${
         primary && !disabled && !isLoading
-          ? "bg-[#FFD700] font-semibold text-black hover:bg-[#FFD700] hover:bg-opacity-80 rounded-[10px]"
+          ? "bg-[#FFD700] font-medium text-[#0A1C40] text-sm hover:bg-[#FFD700] hover:bg-opacity-80 rounded-[5px]"
           : ""
       } ${
         gradientBtn && !disabled && !isLoading
-          ? "bg-gradient-to-r from-primaryBg to-secondaryBg text-white hover:bg-opacity-80 px-7 hover:bg-gradient-to-l rounded"
+          ? "bg-gradient-to-r from-primaryBg to-secondaryBg text-sm font-medium text-white hover:bg-opacity-80 px-7 hover:bg-gradient-to-l rounded"
           : ""
       } flex justify-center items-center gap-2 transition-all duration-300 ease-in-out hover:transition-all hover:duration-300 hover:ease-in-out disabled:cursor-not-allowed disabled:border-gray-400 `}
     >

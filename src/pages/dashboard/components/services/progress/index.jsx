@@ -22,8 +22,8 @@ export const ServicesProgress = ({ data }) => {
   const [serviceId, setServiceId] = useState("");
   const [rating, setRating] = useState(0);
   const dispatch = useDispatch();
- 
-  const {isRatingAdding} = useSelector((state)=> state.serviceDetails)
+
+  const { isRatingAdding } = useSelector((state) => state.serviceDetails);
   const handleServiceDropdown = (index) => {
     setDropdownStates((prevState) =>
       prevState.map((state, i) => (i === index ? !state : state))
@@ -74,7 +74,7 @@ export const ServicesProgress = ({ data }) => {
     dispatch(ratingReview({ ...formData, serviceId }));
     reset(); // Reset the form after submission
   };
-  
+
   const servicesProgessSteps = [
     {
       step: 1,
@@ -117,21 +117,18 @@ export const ServicesProgress = ({ data }) => {
 
   return (
     <div>
-      <div className="py-2 flex flex-col sm:flex-row justify-between gap-2">
-        <Heading className={"py-0"} tourButton={true}>
-          Your Service Progress Updates({dataUpdate?.total})
+      <div className="py-2 flex flex-row sm:flex-row justify-between gap-2">
+        <Heading className={"py-0 "} tourButton={true}>
+          Your Service are Completed({dataUpdate?.total})
         </Heading>
-        <Link
-          to={"/services"}
-           className="font-medium text-sm text-[#797979]"
-        >
+        <Link to={"/services"} className="font-medium text-sm text-[#797979]">
           View All
         </Link>
       </div>
       {dataUpdate?.data?.length > 0 ? (
         <div className="flex flex-col gap-4">
           {dataUpdate?.data?.map((data, index) => (
-            <div key={index} className="bg-[#F8FAFF] px-4 py-2 rounded-md">
+            <div key={index} className="bg-[#f3f7ff] stroke-[#dfeaf2] stroke-1 px-4 py-2 rounded-md">
               <div className="flex flex-col sm:flex-row items-start justify-between sm:items-center gap-2">
                 <div className="flex flex-col gap-1">
                   <div className="flex gap-2">
@@ -152,7 +149,8 @@ export const ServicesProgress = ({ data }) => {
                       {data?.businessdetails[0]?.businessName ? data?.businessdetails[0]?.businessName : "__" }
                     </h6>
                     <p className="text-sm text-[#7C7D80]">
-                      <strong>Step:</strong> {data?.status}
+                      <strong className="!font-medium">Step:</strong>{" "}
+                      {data?.status}
                     </p>
                   </div>
                 </div>
@@ -161,7 +159,7 @@ export const ServicesProgress = ({ data }) => {
                     onClick={() => {
                       onConfirmationModalOpen(data._id);
                     }}
-                    className="flex items-center  px-4 py-[10px] rounded-full font-semibold text-base text-[#0068FF] bg-[#DBE9FE]"
+                    className="flex items-center  px-4 py-[6px] rounded-full font-medium text-[12px] text-[#0068FF] bg-[#DBE9FE]"
                   >
                     Rate Your Experience
                   </Button>
@@ -177,7 +175,6 @@ export const ServicesProgress = ({ data }) => {
                         </p>
                         <form onSubmit={handleSubmit(onSubmit)}>
                           <div>
-
                             <div className="flex justify-between items-center pb-5">
                               <label className="text-sm font-semibold text-gray-600">
                                 Service Quality
@@ -194,7 +191,9 @@ export const ServicesProgress = ({ data }) => {
                                       size={40}
                                     />
                                     {fieldState.error && (
-                                      <p className="text-red-500 text-sm">{fieldState.error.message}</p>
+                                      <p className="text-red-500 text-sm">
+                                        {fieldState.error.message}
+                                      </p>
                                     )}
                                   </div>
                                 )}
@@ -216,7 +215,9 @@ export const ServicesProgress = ({ data }) => {
                                       size={40}
                                     />
                                     {fieldState.error && (
-                                      <p className="text-red-500 text-sm">{fieldState.error.message}</p>
+                                      <p className="text-red-500 text-sm">
+                                        {fieldState.error.message}
+                                      </p>
                                     )}
                                   </div>
                                 )}
@@ -238,7 +239,9 @@ export const ServicesProgress = ({ data }) => {
                                       size={40}
                                     />
                                     {fieldState.error && (
-                                      <p className="text-red-500 text-sm">{fieldState.error.message}</p>
+                                      <p className="text-red-500 text-sm">
+                                        {fieldState.error.message}
+                                      </p>
                                     )}
                                   </div>
                                 )}
@@ -260,7 +263,9 @@ export const ServicesProgress = ({ data }) => {
                                       size={40}
                                     />
                                     {fieldState.error && (
-                                      <p className="text-red-500 text-sm">{fieldState.error.message}</p>
+                                      <p className="text-red-500 text-sm">
+                                        {fieldState.error.message}
+                                      </p>
                                     )}
                                   </div>
                                 )}
@@ -282,7 +287,9 @@ export const ServicesProgress = ({ data }) => {
                                       size={40}
                                     />
                                     {fieldState.error && (
-                                      <p className="text-red-500 text-sm">{fieldState.error.message}</p>
+                                      <p className="text-red-500 text-sm">
+                                        {fieldState.error.message}
+                                      </p>
                                     )}
                                   </div>
                                 )}
@@ -338,11 +345,12 @@ export const ServicesProgress = ({ data }) => {
                   </ConfirmationModal>
                   <NavLink to={`/services/detail/${data._id}`} primary={true}>Avail again</NavLink>
                   <button
-                    className={`${dropdownStates === true && "rotate-180"
-                      } hidden lg:block`}
+                    className={`${
+                      dropdownStates === true && "rotate-180"
+                    } hidden lg:block`}
                     onClick={() => handleServiceDropdown(index)}
                   >
-                    <GoTriangleDown size={30} />
+                    <GoTriangleDown size={15} />
                   </button>
                 </div>
               </div>
