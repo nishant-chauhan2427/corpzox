@@ -249,7 +249,7 @@ const History = () => {
               Total amount paid
             </p>
             <p className="font-semibold text-base  text-[#0A1C40] ">
-              ₹{transactionDetails.amount}
+              ₹{transactionDetails?.serviceappliedcouponandoffers[0]?.amount ? transactionDetails?.serviceappliedcouponandoffers[0]?.amount : transactionDetails?.amount}
             </p>
           </div>
           <div className="flex justify-center gap-2 pt-10">
