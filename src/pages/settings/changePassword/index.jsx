@@ -17,7 +17,7 @@ const ChangePassword = () => {
   const dispatch = useDispatch()
   const inputRefs = useRef([]);
 
-  const {isPasswordChanging} = useSelector((state)=> state.settings);
+  const {isPasswordChanging, changePasswordError} = useSelector((state)=> state.settings);
  
   const {
     handleSubmit,
@@ -128,7 +128,7 @@ const ChangePassword = () => {
     setTimer(30);
   };
   useEffect(() => {
-    if (!isPasswordChanging) {
+    if (!isPasswordChanging && !changePasswordError) {
       reset({
         password: "",
         confirmPassword: "",
@@ -155,6 +155,7 @@ const ChangePassword = () => {
                   placeholder={`Enter your old password`}
                   errorContent={errors.password?.message}
                   required={true}
+                  maxLength={20}
                 />
               )}
             />
@@ -168,6 +169,7 @@ const ChangePassword = () => {
                   placeholder={`Enter your new password`}
                   errorContent={errors.newPassword?.message}
                   required={true}
+                  maxLength={20}
                 />
               )}
             />
@@ -181,6 +183,7 @@ const ChangePassword = () => {
                   placeholder={`Re enter your new password`}
                   errorContent={errors.confirmPassword?.message}
                   required={true}
+                  maxLength={20}
                 />
               )}
             />
