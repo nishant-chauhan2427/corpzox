@@ -54,10 +54,15 @@ export const ServicesCard = ({
                   <p className="font-bold text-[#0A1C40]">
                     {url.includes("services") ? service?.name : service?.service?.[0]?.name || "No Service Name"}
                   </p>
-                  { console.log(service._id,"addLoading")}
-                  {(url.includes("services") || url.includes("services")) && service?.offerservices?.[0]?.offers?.[0]?.discountPercent && (
+                 {/* {console.log(service?.service?.[0]?.offerservices?.[0]?.offers?.[0]?.discountPercent ,"SERVICE DIS")} */}
+                  {(url.includes("services") ) && service?.offerservices?.[0]?.offers?.[0]?.discountPercent && (
                     <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1">
                       {service.offerservices[0].offers[0].discountPercent} %
+                    </p>
+                  )}
+                  {(url.includes("wishlist")) && service?.service?.[0]?.offerservices?.[0]?.offers?.[0]?.discountPercent  && (
+                    <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1">
+                      {service?.service?.[0]?.offerservices?.[0]?.offers?.[0]?.discountPercent } %
                     </p>
                   )}
                 </div>
