@@ -189,9 +189,9 @@ export const Header = ({ className, collapse, setCollapse }) => {
             {getPageHeading(pathname)}
           </h1>
           {/* Search */}
-          <button onClick={clearSearch}>Clear Search</button>
           {!pathname.includes("documents") &&
-            !pathname.includes("dashboar") && (
+            !pathname.includes("dashboard") && 
+            !pathname.includes("settings") &&(
               <Search
                 clearSerarch={clearSearch}
                 placeholder={`Search ${getPageHeading(pathname)}`}
