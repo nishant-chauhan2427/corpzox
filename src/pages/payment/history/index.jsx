@@ -15,7 +15,7 @@ import { talkToAdvisor } from "../../../redux/actions/servicesDetails-actions";
 import Pagination from "../../../components/Pagination";
 
 const History = () => {
-const dispatch = useDispatch()
+  const dispatch = useDispatch()
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
   const [serviceId, setServiceId] = useState("")
@@ -61,13 +61,13 @@ const dispatch = useDispatch()
   };
   const onViewTransactionClose = () => {
     setViewTransactionDetails(false);
-   
+
   };
 
   const openViewTransactionDetails = (id) => {
     console.log(id, "transactionId")
     setViewTransactionDetails(true);
-    const transactionDetails = paymentHistory.filter((payment)=>{
+    const transactionDetails = paymentHistory.filter((payment) => {
       return payment._id === id
     })
 
@@ -103,7 +103,7 @@ const dispatch = useDispatch()
       onConfirmationModalClose()
     }
   }, [isTalkToAdvisorLoading])
-  const actionMenu = (id,_id) => {
+  const actionMenu = (id, _id) => {
     return (
       <div className="flex py-2 justify-evenly items-center">
         <Button primary={false} onClick={() => openViewTransactionDetails(_id)}>
@@ -197,7 +197,7 @@ const dispatch = useDispatch()
               <p className="font-semibold text-base  text-[#525252] flex  gap-4 ">
                 Your order id
                 <span className="font-semibold text-base text-[#0A1C40]">
-                 {transactionDetails?.transactionId}
+                  {transactionDetails?.transactionId}
                 </span>
               </p>
               <p className="font-semibold text-base  text-[#525252]  text-start ">
@@ -211,7 +211,7 @@ const dispatch = useDispatch()
               <p className="font-semibold text-base  text-[#525252] flex gap-4">
                 Payment method
                 <span className="font-semibold text-base text-[#0A1C40]">
-                 {transactionDetails?.paymentMode}
+                  {transactionDetails?.paymentMode}
                 </span>
               </p>
               <p></p>
@@ -228,12 +228,12 @@ const dispatch = useDispatch()
             <p className="font-semibold text-base  text-[#0A1C40] ">
               Discount Coupon
             </p>
-            <p className="font-semibold text-base  text-[#0A1C40] ">10%</p>
+            <p className="font-semibold text-base  text-[#0A1C40] ">{transactionDetails?.serviceappliedcouponandoffers ? transactionDetails?.serviceappliedcouponandoffers[0]?.amount : "--"}</p>
           </div>
           <div className="flex justify-between">
             <p className="font-semibold text-base  text-[#0A1C40] ">Amount</p>
             <p className="font-semibold text-base  text-[#0A1C40] ">
-            ₹ {transactionDetails?.amount}
+              ₹ {transactionDetails?.amount}
             </p>
           </div>
           <div className="flex justify-between bg-[#FFF4BA]  px-2 py-1">

@@ -50,28 +50,7 @@ const SubscriptionHistory = () => {
     dispatch(getSubscriptionHistoryCount({ type: "expired" }))
     dispatch(getSubscriptionHistoryCount({ type: "up-coming" }))
   }, [])
-  // const handleNavigation = (button, label) => {
-  //   switch (button) {
-  //     case "Previous": {
-  //       setPackageIndex((prev) =>
-  //         prev > 0 ? prev - 1 : subscriptionPackage.length - 1
-  //       );
-  //       dispatch(dispatch(getSubscriptions({ page: 1, type: label == "Active Subscription" ? "active" : label == "Expired Subscription" ? "expired" : "up-coming" })))
-  //     }
-  //       break;
-  //     case "Next": {
 
-  //       setPackageIndex((prev) =>
-  //         prev < subscriptionPackage.length - 1 ? prev + 1 : 0
-  //       );
-  //       console.log(label, "label")
-  //       dispatch(dispatch(getSubscriptions({ page: 1, type: label == "Active Subscription" ? "active" : label == "Expired Subscription" ? "expired" : "up-coming" })))
-  //     }
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // };
 
   const handleNavigation = (button) => {
     let newIndex;
@@ -126,6 +105,7 @@ const SubscriptionHistory = () => {
     },
   ];
   const currentPackage = subscriptionPackage[packageIndex];
+  console.log(currentPackage,"currentPackage" )
 
   const handleCard = (label) => {
     setPackageType(label)
@@ -163,7 +143,7 @@ const SubscriptionHistory = () => {
                   <p>
                     <b>{subscriptionTotal}</b> results
                   </p>
-                  <Table columns={columns} data={currentPackage.data} /></>
+                  <Table columns={columns} data={currentPackage.data} isExpandable={true} isExpandableData={currentPackage?.description}/></>
               )}
               <div className="flex justify-between items-center gap-3">
                 {/* <p>

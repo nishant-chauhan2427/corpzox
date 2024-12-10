@@ -13,9 +13,9 @@ export const PrimaryLayout = () => {
   const sidebarClassName = "";
   // profile = //useSelector((state) => state.auth);
   let userInfo = localStorage.getItem("userInfo");
-  // if (!userInfo) {
-  //   return <Navigate to="/sign-in" />;
-  // }
+  if (!userInfo) {
+    return <Navigate to="/sign-in" />;
+  }
 
   // 
 
