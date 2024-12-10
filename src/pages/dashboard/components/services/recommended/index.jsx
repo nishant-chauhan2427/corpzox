@@ -11,6 +11,7 @@ export const RecommendedServices = ({ data, total }) => {
     dispatch(resetService({}));
     navigate("/services");
   };
+  // test dev branch
   console.log(total,"ˇTotal Service");
   return (
     <div className="">
