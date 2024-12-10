@@ -58,6 +58,8 @@ const Edit = () => {
   const [image, setImage] = useState(user?.profile_picture_url || "/images/profile/profile.svg");
   const [imageFile, setImageFile] = useState(null); 
   const [croppedImage, setCroppedImage] = useState(null);
+  
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const {
     control,
     handleSubmit,
@@ -118,6 +120,23 @@ const url = user?.profile_picture_url
       setCroppedImage(croppedImg)
     }
   }
+  // const handleSave = async () => {
+  //   if (croppedAreaPixels && imageFile) {
+  //     const croppedImg = await getCroppedImg(
+  //       imageFile,
+  //       crop,
+  //       croppedAreaPixels
+  //     );
+      
+  //     // Convert cropped image into a file
+  //     const blob = await fetch(croppedImg).then(r => r.blob());
+  //     const file = new File([blob], "cropped-image.jpg", { type: "image/jpeg" });
+      
+  //     // Send the file (cropped image) to the backend
+  //     dispatch(updateProfilePicture(file, navigate));
+  //   }
+  // };
+  
 
 
 
