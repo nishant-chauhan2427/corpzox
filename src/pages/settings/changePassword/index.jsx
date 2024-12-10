@@ -39,7 +39,7 @@ const ChangePassword = () => {
   let error;
 
   const onSubmit = (data) => {
-    // setConfirmationModal(true);
+    // test dev branch
     
     const passwordData = {
       newPassword : data.confirmPassword,
