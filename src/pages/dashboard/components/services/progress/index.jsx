@@ -343,15 +343,15 @@ export const ServicesProgress = ({ data }) => {
                       </div>
                     </>
                   </ConfirmationModal>
-                  <NavLink to={`/services/detail/${data._id}`} primary={true}>Avail again</NavLink>
-                  <button
+                  <NavLink to={`/payment/create/${data._id}`} primary={true}>Avail again</NavLink>
+                  {/* <button
                     className={`${
                       dropdownStates === true && "rotate-180"
                     } hidden lg:block`}
                     onClick={() => handleServiceDropdown(index)}
                   >
                     <GoTriangleDown size={15} />
-                  </button>
+                  </button> */}
                 </div>
               </div>
               <Dropdown
