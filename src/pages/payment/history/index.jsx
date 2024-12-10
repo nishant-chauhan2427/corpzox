@@ -149,7 +149,7 @@ const History = () => {
             <Button disabled={currentPage === Math.ceil(totalTransaction / 10)} onClick={() => handleNavigation("Next")} outline={true}>
               Next
             </Button> */}
-            <Pagination totalItems={totalTransaction} itemsPerPage={10} />
+            {totalTransaction > 10 && <Pagination totalItems={totalTransaction} itemsPerPage={10} />}
           </div>
         </div>
       </div>
@@ -228,7 +228,15 @@ const History = () => {
             <p className="font-semibold text-base  text-[#0A1C40] ">
               Discount Coupon
             </p>
-            <p className="font-semibold text-base  text-[#0A1C40] ">{transactionDetails?.serviceappliedcouponandoffers ? transactionDetails?.serviceappliedcouponandoffers[0]?.amount : "--"}</p>
+            <p className="font-semibold text-base text-[#0A1C40]">
+              {Array.isArray(transactionDetails?.serviceappliedcouponandoffers) &&
+                transactionDetails?.serviceappliedcouponandoffers.length > 0 &&
+                transactionDetails?.serviceappliedcouponandoffers[0]?.amount > 0
+                ?transactionDetails?.amount - transactionDetails?.serviceappliedcouponandoffers[0]?.amount
+                : "--"}
+            </p>
+
+
           </div>
           <div className="flex justify-between">
             <p className="font-semibold text-base  text-[#0A1C40] ">Amount</p>
