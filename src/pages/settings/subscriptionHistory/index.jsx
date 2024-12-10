@@ -9,6 +9,7 @@ import { ImSpinner2 } from "react-icons/im";
 import { TableShimmer } from "../../../components/loader/TableShimmer";
 import { NoData } from "../../../components/errors/noData";
 import Pagination from "../../../components/Pagination";
+import { formatDate } from "../../../utils";
 
 
 
@@ -18,6 +19,7 @@ const columns = [
   { header: "Amount", accessor: "amount" },
   { header: "Payment Method", accessor: "paymentMethod" },
   { header: "Renew Date", accessor: "renewDate" },
+  { header: "Subscription Type", accessor: "type" },
 ];
 
 const SubscriptionHistory = () => {
@@ -38,11 +40,11 @@ const SubscriptionHistory = () => {
       status: active ? "Active" : "",
       amount: amount,
       paymentMethod: paymentMode,
-      renewDate: subscriptionExpireyDate,
+      renewDate: formatDate(subscriptionExpireyDate),
       plan: subscriptionDetails.type
     }
   })
-  console.log(FormattedSubscriptions, "ehe")
+ 
   useEffect(() => {
     dispatch(getSubscriptionHistoryCount({ type: "active" }))
     dispatch(getSubscriptionHistoryCount({ type: "expired" }))
@@ -157,12 +159,16 @@ const SubscriptionHistory = () => {
               ) : currentPackage.data.length === 0 ? (
                 <NoData />
               ) : (
-                <Table columns={columns} data={currentPackage.data} />
+                <>
+                  <p>
+                    <b>{subscriptionTotal}</b> results
+                  </p>
+                  <Table columns={columns} data={currentPackage.data} /></>
               )}
               <div className="flex justify-between items-center gap-3">
-                <p>
+                {/* <p>
                   <b>{subscriptionTotal}</b> results
-                </p>
+                </p> */}
                 <div className="flex items-center gap-2">
                   {/* <Button
                     onClick={() => handleNavigation("Previous", currentPackage.label)}

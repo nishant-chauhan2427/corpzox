@@ -74,10 +74,10 @@ const Dashboard = () => {
   useEffect(() => {
     const storedUserInfo = localStorage.getItem("userInfo");
 
-    if (storedUserInfo !== userInfo) {
-      setUserInfo(storedUserInfo); // Update the state with new userInfo
-      dispatch(getUser()); // Dispatch the action
-    }
+    // if (storedUserInfo !== userInfo) {
+    //   setUserInfo(storedUserInfo); // Update the state with new userInfo
+    // }
+    dispatch(getUser()); // Dispatch the action
   }, [dispatch, userInfo]);
   useEffect(() => {
     dispatch(getUserBusiness({ query: searchValue ? searchValue : "" }));
@@ -89,11 +89,11 @@ const Dashboard = () => {
   return (
     <>
       <Heading title={"Dashboard"}></Heading>
-      <section className="py-4 flex flex-col gap-4">
+      <section className="py-4 flex flex-col gap-4 ">
         <div className="py-2 flex flex-col md:flex-row justify-between gap-4">
           <div className="flex flex-col sm:flex-row gap-4 w-full">
             <Profile user={user} />
-            {/* <AccountManager manager={manager} /> */}
+            <AccountManager manager={manager} />
           </div>
           {/* <Advertisement /> */}
         </div>

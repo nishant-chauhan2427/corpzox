@@ -200,12 +200,12 @@ const dispatch = useDispatch()
                  {transactionDetails?.transactionId}
                 </span>
               </p>
-              {/* <p className="font-semibold text-base  text-[#525252]  text-start ">
+              <p className="font-semibold text-base  text-[#525252]  text-start ">
                 Billed To: <br />
                 <span className="font-semibold text-base text-[#0A1C40]">
                   CorpZo Pvt. Ltd.
                 </span>
-              </p> */}
+              </p>
             </div>
             <div className="flex justify-between ">
               <p className="font-semibold text-base  text-[#525252] flex gap-4">
@@ -224,12 +224,12 @@ const dispatch = useDispatch()
             <p className="font-semibold text-base  text-[#525252] ">Amount</p>
           </div>
           <hr />
-          {/* <div className="flex justify-between">
+          <div className="flex justify-between">
             <p className="font-semibold text-base  text-[#0A1C40] ">
               Discount Coupon
             </p>
             <p className="font-semibold text-base  text-[#0A1C40] ">10%</p>
-          </div> */}
+          </div>
           <div className="flex justify-between">
             <p className="font-semibold text-base  text-[#0A1C40] ">Amount</p>
             <p className="font-semibold text-base  text-[#0A1C40] ">
