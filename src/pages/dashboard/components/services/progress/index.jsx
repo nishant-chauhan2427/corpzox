@@ -119,7 +119,7 @@ export const ServicesProgress = ({ data }) => {
     <div>
       <div className="py-2 flex flex-row sm:flex-row justify-between gap-2">
         <Heading className={"py-0 "} tourButton={true}>
-          Your Service are Completed({dataUpdate?.total})
+          Your Service are Completed {dataUpdate?.total ? `(${dataUpdate?.total})` : ""}
         </Heading>
         <Link to={"/services"} className="font-medium text-sm text-[#797979]">
           View All
