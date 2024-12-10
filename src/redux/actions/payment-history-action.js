@@ -26,3 +26,24 @@ export const getPaymentTransaction = createAsyncThunk("getPaymentTransaction", a
         return rejectWithValue(error?.response?.data?.message || error?.message);
     }
 });
+
+export const downloadInvoice = createAsyncThunk("downloadInvoice", async ({ transactionId }, { rejectWithValue }) => {
+    try {
+        const response = await client.get(`/application/download-invoice?transactionId=${transactionId}`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+            },
+        });
+
+        if (response?.data?.code == 200 || response?.data?.code == 201) {
+            return response.data?.data
+        } else {
+            return rejectWithValue(response?.data?.message);
+        }
+    } catch (error) {
+        return rejectWithValue(error?.response?.data?.message || error?.message);
+    }
+});
+

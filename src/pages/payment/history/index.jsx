@@ -5,7 +5,7 @@ import { Table } from "../../../components/table";
 import { useEffect, useState } from "react";
 import { ReactModal } from "../../../components/modal";
 import { FaPlus } from "react-icons/fa";
-import { getPaymentTransaction } from "../../../redux/actions/payment-history-action";
+import { downloadInvoice, getPaymentTransaction } from "../../../redux/actions/payment-history-action";
 import { useDispatch, useSelector } from "react-redux";
 import { formatReadableDate } from "../../../utils";
 import { TableShimmer } from "../../../components/loader/TableShimmer";
@@ -13,13 +13,15 @@ import { NoData } from "../../../components/errors/noData";
 import { ConfirmationModal } from "../../../components/modal/confirmationModal";
 import { talkToAdvisor } from "../../../redux/actions/servicesDetails-actions";
 import Pagination from "../../../components/Pagination";
+import { clearUrl } from "../../../redux/slices/paymentHistorySlice";
+import { set } from "react-hook-form";
 
 const History = () => {
   const dispatch = useDispatch()
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
   const [serviceId, setServiceId] = useState("")
-  const { paymentHistory, isPaymentHistoryLoading, totalTransaction } = useSelector((state) => state.paymentHistory)
+  const { paymentHistory, isPaymentHistoryLoading, downloadTransactionUrl, isTransactionDownloading, totalTransaction } = useSelector((state) => state.paymentHistory)
   const { isTalkToAdvisorLoading } = useSelector((state) => state.serviceDetails)
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [viewTransactionDetails, setViewTransactionDetails] = useState(false);
@@ -116,7 +118,30 @@ const History = () => {
     );
   };
 
+  // const downloadTransaction = (transactionId) => {
+  //   dispatch(downloadInvoice({transactionId}))
+  // }
+  const downloadTransaction = (transactionId) => {
+    dispatch(downloadInvoice({ transactionId }))
+  };
+  useEffect(() => {
+    if (downloadTransactionUrl) {
+      // Automatically download the file when the URL is available
+      const link = document.createElement("a");
+      link.href = downloadTransactionUrl; // URL from Redux state
+      link.download = ""; // Optional: Specify a file name
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
 
+      // Reset the URL after downloading to avoid re-triggering
+      dispatch(clearUrl());
+      onViewTransactionClose()
+    }
+  }, [downloadTransactionUrl, dispatch])
+
+
+  console.log(downloadTransactionUrl, "downloadTransactionUrl")
   return (
     <>
       <div>
@@ -232,7 +257,7 @@ const History = () => {
               {Array.isArray(transactionDetails?.serviceappliedcouponandoffers) &&
                 transactionDetails?.serviceappliedcouponandoffers.length > 0 &&
                 transactionDetails?.serviceappliedcouponandoffers[0]?.amount > 0
-                ?transactionDetails?.amount - transactionDetails?.serviceappliedcouponandoffers[0]?.amount
+                ? transactionDetails?.amount - transactionDetails?.serviceappliedcouponandoffers[0]?.amount
                 : "--"}
             </p>
 
@@ -248,8 +273,13 @@ const History = () => {
             <p className="font-semibold text-base  text-[#0A1C40] ">
               Total amount paid
             </p>
-            <p className="font-semibold text-base  text-[#0A1C40] ">
-              ₹{transactionDetails?.serviceappliedcouponandoffers[0]?.amount ? transactionDetails?.serviceappliedcouponandoffers[0]?.amount : transactionDetails?.amount}
+            <p className="font-semibold text-base text-[#0A1C40]">
+              ₹{
+                Array.isArray(transactionDetails?.serviceappliedcouponandoffers) &&
+                  transactionDetails?.serviceappliedcouponandoffers.length > 0
+                  ? transactionDetails?.serviceappliedcouponandoffers[0]?.amount
+                  : transactionDetails?.amount
+              }
             </p>
           </div>
           <div className="flex justify-center gap-2 pt-10">
@@ -258,7 +288,7 @@ const History = () => {
               <img src="/public/icons/payment/print.svg" alt="" />
               Print
             </Button>
-            <Button primary={true}>
+            <Button primary={true} isLoading={isTransactionDownloading} onClick={() => downloadTransaction(transactionDetails._id)}>
               {" "}
               <img src="/public/icons/payment/download.svg" alt="" />
               Download
