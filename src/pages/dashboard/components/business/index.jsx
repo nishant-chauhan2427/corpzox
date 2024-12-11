@@ -1,11 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../../../../components/buttons";
 import { IoMdAddCircle } from "react-icons/io";
 import { BusinessCard } from "../../../business/listing/components/businessCard";
 import { Heading } from "../../../../components/heading";
 import { LinkButton } from "../../../../components/link";
+import { resetBusiness } from "../../../../redux/slices/businessSlice";
+import { useDispatch } from "react-redux";
 
 export const Business = ({ data = [], total }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   console.log(data?.length,"VIEW LOG");
   return (
     <div className="flex flex-col ">
@@ -17,7 +22,7 @@ export const Business = ({ data = [], total }) => {
           <LinkButton
             primary={true}
             leftIcon={<IoMdAddCircle />}
-            to={"/business/create"}
+            onClick={()=>{ dispatch(resetBusiness());navigate("/business/create")}} 
           >
             Add Business
           </LinkButton>
@@ -42,7 +47,7 @@ export const Business = ({ data = [], total }) => {
           <p className="font-normal text-[#797979]">
             Create one to start your services
           </p>
-          <LinkButton className = {"px-4 py-1"} to={"/business/create"} primary={true} leftIcon={<IoMdAddCircle />}>
+          <LinkButton className = {"px-4 py-1"} onClick={()=>{ dispatch(resetBusiness());navigate("/business/create")}}  primary={true} leftIcon={<IoMdAddCircle />}>
             Add Business
           </LinkButton>
         </div>

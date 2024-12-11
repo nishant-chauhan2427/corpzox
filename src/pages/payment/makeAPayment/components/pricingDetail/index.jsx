@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 const PricingDetail = ({totalCost, offer,serviceCost,totalSavings,data,originalPrice,availServiceData, serviceCharge}) => {
   console.log( availServiceData, "from componenet")
-  const { success, serviceDetailLoading, appliedCoupons } = useSelector(
+  const { success, serviceDetailLoading, appliedCoupons, couponDiscount } = useSelector(
     (state) => state.serviceDetails
   );
 
@@ -86,7 +86,7 @@ const PricingDetail = ({totalCost, offer,serviceCost,totalSavings,data,originalP
                 Applied Coupon
               </p>
               <p className="text-base font-semibold text-[#525252]">
-                ₹{(Number(originalPrice) * appliedCoupons[0].cost) / 100}
+                ₹{couponDiscount}
               </p>
             </div>
           )}
