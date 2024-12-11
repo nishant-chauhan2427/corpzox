@@ -32,16 +32,16 @@ const SubscriptionHistory = () => {
   console.log(subscriptionsData, "subscriptionsData")
 
   const FormattedSubscriptions = subscriptionsData?.map((subscription) => {
-    const { amount, active, paymentMode, subscriptionExpireyDate, service_data, subscriptionDetails
+    const { amount, active, paymentMode, subscriptionExpireyDate, service_data, subscriptionDetails, serviceDetails
     } = subscription
 
     return {
-      subscription: subscriptionDetails.details,
+      subscription: subscriptionDetails?.details ? subscriptionDetails?.details: "N/A",
       status: active ? "Active" : "",
       amount: amount,
       paymentMethod: paymentMode,
       renewDate: formatDate(subscriptionExpireyDate),
-      plan: subscriptionDetails.type
+      plan: subscriptionDetails?.type ? subscriptionDetails?.type : "N/A"
     }
   })
  
@@ -208,7 +208,7 @@ const Card = ({ number, label, description, onClick, loading }) => {
         <label className="font-bold text-lg">{label}</label>
         <p className="text-sm">{description}</p>
       </div>
-      <button>View All</button>
+      {number > 0 && <button>View All</button>}
     </div>
   );
 };

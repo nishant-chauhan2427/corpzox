@@ -1,5 +1,6 @@
 import { createSlice, current } from "@reduxjs/toolkit";
-import { getServiceDetails, getStates, ratingReview, getStateWiseServiceCharge, getRatingDetails, talkToAdvisor, verifyCoupon, paymentStatus, availService } from "../actions/servicesDetails-actions";
+import { getServiceDetails, getStates, ratingReview, getStateWiseServiceCharge, talkToAdvisor, verifyCoupon, paymentStatus, availService } from "../actions/servicesDetails-actions";
+import { getRatingReviews } from "../actions/dashboard-action";
 import toast from "react-hot-toast";
 import { act } from "react";
 // Slice
@@ -515,14 +516,14 @@ const serviceDetailSlice = createSlice({
         state.isPaymentSuccessful = false
         console.log(action.payload, "rejected")
       })
-      .addCase(getRatingDetails.pending, (state) => {
+      .addCase(getRatingReviews.pending, (state) => {
         state.isRatingReviewLoading = true;
       })
-      .addCase(getRatingDetails.fulfilled, (state, action) => {
+      .addCase(getRatingReviews.fulfilled, (state, action) => {
         state.isRatingReviewLoading = false;
         state.ratingReviewList = action.payload;
       })
-      .addCase(getRatingDetails.rejected, (state) => {
+      .addCase(getRatingReviews.rejected, (state) => {
         state.isRatingReviewLoading = false;
       })
       .addCase(ratingReview.pending, (state) => {
