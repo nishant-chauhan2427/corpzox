@@ -32,29 +32,26 @@ export const submitEditProfile = createAsyncThunk(
 
 export const updateProfilePicture = createAsyncThunk(
   "profile/updateProfilePicture",
-  async ({file,navigate}, { rejectWithValue }) => {
-   console.log(formData,"DATAQ");
-      try {
-          const response = await client.put("/user/auth/upload-file", file, {
-              headers: {
-                  Accept: "application/json",
-                  "Content-Type": "application/json",
-                  'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
-              },
-          });
-         // console.log(response, "edit response")
-          //console.log(response.data.message, "edit response")
-          if(response.data.code===200){
+  async ({ formData }, { rejectWithValue }) => {
+    console.log(formData, "FormData in updateProfilePicture");
 
-           // toast.success(response.data.message)
-           navigate("/profile");
-          }
-          return response.data;
-      } catch (error) {
-          return rejectWithValue(error.response?.data || "Something went wrong");
-      }
+    try {
+        const response = await client.put("/user/auth/upload-file", formData, {
+            headers: {
+                Accept: "application/json",
+                'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+            },
+        });
+
+        console.log(response, "edit response");
+        return response.data;  // Return the response data
+    } catch (error) {
+        console.log("Error", error.response);
+        return rejectWithValue(error.response?.data || "Something went wrong");
+    }
   }
 );
+
 
 
 

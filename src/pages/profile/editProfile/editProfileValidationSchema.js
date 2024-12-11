@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+//const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
 export const profileValidationSchema = yup.object({
     firstName: yup
@@ -13,5 +13,15 @@ export const profileValidationSchema = yup.object({
         .required("Last name is required")
         .min(2, "Last name must be at least 2 characters")
         .max(30,"Last name must be less then 30 characters"),
-    
+    email:yup.string()
+        .email('Invalid email address') 
+        .matches(
+            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,  
+            'Invalid email address'
+        ),
+        businessEmail: yup
+    .string()
+    .email("Invalid email address")  
+    .notRequired(),
+        
 });

@@ -7,7 +7,8 @@ export const Insight = () => {
       <div className="flex flex-col gap-4">
         <div className="flex justify-between items-center ">
           <p className="font-semibold text-[16px] text-[#004BBC]">Insights</p>
-          <Link className="font-medium text-xs text-[#828282]">View All</Link>
+          <Link to={"/Insight"}>View All</Link>
+          {/* <Link className="font-medium text-xs text-[#828282]">View All</Link> */}
         </div>
         <div className="h-[1px] bg-gradient-to-r rounded-lg from-[#E0E1E2] via-[#E0E1E2] to-[#E0E1E2]"></div>
         {insightBlog.map((blog, index) => (

@@ -36,11 +36,7 @@ import Payments from "../pages/payment";
 import DocumentDetail from "../pages/documents/detail";
 import OffersDetails from "../pages/offers/components";
 import ServiceprogressViewAll from "../pages/services/serviceProgressViewAll";
-import { RegistrationDetails } from "../pages/business/createEdit/components/registration";
-import { AddressDetails } from "../pages/business/createEdit/components/address";
-import { FinancialDetails } from "../pages/business/createEdit/components/financial";
-import { KYCDetails } from "../pages/business/createEdit/components/kyc";
-import { FundingDetails } from "../pages/business/createEdit/components/funding";
+import { Insight } from "../components/insight";
 
 const router = createBrowserRouter([
   {
@@ -117,35 +113,14 @@ const router = createBrowserRouter([
                 index: true,
                 element: <BusinessListing />,
               },
-
               {
                 path: "create",
                 element: <CreateBusiness />,
-                children: [
-                  { index: true, element: <RegistrationDetails /> }, // Default child for /create
-                  { path: "registration", element: <RegistrationDetails /> },
-                  { path: "address", element: <AddressDetails /> },
-                  { path: "financial", element: <FinancialDetails /> },
-                  { path: "kyc", element: <KYCDetails /> },
-                  { path: "funding", element: <FundingDetails /> }
-                ]
-              },   
+              },
               {
                 path: "edit",
-                element: <CreateBusiness />,
-                children: [
-                  { index: true, element: <RegistrationDetails /> }, // Default child for /edit
-                  { path: "registration", element: <RegistrationDetails /> },
-                  { path: "address", element: <AddressDetails /> },
-                  { path: "financial", element: <FinancialDetails /> },
-                  { path: "kyc", element: <KYCDetails /> },
-                  { path: "funding", element: <FundingDetails /> }
-                ]
-              },           
-              // {
-              //   path: "edit",
-              //   element: <CreateBusiness isEdit={true} />,
-              // },
+                element: <CreateBusiness isEdit={true}/>,
+              },
               {
                 path: "preview",
                 element: <BusinessPreview />,
@@ -192,7 +167,7 @@ const router = createBrowserRouter([
             element: <Payments />,
             children: [
               {
-                path: ":serviceId",
+                path : ":serviceId",
                 element: <MakeAPayment />,
               },
               {
@@ -237,7 +212,7 @@ const router = createBrowserRouter([
                 index: true,
                 element: <DocumentsListing />,
               },
-
+              
               {
                 path: "detail/:id",
                 element: <DocumentDetail />,
@@ -297,6 +272,15 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <OffersDetails />,
+              },
+            ],
+          },
+          {
+            path: "insight",
+            children: [
+              {
+                index: true,
+                element: <Insight/>,
               },
             ],
           },

@@ -7,6 +7,7 @@ import { servicesListing } from "../../../database";
 import Filtertab from "../../../pages/services/components/tabs/filterTab";
 import { SelectAllTabs } from "../components/tabs/selectAllTab/index";
 import { useSelector, useDispatch } from "react-redux";
+import { Heading } from "../../../components/heading";
 
 import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import {
@@ -135,6 +136,8 @@ const ServicesListing = () => {
     <section className="flex sm:flex-row flex-col gap-4 sm:pt-6 pt-3 bg-white">
       <div className="flex justify-center flex-col overflow-hidden">
         <MainTab />
+        <Heading backButton={true} title={"Service"} ></Heading>
+        
         {servicesMainTab !== 0 ? (
           <>
             <p className="font-bold  text-[20px] leading-6 text-[#0A1C40]">

@@ -13,20 +13,20 @@ import { submitEditProfile, updateProfilePicture } from "../../../redux/actions/
 import { profileValidationSchema } from "./editProfileValidationSchema";
 import Cropper from "react-easy-crop";
 
-
+// Function to get the cropped image
 const getCroppedImg = async (imageSrc, crop, pixelCrop) => {
-  const image = new Image()
-  image.crossOrigin = 'anonymous' // Enable CORS
-  image.src = imageSrc
+  const image = new Image();
+  image.crossOrigin = "anonymous"; // Enable CORS
+  image.src = imageSrc;
 
   await new Promise((resolve) => {
-    image.onload = resolve
-  })
+    image.onload = resolve;
+  });
 
-  const canvas = document.createElement('canvas')
-  canvas.width = pixelCrop.width
-  canvas.height = pixelCrop.height
-  const ctx = canvas.getContext('2d')
+  const canvas = document.createElement("canvas");
+  canvas.width = pixelCrop.width;
+  canvas.height = pixelCrop.height;
+  const ctx = canvas.getContext("2d");
 
   ctx.drawImage(
     image,
@@ -38,28 +38,32 @@ const getCroppedImg = async (imageSrc, crop, pixelCrop) => {
     0,
     pixelCrop.width,
     pixelCrop.height
-  )
+  );
 
   return new Promise((resolve) => {
-    canvas.toBlob((blob) => {
-      resolve(URL.createObjectURL(blob))
-    }, 'image/jpeg')
-  })
-}
+    canvas.toBlob(
+      (blob) => {
+        resolve(URL.createObjectURL(blob));
+      },
+      "image/jpeg"
+    );
+  });
+};
 
 const Edit = () => {
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
   const { loading } = useSelector((state) => state.profile);
-
+  const { upload } = useSelector((state) => state.profile);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [image, setImage] = useState(user?.profile_picture_url || "/images/profile/profile.svg");
-  const [imageFile, setImageFile] = useState(null); 
+  const [imageFile, setImageFile] = useState(null);
   const [croppedImage, setCroppedImage] = useState(null);
-  
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+
   const {
     control,
     handleSubmit,
@@ -67,21 +71,17 @@ const Edit = () => {
     formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(profileValidationSchema),
-    mode: "onChange", 
+    mode: "onChange",
   });
 
   const onCropComplete = (croppedArea, croppedAreaPixels) => {
-    console.log(croppedArea, croppedAreaPixels);
+    setCroppedAreaPixels(croppedAreaPixels); // Save the cropped area
   };
-console.log(user,"PICTURE");
-
+  console.log(upload, "upload23");
   const onSubmit = (data) => {
-
     const formData = new FormData();
     if (imageFile) {
-     // console.log(imageFile.name,"imageFile PICTURE");
-      
-      formData.append("profile_picture_url", imageFile.name); 
+      formData.append("profilePicture", upload);
     }
     formData.append("firstName", data.firstName);
     formData.append("lastName", data.lastName);
@@ -89,70 +89,78 @@ console.log(user,"PICTURE");
     dispatch(submitEditProfile({ formData, navigate }));
   };
 
-
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    console.log("file",file);
-    
+
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImage(reader.result); 
-        setImageFile(file); 
+        setImage(reader.result);
+        setImageFile(file);
       };
       reader.readAsDataURL(file);
-      
+    }
+  };
+  const blobToFile = (url, filename) => {
+    // return new File([blob], fileName, { type: blob.type });
+    let mimeType = (url.match(/^data:([^;]+);/) || '')[1];
+    return (fetch(url)
+      .then(function (res) { return res.arrayBuffer(); })
+      .then(function (buf) { return new File([buf], filename, { type: mimeType }); })
+    );
+  };
+  //  blobToFile(url, filename) {
+  //   let mimeType = (url.match(/^data:([^;]+);/) || '')[1];
+  //   return (fetch(url)
+  //     .then(function(res) { return res.arrayBuffer(); })
+  //     .then(function(buf) { return new File([buf], filename, { type: mimeType }); })
+  //   );
+  // }
+  // const handleSave = async () => {
+  //   if (croppedAreaPixels) {
+  //     const croppedImg = await getCroppedImg(image, crop, croppedAreaPixels);
+  //     setCroppedImage(croppedImg); 
+  //     console.log(croppedImg);
+  //   }
+  // };
+  const handleSave = async () => {
+    if (croppedAreaPixels) {
+      const croppedImgBlob = await getCroppedImg(image, crop, croppedAreaPixels);
+      console.log("image", imageFile);
+      const fileName = imageFile?.name;
+
+      const croppedImgFile = await blobToFile(croppedImgBlob, fileName);
+      console.log("croppedImgFile", croppedImgFile);
+
+      // Set the file URL for preview (optional)
+      setCroppedImage(croppedImgBlob);
+
+      // Create FormData and append the file correctly
+      const formData = new FormData();
+      formData.append("files", croppedImgFile);  // 'files' key used for the backend
+
+      console.log("FormData before dispatch:", formData);
+
+      // Dispatch the action with formData
+      const imageUrl = await dispatch(updateProfilePicture({ formData }));
+      console.log("imageUrl", imageUrl);
     }
   };
 
-const url = user?.profile_picture_url
-
-  const handleSave = async () => {
-    //console.log("1234567");
-    dispatch(updateProfilePicture(file, navigate));
-    if (croppedAreaPixels) {
-     
-      const croppedImg = await getCroppedImg(
-        url,
-        crop,
-        croppedAreaPixels
-      )
-      setCroppedImage(croppedImg)
-    }
-  }
-  // const handleSave = async () => {
-  //   if (croppedAreaPixels && imageFile) {
-  //     const croppedImg = await getCroppedImg(
-  //       imageFile,
-  //       crop,
-  //       croppedAreaPixels
-  //     );
-      
-  //     // Convert cropped image into a file
-  //     const blob = await fetch(croppedImg).then(r => r.blob());
-  //     const file = new File([blob], "cropped-image.jpg", { type: "image/jpeg" });
-      
-  //     // Send the file (cropped image) to the backend
-  //     dispatch(updateProfilePicture(file, navigate));
-  //   }
-  // };
-  
-
-
 
   useEffect(() => {
-    const str = user.name || '';
+    const str = user.name || "";
     let data = [];
-    const spaceIndex = str.indexOf(' ');
+    const spaceIndex = str.indexOf(" ");
 
     if (spaceIndex !== -1) {
       const firstName = str.substring(0, spaceIndex);
       const lastName = str.substring(spaceIndex + 1);
       data = [firstName, lastName];
     } else {
-      data = [str, ''];
+      data = [str, ""];
     }
-
+    console.log(user, "user1234");
     setValue("firstName", data[0]);
     setValue("lastName", data[1]);
     setValue("email", user?.email);
@@ -162,22 +170,30 @@ const url = user?.profile_picture_url
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-        <Heading title={"Payment"} backButton={true}>
+        <Heading title={"Profile Picture"} backButton={true}>
           Edit Profile
         </Heading>
         <div className="flex shadow-md bg-[#F4F9FF] border px-4 rounded-2xl py-10 border-[#DFEAF2]">
-          <div className="flex sm:flex-row flex-col w-full items-center gap-4">
-            <div className="relative w-1/6" style={{ width: '300px', height: '200px' }}>
-              <Cropper
-                image={image}
-                crop={crop}
-                zoom={zoom}
-                aspect={4 / 3}
-                onCropChange={setCrop}
-                onCropComplete={onCropComplete}
-                onZoomChange={setZoom}
-                
-              />
+          <div className="flex flex-col w-full items-center gap-4">
+            <div className="relative" style={{ width: "250px", height: "170px" }}>
+              {/* Conditionally render cropped image or cropper */}
+              {croppedImage ? (
+                <img
+                  src={croppedImage}
+                  alt="Cropped"
+                  className="w-full h-full object-cover rounded-full"
+                />
+              ) : (
+                <Cropper
+                  image={image}
+                  crop={crop}
+                  zoom={zoom}
+                  aspect={4 / 3}
+                  onCropChange={setCrop}
+                  onCropComplete={onCropComplete}
+                  onZoomChange={setZoom}
+                />
+              )}
             </div>
 
             <div className="text-center mt-2">
@@ -187,27 +203,28 @@ const url = user?.profile_picture_url
               >
                 Update
               </label>
-              
-              
+
+
+              <label
+                onClick={handleSave}
+                className="save-button ml-4 cursor-pointer"
+              >
+                Saved
+              </label>
+
               <input
                 id="image-upload"
                 type="file"
                 accept="image/*"
                 onChange={handleImageChange}
                 className="hidden"
-                
               />
             </div>
-
-            <button onClick={handleSave} className="save-button">
-          Saved
-        </button>
 
 
 
           </div>
 
-        
           <div className="flex flex-col gap-4 w-full">
             <p className="text-[#171717] font-medium text-lg">Basic Details</p>
             <div className="sm:w-[70%] flex gap-4 flex-col">
@@ -289,7 +306,7 @@ const url = user?.profile_picture_url
         </div>
 
         <Button disabled={!isValid} primary={true} isLoading={loading}>
-         Save
+          Save
         </Button>
       </form>
     </>
