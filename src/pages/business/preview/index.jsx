@@ -30,26 +30,30 @@ const BusinessPreview = () => {
 
   const handleNextStep = async () => {
     if (businessId) {
-      try {
-        setLoading(true);
-        // await dispatch(updateAddressDetails({...address, businessId}));
-        // await dispatch(updateFinancialDetails({...financial, businessId}));
-        // await dispatch(updateKYCDetails({ ...kyc,businessId }));
-        // await dispatch(updateFundingDetails({ businessId,...funding}));
+      // try {
+      //   setLoading(true);
+      //   // await dispatch(updateAddressDetails({...address, businessId}));
+      //   // await dispatch(updateFinancialDetails({...financial, businessId}));
+      //   // await dispatch(updateKYCDetails({ ...kyc,businessId }));
+      //   // await dispatch(updateFundingDetails({ businessId,...funding}));
 
-       // toast.success("Business created successfully!");
+      //  // toast.success("Business created successfully!");
         
-        setConfirmationModal(true);
-        // dispatch(resetBusiness());
-        setLoading(false);
-        setFormModal(false);
-      } catch (error) {
-        setLoading(false);
-        toast.error("An error occurred while submitting business details.");
-        console.error(error);
-      }
+      //   setConfirmationModal(true);
+      //   // dispatch(resetBusiness());
+      //   setLoading(false);
+      //   setFormModal(false);
+      // } catch (error) {
+      //   setLoading(false);
+      //   toast.error("An error occurred while submitting business details.");
+      //   console.error(error);
+      // }
+      toast.success("Business details updated")
+      // navigate(`/business/detail?id=${businessId}`);
+      // navigate(`/business/detail?id=${businessId}`, { replace: true });
+      navigate(-6);  //this will delete last 6 from browser history stack
     } else {
-      setLoading(false); 
+      // setLoading(false); 
       toast.error("Business ID not found.");
     }
   };
