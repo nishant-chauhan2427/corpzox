@@ -79,7 +79,7 @@ const BusinessListing = () => {
     >
       <div className="flex flex-col md:flex-row justify-between gap-4">
         <Heading title={"Business"} tourButton={true}>
-          Your Business ({totalCount})
+          Your Business {totalCount ? `(${totalCount})` : ""}
         </Heading>
         <div className="flex items-center gap-2">
           {/* <LinkButton to={"create"} primary={true} leftIcon={<IoMdAddCircle />}>

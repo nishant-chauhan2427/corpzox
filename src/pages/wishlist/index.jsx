@@ -9,6 +9,7 @@ import { ServiceCardShimmer } from "../../components/loader/ServiceCardShimmer c
 import { removeServiceWishlist} from "../../redux/actions/servicesListing-action";
 import { NoData } from "../../components/errors/noData";
 import { ImSpinner2 } from "react-icons/im";
+import { WishlistCardShimmer } from "../../components/loader/WishlistCardShimmer";
 
 //removeServiceWishlist
 const Wishlist = () => {
@@ -16,10 +17,10 @@ const Wishlist = () => {
   const {wishList } = useSelector(
     (state) => state.wishlist
   );
-  const { isAdding} = useSelector(
-    (state) => state.user
+  const { isLoading } = useSelector(
+    (state) => state.wishlist
   );
- // console.log(isAdding,"totalCount12334");
+  console.log(isLoading ,"totalCount12334");
   let onClickWishList = (service) => {
  //   console.log(service,"service123");
     //setIsSubmit(true);
@@ -36,8 +37,8 @@ const Wishlist = () => {
   dispatch(getWishList());
 }, [dispatch]);
   return (
-    <>
-      <div>
+    <> 
+    {isLoading ? <WishlistCardShimmer/>: <div>
         <Heading title={"Wishlist"} backButton={true}>
           Wishlist {wishList?.length ? `(${wishList.length})` : ""}
         </Heading>
@@ -56,7 +57,8 @@ const Wishlist = () => {
           <Button primary={true}>Load More</Button>
         </div> */}
         {/* checking service */}
-      </div>
+      </div>}
+     
     </>
   );
 };
