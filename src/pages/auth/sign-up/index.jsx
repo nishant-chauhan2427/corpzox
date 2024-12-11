@@ -72,11 +72,7 @@ export const Signup = () => {
     dispatch(registerUser(userData))
     // dispatch(registerUser(data));
     console.log(data, "user data")
-    const userData ={
-      ...data, 
-      firstName : data.full, 
-    }
-    dispatch(registerUser(userData));
+    
   };
   useEffect(() => {
     // console.log(isRegistering,isSubmit,registeringError)
