@@ -238,7 +238,7 @@ const navigate = useNavigate()
                             className="flex flex-row  sm:flex-row gap-4 bg-white m-4 rounded-sm"
                           >
                             <p className="text-xl text-center flex justify-cener items-center px-3 py-2 font-semibold bg-[#007AFF26] text-[#272727]">
-                              {data.off}
+                             % {data.off}
                             </p>
                             <div className="py-3 flex flex-col gap-1">
                               <p className="font-medium text-[#080808] text-lg">
@@ -247,9 +247,9 @@ const navigate = useNavigate()
                               <p className="font-normal text-xs text-[#4D4D4D]">
                                 {data.description}
                               </p>
-                              <Link className="underline text-[#5E63FF] font-normal text-sm">
+                              {/* <Link className="underline text-[#5E63FF] font-normal text-sm">
                                 More
-                              </Link>
+                              </Link> */}
                             </div>
                             <div className="flex flex-col gap-1 text-center items-center px-2 justify-center">
                               <Button
@@ -260,10 +260,10 @@ const navigate = useNavigate()
                                 Apply
                               </Button>
 
-                              <p className="flex font-medium text-sm text-[#000000]">
+                              {/* <p className="flex font-medium text-sm text-[#000000]">
                                 <img src="/images/payment/coupon.svg" alt="" />
                                 Coupon Applicable
-                              </p>
+                              </p> */}
                             </div>
                           </div>
                         ))}
