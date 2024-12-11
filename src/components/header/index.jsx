@@ -191,7 +191,8 @@ export const Header = ({ className, collapse, setCollapse }) => {
           {/* Search */}
           {!pathname.includes("documents") &&
             !pathname.includes("dashboard") && 
-            !pathname.includes("settings") &&(
+            !pathname.includes("settings") &&
+            !pathname.includes("business") &&(
               <Search
                 clearSerarch={clearSearch}
                 placeholder={`Search ${getPageHeading(pathname)}`}

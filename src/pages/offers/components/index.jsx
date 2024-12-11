@@ -62,7 +62,7 @@ function OffersDetails() {
   return (
     <>
       <Heading title={"Offers"} backButton={true}>
-        Offers
+       {`Offers(${totalCount})`}
       </Heading>
       <div>
         {offers ? offers?.map((offer, index) => (
