@@ -1,5 +1,6 @@
 import { createSlice, current } from "@reduxjs/toolkit";
-import { getServiceDetails, getStates, ratingReview, getStateWiseServiceCharge, getRatingDetails, talkToAdvisor, verifyCoupon, paymentStatus, availService } from "../actions/servicesDetails-actions";
+import { getServiceDetails, getStates, ratingReview, getStateWiseServiceCharge, talkToAdvisor, verifyCoupon, paymentStatus, availService } from "../actions/servicesDetails-actions";
+import { getRatingReviews } from "../actions/dashboard-action";
 import toast from "react-hot-toast";
 import { act } from "react";
 // Slice
@@ -215,6 +216,7 @@ const serviceDetailSlice = createSlice({
           (sub) => sub._id === localStorage.getItem("subscriptionId")
         );
 
+        console.log(selectedSubscription,"selectedSubscription" )
         // Set the original amount if a subscription is found, else use the amount in the object
         const initialAmount = selectedSubscription ? selectedSubscription.amount : action.payload.cost;
 
@@ -265,11 +267,12 @@ const serviceDetailSlice = createSlice({
           ...(selectedSubscription && { subscriptionId: selectedSubscription._id }),
           serviceDetails: {
             name: action.payload.name,
-            cost: action.payload.cost,
-            duration: action.payload.duration,
+            cost: selectedSubscription ? selectedSubscription.amount : action.payload.cost,
+            duration: selectedSubscription ? selectedSubscription.duration : action.payload.duration,
           },
+          duration: selectedSubscription ? selectedSubscription.duration : action.payload.duration,
           totalCouponDiscount:state.totalCouponDiscount, 
-          amount: state.originalPrice,
+          amount: state.cost,
           // appliedCoupan: [
           //   ...(Array.isArray(state.availServiceData.appliedCoupan) ? state.availServiceData.appliedCoupan : []), // Ensure it's an array
           //   ...(state.offerDetails ? [state.offerDetails] : []) // Add offerDetails directly if available, not nested in an object
@@ -393,6 +396,7 @@ const serviceDetailSlice = createSlice({
           discount = (state.tempCost * couponData.cost) / 100;
           state.cost = state.tempCost - discount;
           costToSend = state.tempCost - discount
+          state.couponDiscount = discount;
           console.log(`Discount of ${discount} applied. New cost: ${state.cost}`);
         }
 
@@ -400,30 +404,59 @@ const serviceDetailSlice = createSlice({
         state.coupons = state.coupons.filter(coupon => coupon._id !== couponData.couponId);
         console.log(state.coupons, "applied coupon");
         
+        // state.availServiceData = {
+        //   ...state.availServiceData,
+        //   amount: state.cost,
+        //   totalCouponDiscount: discount + state.totalCouponDiscount,
+        //   appliedCoupan: [
+        //     ...state.availServiceData.appliedCoupan, // Spread the existing applied coupons
+        //     {
+        //       couponId: couponData.couponId,
+        //       amount: discount,
+        //       discountType: "percentage",
+        //       usage: "Multi Use",
+        //       couponDiscount: couponData.cost,
+        //     }, // Add the new coupon details
+        //   ],
+        // };
+
+        // state.availServiceData = {
+        //   ...state.availServiceData,
+        //   amount: state.cost,
+        //   totalCouponDiscount: discount + (state.totalCouponDiscount || 0), // Safeguard against undefined
+        //   appliedCoupan: [
+        //     ...(Array.isArray(state.availServiceData.appliedCoupan)
+        //       ? state.availServiceData.appliedCoupan.filter(coupon => coupon && Object.keys(coupon).length > 0) // Filter out empty objects
+        //       : []), // Default to an empty array if undefined
+        //     {
+        //       couponId: couponData.couponId,
+        //       amount: discount,
+        //       discountType: "percentage",
+        //       usage: "Multi Use",
+        //       couponDiscount: couponData.cost,
+        //     }, // Add the new coupon details
+        //   ],
+        // };
         state.availServiceData = {
           ...state.availServiceData,
-          amount: state.originalPrice,
-          totalCouponDiscount: discount + state.totalCouponDiscount,
-          // appliedCoupan: [
-          //   {
-          //     couponId: couponData.couponId,
-          //     amount: discount,
-          //     discountType: "percentage",
-          //     usage: "Multi Use",
-          //     couponDiscount: couponData.cost,
-          //   },
-          // ],
+          amount: state.cost,
+          totalCouponDiscount: discount + (state.totalCouponDiscount || 0), // Safeguard against undefined
           appliedCoupan: [
-            ...state.availServiceData.appliedCoupan, // Spread the existing applied coupons
+            ...(Array.isArray(state.availServiceData.appliedCoupan)
+              ? state.availServiceData.appliedCoupan.filter(
+                  coupon => coupon && Object.keys(coupon).length > 0 // Filter out empty objects
+                )
+              : []), // Default to an empty array if undefined
             {
               couponId: couponData.couponId,
               amount: discount,
               discountType: "percentage",
               usage: "Multi Use",
-              couponDiscount: discount,
+              couponDiscount: couponData.cost,
             }, // Add the new coupon details
           ],
         };
+        
         state.totalCouponDiscount += discount
         console.log(
           "Updated availServiceData with coupon ID and cost:",
@@ -469,6 +502,10 @@ const serviceDetailSlice = createSlice({
       })
       .addCase(paymentStatus.fulfilled, (state, action) => {
         state.isServiceAvailing = false;
+        state.serviceDetails = {}
+        state.appliedCoupons =[]
+        const originalCost = state.originalPrice
+        state.cost = originalCost
         console.log(action.payload, "talk to")
         state.isPaymentSuccessful = true
 
@@ -479,14 +516,14 @@ const serviceDetailSlice = createSlice({
         state.isPaymentSuccessful = false
         console.log(action.payload, "rejected")
       })
-      .addCase(getRatingDetails.pending, (state) => {
+      .addCase(getRatingReviews.pending, (state) => {
         state.isRatingReviewLoading = true;
       })
-      .addCase(getRatingDetails.fulfilled, (state, action) => {
+      .addCase(getRatingReviews.fulfilled, (state, action) => {
         state.isRatingReviewLoading = false;
         state.ratingReviewList = action.payload;
       })
-      .addCase(getRatingDetails.rejected, (state) => {
+      .addCase(getRatingReviews.rejected, (state) => {
         state.isRatingReviewLoading = false;
       })
       .addCase(ratingReview.pending, (state) => {
