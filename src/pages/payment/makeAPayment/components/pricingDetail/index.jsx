@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 const PricingDetail = ({totalCost, offer,serviceCost,totalSavings,data,originalPrice,availServiceData, serviceCharge}) => {
   console.log( availServiceData, "from componenet")
-  const { success, serviceDetailLoading, appliedCoupons } = useSelector(
+  const { success, serviceDetailLoading, appliedCoupons, couponDiscount } = useSelector(
     (state) => state.serviceDetails
   );
 
@@ -46,7 +46,7 @@ const PricingDetail = ({totalCost, offer,serviceCost,totalSavings,data,originalP
             </p>
             <p className="text-base font-semibold text-[#525252]">₹{originalPrice - totalCost}</p>
           </div>} */}
-          {discountPercent > 0 ? (
+          {/* {discountPercent > 0 ? (
             <div className="flex justify-between">
               <p className="text-base font-semibold text-[#525252]">
                 Applied Offer
@@ -62,18 +62,35 @@ const PricingDetail = ({totalCost, offer,serviceCost,totalSavings,data,originalP
                 Applied Coupon
               </p>
               <p className="text-base font-semibold text-[#525252]">
-                {/* ₹{couponDiscount} */}
+             
                 ₹  {(originalPrice * appliedCoupons[0].cost) / 100}
               </p>
             </div>
           ) : (
+            null
+          )} */}
+           {discountPercent > 0 && (
             <div className="flex justify-between">
               <p className="text-base font-semibold text-[#525252]">
-                No Discounts Applied
+                Applied Offer
               </p>
-              <p className="text-base font-semibold text-[#525252]">₹0</p>
+              <p className="text-base font-semibold text-[#525252]">
+                ₹{(Number(originalPrice) * discountPercent) / 100}
+              </p>
             </div>
           )}
+
+          {appliedCoupons?.length > 0 && (
+            <div className="flex justify-between">
+              <p className="text-base font-semibold text-[#525252]">
+                Applied Coupon
+              </p>
+              <p className="text-base font-semibold text-[#525252]">
+                ₹{couponDiscount}
+              </p>
+            </div>
+          )}
+          {appliedCoupons.length == 0 && discountPercent === 0 && null}
         </div>
         <hr />
         <div className="flex justify-between">

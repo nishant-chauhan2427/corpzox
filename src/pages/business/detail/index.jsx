@@ -12,6 +12,7 @@ import { getUser } from "../../../redux/actions/dashboard-action";
 import { LinkButton } from "../../../components/link";
 import { resetBusiness } from "../../../redux/slices/businessSlice";
 import { TableShimmer } from "../../../components/loader/TableShimmer";
+import { calculateAge } from "../../../utils";
 const BusinessDetail = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -20,49 +21,21 @@ const BusinessDetail = () => {
   const { user } = useSelector((state) => state.user);
   const queryParams = new URLSearchParams(location.search);
   const businessId = queryParams.get("id");
-  console.log("BUSINESS ID12", business)
+  // console.log("BUSINESS ID12", business)
   useEffect(() => {
     if (businessId) {
-      console.log("Dispatching action with businessId:", businessId);
+      // console.log("Dispatching action with businessId:", businessId);
       dispatch(getBusiness({ businessId }));
 
     } else {
       console.log("No businessId found");
     }
   }, [businessId, dispatch]);
-  console.log(business, "BUSINESSSS");
+  // console.log(business, "BUSINESSSS");
 
-
-  function calculateAge(dateOfEstablishment) {
-
-    const establishedDate = new Date(dateOfEstablishment);
-
-    const currentDate = new Date();
-
-    let years = currentDate.getFullYear() - establishedDate.getFullYear();
-
-    const monthDifference = currentDate.getMonth() - establishedDate.getMonth();
-    if (monthDifference < 0 || (monthDifference === 0 && currentDate.getDate() < establishedDate.getDate())) {
-      years--;
-    }
-
-
-    const tempEstablishmentDate = new Date(establishedDate);
-    tempEstablishmentDate.setFullYear(currentDate.getFullYear());
-
-    let days = Math.floor((currentDate - tempEstablishmentDate) / (1000 * 60 * 60 * 24));
-
-    if (days < 0) {
-      const previousYearEstablishmentDate = new Date(establishedDate);
-      previousYearEstablishmentDate.setFullYear(currentDate.getFullYear() - 1);
-      days = Math.floor((currentDate - previousYearEstablishmentDate) / (1000 * 60 * 60 * 24));
-    }
-
-    return `${years} years ${days} days`;
-  }
 
   const handleEditBusiness = () => {
-    navigate("/business/edit")
+    navigate("/business/edit/registration")
   }
 
   return (

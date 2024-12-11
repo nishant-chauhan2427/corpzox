@@ -49,6 +49,7 @@ export const ServicesProgress = ({ data }) => {
   const onConfirmationModalClose = () => {
     setConfirmationModal(false);
     setServiceId("");
+    reset();
   };
 
   useEffect(() => {
@@ -157,7 +158,7 @@ export const ServicesProgress = ({ data }) => {
                 <div className="flex gap-2">
                   <Button
                     onClick={() => {
-                      onConfirmationModalOpen(data._id);
+                      onConfirmationModalOpen(data?.service[0]?._id);
                     }}
                     className="flex items-center  px-4 py-[6px] rounded-full font-medium text-[12px] text-[#0068FF] bg-[#DBE9FE]"
                   >
@@ -325,7 +326,7 @@ export const ServicesProgress = ({ data }) => {
                               <Button
                                 outline={true}
                                 type="button"
-                                onClick={() => reset()}
+                                onClick={onConfirmationModalClose}
                               >
                                 Maybe Later
                               </Button>

@@ -27,6 +27,7 @@ export const Signup = () => {
     trigger,
   } = useForm({
     // resolver: yupResolver(signUpValidationSchema),
+    // resolver: yupResolver(signUpValidationSchema),
     mode: "onChange",
   });
   const {
@@ -63,6 +64,13 @@ export const Signup = () => {
     console.log(data);
     // Reset error message
     setError("");
+    const userData ={
+      ...data, 
+      firstName : data.full, 
+    }
+    delete userData.full; 
+    dispatch(registerUser(userData))
+    // dispatch(registerUser(data));
     console.log(data, "user data")
     const userData ={
       ...data, 

@@ -18,13 +18,13 @@ export const Details = ({
   //   navigate(`/payment/${serviceId}`);
   // };
 
-  const { success, serviceDetailLoading } = useSelector(
+  const { success, serviceDetailLoading, quotationDetails } = useSelector(
     (state) => state.serviceDetails
   );
 
   // Safely retrieve data
   const subscriptionAmount =
-    success?.subscription?.[0]?.amount || data?.cost || 0;
+   quotationDetails?.[0]?.amount|| success?.subscription?.[0]?.amount || data?.cost || 0;
 
   const discountPercent =
     success?.offerservices?.[0]?.offers?.[0]?.discountPercent || offer || 0;
@@ -32,19 +32,19 @@ export const Details = ({
   const discountedPrice =
     discountPercent > 0
       ? (
-          Number(subscriptionAmount) -
-          (Number(subscriptionAmount) * discountPercent) / 100
-        ).toFixed(2)
+        Number(subscriptionAmount) -
+        (Number(subscriptionAmount) * discountPercent) / 100
+      ).toFixed(2)
       : Number(subscriptionAmount).toFixed(2);
 
-      // const { id: serviceId } = useParams();
+  // const { id: serviceId } = useParams();
 
-      const subscription = success?.subscription?.[0] || null;
-      let subscriptionId = subscription?.id || serviceId;
-    
-      const navigateToService = () => {
-        navigate(`/payment/${subscriptionId}`);
-      };
+  const subscription = success?.subscription?.[0] || null;
+  let subscriptionId = subscription?.id || serviceId;
+
+  const navigateToService = () => {
+    navigate(`/payment/${subscriptionId}`);
+  };
   return (
     <section className="flex flex-col gap-2">
       <div className="flex flex-col text-start gap-2">

@@ -32,8 +32,8 @@ const MakeAPayment = () => {
 const navigate = useNavigate()
 
   const [currentStep, setCurrentStep] = useState(0);
-  const { success,serviceDetailLoading,isCouponVerifiedLoading, cost,originalPrice, appliedCoupons, coupons, availServiceData, isServiceAvailing, totalSavings, serviceCost, serviceCharge } = useSelector((state) => state.serviceDetails);
-  console.log(coupons, "cost from slice ")
+  const { success,serviceDetailLoading,isCouponVerifiedLoading,quotationDetails, cost,originalPrice, appliedCoupons, coupons, availServiceData, isServiceAvailing, totalSavings, serviceCost, serviceCharge } = useSelector((state) => state.serviceDetails);
+  console.log(quotationDetails, "cost from slice ")
   useEffect(() => {
     // PASS DYNAMIC ID HERE
     dispatch(getServiceDetails({ serviceId: serviceId }));
@@ -94,7 +94,7 @@ const navigate = useNavigate()
     // if(isServiceAvailing === false){
     //   onConfirmationModalClose()
     // }
-    const userData = { ...availServiceData, amount : originalPrice }
+    const userData = { ...availServiceData }
     dispatch(availService({userData , navigate}))
   }
 
@@ -155,7 +155,7 @@ const navigate = useNavigate()
               )}
             </div>
 
-            {coupons && coupons?.length > 0 && <div className="sm:w-[70%] pb-5 pt-4">
+            { !quotationDetails.length > 0 && coupons && coupons?.length > 0 && <div className="sm:w-[70%] pb-5 pt-4">
               <p className="font-normal text-[13px] pb-2 text-[#4F5B76]">
                 Coupon Code
               </p>
@@ -238,7 +238,7 @@ const navigate = useNavigate()
                             className="flex flex-row  sm:flex-row gap-4 bg-white m-4 rounded-sm"
                           >
                             <p className="text-xl text-center flex justify-cener items-center px-3 py-2 font-semibold bg-[#007AFF26] text-[#272727]">
-                              {data.off}
+                             % {data.off}
                             </p>
                             <div className="py-3 flex flex-col gap-1">
                               <p className="font-medium text-[#080808] text-lg">
@@ -247,9 +247,9 @@ const navigate = useNavigate()
                               <p className="font-normal text-xs text-[#4D4D4D]">
                                 {data.description}
                               </p>
-                              <Link className="underline text-[#5E63FF] font-normal text-sm">
+                              {/* <Link className="underline text-[#5E63FF] font-normal text-sm">
                                 More
-                              </Link>
+                              </Link> */}
                             </div>
                             <div className="flex flex-col gap-1 text-center items-center px-2 justify-center">
                               <Button
@@ -260,10 +260,10 @@ const navigate = useNavigate()
                                 Apply
                               </Button>
 
-                              <p className="flex font-medium text-sm text-[#000000]">
+                              {/* <p className="flex font-medium text-sm text-[#000000]">
                                 <img src="/images/payment/coupon.svg" alt="" />
                                 Coupon Applicable
-                              </p>
+                              </p> */}
                             </div>
                           </div>
                         ))}
@@ -277,51 +277,7 @@ const navigate = useNavigate()
           <div className="sm:w-[40%] mb-2 sm:mt-9 flex flex-col px-4 py-3 border rounded gap-3 border-[#C6C6C6]">
             {serviceDetailLoading ? <PricingDetailShimmer/> : <PricingDetail totalCost={cost} originalPrice={originalPrice} availServiceData={availServiceData} totalSavings={totalSavings} serviceCost={serviceCost} serviceCharge={serviceCharge} data={success}/>}
             <div className="flex justify-center items-center pt-4 px-4 gap-2 ">
-              {/* <ReactModal
-                className="border-[#FF3B3B] border-[3px] py-2 "
-                button={<Button primary={true}>Continue</Button>}
-              >
-                <div className="flex flex-col text-center gap-2 py-5 px-5 items-center">
-                  <img
-                    src="/images/payment/payment-failed-icon.svg"
-                    alt=""
-                    width={100}
-                  />
-                  <p className="text-3xl font-bold text-[#0A1C40]">Failed</p>
-                  <p className="font-medium text-[16px] text-[#595959]">
-                    The registration failed due to incomplete <br /> or
-                    non-compliant documentation
-                  </p>
-                  <Button className="w-full py-2" primary={true}>
-                    {" "}
-                    Try Again{" "}
-                  </Button>
-                </div>
-              </ReactModal> */}
               <Button isLoading={isServiceAvailing} onClick={availTheService} primary={true}>Continue</Button>
-
-              {/* <ReactModal
-                className="border-[#FF3B3B] border-[3px] px-4 py-2 "
-                button={<Button isLoading={isServiceAvailing} onClick={availTheService} primary={false}>Continue</Button>}
-              >
-                <div className="flex flex-col text-center gap-2 px-5 py-5 items-center">
-                  <img
-                    src="/images/payment/payment-done.svg"
-                    alt=""
-                    width={100}
-                  />
-                  <p className="text-3xl font-bold text-[#0A1C40]">
-                    Payment Done!{" "}
-                  </p>
-                  <p className="font-medium text-[16px] text-[#595959]">
-                    Thank you for availing this service.
-                  </p>
-                  <Button  primary={true} className="w-full py-2">
-                    {" "}
-                    Try Again{" "}
-                  </Button>
-                </div>
-              </ReactModal> */}
             </div>
           </div>
         </div>

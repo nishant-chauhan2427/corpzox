@@ -6,8 +6,9 @@ export const registrationSchema = Yup.object().shape({
   registration: Yup.object().shape({
     typeOfBusiness: Yup.string()
       .required("Business Type is required.")
-      .min(3, "Business Type must be at least 3 characters.")
-      .max(50,"Business Type must be atmost 50 characters."),
+      // .min(3, "Business Type must be at least 3 characters.")
+      // .max(50,"Business Type must be atmost 50 characters.")
+      ,
     businessName: Yup.string()
       .required("Business Name is required.")
       .min(3, "Business Name must be at least 3 characters.")
@@ -15,9 +16,10 @@ export const registrationSchema = Yup.object().shape({
     cinNumber: Yup.string()
       .required("CIN No. is required.")
       .matches(/^[A-Z0-9]{21}$/, "CIN No. must be a valid 21-character code."), // Example pattern for CIN
-    roleOfCompany: Yup.number()
+    roleOfCompany: Yup.string()
       .required("Role of the Company is required.")
-      .oneOf([1, 0], "Invalid Role of the Company value."),
+      // .oneOf([1, 0], "Invalid Role of the Company value.")
+      ,
     yearOfStablish: Yup.date()
       .required("Year of Establishment is required.")
       .min(new Date(1900, 0, 1), "Year cannot be before 1900.")
@@ -125,8 +127,8 @@ export const fundingSchema = Yup.object().shape({
       lookingForFunding: Yup.number()
         .required('Funding requirement is required')
         .oneOf([1, 0], 'Please select a valid option'), // Validate 'Yes' or 'No'
-      existingBusinessName: Yup.number()
+      existingBusinessName: Yup.string()
         .required('Existing business status is required')
-        .oneOf([1, 0], 'Please select a valid option'), // Validate 'Active' or 'Inactive'
+        // .oneOf([1, 0], 'Please select a valid option'), // Validate 'Active' or 'Inactive'
   }),
 });
