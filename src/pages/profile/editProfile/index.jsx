@@ -9,7 +9,7 @@ import { Input } from "../../../components/inputs";
 import { Heading } from "../../../components/heading";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../../redux/actions/dashboard-action";
-import { submitEditProfile } from "../../../redux/actions/profile-actions";
+import { submitEditProfile, updateProfilePicture } from "../../../redux/actions/profile-actions";
 import { profileValidationSchema } from "./editProfileValidationSchema";
 import Cropper from "react-easy-crop";
 
@@ -58,6 +58,8 @@ const Edit = () => {
   const [image, setImage] = useState(user?.profile_picture_url || "/images/profile/profile.svg");
   const [imageFile, setImageFile] = useState(null); 
   const [croppedImage, setCroppedImage] = useState(null);
+  
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const {
     control,
     handleSubmit,
@@ -99,8 +101,6 @@ console.log(user,"PICTURE");
         setImageFile(file); 
       };
       reader.readAsDataURL(file);
-
-      console.log("reader",reader);
       
     }
   };
@@ -108,7 +108,10 @@ console.log(user,"PICTURE");
 const url = user?.profile_picture_url
 
   const handleSave = async () => {
+    //console.log("1234567");
+    dispatch(updateProfilePicture(file, navigate));
     if (croppedAreaPixels) {
+     
       const croppedImg = await getCroppedImg(
         url,
         crop,
@@ -117,6 +120,23 @@ const url = user?.profile_picture_url
       setCroppedImage(croppedImg)
     }
   }
+  // const handleSave = async () => {
+  //   if (croppedAreaPixels && imageFile) {
+  //     const croppedImg = await getCroppedImg(
+  //       imageFile,
+  //       crop,
+  //       croppedAreaPixels
+  //     );
+      
+  //     // Convert cropped image into a file
+  //     const blob = await fetch(croppedImg).then(r => r.blob());
+  //     const file = new File([blob], "cropped-image.jpg", { type: "image/jpeg" });
+      
+  //     // Send the file (cropped image) to the backend
+  //     dispatch(updateProfilePicture(file, navigate));
+  //   }
+  // };
+  
 
 
 

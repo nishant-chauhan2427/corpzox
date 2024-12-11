@@ -13,15 +13,15 @@ import { ImSpinner2 } from "react-icons/im";
 //removeServiceWishlist
 const Wishlist = () => {
   const dispatch = useDispatch();
-  const { loading, wishList, totalCount,heartloading } = useSelector(
+  const {wishList } = useSelector(
     (state) => state.wishlist
   );
   const { isAdding} = useSelector(
     (state) => state.user
   );
-  console.log(isAdding,"totalCount12334");
+ // console.log(isAdding,"totalCount12334");
   let onClickWishList = (service) => {
-    console.log(service,"service123");
+ //   console.log(service,"service123");
     //setIsSubmit(true);
    // if (service?.wishlistCount) {
       dispatch(removeServiceWishlistData1({ serviceId: service?.serviceId }));
@@ -38,11 +38,11 @@ const Wishlist = () => {
   return (
     <>
       <div>
-        <Heading title={"Wish"} backButton={true}>
-          {" "}
-          Wishlist{" "}
+        <Heading title={"Wishlist"} backButton={true}>
+          Wishlist {wishList?.length ? `(${wishList.length})` : ""}
         </Heading>
-        {wishList && wishList.length === 0 ? (<NoData/>) : (<ServicesCard data={wishList} onClick={(service) => onClickWishList(service)} />)}
+        {/* Wishlist ({wishList?.length}) */}
+        {wishList && wishList?.length === 0 ? (<NoData/>) : (<ServicesCard data={wishList} onClick={(service) => onClickWishList(service)} />)}
         {/* {wishList && wishList.length > 5 && (
           <div className="mt-10 flex justify-center">
             {wishList.length == totalCount ? (

@@ -8,6 +8,8 @@ import { getSubscriptionHistoryCount, getSubscriptions } from "../../../redux/ac
 import { ImSpinner2 } from "react-icons/im";
 import { TableShimmer } from "../../../components/loader/TableShimmer";
 import { NoData } from "../../../components/errors/noData";
+import Pagination from "../../../components/Pagination";
+import { formatDate } from "../../../utils";
 
 
 
@@ -17,6 +19,7 @@ const columns = [
   { header: "Amount", accessor: "amount" },
   { header: "Payment Method", accessor: "paymentMethod" },
   { header: "Renew Date", accessor: "renewDate" },
+  { header: "Subscription Type", accessor: "type" },
 ];
 
 const SubscriptionHistory = () => {
@@ -25,7 +28,7 @@ const SubscriptionHistory = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const { activeCount, isActiveLoading, expiredCount, upcomingCount, isExpiredLoading, isUpcommingLoading, subscriptionsData, isSubScriptionLoading } = useSelector((state) => state.settings);
+  const { activeCount, isActiveLoading, expiredCount, upcomingCount, isExpiredLoading, isUpcommingLoading, subscriptionsData, subscriptionTotal, isSubScriptionLoading } = useSelector((state) => state.settings);
   console.log(subscriptionsData, "subscriptionsData")
 
   const FormattedSubscriptions = subscriptionsData?.map((subscription) => {
@@ -37,38 +40,17 @@ const SubscriptionHistory = () => {
       status: active ? "Active" : "",
       amount: amount,
       paymentMethod: paymentMode,
-      renewDate: subscriptionExpireyDate,
+      renewDate: formatDate(subscriptionExpireyDate),
       plan: subscriptionDetails.type
     }
   })
-  console.log(FormattedSubscriptions, "ehe")
+ 
   useEffect(() => {
     dispatch(getSubscriptionHistoryCount({ type: "active" }))
     dispatch(getSubscriptionHistoryCount({ type: "expired" }))
     dispatch(getSubscriptionHistoryCount({ type: "up-coming" }))
   }, [])
-  // const handleNavigation = (button, label) => {
-  //   switch (button) {
-  //     case "Previous": {
-  //       setPackageIndex((prev) =>
-  //         prev > 0 ? prev - 1 : subscriptionPackage.length - 1
-  //       );
-  //       dispatch(dispatch(getSubscriptions({ page: 1, type: label == "Active Subscription" ? "active" : label == "Expired Subscription" ? "expired" : "up-coming" })))
-  //     }
-  //       break;
-  //     case "Next": {
 
-  //       setPackageIndex((prev) =>
-  //         prev < subscriptionPackage.length - 1 ? prev + 1 : 0
-  //       );
-  //       console.log(label, "label")
-  //       dispatch(dispatch(getSubscriptions({ page: 1, type: label == "Active Subscription" ? "active" : label == "Expired Subscription" ? "expired" : "up-coming" })))
-  //     }
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // };
 
   const handleNavigation = (button) => {
     let newIndex;
@@ -123,6 +105,7 @@ const SubscriptionHistory = () => {
     },
   ];
   const currentPackage = subscriptionPackage[packageIndex];
+  console.log(currentPackage,"currentPackage" )
 
   const handleCard = (label) => {
     setPackageType(label)
@@ -154,16 +137,20 @@ const SubscriptionHistory = () => {
               {isSubScriptionLoading ? (
                 <TableShimmer />
               ) : currentPackage.data.length === 0 ? (
-                <NoData/>
+                <NoData />
               ) : (
-                <Table columns={columns} data={currentPackage.data} />
+                <>
+                  <p>
+                    <b>{subscriptionTotal}</b> results
+                  </p>
+                  <Table columns={columns} data={currentPackage.data} isExpandable={true} isExpandableData={currentPackage?.description}/></>
               )}
               <div className="flex justify-between items-center gap-3">
-                <p>
-                  <b>{currentPackage.data.length}</b> results
-                </p>
+                {/* <p>
+                  <b>{subscriptionTotal}</b> results
+                </p> */}
                 <div className="flex items-center gap-2">
-                  <Button
+                  {/* <Button
                     onClick={() => handleNavigation("Previous", currentPackage.label)}
                     outline={true}
                   >
@@ -174,7 +161,8 @@ const SubscriptionHistory = () => {
                     outline={true}
                   >
                     Next
-                  </Button>
+                  </Button> */}
+                  {!isSubScriptionLoading && subscriptionTotal > 10 && <Pagination totalItems={subscriptionTotal} itemsPerPage={10} />}
                 </div>
               </div>
             </div>

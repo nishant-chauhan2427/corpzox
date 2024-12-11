@@ -13,6 +13,8 @@ const initialState = {
   list: [],
   totalPage: 0,
   isAdding: {},
+  removeLoading:{},
+  addLoading:{},
   isfetching:false,
   page: 1,
   limit: 10,
@@ -120,19 +122,44 @@ const serviceListingSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       });
+
+      // .addCase(removeServiceWishlistData1.pending, (state, action) => {
+      //   state.heartloading = true;
+      //  state.childLoading[action.meta.arg.serviceId] = true
+      //  console.log(action.meta.arg.serviceId, "SERVICE DATA");
+      // })
+      // .addCase(removeServiceWishlistData1.fulfilled, (state, action) => {
+      //   state.heartloading = false;
+      //   //console.log(action.payload.serviceId, "SERVICE DATA");
+      //  // console.log(state.childLoading[action.payload.serviceId] , 'chiloaing')
+      //   state.childLoading[action.payload.serviceId]=false;
+      //   let newList = state.wishList.filter((service) => {
+      //     if (service?.serviceId != action.payload?.serviceId)
+      //       return service
+      //   });
+      //   state.wishList = newList
+      //   state.error = action.payload?.message;
+      // })
+      // .addCase(removeServiceWishlistData1.rejected, (state, action) => {
+      //   state.heartloading = false;
+      //   state.childLoading[action.meta.arg.serviceId] = false
+      //   state.error = action.payload;
+      // })
     builder
       .addCase(updateServiceWishlist.pending, (state, action) => {
         state.wishList.loading = true;
+        state.addLoading[action.meta.arg.serviceId] = true;
         console.log(action.payload," WERERE PENDING");
         state.isfetching=true;
         // console.log(action.meta.arg.serviceId,'updateservicewishlist');
+        
         state.isAdding[action.meta.arg.serviceId] = true;
       })
       .addCase(updateServiceWishlist.fulfilled, (state, action) => {
         console.log(action.payload," WERERE UPDATE");
         state.wishList.loading = false;
         state.isfetching=false;
-
+        state.addLoading[action.payload.data.serviceId]=false;
       state.isAdding[action.payload?.data.data?.serviceId]=false;
     //    state.list = state.list.map((service) =>
     //    service?._id === action.payload?.data?.serviceId
@@ -162,6 +189,7 @@ const serviceListingSlice = createSlice({
         // console.log("erorrr rejcttt")
         // console.log("action.meta.arg.serviceId",action.meta.arg.serviceId);
         state.isAdding = false
+        state.addLoading[action.meta.arg.serviceId] = false
         state.wishList.error=action.payload;
       });
 
@@ -169,9 +197,11 @@ const serviceListingSlice = createSlice({
     builder
       .addCase(removeServiceWishlist.pending, (state, action) => {
         state.wishList.loading = true;
+        state.removeLoading[action.meta.arg.serviceId] = true;
       })
       .addCase(removeServiceWishlist.fulfilled, (state, action) => {
         state.wishList.loading = false;
+        state.removeLoading[action.payload.serviceId]=false;
         state.list=state.list.map((service)=>{
             if(service?._id==action.payload?.serviceId){
               service.wishlistCount=0;
@@ -183,6 +213,7 @@ const serviceListingSlice = createSlice({
       })
       .addCase(removeServiceWishlist.rejected, (state, action) => {
         state.wishList.loading = false;
+        state.removeLoading[action.meta.arg.serviceId] = false;
         state.wishList.error=action.payload;
       })
       .addCase(recommendedServiceListing.pending, (state) => {

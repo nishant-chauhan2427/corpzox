@@ -14,11 +14,11 @@ export const RecommendedServices = ({ data, total }) => {
   console.log(total,"ˇTotal Service");
   return (
     <div className="">
-      <div className="py-2 flex flex-col sm:flex-row justify-between gap-2" >
+      <div className="py-2 flex flex-row sm:flex-row justify-between gap-2" >
         <Heading title={"Dashboard"} className={"py-0"} tourButton={true}>
           Recommended Services  {total == undefined ? "" : "(" + total + ")"}
         </Heading>
-        <Link to={"/services"} className="font-semibold text-[#606060]">View All</Link>
+        <Link to={"/services"}  className="font-medium text-sm text-[#797979]">View All</Link>
       </div>
       <div
         className="grid grid-cols-1 sm:grid-cols-2 rounded-lg 
@@ -27,16 +27,16 @@ export const RecommendedServices = ({ data, total }) => {
         {data?.slice(0, 2).map((data, index) => (
           <button
             key={index}
-            className="flex justify-between items-center bg-[#F3F7FF] gap-2 w-full p-2 rounded-lg"
+            className="flex justify-between items-center bg-[#f3f7ff] stroke-[#dfeaf2] stroke-1 gap-2 w-full p-2 rounded-lg"
           >
             <div className="flex items-center gap-2">
               <img
                 src="/images/dashboard/recommended-services.svg"
                 alt="recommended-services"
               />
-              <div>
+              <div className="flex  flex-col text-start">
                 <p className="font-semibold text-[#171717]">{data.name}</p>
-                <p className="font-semibold text-[11px]">{data.details} </p>
+                <p className="font-medium text-[12px]">{data?.details?.length > 50 ? data?.details?.slice(0,40)+"..." : data?.details} </p>
               </div>
             </div>
             <div className="border-l h-full flex justify-center items-center">

@@ -15,24 +15,27 @@ export const ServicesCard = ({
   onCheckedChange = () => console.log("checked clicked"),
 }) => {
   const location = useLocation();
+  const { addLoading,removeLoading } = useSelector((state) => state.service);
   const { isLoading, heartloading, childLoading } = useSelector((state) => state.wishlist);
   const { isAdding } = useSelector((state) => state.service);
+  //console.log(addLoading[service._id],"addLoading");
+  
   // const { loading } = useSelector((state) => state.service);
   // console.log(loading,"Loading UpdateService");
-  const { list } = useSelector((state) => state. service);
-  console.log(list,"Loading UpdateService");
-  console.log(list[0]?.wishlistCount,"Loading UpdateService");
-  
- 
+  const { list } = useSelector((state) => state.service);
+  console.log(list, "Loading UpdateService");
+  console.log(list[0]?.wishlistCount, "Loading UpdateService");
+
+
   const heartAccordingToRoute = ["/wishlist", "/services"];
   const navigate = useNavigate();
   const url = window.location.href
- 
+
   const handleNavigate = () => {
     navigate("/services/detail");
   };
-  console.log(data,"DATA WISH");
-  
+  console.log(data, "DATA WISH");
+
   return (
     <>
       <div className="grid grid-cols-1 sm:pt-3 pt-4  sm:grid-cols-2 xl:grid-cols-2  gap-4">
@@ -46,17 +49,23 @@ export const ServicesCard = ({
             >
 
 
-<div className="flex justify-between">
-  <div className="flex gap-2">
-    <p className="font-bold text-[#0A1C40]">
-      {url.includes("services") ? service?.name : service?.service?.[0]?.name || "No Service Name"}
-    </p>
-    {(url.includes("services")||url.includes("services")) && service?.offerservices?.[0]?.offers?.[0]?.discountPercent && (
-      <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1">
-        {service.offerservices[0].offers[0].discountPercent} %
-      </p>
-    )}
-  </div>
+              <div className="flex justify-between">
+                <div className="flex gap-2">
+                  <p className="font-bold text-[#0A1C40]">
+                    {url.includes("services") ? service?.name : service?.service?.[0]?.name || "No Service Name"}
+                  </p>
+                 {/* {console.log(service?.service?.[0]?.offerservices?.[0]?.offers?.[0]?.discountPercent ,"SERVICE DIS")} */}
+                  {(url.includes("services") ) && service?.offerservices?.[0]?.offers?.[0]?.discountPercent && (
+                    <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1">
+                      {service.offerservices[0].offers[0].discountPercent} %
+                    </p>
+                  )}
+                  {(url.includes("wishlist")) && service?.service?.[0]?.offerservices?.[0]?.offers?.[0]?.discountPercent  && (
+                    <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1">
+                      {service?.service?.[0]?.offerservices?.[0]?.offers?.[0]?.discountPercent } %
+                    </p>
+                  )}
+                </div>
 
 
                 {url.includes("services") ? <Checkbox
@@ -96,28 +105,28 @@ export const ServicesCard = ({
               </div>
               <div className="flex justify-end pt-5 items-end">
                 <div className="flex items-center  justify-center gap-2">
-                  {childLoading[service.serviceId] ? <ImSpinner2 className="animate-spin text-black !text-xl" /> : <button
+                  {addLoading[service._id] || removeLoading[service._id] || childLoading[service.serviceId]  ? <ImSpinner2 className="animate-spin text-black !text-xl" /> : <button
                     onClick={() => {
                       onClick(service);
                     }}
-                  >  
+                  >
                     {location.pathname === "/wishlist" ? (
-  <img
-    src="/icons/wishlist/red-heart.svg"
-    alt="Red Heart"
-  />
-) : service?.wishlistCount && service.wishlistCount === 1 ? (
-  <img
-    src="/icons/wishlist/red-heart.svg"
-    alt="Red Heart"
-  />
-) : (
-  <CiHeart
-    size={30}
-    color="#777777"
-  />
-)}
- </button>}
+                      <img
+                        src="/icons/wishlist/red-heart.svg"
+                        alt="Red Heart"
+                      />
+                    ) : service?.wishlistCount && service.wishlistCount === 1 ? (
+                      <img
+                        src="/icons/wishlist/red-heart.svg"
+                        alt="Red Heart"
+                      />
+                    ) : (
+                      <CiHeart
+                        size={30}
+                        color="#777777"
+                      />
+                    )}
+                  </button>}
 
                   <LinkButton
 

@@ -7,7 +7,7 @@ import {
 import "react-circular-progressbar/dist/styles.css";
 
 export const Profile = ({user={}}) => {
-  const [percentage,setPercentage]=useState(0);
+  const [percentage,setPercentage]=useState(100);
   // const calculatePercentage = (data) => {
   //   try {
   //     const totalProperties = Object.keys(data[0])?.length; // Total number of properties
@@ -51,7 +51,7 @@ export const Profile = ({user={}}) => {
   //   +basicPercentage,
   //   +financePercentage
   // );
-  console.log(user, "user")
+  //console.log(user, "user")
   let calculatePercentageHandler=()=>{
     let count=0;
     Object.keys(user).forEach((data)=>{
@@ -59,7 +59,7 @@ export const Profile = ({user={}}) => {
         count++
       }
     })
-    setPercentage(Math.floor((count/fieldsKey.length)*100));
+    setPercentage(Math.floor(100));
   }
   useEffect(()=>{
     if(user){
@@ -67,7 +67,7 @@ export const Profile = ({user={}}) => {
     }
   },[user])
   return (
-    <div className="w-full sm:w-fit pl-[11px] pr-[33px] py-[17px] flex gap-4 bg-white border items-center border-[#DFEAF2] rounded-[18px]">
+    <div className="w-full sm:w-fit pl-[11px] pr-[33px] py-[9px] flex gap-4 bg-white border items-center border-[#DFEAF2] rounded-[18px]">
       <div className="w-16 relative">
         <CircularProgressbarWithChildren
           styles={buildStyles({
@@ -91,9 +91,9 @@ export const Profile = ({user={}}) => {
         </CircularProgressbarWithChildren>
       </div>
       <div>
-        <p className="font-bold text-2xl">{percentage}%</p>
-        <p className="font-semibold text-sm text-[#232323]">{user?.name}</p>
-        <Link to={"/profile"} className="font-semibold text-[10px] text-[#FF4141]">
+        <p className="font-bold text-lg">{percentage}%</p>
+        <p className="font-semibold text-sm text-[#232323]"> {user?.name ? (user.name.slice(0, 25) + (user.name.length > 25 ? "..." : "")) : "User Name"}</p>
+        <Link to={"/profile"} className="font-semibold text-[11px] text-[#FF4141]">
           Complete Your Profile
         </Link>
       </div>

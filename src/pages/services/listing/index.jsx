@@ -7,6 +7,7 @@ import { servicesListing } from "../../../database";
 import Filtertab from "../../../pages/services/components/tabs/filterTab";
 import { SelectAllTabs } from "../components/tabs/selectAllTab/index";
 import { useSelector, useDispatch } from "react-redux";
+
 import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import {
   getUserServicesCatagory,
@@ -25,7 +26,6 @@ import { Offers } from "../../../components/offers";
 import { updateServiveProgress } from "../../../redux/actions/dashboard-action";
 import { NoData } from "../../../components/errors/noData";
 import { ImSpinner2 } from "react-icons/im";
-import { Heading } from "../../../components/heading";
 const ServicesListing = () => {
   const dispatch = useDispatch();
   const { categoryId, subCategoryId } = useParams();
@@ -122,6 +122,7 @@ const ServicesListing = () => {
   };
   let onClickAddWishlistHandler = () => {
     dispatch(updateServiceQuickWishlist({ serviceIdArray: wishList?.list }));
+    console.log(wishList?.list ,"wishList?.list ");
   };
   let onChangeSelectAllHandler = () => {
     dispatch(onChangeSelectAllHandler());
@@ -129,6 +130,7 @@ const ServicesListing = () => {
 
     // });
   };
+
   return (
     <section className="flex sm:flex-row flex-col gap-4 sm:pt-6 pt-3 bg-white">
       <div className="flex justify-center flex-col overflow-hidden">

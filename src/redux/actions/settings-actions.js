@@ -81,8 +81,12 @@ export const getSubscriptions = createAsyncThunk(
                     'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
                 },
             });
-            console.log(response?.data, "subscription data")
-            return response?.data?.data
+            console.log(response, "subscription response")
+            
+            return {
+                subscriptionList : response?.data?.data, 
+                subscriptionTotal : response?.data?.total
+            }
         } catch (error) {
             console.log(error, "netwroek error")
             if(error.code == 'ERR_NETWORK'){

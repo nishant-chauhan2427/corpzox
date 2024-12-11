@@ -86,7 +86,7 @@ export const Signup = () => {
         <div className="w-full  flex  ">
           <div className="w-full flex flex-col">
             <DualHeadingTwo
-              containerClassName={"text-left pt-5"}
+              containerClassName={"text-left pt-2"}
               heading={"Sign Up"}
               subHeading={"Welcome to CorpZO. Please sign up here!"}
             />
@@ -96,15 +96,15 @@ export const Signup = () => {
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-5">
                 <Controller
-                  name="firstName"
+                  name="full"
                   control={control}
                   defaultValue=""
                   render={({ field }) => (
                     <Input
                       {...field}
-                      label={"First name"}
+                      label={"Full name"}
                       type={"name"}
-                      placeholder={"First Name"}
+                      placeholder={"Full Name"}
                       className={"border-[#D9D9D9] border"}
                       errorContent={errors?.firstName?.message}
                       onBlur={() => handleBlur("name")}
@@ -113,6 +113,20 @@ export const Signup = () => {
                   // rules={{ required: "Email Address is required" }}
                 />
                 <Controller
+                  name="phone"
+                  control={control}
+                  render={({ field }) => (
+                    <PhoneNumberInput
+                      {...field}
+                      // label={"Phone Number"}
+                      country={"in"}
+                      placeholder={"Phone No."}
+                      touched={true}
+                      errorContent={errors?.phoneNumber?.message}
+                    />
+                  )}
+                />
+                {/* <Controller
                   name="lastName"
                   control={control}
                   defaultValue=""
@@ -128,10 +142,10 @@ export const Signup = () => {
                     />
                   )}
                   // rules={{ required: "Email Address is required" }}
-                />
+                /> */}
               </div>
               <div className="">
-                <Controller
+                {/* <Controller
                   name="phone"
                   control={control}
                   render={({ field }) => (
@@ -144,7 +158,7 @@ export const Signup = () => {
                       errorContent={errors?.phoneNumber?.message}
                     />
                   )}
-                />
+                /> */}
               </div>
               <div className="-mt-2 flex flex-col gap-3">
                 <Controller
@@ -202,8 +216,7 @@ export const Signup = () => {
                   <p className="text-base text-[#6E6E6E] font-medium">or</p>
                   <div className="border-t w-full border-[#D9D9D9]"></div>
                 </div>
-                <div className="flex items-center justify-center rounded p-2 gap-2 text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
-                  {/* Sign in with Google <img src="google.svg" alt="" /> */}
+                {/* <div className="flex items-center justify-center rounded p-2 gap-2 text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
                   <GoogleLogin
                     clientId="1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com"
                     onSuccess={googleLogin}
@@ -212,10 +225,35 @@ export const Signup = () => {
                     scope="openid profile email"
                   />
                   <img src="" alt="" />
+                </div> */}
+                <div className="flex items-center justify-center rounded p-2 text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
+                  <div className="flex gap-2">
+                    <GoogleLogin
+                      clientId="1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com"
+                      onSuccess={googleLogin}
+                      onError={() => console.log("Errors")}
+                      cookiePolicy={"single_host_origin"}
+                      scope="openid profile email"
+                      render={(renderProps) => (
+                        <button
+                          onClick={renderProps.onClick}
+                          disabled={renderProps.disabled}
+                          className="flex items-center gap-2"
+                        >
+                          <img
+                            src="google.svg"
+                            alt="Google Logo"
+                            className="w-5 h-5"
+                          />
+                          Sign in with Google
+                        </button>
+                      )}
+                    />
+                  </div>
                 </div>
                 <div className="text-center flex  justify-center gap-2 font-normal text-[#6C6C6C]">
                   <p>
-                    Allready have an account?
+                    Already have an account?
                     <Link
                       to={"/sign-in"}
                       className="p-2 text-[#F1359C] font-semibold "

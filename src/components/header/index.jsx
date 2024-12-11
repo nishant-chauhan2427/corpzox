@@ -1,6 +1,6 @@
 import { Search } from "../search";
 import { Button } from "../buttons";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useRef, useState } from "react";
 import { FiLogOut } from "react-icons/fi";
 import { headerLinks } from "../../database";
@@ -27,6 +27,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const [signedInMenuPopup, setSignedInMenuPopup] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams()
 
   const user = useSelector((state) => state.user.user);
 
@@ -94,27 +95,51 @@ export const Header = ({ className, collapse, setCollapse }) => {
   // };
   console.log(user, "jhhj");
 
-  const handleLogout =()=>{
+  const handleLogout = () => {
+    dispatch(clearUser());
+    navigate("/sign-in");
+    // persistor.purge().then(() => {
+    //       console.log('Persisted data cleared successfully!');
 
-    dispatch(clearUser()); 
-                  navigate("/sign-in"); 
-                  // persistor.purge().then(() => {
-                  //       console.log('Persisted data cleared successfully!');
-                        
-                  //     });
-                  persistor.pause();
+    //     });
+    persistor.pause();
     persistor.flush().then(() => {
-      console.log('Persisted data cleared successfully!');
+      console.log("Persisted data cleared successfully!");
       return persistor.purge();
     });
     // dispatch(clearDocumentList())
-    localStorage.clear()
-  }
+    localStorage.clear();
+  };
 
-  const handleCancelLogout =()=>{
+  const handleCancelLogout = () => {
+    onConfirmationModalClose();
+  };
+  // const clearSearch = () => {
+  //   // Get the current URL
+  //   const currentUrl = new URL(window.location.href);
 
-    onConfirmationModalClose()
-  }
+  //   // Remove the 'search' query parameter
+  //   currentUrl.searchParams.delete("search");
+
+  //   // Update the URL without reloading the page
+  //   window.history.replaceState(null, "", currentUrl.toString());
+
+  //   console.log(currentUrl.toString(), "Updated URL");
+  //   navigate(currentUrl.toString())
+  // };
+  const clearSearch = () => {
+    // Log the current 'search' query parameter
+    console.log(searchParams.get("search"));
+  
+    // Remove the 'search' query parameter by deleting it
+    searchParams.delete("search");
+  
+    // Update the URL with the modified search parameters
+    setSearchParams(searchParams);
+  
+    console.log("Search parameter removed:", searchParams.toString());
+  };
+  
 
   return (
     <header
@@ -126,9 +151,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
         <div className="flex items-center gap-4">
           {/* Logo */}
           <div className="lg:hidden flex items-center gap-2">
-            <div
-              className={`flex justify-center items-center`}
-            >
+            <div className={`flex justify-center items-center`}>
               <IconWrapper>
                 <button onClick={handleSidebar} className="header-icon">
                   {collapse ? (
@@ -166,15 +189,20 @@ export const Header = ({ className, collapse, setCollapse }) => {
             {getPageHeading(pathname)}
           </h1>
           {/* Search */}
-          {!pathname.includes("documents") && <Search
-            placeholder={`Search ${getPageHeading(pathname)}`}
-            containerClassName={
-              "hidden lg:block w-full h-10 lg:!max-w-lg !bg-[#3D485F] !rounded-full overflow-hidden"
-            }
-            inputClassName={
-              "w-full h-10 lg:!max-w-lg  !bg-[#3D485F] text-white"
-            }
-          />}
+          {!pathname.includes("documents") &&
+            !pathname.includes("dashboard") && 
+            !pathname.includes("settings") &&(
+              <Search
+                clearSerarch={clearSearch}
+                placeholder={`Search ${getPageHeading(pathname)}`}
+                containerClassName={
+                  "hidden lg:block w-full h-10 lg:!max-w-lg !bg-[#3D485F] !rounded-full overflow-hidden"
+                }
+                inputClassName={
+                  "w-full h-10 lg:!max-w-lg  !bg-[#3D485F] text-white"
+                }
+              />
+            )}
 
           {/* Header Links */}
           <div className="hidden lg:flex items-center gap-4">
@@ -209,15 +237,22 @@ export const Header = ({ className, collapse, setCollapse }) => {
                   className="flex items-center gap-1 sm:gap-2"
                 >
                   <img
-              className="w-12 h-12 inset-0 rounded-full ltr:absolute ltr:top-1/2 ltr:left-1/2 ltr:-translate-y-1/2 rtl:-translate-y-[31%] ltr:-translate-x-1/2"
-              // src="/images/insights/insight-user.svg"
-              src={user?.profile_picture_url ? user?.profile_picture_url : "/images/insights/insight-user.svg"}
-              alt="profile-pic"
-            />
-                  
+                    className="w-8 h-8 inset-0 rounded-full ltr:absolute ltr:top-1/2 ltr:left-1/2 ltr:-translate-y-1/2 rtl:-translate-y-[31%] ltr:-translate-x-1/2"
+                    // src="/images/insights/insight-user.svg"
+                    src={
+                      user?.profile_picture_url
+                        ? user?.profile_picture_url
+                        : "/images/insights/insight-user.svg"
+                    }
+                    alt="profile-pic"
+                  />
+
                   <div className="hidden sm:flex flex-col items-start">
                     <h5 className="font-semibold text-sm text-white">
-                      {user?.name ? user?.name : "User Name"}
+                      {user?.name
+                        ? user.name.slice(0, 25) +
+                        (user.name.length > 25 ? "..." : "")
+                        : "User Name"}
                     </h5>
                     <p className="text-[9px] text-white">
                       {user?.name ? user?.email : "Designation"}
@@ -366,21 +401,15 @@ export const Header = ({ className, collapse, setCollapse }) => {
             </p>
             <div className="flex items-center justify-center gap-4 pt-4">
               {/* <Button primary={true}>Yes</Button> */}
-              
-              <Button
-                primary={true}
-                onClick={handleLogout}
-              >
+
+              <Button primary={true} onClick={handleLogout}>
                 Yes
               </Button>
               {/* <Button onClose={onConfirmationModalClose} primary={true}>
                 No
               </Button> */}
 
-<Button
-                primary={true}
-                onClick={handleCancelLogout}
-              >
+              <Button primary={true} onClick={handleCancelLogout}>
                 No
               </Button>
             </div>
