@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import client from "../axios-baseurl";
 
 export const getBusiness = createAsyncThunk("getBusiness", async ({businessId}, { rejectWithValue }) => {
-  console.log("BUSINESS ID",businessId)
+  // console.log("BUSINESS ID",businessId)
 try {
         const response = await client.get(`/business/business-details?businessId=${businessId}`,{
             headers: {
@@ -11,7 +11,7 @@ try {
               'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
             },
           });
-        console.log(response);
+        // console.log(response);
         if(response?.data?.code==200||response?.data?.code==201){
             return response.data?.data?.[0];
         }else{
@@ -32,9 +32,12 @@ export const registrationDetails = createAsyncThunk("registrationDetails", async
               'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
             },
           });
-        console.log(response);
+        // console.log(response);
         if(response?.data?.code==200||response?.data?.code==201){
-            return response.data?.data?._id;
+            return {
+              businessId : response.data?.data?._id,
+              data : data
+            };
         }else{
             return rejectWithValue(response?.data?.message);            
         }
@@ -52,9 +55,10 @@ export const updateRegistrationDetails = createAsyncThunk("updateRegistrationDet
             'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
           }, 
         });
-      console.log(response);
+      // console.log("response",response);
       if(response?.data?.code==200||response?.data?.code==201){
-          return response.data?.data?.[0];
+          // return response.data?.data?.[0];
+          return {data:data}
       }else{
           return rejectWithValue(response?.data?.message);            
       }
@@ -82,7 +86,8 @@ export const updateAddressDetails = createAsyncThunk(
          // Optionally pass businessId as query params, or you can include it in the body
         }
       );
-      return response.data;
+      // return response.data;
+      return {data:data}
     } catch (error) {
       return rejectWithValue(error.response.data || "Failed to update address details.");
     }
@@ -108,7 +113,8 @@ export const updateFinancialDetails = createAsyncThunk(
    // Optionally pass businessId as query params
         }
       );
-      return response.data;
+      // return response.data;
+      return {data:data}
     } catch (error) {
       return rejectWithValue(error.response.data || "Failed to update financial details.");
     }
@@ -133,7 +139,8 @@ export const updateKYCDetails = createAsyncThunk(
            // Optionally pass businessId as query params
         }
       );
-      return response.data;
+      // return response.data;
+      return {data:data}
     } catch (error) {
       return rejectWithValue(error.response.data || "Failed to update KYC details.");
     }
@@ -157,7 +164,8 @@ export const updateFundingDetails = createAsyncThunk(
           },
         }
       );
-      return response.data;
+      // return response.data;
+      return {data:data}
     } catch (error) {
       return rejectWithValue(error.response.data || "Failed to update funding details.");
     }
