@@ -9,14 +9,14 @@ import { updateFinancialDetails, updateRegistrationDetails } from "../../../../.
 import { yupResolver } from "@hookform/resolvers/yup";
 import { financialSchema } from "../../../../../validation/createBusinessValidationSchema";
 
-export const FinancialDetails = () => {
+export const FinancialDetails = ({ isEdit }) => {
 
-  
-  const {business,businessId} = useSelector((state) => state.business);
+
+  const { business, businessId } = useSelector((state) => state.business);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   // console.log("business,businessId",business,businessId);
-  
+
 
   const {
     handleSubmit,
@@ -29,8 +29,8 @@ export const FinancialDetails = () => {
   } = useForm({
     mode: "onChange",
     // resolver: yupResolver(getValidationSchema(currentStep)),
-      defaultValues: business || {},
-      resolver: yupResolver(financialSchema), // Apply the validation schema here
+    defaultValues: business || {},
+    resolver: yupResolver(financialSchema), // Apply the validation schema here
   });
 
   // useEffect(() => {
@@ -58,26 +58,38 @@ export const FinancialDetails = () => {
 
   const onSubmit = (data) => {
     // console.log("Submitted Data:", data);
-    const payload =  data?.financial
-    if(!businessId) {
+    const payload = data?.financial
+    if (!businessId) {
       console.log("No businessId exist is in business Store");
       return;
     }
 
-     //PUT API to update changes
-     payload.businessId = businessId;
-     dispatch(updateFinancialDetails(payload)).then((response) => {
+    //PUT API to update changes
+    payload.businessId = businessId;
+    dispatch(updateFinancialDetails(payload)).then((response) => {
       //  console.log("Response", response?.payload);
-       // const newBusinessId = response.payload;
-       // dispatch(setBusinessId(newBusinessId)); 
-     });
+      // const newBusinessId = response.payload;
+      // dispatch(setBusinessId(newBusinessId)); 
+    });
 
-     navigate("/business/create/kyc");
-  
+    // navigate("/business/create/kyc");
+    isEdit ? navigate("/business/edit/kyc") : navigate("/business/create/kyc")
+
+
   };
 
   return (
-    <form  onSubmit={handleSubmit(onSubmit)} >
+    <form onSubmit={handleSubmit(onSubmit)} >
+      {/* Progress bar */}
+      <div className="w-full h-2 bg-gray-200 mb-4 rounded-full">
+        <div
+          className="h-2 bg-blue-500 rounded-full"
+          style={{
+            // width: `${(currentStep / (steps.length - 1)) * 100}%`,
+            width: `60%`,
+          }}
+        ></div>
+      </div>
       <div className="flex flex-col md:flex-row gap-4">
         <div>
           <div className="my-4">
@@ -142,13 +154,13 @@ export const FinancialDetails = () => {
       </div>
       {/* Navigation Buttons */}
       <div className="flex justify-between items-center gap-4 m-2">
-          <Button type="button" primary onClick={()=>navigate(-1)}>
-            Prev
-          </Button>
-          <Button type="submit" primary disabled={!isValid} >
-           Save & Next
-          </Button>
-        </div>
+        <Button type="button" primary onClick={() => navigate(-1)}>
+          Prev
+        </Button>
+        <Button type="submit" primary disabled={!isValid} >
+          Save & Next
+        </Button>
+      </div>
     </form>
   );
 };

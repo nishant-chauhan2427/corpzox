@@ -8,7 +8,7 @@ import { kycSchema } from "../../../../../validation/createBusinessValidationSch
 import { yupResolver } from "@hookform/resolvers/yup";
 import { updateKYCDetails, updateRegistrationDetails } from "../../../../../redux/actions/business-action";
 
-export const KYCDetails = () => {
+export const KYCDetails = ({ isEdit }) => {
 
   const { business, businessId } = useSelector((state) => state.business);
   const navigate = useNavigate();
@@ -41,26 +41,36 @@ export const KYCDetails = () => {
 
   const onSubmit = (data) => {
     // console.log("Submitted Data : KYC details :", data);
-    const payload =  data?.kyc
+    const payload = data?.kyc
     if (!businessId) {
       console.log("No businessId exist is in business Store");
       return;
     }
 
-     //PUT API to update changes
-     payload.businessId = businessId;
-     dispatch(updateKYCDetails(payload)).then((response) => {
+    //PUT API to update changes
+    payload.businessId = businessId;
+    dispatch(updateKYCDetails(payload)).then((response) => {
       //  console.log("Response", response?.payload);
-       // const newBusinessId = response.payload;
-       // dispatch(setBusinessId(newBusinessId)); 
-     });
+      // const newBusinessId = response.payload;
+      // dispatch(setBusinessId(newBusinessId)); 
+    });
 
-     navigate("/business/create/funding");
+    isEdit ? navigate("/business/edit/funding") : navigate("/business/create/funding")
 
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      {/* Progress bar */}
+      <div className="w-full h-2 bg-gray-200 mb-4 rounded-full">
+        <div
+          className="h-2 bg-blue-500 rounded-full"
+          style={{
+            // width: `${(currentStep / (steps.length - 1)) * 100}%`,
+            width: `80%`,
+          }}
+        ></div>
+      </div>
       <div className="flex flex-col md:flex-row gap-4">
         <div>
           <div className="my-4">
@@ -138,7 +148,7 @@ export const KYCDetails = () => {
           Prev
         </Button>
         <Button type="submit" primary disabled={!isValid} >
-         Save & Next
+          Save & Next
         </Button>
       </div>
     </form>

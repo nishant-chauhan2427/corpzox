@@ -9,13 +9,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "../../../../../components/buttons";
 import { updateFundingDetails, updateRegistrationDetails } from "../../../../../redux/actions/business-action";
 
-export const FundingDetails = () => {
+export const FundingDetails = ({ isEdit }) => {
 
   const { business, businessId } = useSelector((state) => state.business);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-    console.log("business,businessId",business,businessId);
+  console.log("business,businessId", business, businessId);
 
 
   const {
@@ -50,16 +50,16 @@ export const FundingDetails = () => {
     { label: "Inactive", value: "inactive" },
   ];
 
-  useEffect(()=>{
+  useEffect(() => {
     // console.log("useeffect");
-    
-    setValue("funding.lookingForFunding", business?.funding?.lookingForFunding )
-    setValue("funding.existingBusinessName", business?.funding.existingBusinessName )
-  },[])
+
+    setValue("funding.lookingForFunding", business?.funding?.lookingForFunding)
+    setValue("funding.existingBusinessName", business?.funding.existingBusinessName)
+  }, [])
 
   const onSubmit = (data) => {
     // console.log("Submitted Data : Funding  :", data);
-    const payload =  data?.funding
+    const payload = data?.funding
 
     if (!businessId) {
       console.log("No businessId exist is in business Store");
@@ -67,19 +67,29 @@ export const FundingDetails = () => {
     }
 
     //  //PUT API to update changes
-     payload.businessId = businessId;
-     dispatch(updateFundingDetails(payload)).then((response) => {
+    payload.businessId = businessId;
+    dispatch(updateFundingDetails(payload)).then((response) => {
       //  console.log("Response", response?.payload);
-       // const newBusinessId = response.payload;
-       // dispatch(setBusinessId(newBusinessId)); 
-     });
+      // const newBusinessId = response.payload;
+      // dispatch(setBusinessId(newBusinessId)); 
+    });
 
-     navigate("/business/preview");
+    isEdit ? navigate(-5) : navigate("/business/preview");
 
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      {/* Progress bar */}
+      <div className="w-full h-2 bg-gray-200 mb-4 rounded-full">
+        <div
+          className="h-2 bg-blue-500 rounded-full"
+          style={{
+            // width: `${(currentStep / (steps.length - 1)) * 100}%`,
+            width: `100%`,
+          }}
+        ></div>
+      </div>
       <div className="flex flex-col md:flex-row gap-4">
         <div>
           <div className="my-4">
@@ -97,7 +107,7 @@ export const FundingDetails = () => {
               render={({ field }) => {
                 const selectedFund = isFundingRequiredOption.find(
                   (option) => option.value === field.value
-                );                
+                );
                 return (
                   <Selector
                     {...field}
@@ -151,8 +161,9 @@ export const FundingDetails = () => {
         <Button type="button" primary onClick={() => navigate(-1)}>
           Prev
         </Button>
+
         <Button type="submit" primary disabled={!isValid} >
-          Save & Preview
+          {isEdit ? "Save & Continue" : "Save & Preview"}
         </Button>
       </div>
     </form>

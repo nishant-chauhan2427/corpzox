@@ -12,7 +12,7 @@ import { registrationDetails, updateRegistrationDetails } from "../../../../../r
 import { setBusinessId } from "../../../../../redux/slices/businessSlice";
 
 
-export const RegistrationDetails = ({isEdit}) => {
+export const RegistrationDetails = ({ isEdit }) => {
   const [subIndustryOptions, setSubIndustryOptions] = useState([]);
   const { business, businessId } = useSelector((state) => state.business);
 
@@ -51,18 +51,11 @@ export const RegistrationDetails = ({isEdit}) => {
   // console.log("selectedIndustry:", selectedIndustry);
 
 
-  useEffect(() => {
-    if (isEdit) {
-      //fetch the Business details in store
-    } else {
-      //clear the business Store
-    }
-  }, [])
 
   useEffect(() => {
     if (selectedIndustry && subIndustryOption[selectedIndustry]) {
       // console.log('okokokkok');
-      
+
       setSubIndustryOptions(subIndustryOption[selectedIndustry]);
       // setValue("registration.subIndustry", ""); // Reset subIndustry when industry changes
     } else {
@@ -71,16 +64,16 @@ export const RegistrationDetails = ({isEdit}) => {
   }, [selectedIndustry, setValue]);
 
   const businessType = [
-    {label:"Private Limited",value:"private_limited"},
-    {label:"Public Limited",value:"public_limited"},
-    {label:"Sole Proprietorship",value:"sole_proprietorship"},
-    {label:"LLP",value:"llp"},
-    {label:"OPC",value:"opc"},
-    {label:"Section 8",value:"section_8"},
-    {label:"Partnership",value:"partnership"},
-    {label:"Cooperative",value:"cooperative"},
-    {label:"Producer Company",value:"producer_company"},
-    {label:"Foreign Corporation",value:"foreign_corporation"},
+    { label: "Private Limited", value: "private_limited" },
+    { label: "Public Limited", value: "public_limited" },
+    { label: "Sole Proprietorship", value: "sole_proprietorship" },
+    { label: "LLP", value: "llp" },
+    { label: "OPC", value: "opc" },
+    { label: "Section 8", value: "section_8" },
+    { label: "Partnership", value: "partnership" },
+    { label: "Cooperative", value: "cooperative" },
+    { label: "Producer Company", value: "producer_company" },
+    { label: "Foreign Corporation", value: "foreign_corporation" },
   ]
 
   const roleOption = [
@@ -131,7 +124,7 @@ export const RegistrationDetails = ({isEdit}) => {
 
   const onSubmit = (data) => {
     // console.log("Submitted Data:", data?.registration);
-    const payload =  data?.registration
+    const payload = data?.registration
 
     if (!businessId) {
       // Perform POST API call here
@@ -153,40 +146,50 @@ export const RegistrationDetails = ({isEdit}) => {
         // dispatch(setBusinessId(newBusinessId)); 
       });
 
-      navigate("/business/create/address")
+      isEdit ? navigate("/business/edit/address") : navigate("/business/create/address")
 
     }
   };
 
   // console.log("registration.subIndustry", "hour", business?.registration.subIndustry);
-  
 
-  useEffect(()=>{
-    // console.log("useeffect");
-    
-    setValue("registration.roleOfCompany", business?.registration.roleOfCompany )
-    // setValue("registration.subIndustry", business?.registration.subIndustry )
-  },[])
-  
-  useEffect(()=>{
-    // console.log("useeffect");
-    
-    setValue("registration.industry", business?.registration.industry )
-    // setValue("registration.subIndustry", business?.registration.subIndustry )
-  },[])
 
-  useEffect(()=>{
+  useEffect(() => {
+    // console.log("useeffect");
+
+    setValue("registration.roleOfCompany", business?.registration.roleOfCompany)
+    // setValue("registration.subIndustry", business?.registration.subIndustry )
+  }, [])
+
+  useEffect(() => {
+    // console.log("useeffect");
+
+    setValue("registration.industry", business?.registration.industry)
+    // setValue("registration.subIndustry", business?.registration.subIndustry )
+  }, [])
+
+  useEffect(() => {
     // console.log(business?.registration.subIndustry , 'ok' );
-    
-    setValue("registration.subIndustry", business?.registration.subIndustry )
-  },[watch("registration.industry")])
+
+    setValue("registration.subIndustry", business?.registration.subIndustry)
+  }, [watch("registration.industry")])
 
 
   // console.log(watch("registration.industry"), getValues("registration.subIndustry"), business?.registration.subIndustry, "watch ok");
-  
+
 
   return (
     <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
+      {/* Progress bar */}
+      <div className="w-full h-2 bg-gray-200 mb-4 rounded-full">
+        <div
+          className="h-2 bg-blue-500 rounded-full"
+          style={{
+            // width: `${(currentStep / (steps.length - 1)) * 100}%`,
+            width: `20%`,
+          }}
+        ></div>
+      </div>
       <div>
         <h5 className="font-semibold text-base text-[#4D4D4F] dark:text-gray-200">
           Detailed Business Registration Details
@@ -200,7 +203,7 @@ export const RegistrationDetails = ({isEdit}) => {
         {/* Left Column */}
         <div className="w-full grid grid-cols-1 gap-4">
           {/* Business Type */}
-          
+
           <Controller
             name="registration.typeOfBusiness"
             control={control}
@@ -365,7 +368,7 @@ export const RegistrationDetails = ({isEdit}) => {
                   value={selectedIndustry || null} // Ensure value matches the options
                   onChange={(selectedValue) => {
                     // console.log('ok ran');
-                    
+
                     field.onChange(selectedValue.value); // Update the form value
                     setValue("registration.subIndustry", ""); // Reset sub-industry
                     setSubIndustryOptions(
@@ -392,7 +395,7 @@ export const RegistrationDetails = ({isEdit}) => {
                   label="Sub Industry Type"
                   placeholder="Select sub industry type"
                   errorContent={errors.registration?.subIndustry?.message}
-                  options={subIndustryOptions} 
+                  options={subIndustryOptions}
                   value={selectedSubIndustry || null}
                   onChange={(selectedValue) => field.onChange(selectedValue.value)}
                 />
@@ -454,7 +457,7 @@ export const RegistrationDetails = ({isEdit}) => {
       <div className="flex justify-between items-center gap-4">
         <div></div>
         <Button type="submit" primary disabled={!isValid}>
-         Save & Next
+          Save & Next
         </Button>
       </div>
     </form>
