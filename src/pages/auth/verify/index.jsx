@@ -25,7 +25,7 @@ export const Verify = () => {
   const navigate = useNavigate();
   const inputRefs = useRef([]);
   const { profile } = useSelector((state) => state.auth);
-  console.log(profile[0]?.otp,"profile");
+  const [otpMessage,setOtpMessage]= useState('')
   useEffect(() => {
     setTimer(30);
   }, []);
@@ -51,14 +51,26 @@ export const Verify = () => {
       setIsVerify(false);
       if (verifyingError) {
         toast.error(verifyingError);
+        setOtpMessage(verifyingError)
       } else {
         toast.success(verifyMessage);
         navigate("/dashboard");
       }
     }
   }, [isVerifying]);
+ 
   // Function to handle input change
+
+  useEffect(()=>{
+setTimeout(() => {
+  setOtpMessage("")
+}, 5000);
+  },[verifyingError])
+
+    
+  
   const handleChange = (index, value) => {
+    setOtpMessage("")
     if (/^\d$/.test(value)) {
       const newOtp = [...otp];
       newOtp[index] = value;
@@ -75,6 +87,7 @@ export const Verify = () => {
       const newOtp = [...otp];
       newOtp[index] = ""; // Clear the digit at the current index
       setOtp(newOtp);
+
       if (index > 0) {
         inputRefs.current[index - 1].focus();
       }
@@ -171,10 +184,11 @@ export const Verify = () => {
                         />
                       ))}
                     </div>
-                   
-                    {/* <div className="text-red-500 mt-2 font-medium text-sm text-center">
-                     {verifyingError}
-                    </div> */}
+          
+                    <div className="text-red-500 mt-2 font-medium text-sm text-center">
+                    { verifyingError? otpMessage: null}
+                    </div>
+            
                   </div>
                   <div className="h-1"></div>
                   <div className="w-full flex flex-col justify-center items-center">

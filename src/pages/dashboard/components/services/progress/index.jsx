@@ -118,9 +118,9 @@ export const ServicesProgress = ({ data }) => {
   return (
     <div>
       <div className="py-2 flex flex-row sm:flex-row justify-between gap-2">
-        <Heading className={"py-0 "} tourButton={true}>
+        {/* <Heading className={"py-0 "} tourButton={true}>
           Your Service are Completed {dataUpdate?.total ? `(${dataUpdate?.total})` : ""}
-        </Heading>
+        </Heading> */}
         <Link to={"/services"} className="font-medium text-sm text-[#797979]">
           View All
         </Link>
@@ -146,7 +146,7 @@ export const ServicesProgress = ({ data }) => {
                   <div className="flex flex-col gap-2">
                     <h6 className="text-sm text-[#7C7D80]">
                       <strong>Business:</strong>{" "}
-                      {data?.businessdetails[0]?.businessName ? data?.businessdetails[0]?.businessName : "__" }
+                      {data?.businessdetails[0]?.businessName ? data?.businessdetails[0]?.businessName : "____" }
                     </h6>
                     <p className="text-sm text-[#7C7D80]">
                       <strong className="!font-medium">Step:</strong>{" "}

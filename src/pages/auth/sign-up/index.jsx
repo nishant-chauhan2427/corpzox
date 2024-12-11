@@ -26,7 +26,7 @@ export const Signup = () => {
     formState: { errors, isValid },
     trigger,
   } = useForm({
-    resolver: yupResolver(signUpValidationSchema),
+    // resolver: yupResolver(signUpValidationSchema),
     mode: "onChange",
   });
   const {
@@ -63,7 +63,12 @@ export const Signup = () => {
     console.log(data);
     // Reset error message
     setError("");
-    dispatch(registerUser(data));
+    console.log(data, "user data")
+    const userData ={
+      ...data, 
+      firstName : data.full, 
+    }
+    dispatch(registerUser(userData));
   };
   useEffect(() => {
     // console.log(isRegistering,isSubmit,registeringError)
@@ -81,6 +86,7 @@ export const Signup = () => {
   return (
     <>
       <MetaTitle title={"Sign Up"} />
+      <Heading>Sign Up</Heading>
       <AuthLayout>
         <img className="sm:w-32 w-36" src="logo.svg" alt="CORPZO Logo" />
         <div className="w-full  flex  ">
