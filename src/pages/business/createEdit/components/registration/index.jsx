@@ -1,14 +1,46 @@
-import { Controller, useWatch } from "react-hook-form";
+
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { Input } from "../../../../../components/inputs";
 import { Selector } from "../../../../../components/select";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "../../../../../components/buttons";
+import { registrationSchema } from "../../../../../validation/createBusinessValidationSchema";
+import { registrationDetails, updateRegistrationDetails } from "../../../../../redux/actions/business-action";
+import { setBusinessId } from "../../../../../redux/slices/businessSlice";
 
-export const RegistrationDetails = ({ control, errors, setValue, touchedFields,handleBlur,trigger ,isEdit}) => {
+
+export const RegistrationDetails = ({isEdit}) => {
   const [subIndustryOptions, setSubIndustryOptions] = useState([]);
-  const {business,businessId} = useSelector((state) => state.business);
+  const { business, businessId } = useSelector((state) => state.business);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // console.log("businessStore", business);
+  // console.log("subIndustryOptions", subIndustryOptions);
+
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors, isValid },
+    setValue,
+    getValues,
+    getFieldState,
+    watch,
+    trigger,
+  } = useForm({
+    mode: "onChange",
+    defaultValues: business || {},
+    resolver: yupResolver(registrationSchema), // Apply the validation schema here
+  });
+
+  // console.log("isValid", isValid, errors);
+  // console.log("getValues", getValues());
+
 
   const selectedIndustry = useWatch({
     control,
@@ -16,47 +48,45 @@ export const RegistrationDetails = ({ control, errors, setValue, touchedFields,h
     defaultValue: "",
   });
 
+  // console.log("selectedIndustry:", selectedIndustry);
+
+
   useEffect(() => {
-    console.log("Selected Industry in useEffect:", selectedIndustry);
-    setSubIndustryOptions([]);
-
-   
-    
-
-    if (selectedIndustry && subIndustryOption[selectedIndustry]) {
-      const updatedOptions = subIndustryOption[selectedIndustry];
-      console.log("Updated subIndustryOptions:", updatedOptions);
-      setSubIndustryOptions(updatedOptions);
+    if (isEdit) {
+      //fetch the Business details in store
     } else {
-      console.log("No subIndustry options found for the selected industry");
+      //clear the business Store
+    }
+  }, [])
+
+  useEffect(() => {
+    if (selectedIndustry && subIndustryOption[selectedIndustry]) {
+      // console.log('okokokkok');
+      
+      setSubIndustryOptions(subIndustryOption[selectedIndustry]);
+      // setValue("registration.subIndustry", ""); // Reset subIndustry when industry changes
+    } else {
       setSubIndustryOptions([]);
     }
-  }, [selectedIndustry]); 
+  }, [selectedIndustry, setValue]);
 
-  useEffect(() => {
-    // Ensure to populate the registration data when business is available
-    if ( business ) {
-      setValue("registration.businessName", business?.registration?.businessName);
-      setValue("registration.typeOfBusiness", business?.registration?.typeOfBusiness);
-      setValue("registration.cinNumber", business?.registration?.cinNumber);
-      setValue("registration.roleOfCompany", business?.registration?.roleOfCompany);
-      setValue("registration.yearOfStablish", business?.registration?.yearOfStablish);
-      setValue("registration.headQuarterLocation", business?.registration?.headQuarterLocation);
-      setValue("registration.industry", business?.registration?.industry);
-      setValue("registration.subIndustry", business?.registration?.subIndustry);
-      setValue("registration.sizeOfCompany", business?.registration?.sizeOfCompany);
-      setValue("registration.funded", business?.registration?.funded);
-    }
-  }, [business, setValue]);
-
-  useEffect(() => {
-    console.log("Errors: ", errors);
-    console.log("Touched Fields: ", touchedFields);
-  }, [errors, touchedFields]);
+  const businessType = [
+    {label:"Private Limited",value:"private_limited"},
+    {label:"Public Limited",value:"public_limited"},
+    {label:"Sole Proprietorship",value:"sole_proprietorship"},
+    {label:"LLP",value:"llp"},
+    {label:"OPC",value:"opc"},
+    {label:"Section 8",value:"section_8"},
+    {label:"Partnership",value:"partnership"},
+    {label:"Cooperative",value:"cooperative"},
+    {label:"Producer Company",value:"producer_company"},
+    {label:"Foreign Corporation",value:"foreign_corporation"},
+  ]
 
   const roleOption = [
-    { label: "Active", value: 1 },
-    { label: "Inactive", value: 0 },
+    { label: "Director/Founder/Owner", value: "director" },
+    { label: "Authorised Signatory", value: "authorised_signatory" },
+    { label: "Employee", value: "employee" },
   ];
 
   const fundingOption = [
@@ -67,7 +97,7 @@ export const RegistrationDetails = ({ control, errors, setValue, touchedFields,h
   const industryOption = [
     { label: "Technology", value: "tech" },
     { label: "Finance", value: "finance" },
-    { label: "Healthcare", value: "healthcare" }
+    { label: "Healthcare", value: "healthcare" },
   ];
 
   const subIndustryOption = {
@@ -95,8 +125,68 @@ export const RegistrationDetails = ({ control, errors, setValue, touchedFields,h
     ],
   };
 
+  const handleBlur = async (field) => {
+    await trigger(field);
+  };
+
+  const onSubmit = (data) => {
+    // console.log("Submitted Data:", data?.registration);
+    const payload =  data?.registration
+
+    if (!businessId) {
+      // Perform POST API call here
+      dispatch(registrationDetails(payload)).then((response) => {
+        // console.log("Response", response?.payload);
+        // const newBusinessId = response.payload;
+        // dispatch(setBusinessId(newBusinessId)); 
+        navigate("/business/create/address")
+
+      });
+    } else {
+      //PUT API to update changes
+      // console.log("businessId already exist", businessId);
+
+      payload.businessId = businessId;
+      dispatch(updateRegistrationDetails(payload)).then((response) => {
+        // console.log("Response", response?.payload);
+        // const newBusinessId = response.payload;
+        // dispatch(setBusinessId(newBusinessId)); 
+      });
+
+      navigate("/business/create/address")
+
+    }
+  };
+
+  // console.log("registration.subIndustry", "hour", business?.registration.subIndustry);
+  
+
+  useEffect(()=>{
+    // console.log("useeffect");
+    
+    setValue("registration.roleOfCompany", business?.registration.roleOfCompany )
+    // setValue("registration.subIndustry", business?.registration.subIndustry )
+  },[])
+  
+  useEffect(()=>{
+    // console.log("useeffect");
+    
+    setValue("registration.industry", business?.registration.industry )
+    // setValue("registration.subIndustry", business?.registration.subIndustry )
+  },[])
+
+  useEffect(()=>{
+    // console.log(business?.registration.subIndustry , 'ok' );
+    
+    setValue("registration.subIndustry", business?.registration.subIndustry )
+  },[watch("registration.industry")])
+
+
+  // console.log(watch("registration.industry"), getValues("registration.subIndustry"), business?.registration.subIndustry, "watch ok");
+  
+
   return (
-    <div className="w-full">
+    <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
       <div>
         <h5 className="font-semibold text-base text-[#4D4D4F] dark:text-gray-200">
           Detailed Business Registration Details
@@ -105,248 +195,268 @@ export const RegistrationDetails = ({ control, errors, setValue, touchedFields,h
           Provide the necessary details to add your own business.
         </p>
       </div>
+
       <div className="w-full pt-4 flex flex-col md:flex-row md:justify-between gap-4">
+        {/* Left Column */}
         <div className="w-full grid grid-cols-1 gap-4">
+          {/* Business Type */}
+          
           <Controller
-            name={`registration.typeOfBusiness`}
-            control={control}
-            render={({ field }) => (
-              <Input
-                {...field}
-                label={`Business Type`}
-                placeholder={`Enter your business type`}
-                errorContent={errors?.registration?.typeOfBusiness?.message}
-                required={true}
-                onBlur={()=> handleBlur(`registration.typeOfBusiness`)}
-                onChange={(e) => {
-                  field.onChange(e);  // Default handling
-                  trigger("registration.typeOfBusiness");  // Manually trigger validation for this field
-                }}
-                maxLength={50}
-              />
-            )}
-          />
-          <Controller
-            name={`registration.businessName`}
-            control={control}
-            render={({ field }) => (
-              <Input
-                {...field}
-                label={`Business Name`}
-                placeholder={`Enter your business name`}
-                errorContent={ errors.registration?.businessName?.message}
-                onBlur={()=> handleBlur(`registration.businessName`)}
-                required={true}
-                onChange={(e) => {
-                  field.onChange(e);  // Default handling
-                  trigger("registration.businessName");  // Manually trigger validation for this field
-                }}
-                maxLength={50}
-              />
-            )}
-          />
-          <Controller
-            name={`registration.cinNumber`}
-            control={control}
-            render={({ field }) => (
-              <Input
-                {...field}
-                label={`CIN No.`}
-                placeholder={`Enter your CIN number`}
-                errorContent={errors.registration?.cinNumber?.message}
-                required={true}
-                onBlur={()=>handleBlur(`registration.cinNumber`)}
-                onChange={(e) => {
-                  field.onChange(e);  // Default handling
-                  trigger("registration.cinNumber");  // Manually trigger validation for this field
-                }}
-              />
-            )}
-          />
-          <Controller
-            name="registration.roleOfCompany"
+            name="registration.typeOfBusiness"
             control={control}
             render={({ field }) => {
-              const selectedRole = roleOption.find(
+              // Find the selected role option from the list
+              const selectedBusinessType = businessType.find(
                 (option) => option.value === field.value
               );
-              return (
-              <Selector
-                {...field}
-                label={"Role"}
-                placeholder={"Select role of the company"}
-                errorContent={errors.registration?.roleOfCompany?.message}
-                options={roleOption}
-                required={true}
-                value={selectedRole || {}}
-                onBlur={()=>handleBlur("registration.roleOfCompany")}
-                onChange={(selectedValue) => {
-                 
-                  field.onChange(selectedValue.value); 
-                  setValue("registration.roleOfCompany", selectedValue.value);
-                }}
-              />
-            )}}
-          />
 
-          <Controller
-            name="registration.yearOfStablish"
-            control={control}
-            render={({ field }) => {
-              const minDate = new Date();
-              minDate.setFullYear(minDate.getFullYear() - 100);
-              const minDateString = minDate.toISOString().split("T")[0];
 
               return (
-                <Input
+                <Selector
                   {...field}
-                  label={`Year of Establishment`}
-                  type={"date"}
-                  placeholder={"Enter DOF"}
-                  min={minDateString} // Set the minimum date
-                  max={new Date().toISOString().split("T")[0]} // Maximum is today
-                  errorContent={errors.registration?.yearOfStablish?.message}
-                  onBlur={()=>handleBlur("registration.yearOfStablish")}
-                  onChange={(e) => {
-                    field.onChange(e);  // Default handling
-                    trigger("registration.yearOfStablish");  // Manually trigger validation for this field
+                  label={"Business Type"}
+                  placeholder={"Enter your business type"}
+                  errorContent={errors.registration?.typeOfBusiness?.message}
+                  options={businessType}
+                  required={true}
+                  // Ensure only the value is passed to the Selector
+                  value={selectedBusinessType || {}}
+                  onChange={(selectedValue) => {
+                    // On change, set only the selected value (not the full object)
+                    field.onChange(selectedValue.value);
+                    setValue("registration.typeOfBusiness", selectedValue.value);
                   }}
                 />
               );
             }}
           />
-        </div>
-        <div className="w-1 mx-12 bg-gradient-to-b from-gray-100 via-black to-gray-100"></div>
-        <div className="w-full grid grid-cols-1 gap-4">
+
+          {/* Business Name */}
           <Controller
-            name={`registration.headQuarterLocation`}
+            name="registration.businessName"
             control={control}
             render={({ field }) => (
               <Input
                 {...field}
-                label={`Headquarter Location`}
-                placeholder={`Enter your headquarter location`}
-                errorContent={errors.registration?.headQuarterLocation?.message}
-                required={true}
-                onBlur={()=>handleBlur(`registration.headQuarterLocation`)}
-                onChange={(e) => {
-                  field.onChange(e);  // Default handling
-                  trigger("registration.headQuarterLocation");  // Manually trigger validation for this field
-                }}
+                label="Business Name"
+                placeholder="Enter your business name"
+                errorContent={errors.registration?.businessName?.message}
+                required
                 maxLength={50}
               />
             )}
           />
+
+          {/* CIN Number */}
           <Controller
-            name={`registration.industry`}
+            name="registration.cinNumber"
+            control={control}
+            render={({ field }) => (
+              <Input
+                {...field}
+                label="CIN No."
+                placeholder="Enter your CIN number"
+                errorContent={errors.registration?.cinNumber?.message}
+                required
+              />
+            )}
+          />
+
+          {/* Role of Company */}
+          <Controller
+            name="registration.roleOfCompany"
+            control={control}
+            render={({ field }) => {
+              // Find the selected role option from the list
+              const selectedRole = roleOption.find(
+                (option) => option.value === field.value
+              );
+
+
+              return (
+                <Selector
+                  {...field}
+                  label={"Role"}
+                  placeholder={"Select role of the company"}
+                  errorContent={errors.registration?.roleOfCompany?.message}
+                  options={roleOption}
+                  required={true}
+                  // Ensure only the value is passed to the Selector
+                  value={selectedRole || {}}
+                  onChange={(selectedValue) => {
+                    // On change, set only the selected value (not the full object)
+                    field.onChange(selectedValue.value);
+                    setValue("registration.roleOfCompany", selectedValue.value);
+                  }}
+                />
+              );
+            }}
+          />
+
+          {/* Year of Establishment */}
+          <Controller
+            name="registration.yearOfStablish"
+            control={control}
+            render={({ field }) => {
+              const initialDate = field.value
+                ? new Date(field.value).toISOString().split("T")[0]
+                : "";
+
+              const minDate = new Date();
+              minDate.setFullYear(minDate.getFullYear() - 100);
+
+              return (
+                <Input
+                  {...field}
+                  value={initialDate}
+                  label="Year of Establishment"
+                  type="date"
+                  min={minDate.toISOString().split("T")[0]}
+                  max={new Date().toISOString().split("T")[0]}
+                  errorContent={errors.registration?.yearOfStablish?.message}
+                  onBlur={() => handleBlur("registration.yearOfStablish")}
+                />
+              );
+            }}
+          />
+        </div>
+
+        <div className="w-1 mx-12 bg-gradient-to-b from-gray-100 via-black to-gray-100"></div>
+
+        {/* Right Column */}
+        <div className="w-full grid grid-cols-1 gap-4">
+          {/* Headquarters Location */}
+          <Controller
+            name="registration.headQuarterLocation"
+            control={control}
+            render={({ field }) => (
+              <Input
+                {...field}
+                label="Headquarter Location"
+                placeholder="Enter your headquarter location"
+                errorContent={
+                  errors.registration?.headQuarterLocation?.message
+                }
+                required
+                maxLength={50}
+              />
+            )}
+          />
+
+          {/* Industry */}
+          <Controller
+            name="registration.industry"
             control={control}
             render={({ field }) => {
               const selectedIndustry = industryOption.find(
                 (option) => option.value === field.value
               );
 
+              // console.log("registration field", field);
+
+
               return (
                 <Selector
                   {...field}
-                  label={"Industry Type"}
-                  placeholder={"Select industry type"}
+                  label="Industry Type"
+                  placeholder="Select industry type"
                   errorContent={errors.registration?.industry?.message}
-                  options={industryOption}
-                  required={true}
-                  value={selectedIndustry || {}}
+                  options={industryOption} // Ensure industryOption is populated correctly
+                  value={selectedIndustry || null} // Ensure value matches the options
                   onChange={(selectedValue) => {
-                    trigger("registration.industry");
-                    field.onChange(selectedValue.value); 
-                    setValue("registration.industry", selectedValue.value);
-                    setValue("registration.subIndustry", ""); 
+                    // console.log('ok ran');
+                    
+                    field.onChange(selectedValue.value); // Update the form value
+                    setValue("registration.subIndustry", ""); // Reset sub-industry
+                    setSubIndustryOptions(
+                      subIndustryOption[selectedValue.value] || []
+                    ); // Update sub-industry options dynamically
                   }}
-                  onBlur={()=>handleBlur(`registration.industry`)}
                 />
               );
             }}
           />
 
+          {/* Sub Industry */}
           <Controller
-            name={`registration.subIndustry`}
+            name="registration.subIndustry"
             control={control}
-            render={({ field, value }) => {
-              console.log(
-                "subIndustryOptions inside Controller:",
-                subIndustryOptions
-              );
-
+            render={({ field }) => {
               const selectedSubIndustry = subIndustryOptions.find(
-                (option) => option.value === value
+                (option) => option.value === field.value
               );
 
               return (
                 <Selector
                   {...field}
-                  label={"Sub Industry Type"}
-                  placeholder={"Select sub industry type"}
+                  label="Sub Industry Type"
+                  placeholder="Select sub industry type"
                   errorContent={errors.registration?.subIndustry?.message}
-                  options={subIndustryOptions}
-                  value={
-                    selectedSubIndustry ? selectedSubIndustry.value : value
-                  }
-                  required={true}
-                  onChange={(selectedSubIndustryValue) => {
-                    const valueToSave = selectedSubIndustryValue.value;
-                    field.onChange(valueToSave);
-                    trigger("registration.subIndustry");
-                    setValue("registration.subIndustry", valueToSave);
-                  }}
-                  onBlur={()=>handleBlur(`registration.subIndustry`)}
+                  options={subIndustryOptions} 
+                  value={selectedSubIndustry || null}
+                  onChange={(selectedValue) => field.onChange(selectedValue.value)}
                 />
               );
             }}
           />
 
+
+          {/* Company Size */}
           <Controller
             name="registration.sizeOfCompany"
             control={control}
             render={({ field }) => (
               <Input
                 {...field}
-                label={`Size of the company`}
-                placeholder={`Enter size of the company`}
+                label="Size of the company"
+                placeholder="Enter size of the company"
                 errorContent={errors.registration?.sizeOfCompany?.message}
-                required={true}
-                onChange={(e) => {
-                  field.onChange(e);  // Default handling
-                  trigger("registration.sizeOfCompany");  // Manually trigger validation for this field
-                }}
+                required
               />
             )}
           />
+
+          {/* Funding Status */}
           <Controller
             name="registration.funded"
             control={control}
             render={({ field }) => {
+              // Find the selected funding option from the list
               const selectedFund = fundingOption.find(
                 (option) => option.value === field.value
               );
+
               return (
-              <Selector
-                {...field}
-                label={"Funding Status"}
-                placeholder={"Select funding status"}
-                errorContent={errors.registration?.isFunded?.message}
-                options={fundingOption}
-                required={true}
-                value={selectedFund || {}}
-                onChange={(selectedValue) => {
-                  trigger("registration.funded");
-                 
-                  field.onChange(selectedValue.value); 
-                  setValue("registration.funded", selectedValue.value);
-        
-                }}
-              />
-            )}}
+                <Selector
+                  {...field}
+                  label={"Funding Status"}
+                  placeholder={"Select funding status"}
+                  errorContent={errors.registration?.funded?.message}
+                  options={fundingOption}
+                  required={true}
+                  // Ensure that only the value is passed to the Selector
+                  value={selectedFund || {}}
+                  onChange={(selectedValue) => {
+                    // On change, set only the selected value (not the full object)
+                    field.onChange(selectedValue.value);
+                    setValue("registration.funded", selectedValue.value);
+                  }}
+                />
+              );
+            }}
           />
+
+
         </div>
       </div>
-    </div>
+
+      {/* Navigation Buttons */}
+      <div className="flex justify-between items-center gap-4">
+        <div></div>
+        <Button type="submit" primary disabled={!isValid}>
+         Save & Next
+        </Button>
+      </div>
+    </form>
   );
 };

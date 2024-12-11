@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { updateKYCDetails, updateFundingDetails, fetchUserBusinessCard, getBusiness } from "../actions/business-action";
+import { updateKYCDetails, updateFundingDetails, fetchUserBusinessCard, getBusiness, registrationDetails, updateRegistrationDetails, updateAddressDetails, updateFinancialDetails } from "../actions/business-action";
+import toast from "react-hot-toast";
 
 // Define initial state with a structure similar to the API data you want
 const initialState = {
@@ -90,7 +91,7 @@ const businessSlice = createSlice({
             businessNumber: payload.businessNumber||"",
             active :payload.active||"",
             cinNumber: payload.cinNumber || "",
-            roleOfCompany: "",  // Placeholder, update if the API provides it
+            roleOfCompany: payload.roleOfCompany||"",  
             yearOfStablish: payload.yearOfStablish || "",
             headQuarterLocation: payload.headQuarterLocation || "",
             industry: payload.industry || "",
@@ -115,18 +116,18 @@ const businessSlice = createSlice({
          
           },
           financial: {
-              capital: "",  // Placeholder, update if the API provides it
-              revenue: "",  // Placeholder, update if the API provides it
-              profit: ""    // Placeholder, update if the API provides it
+              capital: payload.capital || "",  
+              revenue: payload.revenue || "", 
+              profit: payload.profit || ""    
           },
           kyc: {
-              kycUser: "",  // Placeholder, update if the API provides it
-              id: "",       // Placeholder, update if the API provides it
-              addressProof: ""  // Placeholder, update if the API provides it
+              kycUser: payload.kycUser || "", 
+              id: payload.id || "",  
+              addressProof: payload.addressProof || ""
           },
           funding: {
-              lookingForFunding: "",  // Placeholder, update if the API provides it
-              existingBusinessName: ""  // Placeholder, update if the API provides it
+              lookingForFunding: payload.lookingForFunding || "", 
+              existingBusinessName: payload.existingBusinessName || "" 
           }
         };
         state.businessId = payload?._id || "",
@@ -137,6 +138,93 @@ const businessSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       });
+
+
+      builder.addCase(registrationDetails.pending, (state,action)=>{
+          // console.log("registrationDetails.pending",action.payload);
+          
+      }).addCase( registrationDetails.rejected, (state,action)=>{
+        // console.log("registrationDetails.rejected",action.payload);
+        
+
+      }).addCase( registrationDetails.fulfilled, (state,action)=>{
+        // console.log("registrationDetails.fulfilled",action.payload);
+        state.businessId = action.payload?.businessId;
+        state.business.registration = action.payload?.data;
+        toast.success("Registration details saved")
+      })
+
+
+
+      builder.addCase(updateRegistrationDetails.pending, (state,action)=>{
+          // console.log("updateRegistrationDetails.pending",action.payload);
+          
+      }).addCase( updateRegistrationDetails.rejected, (state,action)=>{
+        // console.log("updateRegistrationDetails.rejected",action.payload);
+        
+
+      }).addCase( updateRegistrationDetails.fulfilled, (state,action)=>{
+        // console.log("updateRegistrationDetails.fulfilled",action.payload?.data);
+        state.business.registration = action.payload?.data;
+        toast.success("Registration details saved")
+      })
+
+
+      builder.addCase(updateAddressDetails.pending, (state,action)=>{
+          // console.log("updateAddressDetails.pending",action.payload);
+          
+      }).addCase( updateAddressDetails.rejected, (state,action)=>{
+        // console.log("updateAddressDetails.rejected",action.payload);
+        
+
+      }).addCase( updateAddressDetails.fulfilled, (state,action)=>{
+        // console.log("updateAddressDetails.fulfilled",action.payload?.data);
+        state.business.address = action.payload?.data;
+        toast.success("Address details saved")
+      })
+
+
+      builder.addCase(updateFinancialDetails.pending, (state,action)=>{
+          // console.log("updateFinancialDetails.pending",action.payload);
+          
+      }).addCase( updateFinancialDetails.rejected, (state,action)=>{
+        // console.log("updateFinancialDetails.rejected",action.payload);
+        
+
+      }).addCase( updateFinancialDetails.fulfilled, (state,action)=>{
+        // console.log("updateFinancialDetails.fulfilled",action.payload?.data);
+        state.business.financial = action.payload?.data;
+        toast.success("Financial details saved")
+      })
+
+
+      builder.addCase(updateKYCDetails.pending, (state,action)=>{
+          // console.log("updateKYCDetails.pending",action.payload);
+          
+      }).addCase( updateKYCDetails.rejected, (state,action)=>{
+        // console.log("updateKYCDetails.rejected",action.payload);
+        
+
+      }).addCase( updateKYCDetails.fulfilled, (state,action)=>{
+        // console.log("updateKYCDetails.fulfilled",action.payload?.data);
+        state.business.kyc = action.payload?.data;
+        toast.success("KYC details saved")
+      })
+
+
+      builder.addCase(updateFundingDetails.pending, (state,action)=>{
+          // console.log("updateKupdateFundingDetailsYCDetails.pending",action.payload);
+          
+      }).addCase( updateFundingDetails.rejected, (state,action)=>{
+        // console.log("updateFundingDetails.rejected",action.payload);
+        
+
+      }).addCase( updateFundingDetails.fulfilled, (state,action)=>{
+        // console.log("updateFundingDetails.fulfilled",action.payload?.data);
+
+        state.business.funding = action.payload?.data;
+        toast.success("Funding details saved")
+      })
   }
 });
 

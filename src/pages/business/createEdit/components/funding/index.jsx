@@ -1,32 +1,85 @@
-import { Controller } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { Input } from "../../../../../components/inputs";
 import { Selector } from "../../../../../components/select";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { fundingSchema } from "../../../../../validation/createBusinessValidationSchema";
+import { useNavigate } from "react-router-dom";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Button } from "../../../../../components/buttons";
+import { updateFundingDetails, updateRegistrationDetails } from "../../../../../redux/actions/business-action";
 
-export const FundingDetails = ({ control, errors, setValue, handleBlur, trigger }) => {
+export const FundingDetails = () => {
 
-  const {business,businessId} = useSelector((state) => state.business);
+  const { business, businessId } = useSelector((state) => state.business);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    // Ensure to populate the registration data when business is available
-    if (business) {
-      setValue("funding.lookingForFunding", business?.funding?.lookingForFunding);
-      setValue("funding.existingBusinessName", business?.funding?.existingBusinessName);
+    console.log("business,businessId",business,businessId);
 
-    }
-  }, [business, setValue]);
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors, isValid, touchedFields },
+    setValue,
+    getValues,
+    watch,
+    trigger,
+  } = useForm({
+    mode: "onChange",
+    // resolver: yupResolver(getValidationSchema(currentStep)),
+    defaultValues: business || {},
+    resolver: yupResolver(fundingSchema), // Apply the validation schema here
+  });
+
+  // useEffect(() => {
+  //   // Ensure to populate the registration data when business is available
+  //   if (business) {
+  //     setValue("funding.lookingForFunding", business?.funding?.lookingForFunding);
+  //     setValue("funding.existingBusinessName", business?.funding?.existingBusinessName);
+
+  //   }
+  // }, [business, setValue]);
   const isFundingRequiredOption = [
     { label: "Yes", value: 1 },
     { label: "No", value: 0 },
   ];
   const existingBusinessOption = [
-    { label: "Active", value: 1 },
-    { label: "Inactive", value: 0 },
+    { label: "Active", value: "active" },
+    { label: "Inactive", value: "inactive" },
   ];
 
+  useEffect(()=>{
+    // console.log("useeffect");
+    
+    setValue("funding.lookingForFunding", business?.funding?.lookingForFunding )
+    setValue("funding.existingBusinessName", business?.funding.existingBusinessName )
+  },[])
+
+  const onSubmit = (data) => {
+    // console.log("Submitted Data : Funding  :", data);
+    const payload =  data?.funding
+
+    if (!businessId) {
+      console.log("No businessId exist is in business Store");
+      return;
+    }
+
+    //  //PUT API to update changes
+     payload.businessId = businessId;
+     dispatch(updateFundingDetails(payload)).then((response) => {
+      //  console.log("Response", response?.payload);
+       // const newBusinessId = response.payload;
+       // dispatch(setBusinessId(newBusinessId)); 
+     });
+
+     navigate("/business/preview");
+
+  };
+
   return (
-    <div>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col md:flex-row gap-4">
         <div>
           <div className="my-4">
@@ -44,7 +97,7 @@ export const FundingDetails = ({ control, errors, setValue, handleBlur, trigger 
               render={({ field }) => {
                 const selectedFund = isFundingRequiredOption.find(
                   (option) => option.value === field.value
-                );
+                );                
                 return (
                   <Selector
                     {...field}
@@ -54,7 +107,7 @@ export const FundingDetails = ({ control, errors, setValue, handleBlur, trigger 
                     options={isFundingRequiredOption}
                     required={true}
                     value={selectedFund || {}}
-                    onBlur={() => handleBlur("funding.lookingForFunding")}
+                    // onBlur={() => handleBlur("funding.lookingForFunding")}
                     onChange={(selectedValue) => {
                       field.onChange(selectedValue.value); // Default handling
                       trigger("funding.lookingForFunding"); // Manually trigger validation
@@ -80,7 +133,7 @@ export const FundingDetails = ({ control, errors, setValue, handleBlur, trigger 
                     options={existingBusinessOption}
                     required={true}
                     value={selectedFund || {}}
-                    onBlur={() => handleBlur("funding.existingBusinessName")}
+                    // onBlur={() => handleBlur("funding.existingBusinessName")}
                     onChange={(selectedValue) => {
                       field.onChange(selectedValue.value); // Default handling
                       trigger("funding.existingBusinessName"); // Manually trigger validation
@@ -93,6 +146,15 @@ export const FundingDetails = ({ control, errors, setValue, handleBlur, trigger 
           </div>
         </div>
       </div>
-    </div>
+      {/* Navigation Buttons */}
+      <div className="flex justify-between items-center gap-4 m-2">
+        <Button type="button" primary onClick={() => navigate(-1)}>
+          Prev
+        </Button>
+        <Button type="submit" primary disabled={!isValid} >
+          Save & Preview
+        </Button>
+      </div>
+    </form>
   );
 };
