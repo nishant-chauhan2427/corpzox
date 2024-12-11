@@ -9,7 +9,7 @@ import { useState } from "react";
 import { ConfirmationModal } from "../../../components/modal/confirmationModal";
 import { updateAddressDetails, updateFinancialDetails, updateFundingDetails, updateKYCDetails } from "../../../redux/actions/business-action";
 
-const BusinessPreview = () => {
+const BusinessPreview = ({isEdit}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {registration, address, financial, kyc, funding} = useSelector((state) => state.business.business);
@@ -48,10 +48,16 @@ const BusinessPreview = () => {
       //   toast.error("An error occurred while submitting business details.");
       //   console.error(error);
       // }
-      toast.success("Business details updated")
-      // navigate(`/business/detail?id=${businessId}`);
       // navigate(`/business/detail?id=${businessId}`, { replace: true });
-      navigate(-6);  //this will delete last 6 from browser history stack
+
+      
+      if(isEdit){
+        toast.success("Business details updated")
+        navigate(-8);  //this will delete last 6 from browser history stack
+      }else{
+         toast.success("Business created successfully!");
+          setConfirmationModal(true);
+      }
     } else {
       // setLoading(false); 
       toast.error("Business ID not found.");
@@ -63,7 +69,8 @@ const BusinessPreview = () => {
   };
   const onConfirmationModalClose = () => {
     setConfirmationModal(false);
-    navigate("/business");
+    // navigate("/business");
+    navigate(-6);
   };
   
 // Recheck the formattedDate

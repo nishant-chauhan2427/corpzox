@@ -8,7 +8,7 @@
 // export const AddressDetails = () => {
 //   const { business } = useSelector((state) => state.business);
 
-  
+
 //   const {
 //     handleSubmit,
 //     control,
@@ -230,7 +230,7 @@
 //                 />
 //               )}
 //             />
-            
+
 //              <Controller
 //               name="address.communicationAddressState"
 //               control={control}
@@ -276,7 +276,7 @@
 //                     }}
 //                     onBlur={() => handleFieldBlur("address.communicationAddressCity")}
 //                   />
-                  
+
 //                 );
 //               }}
 //             />
@@ -298,7 +298,7 @@
 //                 />
 //               )}
 //             />
-           
+
 //           </div>
 //         </div>
 //       </div>
@@ -332,14 +332,14 @@ import { updateAddressDetails, updateRegistrationDetails } from "../../../../../
 import { addressSchema } from "../../../../../validation/createBusinessValidationSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-export const AddressDetails = () => {
+export const AddressDetails = ({ isEdit }) => {
   const { business, businessId } = useSelector((state) => state.business);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
 
 
-  
+
   const {
     handleSubmit,
     control,
@@ -351,10 +351,10 @@ export const AddressDetails = () => {
   } = useForm({
     mode: "onChange",
     // resolver: yupResolver(getValidationSchema(currentStep)),
-      defaultValues: business || {},
-      resolver: yupResolver(addressSchema), // Apply the validation schema here
+    defaultValues: business || {},
+    resolver: yupResolver(addressSchema), // Apply the validation schema here
   });
-  
+
 
   // useEffect(() => {
   //   if (business) {
@@ -377,7 +377,7 @@ export const AddressDetails = () => {
 
   const cityOption = [
     { label: "Noida", value: "noida" },
-    { label: "Gurgaon", value: "gurgoan"},
+    { label: "Gurgaon", value: "gurgoan" },
   ];
 
   const stateOption = [
@@ -399,25 +399,37 @@ export const AddressDetails = () => {
 
   const onSubmit = (data) => {
     // console.log("Submitted Data:", data);
-    const payload =  data?.address
-    if(!businessId) {
+    const payload = data?.address
+    if (!businessId) {
       console.log("No businessId exist is in business Store");
     }
 
-     //PUT API to update changes
-     payload.businessId = businessId;
-     dispatch(updateAddressDetails(payload)).then((response) => {
+    //PUT API to update changes
+    payload.businessId = businessId;
+    dispatch(updateAddressDetails(payload)).then((response) => {
       //  console.log("Response", response?.payload);
-       // const newBusinessId = response.payload;
-       // dispatch(setBusinessId(newBusinessId)); 
-     });
+      // const newBusinessId = response.payload;
+      // dispatch(setBusinessId(newBusinessId)); 
+    });
 
-     navigate("/business/create/financial");
-  
+    // navigate("/business/create/financial");
+    isEdit ? navigate("/business/edit/financial") : navigate("/business/create/financial")
+
+
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      {/* Progress bar */}
+      <div className="w-full h-2 bg-gray-200 mb-4 rounded-full">
+        <div
+          className="h-2 bg-blue-500 rounded-full"
+          style={{
+            // width: `${(currentStep / (steps.length - 1)) * 100}%`,
+            width: `40%`,
+          }}
+        ></div>
+      </div>
       <div className="w-full pt-4 flex flex-col md:flex-row md:justify-between gap-4">
         <div className="w-full">
           <div className="my-4">
@@ -485,7 +497,7 @@ export const AddressDetails = () => {
                       setValue("address.businessAddressState", selectedValue.value);
                       // trigger("address.businessAddressState"); // Manually trigger validation
                     }}
-                    // onBlur={() => handleFieldBlur("address.businessAddressState")}
+                  // onBlur={() => handleFieldBlur("address.businessAddressState")}
                   />
                 );
               }}
@@ -582,8 +594,8 @@ export const AddressDetails = () => {
                 />
               )}
             />
-            
-             <Controller
+
+            <Controller
               name="address.communicationAddressState"
               control={control}
               render={({ field }) => {
@@ -628,7 +640,7 @@ export const AddressDetails = () => {
                     }}
                     onBlur={() => handleFieldBlur("address.communicationAddressCity")}
                   />
-                  
+
                 );
               }}
             />
@@ -650,19 +662,19 @@ export const AddressDetails = () => {
                 />
               )}
             />
-           
+
           </div>
         </div>
       </div>
-       {/* Navigation Buttons */}
-       <div className="flex justify-between items-center gap-4 m-2">
-          <Button type="button" primary onClick={()=>navigate(-1)}>
-            Prev
-          </Button>
-          <Button type="submit" primary disabled={!isValid}>
-           Save & Next
-          </Button>
-        </div>
+      {/* Navigation Buttons */}
+      <div className="flex justify-between items-center gap-4 m-2">
+        <Button type="button" primary onClick={() => navigate(-1)}>
+          Prev
+        </Button>
+        <Button type="submit" primary disabled={!isValid}>
+          Save & Next
+        </Button>
+      </div>
     </form>
   );
 };
