@@ -32,15 +32,15 @@ const BusinessPreview = () => {
     if (businessId) {
       try {
         setLoading(true);
-        await dispatch(updateAddressDetails({...address, businessId}));
-        await dispatch(updateFinancialDetails({...financial, businessId}));
-        await dispatch(updateKYCDetails({ ...kyc,businessId }));
-        await dispatch(updateFundingDetails({ businessId,...funding}));
+        // await dispatch(updateAddressDetails({...address, businessId}));
+        // await dispatch(updateFinancialDetails({...financial, businessId}));
+        // await dispatch(updateKYCDetails({ ...kyc,businessId }));
+        // await dispatch(updateFundingDetails({ businessId,...funding}));
 
        // toast.success("Business created successfully!");
         
         setConfirmationModal(true);
-        dispatch(resetBusiness());
+        // dispatch(resetBusiness());
         setLoading(false);
         setFormModal(false);
       } catch (error) {
@@ -55,7 +55,7 @@ const BusinessPreview = () => {
   };
 
   const handlePrevStep = () => {
-    navigate("/business/create");
+    navigate(-1);
   };
   const onConfirmationModalClose = () => {
     setConfirmationModal(false);

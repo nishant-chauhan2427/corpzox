@@ -62,7 +62,7 @@ const BusinessDetail = () => {
   }
 
   const handleEditBusiness = () => {
-    navigate("/business/edit")
+    navigate("/business/edit/registration")
   }
 
   return (

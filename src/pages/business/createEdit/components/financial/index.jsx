@@ -1,22 +1,46 @@
-import { Controller } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { Input } from "../../../../../components/inputs";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { validateNumber } from "../../../../../utils";
+import { Button } from "../../../../../components/buttons";
+import { useNavigate } from "react-router-dom";
+import { updateFinancialDetails, updateRegistrationDetails } from "../../../../../redux/actions/business-action";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { financialSchema } from "../../../../../validation/createBusinessValidationSchema";
 
-export const FinancialDetails = ({ control, errors, setValue, handleBlur, trigger }) => {
+export const FinancialDetails = () => {
 
   
   const {business,businessId} = useSelector((state) => state.business);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  // console.log("business,businessId",business,businessId);
+  
 
-  useEffect(() => {
-    // Ensure to populate the registration data when business is available
-    if (business) {
-      setValue("financial.capital", business?.financial?.capital);
-      setValue("financial.revenue", business?.financial?.revenue);
-      setValue("financial.profit", business?.financial?.profit);
-    }
-  }, [business, setValue]);
+  const {
+    handleSubmit,
+    control,
+    formState: { errors, isValid, touchedFields },
+    setValue,
+    getValues,
+    watch,
+    trigger,
+  } = useForm({
+    mode: "onChange",
+    // resolver: yupResolver(getValidationSchema(currentStep)),
+      defaultValues: business || {},
+      resolver: yupResolver(financialSchema), // Apply the validation schema here
+  });
+
+  // useEffect(() => {
+  //   // Ensure to populate the registration data when business is available
+  //   if (business) {
+  //     setValue("financial.capital", business?.financial?.capital);
+  //     setValue("financial.revenue", business?.financial?.revenue);
+  //     setValue("financial.profit", business?.financial?.profit);
+  //   }
+  // }, [business, setValue]);
 
   const handleFieldChange = (fieldName, field, trigger) => {
     return (e) => {
@@ -25,17 +49,35 @@ export const FinancialDetails = ({ control, errors, setValue, handleBlur, trigge
     };
   };
 
-  const handleFieldBlur = (fieldName) => {
-    return () => {
-      handleBlur(fieldName); // Call the default handleBlur to trigger validation on blur
-      trigger(fieldName); // Manually trigger validation for the field on blur
-    };
+  // const handleFieldBlur = (fieldName) => {
+  //   return () => {
+  //     handleBlur(fieldName); // Call the default handleBlur to trigger validation on blur
+  //     trigger(fieldName); // Manually trigger validation for the field on blur
+  //   };
+  // };
+
+  const onSubmit = (data) => {
+    // console.log("Submitted Data:", data);
+    const payload =  data?.financial
+    if(!businessId) {
+      console.log("No businessId exist is in business Store");
+      return;
+    }
+
+     //PUT API to update changes
+     payload.businessId = businessId;
+     dispatch(updateFinancialDetails(payload)).then((response) => {
+      //  console.log("Response", response?.payload);
+       // const newBusinessId = response.payload;
+       // dispatch(setBusinessId(newBusinessId)); 
+     });
+
+     navigate("/business/create/kyc");
+  
   };
 
-
-
   return (
-    <div>
+    <form  onSubmit={handleSubmit(onSubmit)} >
       <div className="flex flex-col md:flex-row gap-4">
         <div>
           <div className="my-4">
@@ -57,7 +99,7 @@ export const FinancialDetails = ({ control, errors, setValue, handleBlur, trigge
                   placeholder={`Enter capital`}
                   errorContent={errors.financial?.capital?.message}
                   required={true}
-                  onBlur={handleFieldBlur(`financial.capital`)} // Trigger validation on blur
+                  // onBlur={handleFieldBlur(`financial.capital`)} // Trigger validation on blur
                   onChange={handleFieldChange(`financial.capital`, field, trigger)} // Trigger validation on change
                   onKeyDown={validateNumber}
                 />
@@ -73,7 +115,7 @@ export const FinancialDetails = ({ control, errors, setValue, handleBlur, trigge
                   placeholder={`Enter revenue`}
                   errorContent={errors.financial?.revenue?.message}
                   required={true}
-                  onBlur={handleFieldBlur(`financial.revenue`)} // Trigger validation on blur
+                  // onBlur={handleFieldBlur(`financial.revenue`)} // Trigger validation on blur
                   onChange={handleFieldChange(`financial.revenue`, field, trigger)} // Trigger validation on change
                   onKeyDown={validateNumber}
                 />
@@ -89,7 +131,7 @@ export const FinancialDetails = ({ control, errors, setValue, handleBlur, trigge
                   placeholder={`Enter profit`}
                   errorContent={errors.financial?.profit?.message}
                   required={true}
-                  onBlur={handleFieldBlur(`financial.profit`)} // Trigger validation on blur
+                  // onBlur={handleFieldBlur(`financial.profit`)} // Trigger validation on blur
                   onChange={handleFieldChange(`financial.profit`, field, trigger)} // Trigger validation on change
                   onKeyDown={validateNumber}
                 />
@@ -98,6 +140,15 @@ export const FinancialDetails = ({ control, errors, setValue, handleBlur, trigge
           </div>
         </div>
       </div>
-    </div>
+      {/* Navigation Buttons */}
+      <div className="flex justify-between items-center gap-4 m-2">
+          <Button type="button" primary onClick={()=>navigate(-1)}>
+            Prev
+          </Button>
+          <Button type="submit" primary disabled={!isValid} >
+           Save & Next
+          </Button>
+        </div>
+    </form>
   );
 };
