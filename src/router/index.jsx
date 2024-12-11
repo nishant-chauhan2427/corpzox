@@ -36,6 +36,7 @@ import Payments from "../pages/payment";
 import DocumentDetail from "../pages/documents/detail";
 import OffersDetails from "../pages/offers/components";
 import ServiceprogressViewAll from "../pages/services/serviceProgressViewAll";
+import { Insight } from "../components/insight";
 
 const router = createBrowserRouter([
   {
@@ -271,6 +272,15 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <OffersDetails />,
+              },
+            ],
+          },
+          {
+            path: "insight",
+            children: [
+              {
+                index: true,
+                element: <Insight/>,
               },
             ],
           },
