@@ -16,6 +16,7 @@ export const Pricing = ({ pricing = true, data, serviceId, offer }) => {
     (state) => state.serviceDetails
   );
 
+  console.log(quotationDetails, "quotationDetails")
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { statesList } = useSelector((state) => state.serviceDetails);
@@ -39,54 +40,6 @@ export const Pricing = ({ pricing = true, data, serviceId, offer }) => {
       ],
     }
   })
-  const packages = [
-    {
-      title: "STARTER PACK",
-      price: "₹5,599",
-      additional_cost: "+ applicable govt. ₹500",
-      features: [
-        "Fast Application",
-        "Application within 5 working days or your money back.",
-      ],
-      includes: [
-        "2 x DIN and Digital Signatures",
-        "2 x Name Application",
-        "Drafting of MoA and AoA",
-        "COI, PAN and TAN",
-      ],
-      button_text: "Apply Now",
-    },
-    {
-      title: "VALUE PACK",
-      price: "₹7,499",
-      additional_cost: "+ applicable govt. ₹500",
-      features: [
-        "Fast Application",
-        "Application within 5 working days or your money back.",
-      ],
-      includes: [
-        "Everything from starter pack",
-        "MSME Registration",
-        "Free accounting and filing for 3 months",
-      ],
-      button_text: "Apply Now",
-    },
-    {
-      title: "VALUE PACK",
-      price: "₹9,499",
-      additional_cost: "+ applicable govt. ₹500",
-      features: [
-        "Fast Application",
-        "Application within 5 working days or your money back.",
-      ],
-      includes: [
-        "Everything from starter pack",
-        "MSME Registration",
-        "Free accounting and filing for 3 months",
-      ],
-      button_text: "Apply Now",
-    },
-  ];
 
   // const quotations = [
   //   {
@@ -124,7 +77,7 @@ export const Pricing = ({ pricing = true, data, serviceId, offer }) => {
     label: formattedStates ? formattedStates[0]?.label : "",
     id: formattedStates ? formattedStates[0]?.id : ""
   }
-  console.log(defaultObject, "defaultObject")
+  
   return (
     <section>
       <div className="flex flex-col gap-4">
@@ -166,6 +119,14 @@ export const Pricing = ({ pricing = true, data, serviceId, offer }) => {
           </div>
         ) : (
           <>
+            <Selector
+              defaultValue={defaultObject}
+              isSearchable={true}
+              className={"lg:min-w-60"}
+              placeholder={"Select State"}
+              options={formattedStates}
+              onChange={handleStateChange}
+            />
             {quotationDetails?.map((data, index) => (
               <QuotationCard
                 serviceId={serviceId}
@@ -264,7 +225,7 @@ const QuotationCard = ({ quotation, serviceId, dispatch, navigate }) => {
   };
   return (
     <div className="m-6 p-10 border rounded-lg bg-white shadow-md hover:shadow-lg">
-    <p className="pt-2 font-bold uppercase text-sm text-[#565657]">
+      <p className="pt-2 font-bold uppercase text-sm text-[#565657]">
         {(quotation?.quotationTitle)}
       </p>
       <p className="text-sm text-gray-600 mb-2">
@@ -276,7 +237,12 @@ const QuotationCard = ({ quotation, serviceId, dispatch, navigate }) => {
       </p>
       {/* <h3 className="text-lg font-semibold text-gray-800 mb-4">{`Quotation - ${quotation.service}`}</h3> */}
       <p className="text-gray-700 mb-4">{quotation?.message}</p>
-      <div className="text-lg font-semibold text-gray-800 mb-6">{`Plan Price: ${quotation?.amount}`}</div>
+      <div className="text-lg font-semibold text-gray-800 mb-1">{`Plan Price: ${quotation?.amount}`}</div>
+      <p className="font-semibold text-xs text-[#038624] mb-6">
+        {quotation?.stateWiseServiceCharge
+          ? ` ${quotation?.stateWiseServiceCharge} + applicable govt. fees`
+          : `--`}
+      </p>
       <Button
         onClick={() => handleServicePayment(quotation?.amount)}
         primary={true}
