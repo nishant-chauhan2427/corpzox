@@ -8,7 +8,8 @@ const dashBoardSlice = createSlice({
   initialState: {
     isChangeManagerLoading: false,
     error: null,
-    isRatingLoading : false
+    isRatingLoading : false,
+    ratingReviewList : []
   },
   reducers: {
     clearState: (state) => {
