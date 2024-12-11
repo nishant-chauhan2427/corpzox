@@ -268,18 +268,21 @@ const serviceDetailSlice = createSlice({
             cost: action.payload.cost,
             duration: action.payload.duration,
           },
-          totalCouponDiscount:
-            (state.offerDetails?.discountPercent || 0) +
-            (state.availServiceData?.discountPercent || 0),
+          totalCouponDiscount:state.totalCouponDiscount, 
           amount: state.originalPrice,
+          // appliedCoupan: [
+          //   ...(Array.isArray(state.availServiceData.appliedCoupan) ? state.availServiceData.appliedCoupan : []), // Ensure it's an array
+          //   ...(state.offerDetails ? [state.offerDetails] : []) // Add offerDetails directly if available, not nested in an object
+          // ],
           appliedCoupan: [
-            ...(Array.isArray(state.availServiceData.appliedCoupan) ? state.availServiceData.appliedCoupan : []), // Ensure it's an array
-            ...(state.offerDetails ? [state.offerDetails] : []) // Add offerDetails directly if available, not nested in an object
+            ...(Array.isArray(state.availServiceData?.appliedCoupan) 
+              ? state.availServiceData.appliedCoupan.filter(coupon => coupon) 
+              : []), // Ensure valid existing coupons
+            ...(state.offerDetails ? [state.offerDetails] : []) // Add only valid offerDetails
           ],
           paymentMode: "Net Banking",
           paymentStatus: "PENDING",
           paymentDate: Date.now(),
-          totalCouponDiscount: state.totalCouponDiscount,
         };
         console.log('Offer Discount Percent:', state.offerDetails?.discountPercent);
         console.log('Coupon Discount Percent:', state.availServiceData?.couponDiscountPercent);
@@ -400,7 +403,7 @@ const serviceDetailSlice = createSlice({
         state.availServiceData = {
           ...state.availServiceData,
           amount: state.originalPrice,
-          totalCouponDiscount: discount,
+          totalCouponDiscount: discount + state.totalCouponDiscount,
           // appliedCoupan: [
           //   {
           //     couponId: couponData.couponId,
