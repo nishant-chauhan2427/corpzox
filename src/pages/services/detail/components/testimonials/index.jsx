@@ -16,7 +16,7 @@ import { ServiceDetailsRatingCard } from "../../../../../components/loader/Servi
 export const Testimonials = ({ serviceId }) => {
   console.log(serviceId, "serviceIdserviceIdserviceId")
   const { serviceTestimonials, averageRating, success, ratingReviewList } = useSelector((state) => state.serviceDetails);
-  console.log(ratingReviewList, "serviceTestimonials")
+  console.log(ratingReviewList, "ratingReviewList")
   const {isRatingLoading} = useSelector((state)=> state.dashboard)
   const dispatch = useDispatch();
   const formattedTestimonials = serviceTestimonials?.map((testimonial) => {
@@ -28,7 +28,7 @@ export const Testimonials = ({ serviceId }) => {
     }
   })
 
-  const formattedRatting = ratingReviewList ?ratingReviewList[0] : {}
+  const formattedRatting = ratingReviewList ?ratingReviewList?.data[0] : {}
   const ratingDetails = success?.total_rating_count?.length > 0 ? success.total_rating_count[0] : null;
   useEffect(() => {
     dispatch(getRatingReviews(serviceId))
@@ -87,11 +87,11 @@ export const Testimonials = ({ serviceId }) => {
   };
 
   const ratings = [
-    { title: "Service Quality", score: formattedRatting ? formattedRatting.avgServiceQualityRating : "" },
-    { title: "Professional Behaviour", score: formattedRatting ? formattedRatting.avgProfessionalBehaviourRating      : "" },
-    { title: "On-Time Delivery", score: formattedRatting ? formattedRatting.avgOnTimeDeliveryRating : ""  },
-    { title: "Transparent Pricing", score: formattedRatting ? formattedRatting.avgTransparentPricingRating : ""  },
-    { title: "Value For Money", score: formattedRatting ? formattedRatting.avgValueForMoneyRating : ""  },
+    { title: "Service Quality", score: formattedRatting ? formattedRatting.avgServiceQualityRating : "N/A" },
+    { title: "Professional Behaviour", score: formattedRatting ? formattedRatting.avgProfessionalBehaviourRating      : "N/A" },
+    { title: "On-Time Delivery", score: formattedRatting ? formattedRatting.avgOnTimeDeliveryRating : "N/A"  },
+    { title: "Transparent Pricing", score: formattedRatting ? formattedRatting.avgTransparentPricingRating : "N/A"  },
+    { title: "Value For Money", score: formattedRatting ? formattedRatting.avgValueForMoneyRating : "N/A"  },
   ];
 
   const progressCircle = useRef(null);
@@ -108,7 +108,7 @@ export const Testimonials = ({ serviceId }) => {
       </h4>
 
       {/* Rating Section */}
-      {isRatingLoading ?<ServiceDetailsRatingCard/>:<div className="bg-[#0E38BD] rounded-md p-5 flex flex-col md:flex-row justify-between gap-4 items-center mb-8">
+      {isRatingLoading  ?<ServiceDetailsRatingCard/>:<div className="bg-[#0E38BD] rounded-md p-5 flex flex-col md:flex-row justify-between gap-4 items-center mb-8">
         <div className="flex flex-wrap justify-center">
           {ratings.map((rating, index) => (
             <div
@@ -132,10 +132,10 @@ export const Testimonials = ({ serviceId }) => {
         </div>
         <div className="flex flex-col items-start">
           <div className="flex items-center gap-2 text-xl ">
-            <p className="font-bold text-white">{ratingDetails?.average}/5</p>
-            <Rating rating={4} />
+           { <p className="font-bold text-white">{ratingDetails?.average ? ratingDetails?.average : "--"}/5</p>}
+            {ratingDetails?.average && <Rating rating={ratingDetails?.average} />}
           </div>
-          <p className="font-semibold text-[11px] text-white">{`Based on ${ratingDetails?.count} reviews`}</p>
+         { <p className="font-semibold text-[11px] text-white">{`Based on ${ratingDetails?.count ? ratingDetails?.count : 0} reviews`}</p>}
         </div>
       </div>}
 

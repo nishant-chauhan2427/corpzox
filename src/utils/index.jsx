@@ -16,28 +16,33 @@ export function objectToQueryString(obj) {
   return parts.join("&");
 }
 export function calculateAge(birthDateString) {
-  const birthDate = new Date(birthDateString); // Convert the timestamp to a Date object
-  const currentDate = new Date(); // Get the current date
+  const birthDate = new Date(birthDateString);
+  const today = new Date();
 
-  // Calculate the difference in years
-  let ageYears = currentDate.getFullYear() - birthDate.getFullYear();
-  
-  // Calculate the difference in months
-  let ageMonths = currentDate.getMonth() - birthDate.getMonth();
+  let years = today.getFullYear() - birthDate.getFullYear();
+  let months = today.getMonth() - birthDate.getMonth();
+  let days = today.getDate() - birthDate.getDate();
 
-  // If the current month is before the birth month or if it's the same month but the day hasn't passed, subtract 1 year
-  if (ageMonths < 0 || (ageMonths === 0 && currentDate.getDate() < birthDate.getDate())) {
-    ageYears--; // Subtract a year if the current date is before the birthday this year
-    ageMonths += 12; // Adjust the months accordingly
+  // Adjust for negative values
+  if (days < 0) {
+    months -= 1;
+    const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+    days += prevMonth.getDate();
+  }
+  if (months < 0) {
+    years -= 1;
+    months += 12;
   }
 
-  // If the current day is before the birthday in the current month, adjust the months back by 1
-  if (currentDate.getDate() < birthDate.getDate()) {
-    ageMonths--;
-  }
+  // Build the output string
+  let ageString = "";
+  if (years > 0) ageString += `${years}y `;
+  if (months > 0) ageString += `${months}m `;
+  if (days > 0) ageString += `${days}d`;
 
-  return `${ageYears}y ${ageMonths}m`;
+  return ageString.trim() || "0d"; // Fallback if no age units
 }
+
 export const capitalize = (word) =>
   `${word?.charAt(0).toUpperCase()}${word?.slice(1)}`;
 

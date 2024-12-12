@@ -9,6 +9,7 @@ import { ImSpinner2 } from "react-icons/im";
 import { TableShimmer } from "../../../components/loader/TableShimmer";
 import { NoData } from "../../../components/errors/noData";
 import Pagination from "../../../components/Pagination";
+import { formatDate } from "../../../utils";
 
 
 
@@ -18,6 +19,7 @@ const columns = [
   { header: "Amount", accessor: "amount" },
   { header: "Payment Method", accessor: "paymentMethod" },
   { header: "Renew Date", accessor: "renewDate" },
+  { header: "Subscription Type", accessor: "type" },
 ];
 
 const SubscriptionHistory = () => {
@@ -30,46 +32,25 @@ const SubscriptionHistory = () => {
   console.log(subscriptionsData, "subscriptionsData")
 
   const FormattedSubscriptions = subscriptionsData?.map((subscription) => {
-    const { amount, active, paymentMode, subscriptionExpireyDate, service_data, subscriptionDetails
+    const { amount, active, paymentMode, subscriptionExpireyDate, service_data, subscriptionDetails, serviceDetails
     } = subscription
 
     return {
-      subscription: subscriptionDetails.details,
+      subscription: subscriptionDetails?.details ? subscriptionDetails?.details: "N/A",
       status: active ? "Active" : "",
       amount: amount,
       paymentMethod: paymentMode,
-      renewDate: subscriptionExpireyDate,
-      plan: subscriptionDetails.type
+      renewDate: formatDate(subscriptionExpireyDate),
+      plan: subscriptionDetails?.type ? subscriptionDetails?.type : "N/A"
     }
   })
-  console.log(FormattedSubscriptions, "ehe")
+ 
   useEffect(() => {
     dispatch(getSubscriptionHistoryCount({ type: "active" }))
     dispatch(getSubscriptionHistoryCount({ type: "expired" }))
     dispatch(getSubscriptionHistoryCount({ type: "up-coming" }))
   }, [])
-  // const handleNavigation = (button, label) => {
-  //   switch (button) {
-  //     case "Previous": {
-  //       setPackageIndex((prev) =>
-  //         prev > 0 ? prev - 1 : subscriptionPackage.length - 1
-  //       );
-  //       dispatch(dispatch(getSubscriptions({ page: 1, type: label == "Active Subscription" ? "active" : label == "Expired Subscription" ? "expired" : "up-coming" })))
-  //     }
-  //       break;
-  //     case "Next": {
 
-  //       setPackageIndex((prev) =>
-  //         prev < subscriptionPackage.length - 1 ? prev + 1 : 0
-  //       );
-  //       console.log(label, "label")
-  //       dispatch(dispatch(getSubscriptions({ page: 1, type: label == "Active Subscription" ? "active" : label == "Expired Subscription" ? "expired" : "up-coming" })))
-  //     }
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // };
 
   const handleNavigation = (button) => {
     let newIndex;
@@ -124,6 +105,7 @@ const SubscriptionHistory = () => {
     },
   ];
   const currentPackage = subscriptionPackage[packageIndex];
+  console.log(currentPackage,"currentPackage" )
 
   const handleCard = (label) => {
     setPackageType(label)
@@ -157,12 +139,16 @@ const SubscriptionHistory = () => {
               ) : currentPackage.data.length === 0 ? (
                 <NoData />
               ) : (
-                <Table columns={columns} data={currentPackage.data} />
+                <>
+                  <p>
+                    <b>{subscriptionTotal}</b> results
+                  </p>
+                  <Table columns={columns} data={currentPackage.data} isExpandable={true} isExpandableData={currentPackage?.description}/></>
               )}
               <div className="flex justify-between items-center gap-3">
-                <p>
+                {/* <p>
                   <b>{subscriptionTotal}</b> results
-                </p>
+                </p> */}
                 <div className="flex items-center gap-2">
                   {/* <Button
                     onClick={() => handleNavigation("Previous", currentPackage.label)}
@@ -222,7 +208,7 @@ const Card = ({ number, label, description, onClick, loading }) => {
         <label className="font-bold text-lg">{label}</label>
         <p className="text-sm">{description}</p>
       </div>
-      <button>View All</button>
+      {number > 0 && <button>View All</button>}
     </div>
   );
 };

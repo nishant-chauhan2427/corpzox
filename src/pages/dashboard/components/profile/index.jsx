@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import {
   CircularProgressbarWithChildren,
   buildStyles,
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
-export const Profile = ({user={}}) => {
-  const [percentage,setPercentage]=useState(0);
+export const Profile = ({ user = {} }) => {
+  const [percentage, setPercentage] = useState(100);
   // const calculatePercentage = (data) => {
   //   try {
   //     const totalProperties = Object.keys(data[0])?.length; // Total number of properties
@@ -28,7 +28,7 @@ export const Profile = ({user={}}) => {
   //     return null; // Return null if there's an error
   //   }
   // };
-  let fieldsKey=['name','gender','email','businessEmail','phone','role','profile_picture_url']
+
   // const calculateOverallPercentage = (...percentages) => {
   //   if (percentages.length === 0) return 0;
 
@@ -52,20 +52,28 @@ export const Profile = ({user={}}) => {
   //   +financePercentage
   // );
   //console.log(user, "user")
-  let calculatePercentageHandler=()=>{
-    let count=0;
-    Object.keys(user).forEach((data)=>{
-      if(fieldsKey.indexOf(data)!=-1){
-        count++
+  let fieldsKey = ['name', 'gender', 'email', 'busniessEmail', 'phone', 'role', 'profile_picture_url']
+  
+  let calculatePercentageHandler = () => {
+    let count = 0;  
+    console.log(user, "Percentage");
+  
+    Object.keys(user).forEach((data) => {
+      if (fieldsKey.indexOf(data) !== -1) {
+        count++;  
       }
-    })
-    setPercentage(Math.floor((count/fieldsKey.length)*100));
-  }
-  useEffect(()=>{
-    if(user){
+    });
+    let percentage = Math.floor((count / fieldsKey.length) * 100);
+    
+    setPercentage(percentage);  
+  };
+  
+  
+  useEffect(() => {
+    if (user) {
       calculatePercentageHandler()
     }
-  },[user])
+  }, [user])
   return (
     <div className="w-full sm:w-fit pl-[11px] pr-[33px] py-[9px] flex gap-4 bg-white border items-center border-[#DFEAF2] rounded-[18px]">
       <div className="w-16 relative">
@@ -93,9 +101,20 @@ export const Profile = ({user={}}) => {
       <div>
         <p className="font-bold text-lg">{percentage}%</p>
         <p className="font-semibold text-sm text-[#232323]"> {user?.name ? (user.name.slice(0, 25) + (user.name.length > 25 ? "..." : "")) : "User Name"}</p>
-        <Link to={"/profile"} className="font-semibold text-[11px] text-[#FF4141]">
+        {/* <Link to={"/profile"} className="font-semibold text-[11px] text-[#FF4141]">
           Complete Your Profile
-        </Link>
+        </Link> */}
+        {percentage !== 100 ? (
+          <Link to="/profile" className="font-semibold text-[11px] text-[#FF4141]">
+            Complete Your Profile
+          </Link>
+        ) : (
+          <Link to="/profile" className="font-semibold text-[11px] text-[#FF4141]">
+            Edit Your Profile
+          </Link>
+        )}
+
+
       </div>
     </div>
   );

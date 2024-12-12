@@ -5,7 +5,7 @@ import { Table } from "../../../components/table";
 import { useEffect, useState } from "react";
 import { ReactModal } from "../../../components/modal";
 import { FaPlus } from "react-icons/fa";
-import { getPaymentTransaction } from "../../../redux/actions/payment-history-action";
+import { downloadInvoice, getPaymentTransaction } from "../../../redux/actions/payment-history-action";
 import { useDispatch, useSelector } from "react-redux";
 import { formatReadableDate } from "../../../utils";
 import { TableShimmer } from "../../../components/loader/TableShimmer";
@@ -13,13 +13,15 @@ import { NoData } from "../../../components/errors/noData";
 import { ConfirmationModal } from "../../../components/modal/confirmationModal";
 import { talkToAdvisor } from "../../../redux/actions/servicesDetails-actions";
 import Pagination from "../../../components/Pagination";
+import { clearUrl } from "../../../redux/slices/paymentHistorySlice";
+import { set } from "react-hook-form";
 
 const History = () => {
-const dispatch = useDispatch()
+  const dispatch = useDispatch()
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
   const [serviceId, setServiceId] = useState("")
-  const { paymentHistory, isPaymentHistoryLoading, totalTransaction } = useSelector((state) => state.paymentHistory)
+  const { paymentHistory, isPaymentHistoryLoading, downloadTransactionUrl, isTransactionDownloading, totalTransaction } = useSelector((state) => state.paymentHistory)
   const { isTalkToAdvisorLoading } = useSelector((state) => state.serviceDetails)
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [viewTransactionDetails, setViewTransactionDetails] = useState(false);
@@ -61,13 +63,13 @@ const dispatch = useDispatch()
   };
   const onViewTransactionClose = () => {
     setViewTransactionDetails(false);
-   
+
   };
 
   const openViewTransactionDetails = (id) => {
     console.log(id, "transactionId")
     setViewTransactionDetails(true);
-    const transactionDetails = paymentHistory.filter((payment)=>{
+    const transactionDetails = paymentHistory.filter((payment) => {
       return payment._id === id
     })
 
@@ -103,7 +105,7 @@ const dispatch = useDispatch()
       onConfirmationModalClose()
     }
   }, [isTalkToAdvisorLoading])
-  const actionMenu = (id,_id) => {
+  const actionMenu = (id, _id) => {
     return (
       <div className="flex py-2 justify-evenly items-center">
         <Button primary={false} onClick={() => openViewTransactionDetails(_id)}>
@@ -116,7 +118,30 @@ const dispatch = useDispatch()
     );
   };
 
+  // const downloadTransaction = (transactionId) => {
+  //   dispatch(downloadInvoice({transactionId}))
+  // }
+  const downloadTransaction = (transactionId) => {
+    dispatch(downloadInvoice({ transactionId }))
+  };
+  useEffect(() => {
+    if (downloadTransactionUrl) {
+      // Automatically download the file when the URL is available
+      const link = document.createElement("a");
+      link.href = downloadTransactionUrl; // URL from Redux state
+      link.download = ""; // Optional: Specify a file name
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
 
+      // Reset the URL after downloading to avoid re-triggering
+      dispatch(clearUrl());
+      onViewTransactionClose()
+    }
+  }, [downloadTransactionUrl, dispatch])
+
+
+  console.log(downloadTransactionUrl, "downloadTransactionUrl")
   return (
     <>
       <div>
@@ -149,7 +174,7 @@ const dispatch = useDispatch()
             <Button disabled={currentPage === Math.ceil(totalTransaction / 10)} onClick={() => handleNavigation("Next")} outline={true}>
               Next
             </Button> */}
-            <Pagination totalItems={totalTransaction} itemsPerPage={10} />
+            {totalTransaction > 10 && <Pagination totalItems={totalTransaction} itemsPerPage={10} />}
           </div>
         </div>
       </div>
@@ -197,21 +222,21 @@ const dispatch = useDispatch()
               <p className="font-semibold text-base  text-[#525252] flex  gap-4 ">
                 Your order id
                 <span className="font-semibold text-base text-[#0A1C40]">
-                 {transactionDetails?.transactionId}
+                  {transactionDetails?.transactionId}
                 </span>
               </p>
-              {/* <p className="font-semibold text-base  text-[#525252]  text-start ">
+              <p className="font-semibold text-base  text-[#525252]  text-start ">
                 Billed To: <br />
                 <span className="font-semibold text-base text-[#0A1C40]">
                   CorpZo Pvt. Ltd.
                 </span>
-              </p> */}
+              </p>
             </div>
             <div className="flex justify-between ">
               <p className="font-semibold text-base  text-[#525252] flex gap-4">
                 Payment method
                 <span className="font-semibold text-base text-[#0A1C40]">
-                 {transactionDetails?.paymentMode}
+                  {transactionDetails?.paymentMode}
                 </span>
               </p>
               <p></p>
@@ -224,24 +249,37 @@ const dispatch = useDispatch()
             <p className="font-semibold text-base  text-[#525252] ">Amount</p>
           </div>
           <hr />
-          {/* <div className="flex justify-between">
+          <div className="flex justify-between">
             <p className="font-semibold text-base  text-[#0A1C40] ">
               Discount Coupon
             </p>
-            <p className="font-semibold text-base  text-[#0A1C40] ">10%</p>
-          </div> */}
+            <p className="font-semibold text-base text-[#0A1C40]">
+              {Array.isArray(transactionDetails?.serviceappliedcouponandoffers) &&
+                transactionDetails?.serviceappliedcouponandoffers.length > 0 &&
+                transactionDetails?.serviceappliedcouponandoffers[0]?.amount > 0
+                ? transactionDetails?.amount - transactionDetails?.serviceappliedcouponandoffers[0]?.amount
+                : "--"}
+            </p>
+
+
+          </div>
           <div className="flex justify-between">
             <p className="font-semibold text-base  text-[#0A1C40] ">Amount</p>
             <p className="font-semibold text-base  text-[#0A1C40] ">
-            ₹ {transactionDetails?.amount}
+              ₹ {transactionDetails?.amount}
             </p>
           </div>
           <div className="flex justify-between bg-[#FFF4BA]  px-2 py-1">
             <p className="font-semibold text-base  text-[#0A1C40] ">
               Total amount paid
             </p>
-            <p className="font-semibold text-base  text-[#0A1C40] ">
-              ₹{transactionDetails.amount}
+            <p className="font-semibold text-base text-[#0A1C40]">
+              ₹{
+                Array.isArray(transactionDetails?.serviceappliedcouponandoffers) &&
+                  transactionDetails?.serviceappliedcouponandoffers.length > 0
+                  ? transactionDetails?.serviceappliedcouponandoffers[0]?.amount
+                  : transactionDetails?.amount
+              }
             </p>
           </div>
           <div className="flex justify-center gap-2 pt-10">
@@ -250,7 +288,7 @@ const dispatch = useDispatch()
               <img src="/public/icons/payment/print.svg" alt="" />
               Print
             </Button>
-            <Button primary={true}>
+            <Button primary={true} isLoading={isTransactionDownloading} onClick={() => downloadTransaction(transactionDetails._id)}>
               {" "}
               <img src="/public/icons/payment/download.svg" alt="" />
               Download

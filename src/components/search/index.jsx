@@ -39,20 +39,31 @@ export const Search = (props) => {
   };
 
   // const handleClearSearch = () => {
-  //   setQuery("");
-  //   searchParams.set("search", "");
-  //   const params = new URLSearchParams(location.search);
-  //   params.delete("search");
-  //   navigate({ search: params.toString() });
+  //   // Clear input field
+  //   // searchParams.delete("search"); // Remove the 'search' param
+  //   // setSearchParams(searchParams); // Sync with URL
+  //   if (searchParams.has('search')) {
+  //     console.log("andar gaya")
+  //     setSearchParams("search", "")
+  //     console.log("necche bhi gaya ")
+  //     setSearchParams(searchParams);
+  //   }
+  //   setQuery(""); 
   // };
   const handleClearSearch = () => {
-    setQuery(""); // Clear the search input
-  
-    const params = new URLSearchParams(location.search); // Get the current URL params
-    params.delete("search"); // Delete the "search" key
-  
-    navigate({ search: params.toString() }); // Update the URL with modified params
+    if( props.clearSerarch){
+      props.clearSerarch()
+      setQuery(""); 
+    }else{
+      const updatedParams = new URLSearchParams(location.search);
+      updatedParams.delete("search"); 
+      setSearchParams(updatedParams); 
+      
+    }
+   
   };
+  
+  
   let searchEvent = null;
   const handleKeyPress = (e) => {
     // console.log('49',query)
@@ -75,7 +86,7 @@ export const Search = (props) => {
   const handleFilterMenu = () => {
     setFilterMenu(!filterMenu);
   };
-
+  
   useOutsideClick(filterMenuRef, handleFilterMenu);
 
   return (
@@ -106,7 +117,6 @@ export const Search = (props) => {
             className={`${
               props.filter ? "right-6" : "right-2"
             } absolute top-1/2 -translate-y-1/2 dark:text-white`}
-            onClick={handleSearch}
           >
             <RxCross2 onClick={handleClearSearch} size={18} />
           </button>

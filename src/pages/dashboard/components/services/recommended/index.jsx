@@ -11,12 +11,14 @@ export const RecommendedServices = ({ data, total }) => {
     dispatch(resetService({}));
     navigate("/services");
   };
-  console.log(total, "ˇTotal Service");
+  // test dev branch
+  console.log(total,"ˇTotal Service");
   return (
     <div className="">
       <div className="py-2 flex flex-row sm:flex-row justify-between gap-2">
         <Heading title={"Dashboard"} className={"py-0"} tourButton={true}>
-          Recommended Services {total == undefined ? "" : "(" + total + ")"}
+        
+          Recommended Services {total ? `(${total})` : ""}
         </Heading>
         <Link to={"/services"} className="font-medium text-sm text-[#797979]">
           View All

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { submitEditProfile } from "../actions/profile-actions";
+import { submitEditProfile, updateProfilePicture } from "../actions/profile-actions";
 import toast from "react-hot-toast";
 // Slice
 const profileSlice = createSlice({
@@ -8,12 +8,14 @@ const profileSlice = createSlice({
     loading: false,
     error: null,
     success: null,
+    upload: null,
   },
   reducers: {
     clearState: (state) => {
       state.loading = false;
       state.error = null;
       state.success = null;
+      state.upload=null;
     },
   },
   extraReducers: (builder) => {
@@ -24,7 +26,7 @@ const profileSlice = createSlice({
         state.success = null;
       })
       .addCase(submitEditProfile.fulfilled, (state, action) => {
-        console.log(action.payload, "data from slice")
+        //console.log(action.payload, "data from slice")
         //toast.success(action.payload.message)
         //console.log(action.payload,"action.payload12");
         state.loading = false;
@@ -32,10 +34,24 @@ const profileSlice = createSlice({
         state.error = null;
       })
       .addCase(submitEditProfile.rejected, (state, action) => {
-        state.loading = false;
         state.error = action.payload;
         state.success = null;
-       // console.log(action.payload, "rejected")
+
+      })
+
+      .addCase(updateProfilePicture.pending, (state) => {  
+        state.error = null;
+        state.upload  = null;
+      })
+      .addCase(updateProfilePicture.fulfilled, (state, action) => {
+        state.upload = action.payload?.data?.url;
+        //console.log(action.payload?.data?.url,"upload");
+        state.error = null;
+      })
+      .addCase(updateProfilePicture.rejected, (state, action) => {
+        state.error = action.payload;
+        state.upload = null;
+      
       })
   },
 });

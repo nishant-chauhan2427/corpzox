@@ -52,12 +52,17 @@ export const ServicesCard = ({
               <div className="flex justify-between">
                 <div className="flex gap-2">
                   <p className="font-bold text-[#0A1C40]">
-                    {url.includes("services") ? service?.name : service?.service?.[0]?.name || "No Service Name"}
+                    {url.includes("services") ? (service?.name)?service?.name:"___" : (service?.service?.[0]?.name)?service?.service?.[0]?.name:"____"}
                   </p>
-                  { console.log(service._id,"addLoading")}
-                  {(url.includes("services") || url.includes("services")) && service?.offerservices?.[0]?.offers?.[0]?.discountPercent && (
+                 {/* {console.log(service?.service?.[0]?.offerservices?.[0]?.offers?.[0]?.discountPercent ,"SERVICE DIS")} */}
+                  {(url.includes("services") ) && service?.offerservices?.[0]?.offers?.[0]?.discountPercent && (
                     <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1">
                       {service.offerservices[0].offers[0].discountPercent} %
+                    </p>
+                  )}
+                  {(url.includes("wishlist")) && service?.service?.[0]?.offerservices?.[0]?.offers?.[0]?.discountPercent  && (
+                    <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1">
+                      {service?.service?.[0]?.offerservices?.[0]?.offers?.[0]?.discountPercent } %
                     </p>
                   )}
                 </div>
@@ -69,7 +74,7 @@ export const ServicesCard = ({
                 /> : <></>}
               </div>
               <p className="text-base leading-[22px] font-normal text-[#7C7C7C]">
-                {url.includes("services") ? service?.details : service?.service[0]?.details}
+                {url.includes("services") ? (service?.details)?service?.details:"____" : (service?.service[0]?.details)?(service?.service[0]?.details):"____"}
               </p>
               <div className="flex flex-col gap-1 pt-1">
                 <div className="flex justify-between sm:w-4/5">
@@ -77,7 +82,7 @@ export const ServicesCard = ({
                     Estimated Time(Month(s))
                   </p>
                   <p className="font-bold text-[12px] text-[#000000]">
-                    {url.includes("services") ? service?.duration : service?.service[0]?.duration}
+                    {url.includes("services") ? (service?.duration)?service?.duration :"____" : (service?.service[0]?.duration)?service?.service[0]?.duration:"____"}
                   </p>
                 </div>
                 {/* <div className="flex justify-between sm:w-4/5">
@@ -93,7 +98,7 @@ export const ServicesCard = ({
                     Price (<FaRupeeSign className="ml-1" />)
                   </p>
                   <p className="font-bold text-[12px] text-[#000000]">
-                    {url.includes("services") ? service?.cost : service?.service[0]?.cost}
+                    {url.includes("services") ? (service?.cost)?service?.cost:"_____" : (service?.service[0]?.cost)?(service?.service[0]?.cost):"____"}
                   </p>
                 </div>
 

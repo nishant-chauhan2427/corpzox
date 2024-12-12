@@ -1,23 +1,66 @@
-import { Controller } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { Input } from "../../../../../components/inputs";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "../../../../../components/buttons";
+import { kycSchema } from "../../../../../validation/createBusinessValidationSchema";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { updateKYCDetails, updateRegistrationDetails } from "../../../../../redux/actions/business-action";
 
-export const KYCDetails = ({ control, errors, handleBlur, trigger,setValue }) => {
+export const KYCDetails = () => {
 
-  const {business,businessId} = useSelector((state) => state.business);
+  const { business, businessId } = useSelector((state) => state.business);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    // Ensure to populate the registration data when business is available
-    if (business) {
-      setValue("kyc.kycUser", business?.kyc?.kycUser);
-      setValue("kyc.id", business?.kyc?.id);
-      setValue("kyc.addressProof", business?.kyc?.addressProof);
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors, isValid, touchedFields },
+    setValue,
+    getValues,
+    watch,
+    trigger,
+  } = useForm({
+    mode: "onChange",
+    // resolver: yupResolver(getValidationSchema(currentStep)),
+    defaultValues: business || {},
+    resolver: yupResolver(kycSchema), // Apply the validation schema here
+  });
+
+  // useEffect(() => {
+  //   // Ensure to populate the registration data when business is available
+  //   if (business) {
+  //     setValue("kyc.kycUser", business?.kyc?.kycUser);
+  //     setValue("kyc.id", business?.kyc?.id);
+  //     setValue("kyc.addressProof", business?.kyc?.addressProof);
+  //   }
+  // }, [business, setValue]);
+
+  const onSubmit = (data) => {
+    // console.log("Submitted Data : KYC details :", data);
+    const payload =  data?.kyc
+    if (!businessId) {
+      console.log("No businessId exist is in business Store");
+      return;
     }
-  }, [business, setValue]);
+
+     //PUT API to update changes
+     payload.businessId = businessId;
+     dispatch(updateKYCDetails(payload)).then((response) => {
+      //  console.log("Response", response?.payload);
+       // const newBusinessId = response.payload;
+       // dispatch(setBusinessId(newBusinessId)); 
+     });
+
+     navigate("/business/create/funding");
+
+  };
 
   return (
-    <div>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col md:flex-row gap-4">
         <div>
           <div className="my-4">
@@ -39,7 +82,7 @@ export const KYCDetails = ({ control, errors, handleBlur, trigger,setValue }) =>
                   placeholder={`Enter username`}
                   errorContent={errors.kyc?.kycDetails?.kycUser?.message}
                   required={true}
-                  onBlur={() => handleBlur(`kyc.kycUser`)}  // Handle blur event
+                  // onBlur={() => handleBlur(`kyc.kycUser`)}  // Handle blur event
                   onChange={(e) => {
                     field.onChange(e); // Default handling
                     trigger("kyc.kycUser");  // Manually trigger validation for this field
@@ -58,7 +101,7 @@ export const KYCDetails = ({ control, errors, handleBlur, trigger,setValue }) =>
                   placeholder={`Enter identity proof no.`}
                   errorContent={errors.kyc?.id?.message}
                   required={true}
-                  onBlur={() => handleBlur(`kyc.id`)}  // Handle blur event
+                  // onBlur={() => handleBlur(`kyc.id`)}  // Handle blur event
                   onChange={(e) => {
                     field.onChange(e); // Default handling
                     trigger("kyc.id");  // Manually trigger validation for this field
@@ -77,7 +120,7 @@ export const KYCDetails = ({ control, errors, handleBlur, trigger,setValue }) =>
                   placeholder={`Enter address proof no.`}
                   errorContent={errors.kyc?.addressProof?.message}
                   required={true}
-                  onBlur={() => handleBlur(`kyc.addressProof`)}  // Handle blur event
+                  // onBlur={() => handleBlur(`kyc.addressProof`)}  // Handle blur event
                   onChange={(e) => {
                     field.onChange(e); // Default handling
                     trigger("kyc.addressProof");  // Manually trigger validation for this field
@@ -89,6 +132,15 @@ export const KYCDetails = ({ control, errors, handleBlur, trigger,setValue }) =>
           </div>
         </div>
       </div>
-    </div>
+      {/* Navigation Buttons */}
+      <div className="flex justify-between items-center gap-4 m-2">
+        <Button type="button" primary onClick={() => navigate(-1)}>
+          Prev
+        </Button>
+        <Button type="submit" primary disabled={!isValid} >
+         Save & Next
+        </Button>
+      </div>
+    </form>
   );
 };

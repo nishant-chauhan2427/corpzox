@@ -8,7 +8,8 @@ const dashBoardSlice = createSlice({
   initialState: {
     isChangeManagerLoading: false,
     error: null,
-    isRatingLoading : false
+    isRatingLoading : false,
+    ratingReviewList : []
   },
   reducers: {
     clearState: (state) => {
@@ -25,7 +26,7 @@ const dashBoardSlice = createSlice({
       .addCase(requestChangeManager.fulfilled, (state, action) => {
         //console.log("wishList wishlist", action.payload);
        
-        // toast.success(action.payload.message || "Wishlist fetched wishListfully");
+        toast.success(action.payload.message || "Wishlist fetched wishListfully");
         state.isChangeManagerLoading = false;
     
         state.error = null;

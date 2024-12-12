@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Pagination from "../Pagination";
 
 // Table component
-export const Table = ({ data, columns, isExpandable = true, actionMenu }) => {
+export const Table = ({ data, columns, isExpandable = true, actionMenu, isExpandableData }) => {
   const [expandedRow, setExpandedRow] = useState(null);
   console.log(data);
 
@@ -88,12 +88,13 @@ export const Table = ({ data, columns, isExpandable = true, actionMenu }) => {
                 <tr className="border border-[#DBDBDB] rounded-lg">
                   <td className="p-1 text-sm text-gray-600">
                     <div className="p-4">
-                      <p className="text-xs">Plan Details</p>
+                      {/* <p className="text-xs">Plan Details</p>
                       <div className="mt-2 rounded text-sm font-mono flex items-center gap-2">
                         <p>{row.plan + " Plan,"}</p>
                         <p>{row.plan + " Plan,"}</p>
                         <p>{row.plan + " Plan"}</p>
-                      </div>
+                      </div> */}
+                      {isExpandableData &&  <p>{isExpandableData}</p>}
                     </div>
                   </td>
                 </tr>

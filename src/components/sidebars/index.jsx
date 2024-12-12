@@ -133,7 +133,7 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
         {/* Logo */}
 
         <div className="py-4 flex justify-center items-center gap-6">
-          <Link to={"/"}>
+          <Link to={"/dashboard"}>
             <img
               width={0}
               height={0}

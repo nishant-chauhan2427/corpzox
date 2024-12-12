@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import client from "../axios-baseurl";
 
-export const getAllBusiness = createAsyncThunk("getAllBusiness", async ({ page=1, sort_by = 'date_desc', query }, { rejectWithValue }) => {
+export const getAllBusiness = createAsyncThunk("getAllBusiness", async ({ page=1, sort_by = 'date_asc', query }, { rejectWithValue }) => {
 
     try {
         console.log("business-page action:getAllBusiness");
