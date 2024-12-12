@@ -14,6 +14,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ratingReviewSchema } from "../../../../../validation/ratingReviewValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
 import { ratingReview } from "../../../../../redux/actions/servicesDetails-actions";
+import { LinkButton } from "../../../../../components/link";
 
 export const ServicesProgress = ({ data }) => {
   const [dropdownStates, setDropdownStates] = useState(data?.map(() => false));
@@ -344,7 +345,7 @@ export const ServicesProgress = ({ data }) => {
                       </div>
                     </>
                   </ConfirmationModal>
-                  <NavLink to={`/payment/create/${data._id}`} primary={true}>Avail again</NavLink>
+                  <LinkButton to={`/payment/create/${data._id}`} primary={true}>Avail again</LinkButton>
                   {/* <button
                     className={`${
                       dropdownStates === true && "rotate-180"

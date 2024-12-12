@@ -140,7 +140,6 @@ export const SignIn = () => {
   return (
     <>
       <MetaTitle title={"Sign In"} />
-
       <AuthLayout>
         <img className="sm:w-32 w-36" src="logo.svg" alt="CORPZO Logo" />
         <div className="w-full flex">

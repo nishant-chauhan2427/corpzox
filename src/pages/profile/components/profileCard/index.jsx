@@ -28,29 +28,33 @@ const ProfileCard = ({ userData, loading }) => {
                       ? user?.profile_picture_url
                       : "/images/profile/profile.svg"
                   }
-                  width={130}
+                  width={140}
+                  className="rounded"
                   alt=""
                 />
               </div>
-              <div className="flex flex-col gap-4 justify-center">
-                <p className="text-[#525252] text-base font-semibold sm:text-lg">
+              <div className="flex flex-col gap-2 justify-center">
+                <p className="text-[#525252] text-base font-semibold sm:text-base">
                   Name:{" "}
                   <span className="text-black">
                     {" "}
-                    {(userData && userData?.name)?userData?.name:"________"}
+                    {userData && userData?.name ? userData?.name : "________"}
                   </span>
                 </p>
-                <p className="text-[#525252] text-base font-semibold sm:text-lg">
+                <p className="text-[#525252] text-base font-semibold sm:text-base">
                   Email Id:{" "}
                   <span className="text-black">
-                    {(userData && userData?.email)?userData?.email:"_________"}
+                    {userData && userData?.email
+                      ? userData?.email
+                      : "_________"}
                   </span>
                 </p>
-
-                <p className="text-[#525252] text-base font-semibold sm:text-lg">
+                <p className="text-[#525252] text-base font-semibold sm:text-base">
                   Business email Id:{" "}
                   <span className="text-black">
-                    {(userData && userData?.busniessEmail)?userData?.busniessEmail:"________"}
+                    {userData && userData?.busniessEmail
+                      ? userData?.busniessEmail
+                      : "________"}
                   </span>
                 </p>
               </div>
