@@ -1,6 +1,6 @@
 import { Controller, useForm } from "react-hook-form";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
 import { Input } from "../../../components/inputs";
 import { Button } from "../../../components/buttons/button";
 import { FaPlus } from "react-icons/fa";
@@ -228,9 +228,9 @@ const navigate = useNavigate()
                       <p className="text-2xl pl-3 text-[#232323] font-semibold">
                         All Coupons
                       </p>
-                      <p className="font-medium pl-3 text-sm pb-2 text-[#595959]">
+                      <NavLink to={"/offersDetails"} className="font-medium pl-3 text-sm pb-2 text-[#595959]">
                         Check all offers!
-                      </p>
+                      </NavLink>
                       <div className="h-[60vh] overflow-y-scroll">
                         {transformedCouponArray?.map((data, index) => (
                           <div

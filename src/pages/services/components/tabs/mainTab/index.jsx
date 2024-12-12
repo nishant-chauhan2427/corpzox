@@ -34,7 +34,7 @@ export const MainTab = () => {
     if(category?.list?.[index]){
       dispatch(setSelectedCategory(category?.list[index]));
       console.log(category?.list[index], "category?.list[index]")
-      setSearchParams({categoryId : category?.list[index]?._id})
+      setSearchParams({categoryId : category?.list[index]?._id})  // use _id for getting sub categories
     }
   };
   return (

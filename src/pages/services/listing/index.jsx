@@ -29,14 +29,13 @@ import { NoData } from "../../../components/errors/noData";
 import { ImSpinner2 } from "react-icons/im";
 const ServicesListing = () => {
   const dispatch = useDispatch();
-  const { categoryId, subCategoryId } = useParams();
   const { servicesMainTab } = useSelector((state) => state.app);
+  console.log(servicesMainTab, "serviceMainTab");
   const { category, subCategory, loading, page, limit, totalCount, totalPage, list, wishList } = useSelector(
     (state) => state.service
   );
 
-  //const{totalCount}=useSelector((state)=>state.user);
-  console.log(category, "totalCount123");
+  console.log(subCategory, "subCategory");
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -44,69 +43,51 @@ const ServicesListing = () => {
   const [isSubmit, setIsSubmit] = useState(false);
   useEffect(() => {
     dispatch(resetService({}));
-    dispatch(getUserServicesCatagory({}));
+    category?.list && category?.list?.length === 0 && dispatch(getUserServicesCatagory({}));
 
   }, []);
-  useEffect(() => {
-    if (category?.selectedCategory?.categoryId) {
-      dispatch(
-        getUserServicesSubCatagory({
-          categoryId: category?.selectedCategory?.categoryId,
-        })
-      );
-    }
-  }, [category.selectedCategory]);
-  
-  // from paramsd
   // useEffect(() => {
   //   const categoryId = searchParams.get("categoryId");
-  //   if (category?.selectedCategory?.categoryId || categoryId) {
+  //   if (categoryId) {
   //     dispatch(
   //       getUserServicesSubCatagory({
-  //         categoryId: category?.selectedCategory?.categoryId ? category?.selectedCategory?.categoryId : categoryId,
+  //         // categoryId: category?.selectedCategory?.categoryId ? category?.selectedCategory?.categoryId : categoryId,
+  //         categoryId: categoryId ? category : category?.selectedCategory?.categoryId,
   //       })
   //     );
   //   }
   // }, [searchParams]);
-  // useEffect(() => {
-  //   if (category?.selectedCategory && subCategory?.selectedSubCategory) {
-  //     dispatch(
-  //       getUserServices({
-  //         categoryId: category?.selectedCategory?._id,
-  //         subCategoryId: subCategory?.selectedSubCategory?._id,
-  //         page,
-  //         limit,
-  //         query: searchValue,
-  //       })
-  //     );
-  //   }
-  // }, [category.selectedCategory, subCategory.selectedSubCategory, searchValue]);
+  useEffect(() => {
+    const categoryId = searchParams.get("categoryId");
+    if (categoryId) {
+      dispatch(
+        getUserServicesSubCatagory({
+          categoryId: categoryId, // Use categoryId directly from searchParams
+        })
+      );
+    }
+  }, [searchParams]);
+
   useEffect(() => {
     const categoryId = searchParams.get("categoryId");
     const subCategoryId = searchParams.get("subCategoryId");
     const search = searchParams.get("search")
     if (category?.selectedCategory && subCategory?.selectedSubCategory || categoryId) {
-      dispatch(
-        getUserServices({
-          categoryId: category?.selectedCategory?._id ? category?.selectedCategory?._id : categoryId,
-          subCategoryId: subCategory?.selectedSubCategory?._id,
-          page,
-          limit,
-          query: search ? search : searchValue,
-        })
-      );
     }
-  }, [category.selectedCategory, subCategory.selectedSubCategory, searchValue, searchParams]);
-  // useEffect(()=>{
-  //   if (category?.selectedCategory && subCategory?.selectedSubCategory) {
-  //     dispatch(getUserServices({categoryId:category?.selectedCategory?._id
-  //       ,subCategoryId:subCategory?.selectedSubCategory?._id
-  //       ,page,limit,query:searchValue}));
-  //   }
-  // },[searchValue])
+    dispatch(
+      getUserServices({
+        categoryId: category?.selectedCategory?._id ? category?.selectedCategory?._id : categoryId,
+        subCategoryId: subCategoryId,
+        page,
+        limit,
+        query: search ? search : searchValue,
+      })
+    );
+  }, [ searchParams, searchValue]);
+
   useEffect(() => {
     if (isSubmit && !wishList?.loading) {
-     // toast.success(wishList?.error);
+      toast.success(wishList?.error);
     }
   }, [wishList?.loading]);
 
@@ -123,7 +104,6 @@ const ServicesListing = () => {
   };
   let onClickAddWishlistHandler = () => {
     dispatch(updateServiceQuickWishlist({ serviceIdArray: wishList?.list }));
-    console.log(wishList?.list ,"wishList?.list ");
   };
   let onChangeSelectAllHandler = () => {
     dispatch(onChangeSelectAllHandler());
@@ -131,77 +111,45 @@ const ServicesListing = () => {
 
     // });
   };
-
   return (
     <section className="flex sm:flex-row flex-col gap-4 sm:pt-6 pt-3 bg-white">
       <div className="flex justify-center flex-col overflow-hidden">
         <MainTab />
-        <Heading backButton={true} title={"Service"} ></Heading>
+        <Filtertab />
+        <>
+          {list.length != 0 && (
+            <SelectAllTabs
+              onChangeSelectAllHandler={onChangeSelectAllHandler}
+              onClickAddWishlistHandler={onClickAddWishlistHandler}
+            />
+          )}
+          {loading ? (
+          <div className="flex justify-center items-center h-full">
+          <ImSpinner2 className="animate-spin text-gray-700 text-xl" />
+        </div>
         
-        {servicesMainTab !== 0 ? (
-          <>
-            <p className="font-bold  text-[20px] leading-6 text-[#0A1C40]">
-              Service Category
-            </p>
-            <Filtertab />
-            {list.length != 0 && (
-              <SelectAllTabs
-                onChangeSelectAllHandler={onChangeSelectAllHandler}
-                onClickAddWishlistHandler={onClickAddWishlistHandler}
-              />
-            )}
-            <ServicesCard
-              data={list}
-              onClick={(service) => onClickWishList(service)}
-              onCheckedChange={(val) => onCheckHandler(val)}
-            />
-          </>
-        ) : (
-          <>
-            <Filtertab />
-            {list.length != 0 && (
-              <SelectAllTabs
-                onChangeSelectAllHandler={onChangeSelectAllHandler}
-                onClickAddWishlistHandler={onClickAddWishlistHandler}
-              />
-            )}
-            <ServicesCard
-              data={list}
-              onClick={(service) => onClickWishList(service)}
-              onCheckedChange={(val) => onCheckHandler(val)}
-            />
-            {/* {list && list.length > 5 && (
-              <div className="mt-10 flex justify-center">
-                {list.length == totalCount ? (
-                  <></>
-                ) : (
-                  <Button primary={true}>Load More </Button>
-                )}
-              </div>
-            )} */}
-            {loading ? (
-              <div className="mt-10 flex justify-center">
-                 <ImSpinner2 className="animate-spin text-gray hover:text-white !text-xl" /> {/* You can replace this with your loader component */}
-              </div>
-            ) : list && list.length > 0 ? (
-              <>
-                {list.length > 5 && (
-                  <div className="mt-10 flex justify-center">
-                    {list.length === totalCount ? (
-                      <></>
-                    ) : (
-                      <Button primary={true}>Load More</Button>
-                    )}
-                  </div>
-                )}
-              </>
-            ) : (
-              <NoData />
-            )}
+          ) : (
 
+            list && list.length > 0 ? (
+              <ServicesCard
+                data={list}
+                onClick={(service) => onClickWishList(service)}
+                onCheckedChange={(val) => onCheckHandler(val)}
+              />
+            ) : (<NoData />)
+          )}
 
-          </>
-        )}
+          {list && list.length > 5 && (
+            <div className="mt-10 flex justify-center">
+              {list.length == totalCount ? (
+                <></>
+              ) : (
+                <Button primary={true}>Load More </Button>
+              )}
+            </div>
+          )}
+
+        </>
       </div>
     </section>
   );
