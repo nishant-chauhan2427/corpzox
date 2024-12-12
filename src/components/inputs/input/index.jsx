@@ -119,7 +119,7 @@ export const Input = ({
       </div>
       {errorContent && (
         <div className="absolute -top-4 right-8 bg-[#F9F9F9] rounded-[3px] px-3 py-2 mb-3">
-          <p className=" text-[#FF3B3B] text-[10px]">{errorContent}</p>
+          <p className=" text-[#FF3B3B] font-medium  text-[10px]">{errorContent}</p>
         </div>
       )}
     </div>

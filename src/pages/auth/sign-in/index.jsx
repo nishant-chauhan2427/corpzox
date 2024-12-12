@@ -190,7 +190,7 @@ export const SignIn = () => {
               />
               <Link
                 to={"/forgot-password"}
-                className="font-medium text-base text-[#0A1C40]"
+                className="!inline-block font-medium text-base text-[#0A1C40]"
               >
                 Forgot Password?
               </Link>
