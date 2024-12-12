@@ -125,7 +125,7 @@
 
 
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import client from '../../../redux/axios-baseurl';
 import InputField from '../../../components/dynamicFormFields/InputField';
 import RadioField from '../../../components/dynamicFormFields/RadioField';
@@ -138,10 +138,13 @@ import { Button } from '../../../components/buttons/button';
 import toast from 'react-hot-toast';
 import { body } from 'framer-motion/client';
 import axios from 'axios';
+import { RouteProgressBar } from '../../../components/progressBar/routeBased';
 
 function SelectBusiness() {
 
   const { applicationId } = useParams();
+  const navigate = useNavigate();
+
   // console.log("applicationId", applicationId);
 
   const [dynamicForm, setDynamicForm] = useState(null);
@@ -151,13 +154,13 @@ function SelectBusiness() {
 
 
   const [allBusiness, setAllBusiness] = useState(null);
-  const [selectedBusinessId, setSelectedBusinessId] = useState( null);
+  const [selectedBusinessId, setSelectedBusinessId] = useState(null);
 
   const handleBusinessChange = (event) => {
     setSelectedBusinessId(event.target.value);
   };
-// console.log("selectedBusinessId",dynamicForm?dynamicForm[0]?.userapplications[0]?.businessId :"no id");
-// console.log("selectedBusinessId",selectedBusinessId);
+  // console.log("selectedBusinessId",dynamicForm?dynamicForm[0]?.userapplications[0]?.businessId :"no id");
+  // console.log("selectedBusinessId",selectedBusinessId);
 
 
   // console.log("loading", loading);
@@ -188,7 +191,7 @@ function SelectBusiness() {
           }
         });
         setDynamicForm(response.data?.data);
-        setSelectedBusinessId(response.data?.data  ?  response.data?.data[0]?.userapplications[0]?.businessId : null)
+        setSelectedBusinessId(response.data?.data ? response.data?.data[0]?.userapplications[0]?.businessId : null)
 
       } catch (err) {
         console.log(err, "get offer list error");
@@ -209,6 +212,20 @@ function SelectBusiness() {
 
     const field = dynamicForm[index];
     field.value[0] = newValue;
+
+    if (field?.isRequired && (field?.value.length <= 0)) {
+      field.isRequiredMsg = "Required field";
+    } else {
+      field.isRequiredMsg = false;
+    }
+
+    setDynamicForm([...dynamicForm]);
+  }
+  const handleFileValueChange = (index, {fileUrl,filename}) => {
+
+    const field = dynamicForm[index];
+    field.value[0] = fileUrl;
+    field.fileName = filename;
 
     if (field?.isRequired && (field?.value.length <= 0)) {
       field.isRequiredMsg = "Required field";
@@ -253,7 +270,7 @@ function SelectBusiness() {
 
   const handleSubmit = async () => {
 
-    if(!selectedBusinessId){
+    if (!selectedBusinessId) {
       toast.error("Please select business");
       return;
     }
@@ -263,7 +280,7 @@ function SelectBusiness() {
       return {
         attributeId: field._id,
         value: value,
-        fileName: (value instanceof File) ? value.name : field.lebel,
+        fileName: (value instanceof File) ? value.name : field.fileName,
         type: (value instanceof File) ? value.type : field.inputType
       }
     })
@@ -279,15 +296,15 @@ function SelectBusiness() {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const token = userInfo?.token;
       if (!token) {
-          return rejectWithValue("No token found");
-        }
+        return rejectWithValue("No token found");
+      }
 
 
       //Save FormData API calls
       const savePromises = Object.entries(formData).map(([key, payload]) => {
         // console.log("saved:payload",payload);
 
-        return axios.put(`https://corpzo.onrender.com/api/application/form-value`, payload, {
+        return  client.put(`/application/form-value`, payload, {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
@@ -295,27 +312,29 @@ function SelectBusiness() {
           }
         });
 
-        
+
+
+
       });
 
       await Promise.all(savePromises); // Wait for all API calls to complete
 
 
       //Save selected Business API
-      axios.put(`https://corpzo.onrender.com/api/application/application-business`, {
-        applicationId:applicationId,
-        businessId:selectedBusinessId
+      client.put(`/application/application-business`, {
+        applicationId: applicationId,
+        businessId: selectedBusinessId
       }, {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
           'Authorization': `Bearer ${token}`,
         }
+      }).then(() => {
+        navigate(`/payment/preview/${applicationId}`)
       });
-      
 
 
-      toast.success("Form Saved")
     } catch (error) {
       toast.error("Error while saving form")
       console.error("Error while saving form:", error);
@@ -359,6 +378,7 @@ function SelectBusiness() {
 
   return (
     <div className='flex flex-col'>
+      <RouteProgressBar currStep={2} totalSteps={3} />
 
       <div className='w-full my-2'>
         <select
@@ -391,7 +411,7 @@ function SelectBusiness() {
           case "checkboxes":
             return <CheckBoxField key={idx} onChange={handleCheckBoxValueChange} index={idx} field={field} className={fieldStyle} />;
           case "file":
-            return <FileField key={idx} onChange={handleInputValueChange} index={idx} field={field} className={fieldStyle} />;
+            return <FileField key={idx} onChange={handleFileValueChange} index={idx} field={field} className={fieldStyle} />;
           default:
             return null;
         }
@@ -402,7 +422,7 @@ function SelectBusiness() {
         outline={true}
         primary={true}
         // disabled={(dynamicForm?.some((field,idx) => {return field.error === true})) }
-        disabled={!dynamicForm || dynamicForm.length<=0 || isSaving || (dynamicForm?.some((field, idx) => field?.isRequiredMsg || field?.error === true))}
+        disabled={!dynamicForm || dynamicForm.length <= 0 || isSaving || (dynamicForm?.some((field, idx) => field?.isRequiredMsg || field?.error === true))}
         className={" py-2 "}
         onClick={handleSubmit}
       >

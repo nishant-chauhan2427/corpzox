@@ -200,7 +200,7 @@ const router = createBrowserRouter([
                 element: <SelectBusiness />,
               },
               {
-                path: "preview",
+                path: "preview/:applicationId",
                 element: <PreviewPayment />,
               },
               {
