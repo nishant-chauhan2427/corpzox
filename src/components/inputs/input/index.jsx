@@ -50,7 +50,7 @@ export const Input = ({
   }, [label]);
 
   return (
-    <div className={containerClassName}>
+    <div className={`${containerClassName} relative`}>
       <div className="w-full flex flex-col">
         <div className="flex items-center relative">
           {/* <label
@@ -112,11 +112,14 @@ export const Input = ({
               )}
             </button>
           )}
+          {errorContent && (
+        <p className="absolute top-[30%] right-2"><img src="/validation-icon.svg" alt="" /></p>
+      )}
         </div>
       </div>
       {errorContent && (
-        <div className="h-1 pt-1 mb-3">
-          <p className=" text-error text-xs">{errorContent}</p>
+        <div className="absolute -top-4 right-8 bg-[#F9F9F9] rounded-[3px] px-3 py-2 mb-3">
+          <p className=" text-[#FF3B3B] text-[10px]">{errorContent}</p>
         </div>
       )}
     </div>
