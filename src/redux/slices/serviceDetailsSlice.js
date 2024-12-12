@@ -283,6 +283,14 @@ const serviceDetailSlice = createSlice({
               : []), // Ensure valid existing coupons
             ...(state.offerDetails ? [state.offerDetails] : []) // Add only valid offerDetails
           ],
+          // appliedCoupan: [
+          //   ...(Array.isArray(state.availServiceData?.appliedCoupan) 
+          //     ? state.availServiceData.appliedCoupan.filter(coupon => coupon) 
+          //     : []), // Include only valid existing coupons
+          //   ...(state.offerDetails && state.offerDetails.couponId 
+          //     ? [state.offerDetails] 
+          //     : []), // Add only valid offerDetails with a couponId
+          // ],
           paymentMode: "Net Banking",
           paymentStatus: "PENDING",
           paymentDate: Date.now(),
