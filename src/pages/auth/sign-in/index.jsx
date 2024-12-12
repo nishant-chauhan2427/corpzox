@@ -33,14 +33,14 @@ export const SignIn = () => {
     trigger,
   } = useForm({
     resolver: yupResolver(signinValidationSchema),
-    mode: "onChange",
+    mode: "onSubmit",
   });
   const recaptchaRef = useRef(null);
   const RECAPTCHA_SITE_KEY = "6LemSE0qAAAAADhn4nN770nVLBJxAGRz_LoFXP6h";
   const [isSubmit, setIsSubmit] = useState(false);
-  const handleBlur = async (field) => {
-    await trigger(field);
-  };
+  // const handleBlur = async (field) => {
+  //   await trigger(field);
+  // };
   const {
     isLoggingIn = false,
     error,
@@ -140,7 +140,7 @@ export const SignIn = () => {
   return (
     <>
       <MetaTitle title={"Sign In"} />
-      <Heading>Sign In</Heading>
+
       <AuthLayout>
         <img className="sm:w-32 w-36" src="logo.svg" alt="CORPZO Logo" />
         <div className="w-full flex">
@@ -168,6 +168,7 @@ export const SignIn = () => {
                     errorContent={errors?.email?.message}
                     onBlur={() => handleBlur("email")}
                     maxLength={50}
+                   
                   />
                 )}
               />
@@ -224,7 +225,7 @@ export const SignIn = () => {
                 className={
                   "mt-2 py-3 w-full rounded-lg  text-[#0A1C40] font-semibold !border-none "
                 }
-                disabled={!isValid}
+                // disabled={!isValid}
                 isLoading={isSubmit}
               >
                 Sign in

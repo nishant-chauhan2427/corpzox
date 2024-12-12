@@ -97,6 +97,7 @@ const authSlice = createSlice({
     }).addCase(loginUser.fulfilled, (state, action) => {
       state.isLoggingIn = false;
       state.profile = action.payload.data;
+      console.log(action.payload.data,"DAWQ123");
       state.error = "";
       state.loginMessage = action.payload.message;
       localStorage.setItem("auth", JSON.stringify(action.payload.data));
