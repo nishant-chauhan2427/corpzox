@@ -14,6 +14,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ratingReviewSchema } from "../../../../../validation/ratingReviewValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
 import { ratingReview } from "../../../../../redux/actions/servicesDetails-actions";
+import { LinkButton } from "../../../../../components/link";
 
 export const ServicesProgress = ({ data }) => {
   const [dropdownStates, setDropdownStates] = useState(data.map(() => false));
@@ -119,9 +120,9 @@ export const ServicesProgress = ({ data }) => {
   return (
     <div>
       <div className="py-2 flex flex-row sm:flex-row justify-between gap-2">
-        {/* <Heading className={"py-0 "} tourButton={true}>
+        <Heading className={"py-0 "} tourButton={true}>
           Your Service are Completed {dataUpdate?.total ? `(${dataUpdate?.total})` : ""}
-        </Heading> */}
+        </Heading>
         <Link to={"/services"} className="font-medium text-sm text-[#797979]">
           View All
         </Link>
@@ -344,7 +345,7 @@ export const ServicesProgress = ({ data }) => {
                       </div>
                     </>
                   </ConfirmationModal>
-                  <NavLink to={`/payment/create/${data._id}`} primary={true}>Avail again</NavLink>
+                  <LinkButton to={`/payment/create/${data._id}`} primary={true}>Avail again</LinkButton>
                   {/* <button
                     className={`${
                       dropdownStates === true && "rotate-180"

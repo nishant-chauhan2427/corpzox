@@ -90,7 +90,6 @@ export const Signup = () => {
   return (
     <>
       <MetaTitle title={"Sign Up"} />
-      {/* <Heading>Sign Up</Heading> */}
       <AuthLayout>
         <img className="sm:w-32 w-36" src="logo.svg" alt="CORPZO Logo" />
         <div className="w-full  flex  ">
