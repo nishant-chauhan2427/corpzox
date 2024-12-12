@@ -64,6 +64,7 @@ const ServiceprogressViewAll = ({ data }) => {
       <PageHeading title={"Your Service Progress Updates"} back={true}>
         Your Service Progress Updates
       </PageHeading>
+      {console.log(data,"DATA@#!")}
       {data.length > 0 ? (
         <div className="flex flex-col gap-4">
           {data.map((data, index) => (

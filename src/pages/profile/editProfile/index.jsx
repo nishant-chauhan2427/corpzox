@@ -74,7 +74,7 @@ const Edit = () => {
   const onCropComplete = (croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels); // Save the cropped area
   };
-  console.log(upload, "upload23");
+  //console.log(upload, "upload23");
   const onSubmit = (data) => {
     const formData = new FormData();
     if (imageFile) {
@@ -133,7 +133,7 @@ const Edit = () => {
 
 
   useEffect(() => {
-    const str = user.name || "";
+    const str = user?.name || "";
     let data = [];
     const spaceIndex = str.indexOf(" ");
 
@@ -144,7 +144,7 @@ const Edit = () => {
     } else {
       data = [str, ""];
     }
-    console.log(user, "user1234");
+    //console.log(user, "user1234");
     setValue("firstName", data[0]);
     setValue("lastName", data[1]);
     setValue("email", user?.email);
@@ -264,11 +264,13 @@ const Edit = () => {
                       className={"border-[#D9D9D9] border"}
                       errorContent={errors?.email?.message}
                       disabled={true}
+                      maxLength={50}
                     />
                   )}
                 />
               </div>
               <div>
+                
                 <Controller
                   name="businessEmail"
                   control={control}
@@ -281,6 +283,7 @@ const Edit = () => {
                       placeholder={"Business Email id"}
                       className={"border-[#D9D9D9] border"}
                       errorContent={errors?.businessEmail?.message}
+                      maxLength={50}
                     />
                   )}
                 />
