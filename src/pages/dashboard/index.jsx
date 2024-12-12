@@ -35,12 +35,14 @@ const Dashboard = () => {
   const [accountShowButton, setAccountShowButton] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isFadingOut, setIsFadingOut] = useState(false);
-  const [userInfo, setUserInfo] = useState(() => localStorage.getItem("userInfo"))
+  const [userInfo, setUserInfo] = useState(() =>
+    localStorage.getItem("userInfo")
+  );
   const dispatch = useDispatch();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const searchValue = queryParams.get("search");
-  
+
   const {
     user = {},
     manager = {},
@@ -56,7 +58,7 @@ const Dashboard = () => {
   const { recommendedServiceList, isRecommendedServiceLoading } = useSelector(
     (state) => state.service
   );
- 
+
   const formattedRecommendedServices = recommendedServiceList?.map(
     (service) => {
       return {
@@ -69,7 +71,7 @@ const Dashboard = () => {
   useEffect(() => {
     // dispatch(getUserBusiness({}));
     // dispatch(getUserServices({}));
-   dispatch(updateServiveProgress({ page: 1 }));
+    dispatch(updateServiveProgress({ page: 1 }));
   }, []);
   useEffect(() => {
     const storedUserInfo = localStorage.getItem("userInfo");
@@ -84,7 +86,9 @@ const Dashboard = () => {
     // dispatch(getUserServices({ query: searchValue ? searchValue : "" }));
   }, [searchValue]);
   useEffect(() => {
-    formattedRecommendedServices && formattedRecommendedServices.length === 0 && dispatch(recommendedServiceListing());
+    formattedRecommendedServices &&
+      formattedRecommendedServices.length === 0 &&
+      dispatch(recommendedServiceListing());
   }, []);
   return (
     <>

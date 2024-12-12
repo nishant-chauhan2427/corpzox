@@ -11,14 +11,16 @@ export const RecommendedServices = ({ data, total }) => {
     dispatch(resetService({}));
     navigate("/services");
   };
-  console.log(total,"ˇTotal Service");
+  console.log(total, "ˇTotal Service");
   return (
     <div className="">
-      <div className="py-2 flex flex-row sm:flex-row justify-between gap-2" >
+      <div className="py-2 flex flex-row sm:flex-row justify-between gap-2">
         <Heading title={"Dashboard"} className={"py-0"} tourButton={true}>
-          Recommended Services  {total == undefined ? "" : "(" + total + ")"}
+          Recommended Services {total == undefined ? "" : "(" + total + ")"}
         </Heading>
-        <Link to={"/services"}  className="font-medium text-sm text-[#797979]">View All</Link>
+        <Link to={"/services"} className="font-medium text-sm text-[#797979]">
+          View All
+        </Link>
       </div>
       <div
         className="grid grid-cols-1 sm:grid-cols-2 rounded-lg 
@@ -36,7 +38,11 @@ export const RecommendedServices = ({ data, total }) => {
               />
               <div className="flex  flex-col text-start">
                 <p className="font-semibold text-[#171717]">{data.name}</p>
-                <p className="font-medium text-[12px]">{data?.details?.length > 50 ? data?.details?.slice(0,40)+"..." : data?.details} </p>
+                <p className="font-medium text-[12px]">
+                  {data?.details?.length > 50
+                    ? data?.details?.slice(0, 40) + "..."
+                    : data?.details}{" "}
+                </p>
               </div>
             </div>
             <div className="border-l h-full flex justify-center items-center">
