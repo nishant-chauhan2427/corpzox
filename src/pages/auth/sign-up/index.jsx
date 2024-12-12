@@ -213,7 +213,7 @@ export const Signup = () => {
                   v2={true}
                   primary={true}
                   className={
-                    "mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none "
+                    "mt-2 py-3 w-full rounded-lg  text-[#0A1C40] font-semibold !border-none "
                   }
                   disabled={!isValid}
                   isLoading={isSubmit}

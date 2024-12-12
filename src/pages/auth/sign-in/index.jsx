@@ -31,6 +31,7 @@ export const SignIn = () => {
     handleSubmit,
     formState: { errors, isValid },
     trigger,
+    watch,
   } = useForm({
     resolver: yupResolver(signinValidationSchema),
     mode: "onSubmit",
@@ -62,6 +63,9 @@ export const SignIn = () => {
       localStorage.setItem("signedIn", true);
     }
   };
+  const phoneRegex = /^[6-9]\d{9}$/; // Regex for a valid 10-digit mobile number
+  const emailOrPhone = watch("email"); // Watch the 'email' field
+
   const onSubmit = async (data) => {
     setIsSubmit(true);
     const token = await recaptchaRef.current.executeAsync().then((res) => {
@@ -153,7 +157,7 @@ export const SignIn = () => {
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-3 pt-5"
             >
-             <Controller
+              <Controller
                 name="email"
                 control={control}
                 defaultValue=""
@@ -167,7 +171,6 @@ export const SignIn = () => {
                     errorContent={errors?.email?.message}
                     onBlur={() => handleBlur("email")}
                     maxLength={50}
-                   
                   />
                 )}
               />
@@ -191,9 +194,9 @@ export const SignIn = () => {
               />
               <Link
                 to={"/forgot-password"}
-                className="!inline-block font-medium text-base text-[#0A1C40]"
+                className="flex font-medium cursor-default text-base text-[#0A1C40]"
               >
-                Forgot Password?
+                <div className="cursor-pointer"> Forgot Password?</div>
               </Link>
               <ReCAPTCHA
                 ref={recaptchaRef}
@@ -202,7 +205,7 @@ export const SignIn = () => {
               />
               <div
                 onClick={handleCheckbox}
-                className="flex items-center cursor-pointer font-normal text-[14px] text-[#a5a3a3] -mt-2 gap-2"
+                className="flex items-center font-normal text-[14px] text-[#a5a3a3] -mt-2 gap-2"
               >
                 {" "}
                 <Checkbox
@@ -212,7 +215,9 @@ export const SignIn = () => {
                 />{" "}
                 <span
                   className={`${
-                    checkedCheckbox ? "text-[#000]" : "text-[#a5a3a3]"
+                    checkedCheckbox
+                      ? "text-[#000] cursor-pointer "
+                      : "text-[#a5a3a3] cursor-pointer"
                   }`}
                 >
                   Keep me Signed in
@@ -227,7 +232,9 @@ export const SignIn = () => {
                 // disabled={!isValid}
                 isLoading={isSubmit}
               >
-                Sign in
+                {phoneRegex.test(emailOrPhone)
+                  ? "Get an OTP on your Phone No."
+                  : "Sign in"}
               </Button>
               {/* <Button
                 type={"submit"}
