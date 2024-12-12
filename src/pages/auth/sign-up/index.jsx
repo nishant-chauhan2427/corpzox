@@ -27,6 +27,7 @@ export const Signup = () => {
     trigger,
   } = useForm({
     // resolver: yupResolver(signUpValidationSchema),
+    // resolver: yupResolver(signUpValidationSchema),
     mode: "onChange",
   });
   const {
@@ -70,6 +71,8 @@ export const Signup = () => {
     delete userData.full; 
     dispatch(registerUser(userData))
     // dispatch(registerUser(data));
+    console.log(data, "user data")
+    
   };
   useEffect(() => {
     // console.log(isRegistering,isSubmit,registeringError)
@@ -87,6 +90,7 @@ export const Signup = () => {
   return (
     <>
       <MetaTitle title={"Sign Up"} />
+      <Heading>Sign Up</Heading>
       <AuthLayout>
         <img className="sm:w-32 w-36" src="logo.svg" alt="CORPZO Logo" />
         <div className="w-full  flex  ">

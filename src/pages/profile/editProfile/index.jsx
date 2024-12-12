@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { IoIosArrowRoundBack } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../../../components/buttons";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { signinValidationSchema } from "../../../validation/authValidatiorSchema";
 import { Input } from "../../../components/inputs";
 import { Heading } from "../../../components/heading";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser } from "../../../redux/actions/dashboard-action";
 import { submitEditProfile, updateProfilePicture } from "../../../redux/actions/profile-actions";
 import { profileValidationSchema } from "./editProfileValidationSchema";
 import Cropper from "react-easy-crop";
@@ -109,20 +106,7 @@ const Edit = () => {
       .then(function (buf) { return new File([buf], filename, { type: mimeType }); })
     );
   };
-  //  blobToFile(url, filename) {
-  //   let mimeType = (url.match(/^data:([^;]+);/) || '')[1];
-  //   return (fetch(url)
-  //     .then(function(res) { return res.arrayBuffer(); })
-  //     .then(function(buf) { return new File([buf], filename, { type: mimeType }); })
-  //   );
-  // }
-  // const handleSave = async () => {
-  //   if (croppedAreaPixels) {
-  //     const croppedImg = await getCroppedImg(image, crop, croppedAreaPixels);
-  //     setCroppedImage(croppedImg); 
-  //     console.log(croppedImg);
-  //   }
-  // };
+  
   const handleSave = async () => {
     if (croppedAreaPixels) {
       const croppedImgBlob = await getCroppedImg(image, crop, croppedAreaPixels);
