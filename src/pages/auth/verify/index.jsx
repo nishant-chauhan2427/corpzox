@@ -108,7 +108,9 @@ export const Verify = () => {
 
   const handleResendOtp = (event) => {
     event.preventDefault();
-    setTimer(30);
+    setTimer(30); 
+    setOtp(["", "", "", "", "", ""]); 
+    inputRefs.current[0].focus(); 
     dispatch(
       resendOtp({
         id: profile?.[0]?.id || profile?.id || profile?.userId,

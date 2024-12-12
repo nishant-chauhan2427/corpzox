@@ -66,7 +66,7 @@ const serviceListingSlice = createSlice({
         state.wishList.list=[...state.wishList.list,action.payload]
       }
     },
-    onChangeSelectAllHandler(state,action){
+    onChangeSelectAll(state,action){
       if(state.list.length==state.wishList.list.length){
         state.wishList.list=[]
       }else{
@@ -256,7 +256,7 @@ const serviceListingSlice = createSlice({
 });
 
 // Export actions
-export const { setSelectedCategory, setSelectedSubCategory,setToggleToCheckedWishlist,onChangeSelectAllHandler,resetService } =
+export const { setSelectedCategory, setSelectedSubCategory,setToggleToCheckedWishlist,onChangeSelectAll,resetService } =
   serviceListingSlice.actions;
 
 // Export the reducer
