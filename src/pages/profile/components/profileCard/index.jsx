@@ -28,8 +28,8 @@ const ProfileCard = ({ userData, loading }) => {
                       ? user?.profile_picture_url
                       : "/images/profile/profile.svg"
                   }
-                  width={140}
-                  className="rounded"
+                 
+                  className="rounded-full w-[170px] h-[170px] object-cover"
                   alt=""
                 />
               </div>

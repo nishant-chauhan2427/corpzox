@@ -39,8 +39,8 @@ export const ForgotPassword = () => {
     profile,
   } = useSelector((state) => state.auth);
 
-  console.log(profile,"profile123e4r");
-  const [otpMessage,setOtpMessage]= useState('')
+  console.log(profile, "profile123e4r");
+  const [otpMessage, setOtpMessage] = useState("");
   useEffect(() => {
     if (timer === 0 || timer == "00") {
       setIsResendDisabled(false);
@@ -57,13 +57,13 @@ export const ForgotPassword = () => {
       return () => clearTimeout(countdown);
     }
   }, [timer]);
-  
+
   useEffect(() => {
     if (isVerify && !isVerifying) {
       setIsVerify(false);
       if (verifyingError) {
         //toast.error(verifyingError);
-        setOtpMessage(verifyingError)
+        setOtpMessage(verifyingError);
       } else {
         toast.success(verifyMessage);
         navigate("/create-new-password");
@@ -71,17 +71,14 @@ export const ForgotPassword = () => {
     }
   }, [isVerifying]);
 
-
-  useEffect(()=>{
+  useEffect(() => {
     setTimeout(() => {
-      setOtpMessage("")
+      setOtpMessage("");
     }, 5000);
-      },[verifyingError])
-    
-        
+  }, [verifyingError]);
 
   const handleChange = (index, value) => {
-    setOtpMessage("")
+    setOtpMessage("");
     if (/^\d$/.test(value)) {
       const newOtp = [...otp];
       newOtp[index] = value;
@@ -175,7 +172,6 @@ export const ForgotPassword = () => {
                 containerClassName={"text-left pt-2"}
                 heading={"Verification Code"}
                 subHeading={`We have sent you an OTP on your registered email id ${profile[0]?.email}`}
-
               />
               <form
                 onSubmit={handleOtpSubmit}
@@ -199,10 +195,10 @@ export const ForgotPassword = () => {
                       />
                     ))}
                   </div>
-                  
+
                   <div className="text-red-500 mt-2 font-medium text-sm text-center">
-                    { verifyingError? otpMessage: null}
-                    </div>
+                    {verifyingError ? otpMessage : null}
+                  </div>
                 </div>
 
                 <div className="w-full flex flex-col justify-center items-center">
@@ -226,7 +222,9 @@ export const ForgotPassword = () => {
                   <Button
                     type="submit"
                     primary={true}
-                    className="mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none"
+                    className={
+                      "mt-2 py-3 w-full rounded-lg  text-[#0A1C40] font-semibold !border-none "
+                    }
                     disabled={otp?.[otp.length - 1] == ""}
                     isLoading={isVerifying}
                   >
@@ -263,11 +261,13 @@ export const ForgotPassword = () => {
                     />
                   )}
                 />
-                
+
                 <Button
                   type="submit"
                   primary={true}
-                  className="mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none"
+                  className={
+                    "mt-2 py-3 w-full rounded-lg  text-[#0A1C40] font-semibold !border-none "
+                  }
                   disabled={!isValid}
                   isLoading={resendingOtp}
                 >
