@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios'; // Import Axios
+import client from '../../redux/axios-baseurl';
 
 function FileField({ index, field, className, onChange }) {
   const { lebel,isRequired } = field;
@@ -19,7 +20,7 @@ function FileField({ index, field, className, onChange }) {
       const formData = new FormData();
       formData.append('files', file);
 
-      console.log("formDataaaaaaaaaaaaaaaaa",formData.get("files"));
+      // console.log("formDataaaaaaaaaaaaaaaaa",formData.get("files"));
       
 
       // Axios POST request to upload the file
@@ -29,7 +30,7 @@ function FileField({ index, field, className, onChange }) {
         return rejectWithValue("No token found");
       }
 
-      const response = await axios.put('https://corpzo.onrender.com/api/user/auth/upload-file', formData,{
+      const response = await client.put('/user/auth/upload-file', formData,{
         headers: {
             // Accept: "application/json",
             // "Content-Type": "application/json",
@@ -37,12 +38,12 @@ function FileField({ index, field, className, onChange }) {
           }
       });
 
-    //   console.log("response:",response.data);
+      // console.log("response:",response.data);
       
 
       const fileUrl = response.data?.data?.url; // Adjust based on your API's response structure
       setUploadedUrl(fileUrl);
-      onChange(index, fileUrl); // Pass the uploaded file URL to the parent
+      onChange(index, {fileUrl:fileUrl,filename:formData.get("files")?.name}); // Pass the uploaded file URL to the parent
     } catch (error) {
       console.error('Upload error:', error);
     } finally {
