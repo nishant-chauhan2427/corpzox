@@ -28,7 +28,8 @@ export const Testimonials = ({ serviceId }) => {
     }
   })
 
-  const formattedRatting = ratingReviewList ?ratingReviewList?.data[0] : {}
+  const formattedRatting = ratingReviewList?.data?.length > 0 ? ratingReviewList.data[0] : {};
+
   const ratingDetails = success?.total_rating_count?.length > 0 ? success.total_rating_count[0] : null;
   useEffect(() => {
     dispatch(getRatingReviews(serviceId))
