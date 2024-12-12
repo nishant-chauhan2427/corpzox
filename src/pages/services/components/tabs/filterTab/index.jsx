@@ -8,15 +8,7 @@ function Filtertab() {
   const dispatch = useDispatch();
   const [categoryactiveTab, setcategoryActiveTab] = useState(0);
   const [activeTabIndex, setActiveTabIndex] = useState(0);
-  const categoryTab = [
-    { name: "Indian Business" },
-    { name: "Financial Business" },
-    { name: "International Business" },
-    { name: "Business Registrations" },
-    { name: "Business Licenses" },
-    { name: "Intellectual Property Rights" },
-    { name: "Corporate Restructuring" },
-  ];
+
   console.log(subCategory, "subCategory");
   useEffect(() => {
     const subCategoryIdFromParams = searchParams.get("subCategoryId");
@@ -27,6 +19,7 @@ function Filtertab() {
       if (foundIndex !== -1) {
         setActiveTabIndex(foundIndex);
         dispatch(setSelectedSubCategory(subCategory.list[foundIndex]));
+       setSearchParams({ categoryId: searchParams.get("categoryId") || "", subCategoryId: subCategory.list[foundIndex]._id})
       }
     }
   }, [searchParams, subCategory?.list, dispatch]);
