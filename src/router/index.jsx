@@ -134,12 +134,12 @@ const router = createBrowserRouter([
                 path: "edit",
                 element: <CreateBusiness />,
                 children: [
-                  { index: true, element: <RegistrationDetails /> }, // Default child for /edit
-                  { path: "registration", element: <RegistrationDetails /> },
-                  { path: "address", element: <AddressDetails /> },
-                  { path: "financial", element: <FinancialDetails /> },
-                  { path: "kyc", element: <KYCDetails /> },
-                  { path: "funding", element: <FundingDetails /> }
+                  { index: true, element: <RegistrationDetails isEdit={true}/> }, // Default child for /edit
+                  { path: "registration", element: <RegistrationDetails isEdit={true} /> },
+                  { path: "address", element: <AddressDetails isEdit={true} /> },
+                  { path: "financial", element: <FinancialDetails isEdit={true} /> },
+                  { path: "kyc", element: <KYCDetails isEdit={true} /> },
+                  { path: "funding", element: <FundingDetails isEdit={true} /> }
                 ]
               },           
               // {

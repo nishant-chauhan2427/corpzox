@@ -38,6 +38,7 @@ export const ForgotPassword = () => {
     resendingOtp,
     profile,
   } = useSelector((state) => state.auth);
+  const [otpMessage,setOtpMessage]= useState('')
   useEffect(() => {
     if (timer === 0 || timer == "00") {
       setIsResendDisabled(false);
@@ -65,7 +66,18 @@ export const ForgotPassword = () => {
       }
     }
   }, [isVerifying]);
+
+  
+  useEffect(()=>{
+    setTimeout(() => {
+      setOtpMessage("")
+    }, 5000);
+      },[verifyingError])
+    
+        
+
   const handleChange = (index, value) => {
+    setOtpMessage("")
     if (/^\d$/.test(value)) {
       const newOtp = [...otp];
       newOtp[index] = value;
@@ -184,9 +196,10 @@ export const ForgotPassword = () => {
                       />
                     ))}
                   </div>
+                  
                   <div className="text-red-500 mt-2 font-medium text-sm text-center">
-                    Wrong OTP!
-                  </div>
+                    { verifyingError? otpMessage: null}
+                    </div>
                 </div>
 
                 <div className="w-full flex flex-col justify-center items-center">

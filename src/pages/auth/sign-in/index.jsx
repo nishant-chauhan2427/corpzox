@@ -140,6 +140,7 @@ export const SignIn = () => {
   return (
     <>
       <MetaTitle title={"Sign In"} />
+      <Heading>Sign In</Heading>
       <AuthLayout>
         <img className="sm:w-32 w-36" src="logo.svg" alt="CORPZO Logo" />
         <div className="w-full flex">
@@ -153,23 +154,22 @@ export const SignIn = () => {
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-3 pt-5"
             >
-              <Controller
+             <Controller
                 name="email"
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
                   <Input
                     {...field}
-                    label={"Email"}
-                    type={"email"}
-                    placeholder={"Email Id / Phone No."}
-                    className={"border-[#D9D9D9] border"}
+                    label="Email or Phone"
+                    type="text"
+                    placeholder="Email Id / Phone No."
+                    className="border-[#D9D9D9] border"
                     errorContent={errors?.email?.message}
                     onBlur={() => handleBlur("email")}
                     maxLength={50}
                   />
                 )}
-                rules={{ required: "Email Address is required" }}
               />
               <Controller
                 name="password"

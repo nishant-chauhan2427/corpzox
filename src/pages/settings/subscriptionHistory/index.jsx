@@ -208,7 +208,7 @@ const Card = ({ number, label, description, onClick, loading }) => {
         <label className="font-bold text-lg">{label}</label>
         <p className="text-sm">{description}</p>
       </div>
-      {number > 0 && <button>View All</button>}
+      {!loading && number > 0 && <button>View All</button>}
     </div>
   );
 };

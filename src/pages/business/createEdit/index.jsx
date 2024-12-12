@@ -18,7 +18,8 @@ const CreateBusiness = ({isEdit}) => {
             <div
               className="h-2 bg-blue-500 rounded-full"
               style={{
-                width: `${(currentStep / (steps.length - 1)) * 100}%`,
+                // width: `${(currentStep / (steps.length - 1)) * 100}%`,
+                width: `20%`,
               }}
             ></div>
           </div> */}
