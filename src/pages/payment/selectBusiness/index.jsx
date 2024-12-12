@@ -151,11 +151,13 @@ function SelectBusiness() {
 
 
   const [allBusiness, setAllBusiness] = useState(null);
-  const [selectedBusinessId, setSelectedBusinessId] = useState(null);
+  const [selectedBusinessId, setSelectedBusinessId] = useState( null);
 
   const handleBusinessChange = (event) => {
     setSelectedBusinessId(event.target.value);
   };
+// console.log("selectedBusinessId",dynamicForm?dynamicForm[0]?.userapplications[0]?.businessId :"no id");
+// console.log("selectedBusinessId",selectedBusinessId);
 
 
   // console.log("loading", loading);
@@ -186,6 +188,8 @@ function SelectBusiness() {
           }
         });
         setDynamicForm(response.data?.data);
+        setSelectedBusinessId(response.data?.data  ?  response.data?.data[0]?.userapplications[0]?.businessId : null)
+
       } catch (err) {
         console.log(err, "get offer list error");
         setError(err);
@@ -398,7 +402,7 @@ function SelectBusiness() {
         outline={true}
         primary={true}
         // disabled={(dynamicForm?.some((field,idx) => {return field.error === true})) }
-        disabled={isSaving || (dynamicForm?.some((field, idx) => field?.isRequiredMsg || field?.error === true))}
+        disabled={!dynamicForm || dynamicForm.length<=0 || isSaving || (dynamicForm?.some((field, idx) => field?.isRequiredMsg || field?.error === true))}
         className={" py-2 "}
         onClick={handleSubmit}
       >

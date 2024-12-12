@@ -1,7 +1,7 @@
 import { IconBox } from "../iconBox";
 import { GoDotFill } from "react-icons/go";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { iconSize } from "../../utils";
 import { Link } from "react-router-dom";
@@ -10,6 +10,7 @@ import { UpdateProfile } from "./updateProfile";
 
 export const Sidebar = ({ className, collapse, setCollapse }) => {
   const user = useSelector((state) => state.user.user);
+  console.log(user,"USER QWERy");
 
   const initialSidebarItems = [
     {
@@ -84,6 +85,30 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
   // }
 
   const [items, setItems] = useState(initialSidebarItems);
+  const [percentage, setPercentage] = useState(100);
+
+  let fieldsKey = ['name', 'gender', 'email', 'busniessEmail', 'phone', 'role', 'profile_picture_url']
+  
+  let calculatePercentageHandler = () => {
+    let count = 0;  
+    console.log(user, "Percentage");
+  
+    Object.keys(user).forEach((data) => {
+      if (fieldsKey.indexOf(data) !== -1) {
+        count++;  
+      }
+    });
+    let percentage = Math.floor((count / fieldsKey.length) * 100);
+    
+    setPercentage(percentage);  
+  };
+  
+  
+  useEffect(() => {
+    if (user) {
+      calculatePercentageHandler()
+    }
+  }, [user])
 
   // Handler to toggle the pin status of an item
   const handlePinToggle = (title) => {
@@ -197,7 +222,12 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
           <div className="px-2 pb-14 flex flex-col gap-4">
             {/*  */}
             <AccountManager sidebar={true} />
-            <UpdateProfile />
+            {/* <UpdateProfile /> */}
+            {percentage !== 100 ? (
+          <UpdateProfile />
+        ) : (
+          ""
+        )}
           </div>
         </div>
       </motion.div>
