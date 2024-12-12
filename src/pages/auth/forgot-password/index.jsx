@@ -38,6 +38,8 @@ export const ForgotPassword = () => {
     resendingOtp,
     profile,
   } = useSelector((state) => state.auth);
+
+  console.log(profile,"profile123e4r");
   const [otpMessage,setOtpMessage]= useState('')
   useEffect(() => {
     if (timer === 0 || timer == "00") {
@@ -55,19 +57,21 @@ export const ForgotPassword = () => {
       return () => clearTimeout(countdown);
     }
   }, [timer]);
+  
   useEffect(() => {
     if (isVerify && !isVerifying) {
       setIsVerify(false);
       if (verifyingError) {
-        toast.error(verifyingError);
+        //toast.error(verifyingError);
+        setOtpMessage(verifyingError)
       } else {
-        //  toast.success(verifyMessage);
+        toast.success(verifyMessage);
         navigate("/create-new-password");
       }
     }
   }, [isVerifying]);
 
-  
+
   useEffect(()=>{
     setTimeout(() => {
       setOtpMessage("")
@@ -170,9 +174,8 @@ export const ForgotPassword = () => {
               <DualHeadingTwo
                 containerClassName={"text-left pt-2"}
                 heading={"Verification Code"}
-                subHeading={
-                  "We have sent you an OTP on your registered mobile no. and Email Id"
-                }
+                subHeading={`We have sent you an OTP on your registered email id ${profile[0]?.email}`}
+
               />
               <form
                 onSubmit={handleOtpSubmit}
@@ -260,6 +263,7 @@ export const ForgotPassword = () => {
                     />
                   )}
                 />
+                
                 <Button
                   type="submit"
                   primary={true}
