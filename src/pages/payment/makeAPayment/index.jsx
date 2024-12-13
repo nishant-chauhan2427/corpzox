@@ -18,6 +18,7 @@ import { availService, getServiceDetails, talkToAdvisor, verifyCoupon } from "..
 import { addCoupons, removeCoupon } from "../../../redux/slices/serviceDetailsSlice";
 import { ConfirmationModal } from "../../../components/modal/confirmationModal";
 import { PricingDetailShimmer } from "../../../components/loader/PricingDetailShimmer";
+import { RouteProgressBar } from "../../../components/progressBar/routeBased";
 
 const MakeAPayment = () => {
   const dispatch = useDispatch()
@@ -95,7 +96,9 @@ const navigate = useNavigate()
     //   onConfirmationModalClose()
     // }
     const userData = { ...availServiceData }
-    dispatch(availService({userData , navigate}))
+    console.log("userdata",userData);
+    
+    // dispatch(availService({userData , navigate}))
   }
 
   const onConfirmationModalClose = () => {
@@ -116,6 +119,7 @@ const navigate = useNavigate()
         ></div>
       </div> */}
       <div>
+      <RouteProgressBar currStep={1} totalSteps={3} />
         <div>
           <p className="font-medium text-[20px] text-[#000000] pb-4">
             Select a Method

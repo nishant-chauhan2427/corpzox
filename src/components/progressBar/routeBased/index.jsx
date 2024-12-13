@@ -4,7 +4,7 @@ export const RouteProgressBar = ({ steps }) => {
   const totalSteps = steps?.length;
 
   // Calculate the width of the completed progress bar
-  const completedSteps = steps.filter(
+  const completedSteps = steps?.filter(
     (step) => step.status === "completed"
   ).length;
   const width = `${(100 / (totalSteps - 1)) * completedSteps}%`;
