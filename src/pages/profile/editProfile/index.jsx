@@ -164,7 +164,7 @@ const Edit = () => {
         <Heading title={"Profile Picture"} backButton={true}>
           Edit Profile
         </Heading>
-        <div className="flex sm:flex-row flex-col shadow-md bg-[#F4F9FF] border items-center px-4 rounded-2xl justify-center py-10 gap-4 border-[#DFEAF2]">
+        <div className="flex sm:flex-row flex-col shadow-md bg-[#F4F9FF] border items-center  rounded-2xl justify-center py-10 gap-4 px-2 border-[#DFEAF2]">
           <div className="relative flex w-[30%] flex-col items-center gap-4">
             <div
               className="relative"

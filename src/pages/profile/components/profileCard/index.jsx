@@ -29,19 +29,19 @@ const ProfileCard = ({ userData, loading }) => {
                       : "/images/profile/profile.svg"
                   }
                  
-                  className="rounded-full w-[170px] h-[170px] object-cover"
+                  className="rounded-full w-[160px] h-[120px] sm:w-[170px] sm:h-[170px] object-cover"
                   alt=""
                 />
               </div>
-              <div className="flex flex-col gap-2 justify-center">
-                <p className="text-[#525252] text-base font-semibold sm:text-base">
+              <div className="flex flex-col gap-4 justify-center">
+                <p className="text-[#525252] text-base sm:font-semibold font-medium sm:text-base">
                   Name:{" "}
                   <span className="text-black">
                     {" "}
                     {userData && userData?.name ? userData?.name : "________"}
                   </span>
                 </p>
-                <p className="text-[#525252] text-base font-semibold sm:text-base">
+                <p className="text-[#525252] text-base font-medium sm:font-semibold sm:text-base">
                   Email Id:{" "}
                   <span className="text-black">
                     {userData && userData?.email
@@ -49,14 +49,14 @@ const ProfileCard = ({ userData, loading }) => {
                       : "_________"}
                   </span>
                 </p>
-                <p className="text-[#525252] text-base font-semibold sm:text-base">
+                {/* <p className="text-[#525252] text-base font-semibold sm:text-base">
                   Business email Id:{" "}
                   <span className="text-black">
                     {userData && userData?.busniessEmail
                       ? userData?.busniessEmail
                       : "________"}
                   </span>
-                </p>
+                </p> */}
               </div>
             </div>
             <div>
