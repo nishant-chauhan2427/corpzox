@@ -189,11 +189,13 @@ const Edit = () => {
                     borderRadius: "50%",
                     overflow: "hidden",
                     position: "relative",
+                    
                   }}
                 >
                   <Cropper
                     cropShape="round"
                     image={image}
+                    // objectFit="cover"
                     crop={crop}
                     zoom={zoom}
                     aspect={1}
