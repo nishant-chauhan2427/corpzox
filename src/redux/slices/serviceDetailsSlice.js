@@ -762,9 +762,9 @@ function calculateFinalPrice(data, subscriptionId, state) {
   state.offerDetails = offerDetails;
 
   // Save the final price to localStorage
-  localStorage.setItem("finalPrice", finalPrice.toFixed(2)); // Save with 2 decimal places for precision
-  console.log(`Final price calculated and saved: ${finalPrice.toFixed(2)}`);
-  return finalPrice.toFixed(2);
+  localStorage.setItem("finalPrice", finalPrice?.toFixed(2)); // Save with 2 decimal places for precision
+  console.log(`Final price calculated and saved: ${finalPrice?.toFixed(2)}`);
+  return finalPrice?.toFixed(2);
 }
 
 // Example Usage:
