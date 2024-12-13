@@ -121,22 +121,32 @@ export const ServicesProgress = ({ data }) => {
     <div>
       <div className="py-2 flex flex-row sm:flex-row justify-between gap-2">
         <Heading className={"py-0 "} tourButton={true}>
-          Your Service are Completed {dataUpdate?.total ? `(${dataUpdate?.total})` : ""}
+          Your Service are Completed{" "}
+          {dataUpdate?.total ? `(${dataUpdate?.total})` : ""}
         </Heading>
-        <Link to={"/services/serviceprogressdetail"} className="font-medium text-sm text-[#797979]">
+        <Link
+          to={"/services/serviceprogressdetail"}
+          className="font-medium text-sm text-[#797979]"
+        >
           View All
         </Link>
       </div>
       {dataUpdate?.data?.length > 0 ? (
         <div className="flex flex-col gap-4">
           {dataUpdate?.data?.map((data, index) => (
-            <div key={index} className="bg-[#f3f7ff] stroke-[#dfeaf2] stroke-1 px-4 py-2 rounded-md">
+            <div
+              key={index}
+              className="bg-[#f3f7ff] stroke-[#dfeaf2] stroke-1 px-4 py-2 rounded-md"
+            >
               <div className="flex flex-col sm:flex-row items-start justify-between sm:items-center gap-2">
                 <div className="flex flex-col gap-1">
                   <div className="flex gap-2">
                     <img src="/images/dashboard/service-progress.svg" alt="" />
 
-                    <NavLink to={`/payment/create/${data._id}`} className="font-bold text-[#0068FF]">
+                    <NavLink
+                      to={`/payment/create/${data._id}`}
+                      className="font-bold text-[#0A1C40]"
+                    >
                       Service: {data?.service[0]?.name}{" "}
                     </NavLink>
                     <img
@@ -148,7 +158,9 @@ export const ServicesProgress = ({ data }) => {
                   <div className="flex flex-col gap-2">
                     <h6 className="text-sm text-[#7C7D80]">
                       <strong>Business:</strong>{" "}
-                      {data?.businessdetails[0]?.businessName ? data?.businessdetails[0]?.businessName : "____" }
+                      {data?.businessdetails[0]?.businessName
+                        ? data?.businessdetails[0]?.businessName
+                        : "____"}
                     </h6>
                     <p className="text-sm text-[#7C7D80]">
                       <strong className="!font-medium">Step:</strong>{" "}
@@ -345,15 +357,17 @@ export const ServicesProgress = ({ data }) => {
                       </div>
                     </>
                   </ConfirmationModal>
-                  <LinkButton to={`/payment/create/${data._id}`} primary={true}>Avail again</LinkButton>
-                  {/* <button
+                  <LinkButton to={`/payment/create/${data._id}`} primary={true}>
+                    Avail again
+                  </LinkButton>
+                  <button
                     className={`${
                       dropdownStates === true && "rotate-180"
                     } hidden lg:block`}
                     onClick={() => handleServiceDropdown(index)}
                   >
                     <GoTriangleDown size={15} />
-                  </button> */}
+                  </button>
                 </div>
               </div>
               <Dropdown
