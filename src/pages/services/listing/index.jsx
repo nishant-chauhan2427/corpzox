@@ -105,7 +105,7 @@ const ServicesListing = () => {
   };
 
 
-  let onClickAddWishlistHandler = () => {
+ let onClickAddWishlistHandler = () => {
     const wishlistSelectedData=wishList?.list?.map(item => item._id);
     dispatch(updateServiceQuickWishlist({ serviceIdArray: wishlistSelectedData }));
   };

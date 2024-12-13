@@ -19,17 +19,16 @@ const ProfileCard = ({ userData, loading }) => {
             Profile
           </Heading>
           {/* </div> */}
-          <div className="flex flex-col gap-4 sm:flex-row justify-between drop-shadow-md bg-[#F4F9FF] border px-4 rounded-2xl py-4 border-[#DFEAF2] ">
-            <div className="flex gap-4">
-              <div>
+          <div className="flex sm:flex-row flex-col gap-4  justify-between drop-shadow-md bg-[#F4F9FF] border px-4 rounded-2xl py-4 border-[#DFEAF2] ">
+            <div className="flex sm:flex-row flex-col gap-4">
+              <div className="flex justify-center items-center">
                 <img
                   src={
                     user?.profile_picture_url
                       ? user?.profile_picture_url
                       : "/images/profile/profile.svg"
                   }
-                 
-                  className="rounded-full w-[160px] h-[120px] sm:w-[170px] sm:h-[170px] object-cover"
+                  className="rounded-full w-[180px] h-[180px] sm:w-[170px] sm:h-[170px] object-cover"
                   alt=""
                 />
               </div>
