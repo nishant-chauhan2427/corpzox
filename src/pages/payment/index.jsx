@@ -30,12 +30,12 @@ const Payments = () => {
         pathname === "/payment"
           ? "current"
           : [
-              "/payment/create",
-              "/payment/preview",
-              "/payment/history",
-            ].includes(pathname)
-          ? "completed"
-          : "upcoming",
+            "/payment/create",
+            "/payment/preview",
+            "/payment/history",
+          ].includes(pathname)
+            ? "completed"
+            : "upcoming",
     },
     {
       step: 2,
@@ -44,8 +44,8 @@ const Payments = () => {
         pathname === "/payment/create"
           ? "current"
           : ["/payment/preview", "/payment/history"].includes(pathname)
-          ? "completed"
-          : "upcoming",
+            ? "completed"
+            : "upcoming",
     },
     {
       step: 3,
@@ -54,8 +54,8 @@ const Payments = () => {
         pathname === "/payment/preview"
           ? "current"
           : ["/payment/history"].includes(pathname)
-          ? "completed"
-          : "upcoming",
+            ? "completed"
+            : "upcoming",
     },
   ];
 
@@ -66,9 +66,10 @@ const Payments = () => {
       <Heading title={"Payment"} backButton={true}>
         {getPageHeading(pathname)}
       </Heading>
-      {shouldShowProgressBar && (
+      {/* {shouldShowProgressBar && (
         <RouteProgressBar steps={servicesProgessSteps} />
-      )}
+      )} */}
+
       <Outlet />
     </div>
   );

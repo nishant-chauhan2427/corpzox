@@ -41,6 +41,7 @@ import { AddressDetails } from "../pages/business/createEdit/components/address"
 import { FinancialDetails } from "../pages/business/createEdit/components/financial";
 import { KYCDetails } from "../pages/business/createEdit/components/kyc";
 import { FundingDetails } from "../pages/business/createEdit/components/funding";
+import { ServicesProgress } from "../pages/dashboard/components/services/progress";
 
 const router = createBrowserRouter([
   {
@@ -200,7 +201,7 @@ const router = createBrowserRouter([
                 element: <SelectBusiness />,
               },
               {
-                path: "preview",
+                path: "preview/:applicationId",
                 element: <PreviewPayment />,
               },
               {

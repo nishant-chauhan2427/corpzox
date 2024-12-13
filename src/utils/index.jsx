@@ -650,3 +650,159 @@ export const formatReadableDate = (timestamp) => {
   const options = { day: "2-digit", month: "short", year: "numeric" };
   return date.toLocaleDateString("en-GB", options);
 };
+
+export function mergeArrays(couponArray = [], offerArray = []) {
+  console.log(couponArray, "from function")
+  // Filter out objects with no data (empty objects) from both arrays
+  const validCouponArray = couponArray.filter(obj => Object.keys(obj).length > 0);
+  const validOfferArray = offerArray.filter(obj => Object.keys(obj).length > 0);
+
+  // If both arrays have data, merge them
+  if (validCouponArray.length > 0 && validOfferArray.length > 0) {
+      return [...validCouponArray, ...validOfferArray];
+  }
+  
+  // If only one array has data, return that array
+  if (validCouponArray.length > 0) {
+      return validCouponArray;
+  }
+
+  if (validOfferArray.length > 0) {
+      return validOfferArray;
+  }
+
+  // If no array has data, return an empty array
+  return [];
+}
+
+export function calculateFinalPrice(data, { serviceId, moduleId = {}, coupon = null }, state) {
+  // Validate data
+  if (!data || !Array.isArray(data) || !data.length) {
+    console.error("Invalid data");
+    return null;
+  }
+
+  let basePrice = 0; // Initialize base price
+  let offerDetails = {}; // Store offer details
+  let couponDetails = {}; // Store coupon details
+  let totalOfferDiscount = 0; // Discount from offers
+  let totalCouponDiscount = 0; // Discount from coupons
+  let finalPrice = 0; // Final calculated price
+
+  // Step 1: Determine base price using moduleId (subscriptionId or quotationId)
+  if (serviceId && moduleId.subscriptionId) {
+    // Case: Service ID and Subscription ID
+    const subscription = data[0]?.subscription?.find(sub => sub._id === moduleId.subscriptionId);
+    const service = data[0]?.services?.find(svc => svc._id === serviceId);
+
+    if (subscription && service) {
+      basePrice = subscription.amount || 0;
+    } else {
+      console.error("Invalid Service ID or Subscription ID");
+      return null;
+    }
+  } else if (serviceId && moduleId.quotationId) {
+    // Case: Service ID and Quotation ID
+    const quotation = data[0]?.quotations?.find(qtn => qtn._id === moduleId.quotationId);
+    const service = data[0]?.services?.find(svc => svc._id === serviceId);
+
+    if (quotation && service) {
+      basePrice = quotation.amount || 0;
+    } else {
+      console.error("Invalid Service ID or Quotation ID");
+      return null;
+    }
+  } else if (serviceId) {
+    // Case: Only Service ID
+    const service = data[0]?.services?.find(svc => svc._id === serviceId);
+
+    if (service) {
+      basePrice = service.amount || 0;
+    } else {
+      console.error("Invalid Service ID");
+      return null;
+    }
+  } else {
+    console.error("Service ID is required");
+    return null;
+  }
+
+  finalPrice = basePrice; // Start with base price
+
+  // Step 2: Apply offers
+  const offer = data[0]?.offerservices?.[0]?.offers?.[0];
+  if (offer) {
+    let discountAmount = 0;
+
+    // Apply percentage discount
+    if (offer.discountPercent) {
+      discountAmount = basePrice * (offer.discountPercent / 100);
+      totalOfferDiscount += discountAmount;
+      finalPrice -= discountAmount;
+    }
+
+    // Apply direct discount
+    if (offer.discountPrice) {
+      totalOfferDiscount += offer.discountPrice;
+      finalPrice -= offer.discountPrice;
+    }
+
+    offerDetails = {
+      discountPercent: offer.discountPercent || 0,
+      discountPrice: offer.discountPrice || 0,
+      offerId: offer._id || null,
+      discountType: offer.discountPercent ? "percentage" : "direct",
+      usage: "Multi Use",
+      amount: totalOfferDiscount,
+    };
+  }
+
+  // Step 3: Apply coupon
+  if (coupon && typeof coupon === "object") {
+    let couponDiscountAmount = 0;
+
+    if (coupon.discountPercent) {
+      couponDiscountAmount = basePrice * (coupon.discountPercent / 100);
+      totalCouponDiscount += couponDiscountAmount;
+      finalPrice -= couponDiscountAmount;
+    }
+
+    if (coupon.discountPrice) {
+      totalCouponDiscount += coupon.discountPrice;
+      finalPrice -= coupon.discountPrice;
+    }
+
+    couponDetails = {
+      couponId: coupon.couponId || null,
+      discountType: coupon.discountPercent ? "percentage" : "direct",
+      discountPercent: coupon.discountPercent || 0,
+      discountPrice: coupon.discountPrice || 0,
+      amount: couponDiscountAmount,
+    };
+  } else if (coupon) {
+    console.warn("Invalid coupon format. It should be an object.");
+  }
+
+  // Ensure final price is not negative
+  finalPrice = Math.max(finalPrice, 0);
+
+  // Update state
+  state.basePrice = basePrice;
+  state.offerDetails = offerDetails;
+  state.couponDetails = couponDetails;
+  state.totalOfferDiscount = totalOfferDiscount;
+  state.totalCouponDiscount = totalCouponDiscount;
+  state.finalPrice = finalPrice;
+
+  // Save final price to localStorage
+  localStorage.setItem("finalPrice", finalPrice.toFixed(2));
+
+  // Log details
+  console.log(`Final price calculated and saved: ${finalPrice.toFixed(2)}`);
+  console.log(`Total Offer Discount: ${totalOfferDiscount}`);
+  console.log(`Total Coupon Discount: ${totalCouponDiscount}`);
+  console.log("Offer details:", offerDetails);
+  console.log("Coupon details:", couponDetails);
+
+  return finalPrice.toFixed(2); // Return final price as a string
+}

@@ -37,7 +37,9 @@ const serviceDetailSlice = createSlice({
     isRatingAdding: false,
     ratingReviewList: [],
     offerDetails: {},
-    totalCouponDiscount : 0
+    totalCouponDiscount : 0, 
+    
+    appliedOfferArray : []
   },
   reducers: {
     clearState: (state) => {
@@ -179,6 +181,29 @@ const serviceDetailSlice = createSlice({
       state.totalSavings -= couponDiscount;  // Subtract the coupon discount
 
       console.log(`Removed coupon with id ${id}. Discount of ${couponDiscount} removed. New cost: ${state.cost}`);
+      const foundCoupon = state?.appliedOfferArray?.find(
+        (coupon) => coupon.couponId === id
+      );
+      
+      console.log(foundCoupon, "foundCoupon");
+      
+      if (foundCoupon) {
+        console.log("Coupon found. Removing coupon and keeping the offer.");
+        // Remove the coupon from the array
+        state.appliedOfferArray = state.appliedOfferArray.filter(
+          (coupon) => coupon.couponId !== id
+        );
+      } else {
+        console.log("Coupon not found. Returning without changes.");
+        return;
+      }
+      console.log(JSON.parse(JSON.stringify(state.appliedOfferArray)),"removed")
+
+      state.availServiceData = {
+        ...state.availServiceData,
+         appliedCoupan: JSON.parse(JSON.stringify(state.appliedOfferArray)),
+       };
+       console.log(JSON.parse(JSON.stringify(state.availServiceData)),"removed")
 
       // Update availServiceData to reflect the changes
       state.availServiceData.totalCouponDiscount = 0;  // Reset coupon discount
@@ -249,6 +274,7 @@ const serviceDetailSlice = createSlice({
           state.originalPrice = action.payload.quotations[0].amount;
         }
 
+        console.log(action.payload, "acion pa")
         // Calculate the final price using the reusable function
         const finalPrice = calculateFinalPrice(
           [action.payload], // Wrap payload in an array to match function expectations
@@ -256,9 +282,12 @@ const serviceDetailSlice = createSlice({
           state // Use the first subscription ID or adjust as needed
         );
 
+        console.log(finalPrice, "finalPricefinalPrice")
         if (finalPrice) {
           state.cost = parseFloat(finalPrice); // Update state cost with final price
         }
+
+        console.log("finalDaaa",JSON.parse(JSON.stringify(state.appliedOfferArray)))
 
         state.availServiceData = {
           serviceId: action.payload._id,
@@ -277,12 +306,15 @@ const serviceDetailSlice = createSlice({
           //   ...(Array.isArray(state.availServiceData.appliedCoupan) ? state.availServiceData.appliedCoupan : []), // Ensure it's an array
           //   ...(state.offerDetails ? [state.offerDetails] : []) // Add offerDetails directly if available, not nested in an object
           // ],
-          appliedCoupan: [
-            ...(Array.isArray(state.availServiceData?.appliedCoupan) 
-              ? state.availServiceData.appliedCoupan.filter(coupon => coupon) 
-              : []), // Ensure valid existing coupons
-            ...(state.offerDetails ? [state.offerDetails] : []) // Add only valid offerDetails
-          ],
+          appliedCoupan: JSON.parse(JSON.stringify(state.appliedOfferArray)),
+          // appliedCoupan: [
+          //   ...(Array.isArray(state.availServiceData?.appliedCoupan) 
+          //     ? state.availServiceData.appliedCoupan.filter(coupon => coupon) 
+          //     : []), // Include only valid existing coupons
+          //   ...(state.offerDetails && state.offerDetails.couponId 
+          //     ? [state.offerDetails] 
+          //     : []), // Add only valid offerDetails with a couponId
+          // ],
           paymentMode: "Net Banking",
           paymentStatus: "PENDING",
           paymentDate: Date.now(),
@@ -364,6 +396,10 @@ const serviceDetailSlice = createSlice({
         const couponData = action.payload;
         console.log(couponData, "couponData");
 
+        
+        
+       
+
         if (!couponData) {
           console.error("Invalid coupon data:", couponData);
           return;
@@ -382,7 +418,7 @@ const serviceDetailSlice = createSlice({
         }
 
         state.appliedCoupons.unshift(couponData);
-
+        
         // Track the original price for reference
         if (!state.originalPrice) {
           state.originalPrice = state.cost;
@@ -403,7 +439,37 @@ const serviceDetailSlice = createSlice({
         state.totalSavings = (state.totalSavings || 0) + discount;
         state.coupons = state.coupons.filter(coupon => coupon._id !== couponData.couponId);
         console.log(state.coupons, "applied coupon");
-        
+        const coupanDetails ={
+          couponId: couponData.couponId,
+          amount: discount,
+          discountType: "percentage",
+          usage: "Multi Use",
+          couponDiscount: couponData.cost,
+        }
+
+
+        // if id dont push 
+  const foundCoupon = state?.appliedOfferArray?.find(
+    (coupon) => coupon.couponId === coupanDetails.couponId
+  );
+  
+  console.log(foundCoupon, "foundCoupon");
+  
+  if (foundCoupon) {
+    console.log("Offer already exists. Do not add.");
+    return;
+  } else {
+    console.log("Offer not found. Adding new offer.");
+    // Add logic to add the offer here
+    state.appliedOfferArray.push(coupanDetails); // Example logic
+  }
+  console.log("finalDaa2",JSON.parse(JSON.stringify(state.appliedOfferArray)));
+
+  console.log(JSON.parse(JSON.stringify(state.appliedOfferArray)), "appliedOfferArray")
+  state.availServiceData = {
+    ...state.availServiceData,
+     appliedCoupan: JSON.parse(JSON.stringify(state.appliedOfferArray)),
+   };
         // state.availServiceData = {
         //   ...state.availServiceData,
         //   amount: state.cost,
@@ -441,20 +507,20 @@ const serviceDetailSlice = createSlice({
           ...state.availServiceData,
           amount: state.cost,
           totalCouponDiscount: discount + (state.totalCouponDiscount || 0), // Safeguard against undefined
-          appliedCoupan: [
-            ...(Array.isArray(state.availServiceData.appliedCoupan)
-              ? state.availServiceData.appliedCoupan.filter(
-                  coupon => coupon && Object.keys(coupon).length > 0 // Filter out empty objects
-                )
-              : []), // Default to an empty array if undefined
-            {
-              couponId: couponData.couponId,
-              amount: discount,
-              discountType: "percentage",
-              usage: "Multi Use",
-              couponDiscount: couponData.cost,
-            }, // Add the new coupon details
-          ],
+          // appliedCoupan: [
+          //   state.availServiceData.appliedCoupan
+          //     ? state.availServiceData.appliedCoupan.filter(
+          //         coupon => coupon && Object.keys(coupon).length > 0 // Filter out empty objects
+          //       )
+          //     : null, // Default to an empty array if undefined
+          //   {
+          //     couponId: couponData.couponId,
+          //     amount: discount,
+          //     discountType: "percentage",
+          //     usage: "Multi Use",
+          //     couponDiscount: couponData.cost,
+          //   }, // Add the new coupon details
+          // ],
         };
         
         state.totalCouponDiscount += discount
@@ -538,7 +604,89 @@ const serviceDetailSlice = createSlice({
       })
   },
 });
+// function calculateFinalPrice(data, subscriptionId, state) {
+//   console.log(data, "from dunction")
+//   let finalPrice = data[0]?.cost ;
+// console.log(finalPrice, "cost from data")
+//   // Check if data is available
+//   if (!data || !data.length) {
+//     console.error("Invalid data");
+//     return null;
+//   }
+
+//   // Find the subscription based on the provided subscriptionId
+//   const subscription = data[0]?.subscription?.find(sub => sub._id === subscriptionId);
+//   if (!subscription) {
+//     console.error("Subscription ID not found");
+//     return null;
+//   }
+//    finalPrice = subscription.amount ;
+
+//   let offerDetails = {}
+//   if(data[0].cost){
+//     finalPrice = data[0].cost;
+//   }else if(subscription.amount){
+//     finalPrice = subscription.amount
+//   }
+
+//   // Find any offers for the service
+//   const offer = data[0]?.offerservices?.[0]?.offers?.[0];
+//   let discountAmount = 0;
+//   if (offer) {
+//     // Apply discount percentage if available
+//     if (offer.discountPercent) {
+//       discountAmount = finalPrice * (offer.discountPercent / 100)
+//       state.totalCouponDiscount = state.totalCouponDiscount + discountAmount
+//       finalPrice = finalPrice - (finalPrice * (offer.discountPercent / 100));
+//     }
+
+//     // Apply direct discount amount if available
+//     if (offer.discountPrice) {
+//       finalPrice = finalPrice - offer.discountPrice;
+//     }
+//     offerDetails = {
+//       discountPercent: offer.discountPercent,
+//       offerId: offer._id, // Assuming offer has an _id
+//       discountType: "percentage",
+//       usage: "Multi Use",
+//       amount: discountAmount,
+//     };
+//   }
+//   const appliedCoupanArray = []; 
+
+  
+//   // if id dont push 
+//   const foundOffer = state?.appliedOfferArray?.find(
+//     (offer) => offer.offerId === offerDetails.offerId
+//   );
+  
+//   console.log(foundOffer, "foundOffer");
+  
+//   if (foundOffer) {
+//     console.log("Offer already exists. Do not add.");
+//     return;
+//   } else {
+//     console.log("Offer not found. Adding new offer.");
+//     // Add logic to add the offer here
+//     state.appliedOfferArray.push(offerDetails); // Example logic
+//   }
+  
+//   //add offer to array
+
+// appliedCoupanArray.push(offerDetails); 
+//   state.offerDetails = offerDetails;
+
+//   // Save the final price to localStorage
+//   localStorage.setItem("finalPrice", finalPrice.toFixed(2)); // Save with 2 decimal places for precision
+//   console.log(`Final price calculated and saved: ${finalPrice.toFixed(2)}`);
+//   return finalPrice.toFixed(2);
+// }
+
 function calculateFinalPrice(data, subscriptionId, state) {
+  console.log(data, "from function");
+  let finalPrice = data[0]?.cost;
+  console.log(finalPrice, "cost from data");
+
   // Check if data is available
   if (!data || !data.length) {
     console.error("Invalid data");
@@ -546,37 +694,71 @@ function calculateFinalPrice(data, subscriptionId, state) {
   }
 
   // Find the subscription based on the provided subscriptionId
-  const subscription = data[0]?.subscription?.find(sub => sub._id === subscriptionId);
+  const subscription = data[0]?.subscription?.find(
+    (sub) => sub._id === subscriptionId
+  );
   if (!subscription) {
     console.error("Subscription ID not found");
-    return null;
   }
-  let offerDetails = {}
-  let finalPrice = subscription.amount;
+  
+  console.log("dataoffer",data);
+  finalPrice = subscription?.amount;
+
+  let offerDetails = {};
+
+  // Update final price if cost exists
+  if (data[0]?.cost) {
+    finalPrice = data[0]?.cost; // Ensure you get the `cost` from the correct location
+  }
 
   // Find any offers for the service
   const offer = data[0]?.offerservices?.[0]?.offers?.[0];
   let discountAmount = 0;
+
   if (offer) {
+    console.log("finalPricedaa",offer);
+    
     // Apply discount percentage if available
     if (offer.discountPercent) {
-      discountAmount = finalPrice * (offer.discountPercent / 100)
-      state.totalCouponDiscount = state.totalCouponDiscount + discountAmount
-      finalPrice = finalPrice - (finalPrice * (offer.discountPercent / 100));
+      discountAmount = finalPrice * (offer.discountPercent / 100);
+      state.totalCouponDiscount = state.totalCouponDiscount + discountAmount;
+      finalPrice -= discountAmount; // Apply discount
+      console.log("finalPricedaa",finalPrice);
+      
     }
 
     // Apply direct discount amount if available
     if (offer.discountPrice) {
-      finalPrice = finalPrice - offer.discountPrice;
+      finalPrice -= offer.discountPrice;
     }
+
+    // Create offer details
     offerDetails = {
       discountPercent: offer.discountPercent,
       offerId: offer._id, // Assuming offer has an _id
-      discountType: "percentage",
+      discountType: offer.discountPercent ? "percentage" : "direct",
       usage: "Multi Use",
       amount: discountAmount,
     };
   }
+
+  // Prevent duplicate offers
+  const foundOffer = state?.appliedOfferArray?.find(
+    (offer) => offer.offerId === offerDetails.offerId
+  );
+
+  console.log(foundOffer, "foundOffer");
+
+  if (foundOffer) {
+    console.log("Offer already exists. Do not add.");
+  } else if (offerDetails?.offerId) {
+    console.log("Offer not found. Adding new offer.");
+    state.appliedOfferArray.push(offerDetails); // Add offer to the state
+  }
+
+  // Save offer details to the appliedCoupanArray and state
+  state.appliedCoupanArray = state.appliedCoupanArray || [];
+  state.appliedCoupanArray.push(offerDetails);
   state.offerDetails = offerDetails;
 
   // Save the final price to localStorage

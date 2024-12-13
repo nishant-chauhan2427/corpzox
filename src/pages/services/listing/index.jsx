@@ -21,6 +21,7 @@ import {
 import {
   setToggleToCheckedWishlist,
   resetService,
+  onChangeSelectAll,
 } from "../../../redux/slices/serviceListingSlice";
 import toast from "react-hot-toast";
 import { Offers } from "../../../components/offers";
@@ -102,11 +103,14 @@ const ServicesListing = () => {
   let onCheckHandler = (service) => {
     dispatch(setToggleToCheckedWishlist(service));
   };
-  let onClickAddWishlistHandler = () => {
-    dispatch(updateServiceQuickWishlist({ serviceIdArray: wishList?.list }));
+
+
+ let onClickAddWishlistHandler = () => {
+    const wishlistSelectedData=wishList?.list?.map(item => item._id);
+    dispatch(updateServiceQuickWishlist({ serviceIdArray: wishlistSelectedData }));
   };
   let onChangeSelectAllHandler = () => {
-    dispatch(onChangeSelectAllHandler());
+    dispatch(onChangeSelectAll());
     // document.getElementsByClassName('service-checkbox').forEach(element => {
 
     // });

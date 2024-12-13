@@ -214,7 +214,7 @@ export const Signup = () => {
                   v2={true}
                   primary={true}
                   className={
-                    "mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none "
+                    "mt-2 py-3 w-full rounded-lg  text-[#0A1C40] font-semibold !border-none "
                   }
                   disabled={!isValid}
                   isLoading={isSubmit}
@@ -236,7 +236,7 @@ export const Signup = () => {
                   />
                   <img src="" alt="" />
                 </div> */}
-                <div className="flex items-center justify-center rounded p-2 text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
+                <div className="flex items-center justify-center rounded p-2 text-center !text-[#0A1C40] font-semibold border border-[#E6E8E7] !bg-white">
                   <div className="flex gap-2">
                     <GoogleLogin
                       clientId="1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com"

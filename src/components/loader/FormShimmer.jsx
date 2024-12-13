@@ -1,4 +1,4 @@
-export const FormShimmer = ({ className,count }) => {
+export const FormShimmer = ({ className,count=1 }) => {
     //count : is responsible to render this same component count times
     return (
       <>
