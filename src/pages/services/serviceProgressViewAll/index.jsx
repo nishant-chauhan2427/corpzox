@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import { PageHeading } from "../../../components/heading";
+import { Heading, PageHeading } from "../../../components/heading";
 import { ServicesProgress } from "../../dashboard/components/services/progress";
 import { TextArea } from "../../../components/inputs/textarea";
 import { Rating } from "../../../components/rating";
 import { Button } from "../../../components/buttons";
+import { useSelector } from "react-redux";
 
 const ServiceprogressViewAll = ({ data }) => {
-  const [dropdownStates, setDropdownStates] = useState(data.map(() => false));
+  const [dropdownStates, setDropdownStates] = useState(data?.map(() => false));
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [otherValue, setOtherVsalue] = useState("");
+  const { dataUpdate } = useSelector((state) => state.user);
+  console.log( dataUpdate.total," dataUpdate32");
 
   const handleServiceDropdown = (index) => {
     setDropdownStates((prevState) =>
@@ -61,19 +64,21 @@ const ServiceprogressViewAll = ({ data }) => {
   ];
   return (
     <>
-      <PageHeading title={"Your Service Progress Updates"} back={true}>
-        Your Service Progress Updates
-      </PageHeading>
-      {console.log(data,"DATA@#!")}
-      {data.length > 0 ? (
+      <div className="flex flex-col md:flex-row justify-between gap-4">
+            <Heading backButton={true} title={"Your Service Progress Updates"} tourButton={true}>
+            Your Service Progress Updates {dataUpdate?.total ? `(${dataUpdate?.total})` : ""}
+            </Heading>
+          </div>
+
+      {dataUpdate?.total > 0 ? (
         <div className="flex flex-col gap-4">
-          {data.map((data, index) => (
+           {dataUpdate?.data?.map((data, index) => (
             <div key={index} className="bg-[#F8FAFF] px-4 py-2 rounded-md">
               <div className="flex flex-col sm:flex-row items-start justify-between sm:items-center gap-2">
                 <div className="flex flex-col gap-1">
                   <div className="flex gap-2">
                     <img src="/images/dashboard/service-progress.svg" alt="" />
-                    <p className="font-bold">Service: {data.name} </p>
+                    <p className="font-bold">Service: {data?.service[0]?.name} </p>
                     <img
                       src="/icons/dashboard/service-error.svg"
                       width={15}
@@ -82,10 +87,10 @@ const ServiceprogressViewAll = ({ data }) => {
                   </div>
                   <div className="flex flex-col gap-2">
                     <h6 className="text-sm text-[#7C7D80]">
-                      <strong>Business:</strong> {data.detail1}
+                      <strong>Business:</strong> {data?.businessdetails[0]?.businessName ? data?.businessdetails[0]?.businessName : "____" }
                     </h6>
                     <p className="text-sm text-[#7C7D80]">
-                      <strong>Step:</strong> {data.detail2}
+                      <strong>Step:</strong> {data?.status}
                     </p>
                   </div>
                 </div>
@@ -133,7 +138,7 @@ const ServiceprogressViewAll = ({ data }) => {
                 </div> */}
               </div>
               <Dropdown
-                isOpen={dropdownStates[index]} // Pass the state for this specific dropdown
+                isOpen={dropdownStates?.[index]} // Pass the state for this specific dropdown
                 servicesProgessSteps={servicesProgessSteps}
               />
             </div>
@@ -146,6 +151,20 @@ const ServiceprogressViewAll = ({ data }) => {
           <p className="font-normal text-[#797979]">
             Create a Business to add your Service{" "}
           </p>
+        </div>
+      )}
+    </>
+  );
+};
+
+const Dropdown = ({ isOpen, servicesProgessSteps }) => {
+  return (
+    <>
+      {isOpen && (
+        <div className="p-6">
+          <div className="flex justify-between items-center">
+            <ProgressBar steps={servicesProgessSteps} />
+          </div>
         </div>
       )}
     </>

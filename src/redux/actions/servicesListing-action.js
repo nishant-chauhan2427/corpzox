@@ -138,6 +138,7 @@ export const removeServiceWishlist = createAsyncThunk("removeServiceWishlist", a
 
 export const updateServiceQuickWishlist = createAsyncThunk("updateServiceQuickWishlist", async (wishListData, { rejectWithValue }) => {
     try {
+        console.log(wishListData,'AddWishlistservices');
         const response = await client.put(`/user/service-quick-wishlist`,wishListData,{
             headers: {
               Accept: "application/json",
@@ -145,7 +146,7 @@ export const updateServiceQuickWishlist = createAsyncThunk("updateServiceQuickWi
               'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
             },
           });
-        console.log(response,'services..');
+        console.log(response,'services12..');
         if(response?.data?.code==200||response?.data?.code==201){
             return response.data;
         }else{

@@ -6,7 +6,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Input } from "../../../components/inputs";
 import { Heading } from "../../../components/heading";
 import { useDispatch, useSelector } from "react-redux";
-import { submitEditProfile, updateProfilePicture } from "../../../redux/actions/profile-actions";
+import {
+  submitEditProfile,
+  updateProfilePicture,
+} from "../../../redux/actions/profile-actions";
 import { profileValidationSchema } from "./editProfileValidationSchema";
 import Cropper from "react-easy-crop";
 
@@ -38,17 +41,13 @@ const getCroppedImg = async (imageSrc, crop, pixelCrop) => {
   );
 
   return new Promise((resolve) => {
-    canvas.toBlob(
-      (blob) => {
-        resolve(URL.createObjectURL(blob));
-      },
-      "image/jpeg"
-    );
+    canvas.toBlob((blob) => {
+      resolve(URL.createObjectURL(blob));
+    }, "image/jpeg");
   });
 };
 
 const Edit = () => {
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
@@ -56,7 +55,9 @@ const Edit = () => {
   const { upload } = useSelector((state) => state.profile);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
-  const [image, setImage] = useState(user?.profile_picture_url || "/images/profile/profile.svg");
+  const [image, setImage] = useState(
+    user?.profile_picture_url || "/images/profile/profile.svg"
+  );
   const [imageFile, setImageFile] = useState(null);
   const [croppedImage, setCroppedImage] = useState(null);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
@@ -100,16 +101,23 @@ const Edit = () => {
   };
   const blobToFile = (url, filename) => {
     // return new File([blob], fileName, { type: blob.type });
-    let mimeType = (url.match(/^data:([^;]+);/) || '')[1];
-    return (fetch(url)
-      .then(function (res) { return res.arrayBuffer(); })
-      .then(function (buf) { return new File([buf], filename, { type: mimeType }); })
-    );
+    let mimeType = (url.match(/^data:([^;]+);/) || "")[1];
+    return fetch(url)
+      .then(function (res) {
+        return res.arrayBuffer();
+      })
+      .then(function (buf) {
+        return new File([buf], filename, { type: mimeType });
+      });
   };
-  
+
   const handleSave = async () => {
     if (croppedAreaPixels) {
-      const croppedImgBlob = await getCroppedImg(image, crop, croppedAreaPixels);
+      const croppedImgBlob = await getCroppedImg(
+        image,
+        crop,
+        croppedAreaPixels
+      );
       console.log("image", imageFile);
       const fileName = imageFile?.name;
 
@@ -121,7 +129,7 @@ const Edit = () => {
 
       // Create FormData and append the file correctly
       const formData = new FormData();
-      formData.append("files", croppedImgFile);  // 'files' key used for the backend
+      formData.append("files", croppedImgFile); // 'files' key used for the backend
 
       console.log("FormData before dispatch:", formData);
 
@@ -130,7 +138,6 @@ const Edit = () => {
       console.log("imageUrl", imageUrl);
     }
   };
-
 
   useEffect(() => {
     const str = user?.name || "";
@@ -157,10 +164,17 @@ const Edit = () => {
         <Heading title={"Profile Picture"} backButton={true}>
           Edit Profile
         </Heading>
-        <div className="flex shadow-md bg-[#F4F9FF] border px-4 rounded-2xl py-10 border-[#DFEAF2]">
-          <div className="flex flex-col w-full items-center gap-4">
-            <div className="relative" style={{ width: "250px", height: "170px" }}>
-              {/* Conditionally render cropped image or cropper */}
+        <div className="flex sm:flex-row flex-col shadow-md bg-[#F4F9FF] border items-center  rounded-2xl justify-center py-10 gap-4 px-2 border-[#DFEAF2]">
+          <div className="relative flex w-[30%] flex-col items-center gap-4">
+            <div
+              className="relative"
+              style={{
+                width: "180px",
+                borderRadius: "50%",
+                border: "1px solid white",
+                height: "180px",
+              }}
+            >
               {croppedImage ? (
                 <img
                   src={croppedImage}
@@ -168,32 +182,44 @@ const Edit = () => {
                   className="w-full h-full object-cover rounded-full"
                 />
               ) : (
-                <Cropper
-                  image={image}
-                  crop={crop}
-                  zoom={zoom}
-                  aspect={4 / 3}
-                  onCropChange={setCrop}
-                  onCropComplete={onCropComplete}
-                  onZoomChange={setZoom}
-                />
+                <div
+                  style={{
+                    width: "180px",
+                    height: "180px",
+                    borderRadius: "50%",
+                    overflow: "hidden",
+                    position: "relative",
+                  }}
+                >
+                  <Cropper
+                    cropShape="round"
+                    image={image}
+                    crop={crop}
+                    zoom={zoom}
+                    aspect={1}
+                    onCropChange={setCrop}
+                    onCropComplete={onCropComplete}
+                    onZoomChange={setZoom}
+                  />
+                </div>
               )}
             </div>
-
+            <label
+              htmlFor="image-upload"
+              className=" absolute bottom-14  -right-5 sm:bottom-13 sm:right-11 bg-black px-2 py-2 rounded-full"
+            >
+              <img
+                src="/icons/profile/profile-camera.svg"
+                className="h-5"
+                alt=""
+              />
+            </label>
             <div className="text-center mt-2">
-              <label
-                htmlFor="image-upload"
-                className="text-[#171717] text-sm font-medium cursor-pointer"
-              >
-                Update
-              </label>
-
-
               <label
                 onClick={handleSave}
                 className="save-button ml-4 cursor-pointer"
               >
-                Saved
+                Preview
               </label>
 
               <input
@@ -204,14 +230,11 @@ const Edit = () => {
                 className="hidden"
               />
             </div>
-
-
-
           </div>
 
-          <div className="flex flex-col gap-4 w-full">
+          <div className="flex sm:w-[60%]   flex-col gap-4 ">
             <p className="text-[#171717] font-medium text-lg">Basic Details</p>
-            <div className="sm:w-[70%] flex gap-4 flex-col">
+            <div className="sm:w-[100%] pt-4 flex gap-4 flex-col">
               <div className="flex flex-row gap-4">
                 <div className="w-full">
                   <Controller
@@ -270,7 +293,6 @@ const Edit = () => {
                 />
               </div>
               <div>
-                
                 <Controller
                   name="businessEmail"
                   control={control}
@@ -291,10 +313,16 @@ const Edit = () => {
             </div>
           </div>
         </div>
-
-        <Button disabled={!isValid} primary={true} isLoading={loading}>
-          Save
-        </Button>
+        <div className="inline-block">
+          <Button
+            disabled={!isValid}
+            className={"px-10 py-1"}
+            primary={true}
+            isLoading={loading}
+          >
+            Save
+          </Button>
+        </div>
       </form>
     </>
   );

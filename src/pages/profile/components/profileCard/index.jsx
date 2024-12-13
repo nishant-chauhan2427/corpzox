@@ -19,40 +19,43 @@ const ProfileCard = ({ userData, loading }) => {
             Profile
           </Heading>
           {/* </div> */}
-          <div className="flex flex-col gap-4 sm:flex-row justify-between drop-shadow-md bg-[#F4F9FF] border px-4 rounded-2xl py-4 border-[#DFEAF2] ">
-            <div className="flex gap-4">
-              <div>
+          <div className="flex sm:flex-row flex-col gap-4  justify-between drop-shadow-md bg-[#F4F9FF] border px-4 rounded-2xl py-4 border-[#DFEAF2] ">
+            <div className="flex sm:flex-row flex-col gap-4">
+              <div className="flex justify-center items-center">
                 <img
                   src={
                     user?.profile_picture_url
                       ? user?.profile_picture_url
                       : "/images/profile/profile.svg"
                   }
-                  width={130}
+                  className="rounded-full w-[180px] h-[180px] sm:w-[170px] sm:h-[170px] object-cover"
                   alt=""
                 />
               </div>
               <div className="flex flex-col gap-4 justify-center">
-                <p className="text-[#525252] text-base font-semibold sm:text-lg">
+                <p className="text-[#525252] text-base sm:font-semibold font-medium sm:text-base">
                   Name:{" "}
                   <span className="text-black">
                     {" "}
-                    {(userData && userData?.name)?userData?.name:"________"}
+                    {userData && userData?.name ? userData?.name : "________"}
                   </span>
                 </p>
-                <p className="text-[#525252] text-base font-semibold sm:text-lg">
+                <p className="text-[#525252] text-base font-medium sm:font-semibold sm:text-base">
                   Email Id:{" "}
                   <span className="text-black">
-                    {(userData && userData?.email)?userData?.email:"_________"}
+                    {userData && userData?.email
+                      ? userData?.email
+                      : "_________"}
                   </span>
                 </p>
-
-                <p className="text-[#525252] text-base font-semibold sm:text-lg">
+                {/* <p className="text-[#525252] text-base font-semibold sm:text-base">
                   Business email Id:{" "}
                   <span className="text-black">
-                    {(userData && userData?.busniessEmail)?userData?.busniessEmail:"________"}
+                    {userData && userData?.busniessEmail
+                      ? userData?.busniessEmail
+                      : "________"}
                   </span>
-                </p>
+                </p> */}
               </div>
             </div>
             <div>

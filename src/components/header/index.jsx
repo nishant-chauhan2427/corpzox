@@ -238,7 +238,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
                   className="flex items-center gap-1 sm:gap-2"
                 >
                   <img
-                    className="w-8 h-8 inset-0 rounded-full ltr:absolute ltr:top-1/2 ltr:left-1/2 ltr:-translate-y-1/2 rtl:-translate-y-[31%] ltr:-translate-x-1/2"
+                    className="w-8 h-8 inset-0 rounded-full object-cover ltr:absolute ltr:top-1/2 ltr:left-1/2 ltr:-translate-y-1/2 rtl:-translate-y-[31%] ltr:-translate-x-1/2"
                     // src="/images/insights/insight-user.svg"
                     src={
                       user?.profile_picture_url
