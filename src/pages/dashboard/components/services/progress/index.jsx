@@ -4,7 +4,7 @@ import { GoDotFill, GoTriangleDown } from "react-icons/go";
 import { ProgressBar } from "../../../../../components/progressBar";
 import { Heading } from "../../../../../components/heading";
 import { ConfirmationModal } from "../../../../../components/modal/confirmationModal";
-import { p } from "framer-motion/client";
+import { p, tr } from "framer-motion/client";
 import { ReactModal } from "../../../../../components/modal";
 import { TextArea } from "../../../../../components/inputs/textarea";
 import { Rating } from "../../../../../components/rating";
@@ -360,10 +360,25 @@ export const ServicesProgress = ({ data }) => {
                   <LinkButton to={`/payment/create/${data._id}`} primary={true}>
                     Avail again
                   </LinkButton>
+                  <div className="flex items-center justify-center">
+                    <LinkButton className=" flex gap-2  rounded-2xl bg-[#FFDFDF] px-2 py-1  text-sm font-medium !text-[#FF3B3B] text-center ">
+                      &#9679; On Time
+                    </LinkButton>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <LinkButton className=" flex gap-2  rounded-2xl bg-[#DFFFE2] px-2 py-1  text-sm font-medium text-[#037847] text-center ">
+                      &#9679; On Time
+                    </LinkButton>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <LinkButton className=" flex gap-2  rounded-2xl bg-[#FFF4D4] px-2 py-1  text-sm font-medium text-[#FBBC05] text-center ">
+                      &#9679; Delayed by 2 days
+                    </LinkButton>
+                  </div>
                   <button
                     className={`${
-                      dropdownStates === true && "rotate-180"
-                    } hidden lg:block`}
+                      dropdownStates === true && "rotate-180 "
+                    } hidden lg:block `}
                     onClick={() => handleServiceDropdown(index)}
                   >
                     <GoTriangleDown size={15} />
