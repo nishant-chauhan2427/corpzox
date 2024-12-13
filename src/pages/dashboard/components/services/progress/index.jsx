@@ -362,7 +362,7 @@ export const ServicesProgress = ({ data }) => {
                   </LinkButton>
                   <div className="flex items-center justify-center">
                     <LinkButton className=" flex gap-2  rounded-2xl bg-[#FFDFDF] px-2 py-1  text-sm font-medium !text-[#FF3B3B] text-center ">
-                      &#9679; On Time
+                      &#9679; On Hold
                     </LinkButton>
                   </div>
                   <div className="flex items-center justify-center">

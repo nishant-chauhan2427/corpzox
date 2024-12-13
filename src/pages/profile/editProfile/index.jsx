@@ -205,10 +205,9 @@ const Edit = () => {
                   />
                 </div>
               )}
-            </div>
-            <label
+                 <label
               htmlFor="image-upload"
-              className=" absolute bottom-14  -right-5 sm:bottom-13 sm:right-11 bg-black px-2 py-2 rounded-full"
+              className=" absolute bottom-0  right-0 sm:bottom-2 sm:right-2 bg-black px-2 py-2 rounded-full"
             >
               <img
                 src="/icons/profile/profile-camera.svg"
@@ -216,6 +215,8 @@ const Edit = () => {
                 alt=""
               />
             </label>
+            </div>
+         
             <div className="text-center mt-2">
               <label
                 onClick={handleSave}

@@ -64,15 +64,14 @@ export const Signup = () => {
     console.log(data);
     // Reset error message
     setError("");
-    const userData ={
-      ...data, 
-      firstName : data.full, 
-    }
-    delete userData.full; 
-    dispatch(registerUser(userData))
+    const userData = {
+      ...data,
+      firstName: data.full,
+    };
+    delete userData.full;
+    dispatch(registerUser(userData));
     // dispatch(registerUser(data));
-    console.log(data, "user data")
-    
+    console.log(data, "user data");
   };
   useEffect(() => {
     // console.log(isRegistering,isSubmit,registeringError)
@@ -90,7 +89,6 @@ export const Signup = () => {
   return (
     <>
       <MetaTitle title={"Sign Up"} />
-      <Heading>Sign Up</Heading>
       <AuthLayout>
         <img className="sm:w-32 w-36" src="logo.svg" alt="CORPZO Logo" />
         <div className="w-full  flex  ">
