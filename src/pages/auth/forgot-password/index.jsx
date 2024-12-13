@@ -39,7 +39,7 @@ export const ForgotPassword = () => {
     profile,
   } = useSelector((state) => state.auth);
 
-  console.log(profile, "profile123e4r");
+  console.log(  verifyMessage, "profile123e4r");
   const [otpMessage, setOtpMessage] = useState("");
   useEffect(() => {
     if (timer === 0 || timer == "00") {
