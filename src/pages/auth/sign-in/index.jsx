@@ -144,6 +144,7 @@ export const SignIn = () => {
   return (
     <>
       <MetaTitle title={"Sign In"} />
+      <Heading>Sign In</Heading>
       <AuthLayout>
         <img className="sm:w-32 w-36" src="logo.svg" alt="CORPZO Logo" />
         <div className="w-full flex">
@@ -157,7 +158,7 @@ export const SignIn = () => {
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-3 pt-5"
             >
-              <Controller
+             <Controller
                 name="email"
                 control={control}
                 defaultValue=""
