@@ -98,7 +98,7 @@ const navigate = useNavigate()
     const userData = { ...availServiceData }
     console.log("userdata",userData);
     
-    // dispatch(availService({userData , navigate}))
+    dispatch(availService({userData , navigate}))
   }
 
   const onConfirmationModalClose = () => {
