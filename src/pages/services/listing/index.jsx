@@ -103,8 +103,11 @@ const ServicesListing = () => {
   let onCheckHandler = (service) => {
     dispatch(setToggleToCheckedWishlist(service));
   };
+
+
   let onClickAddWishlistHandler = () => {
-    dispatch(updateServiceQuickWishlist({ serviceIdArray: wishList?.list }));
+    const wishlistSelectedData=wishList?.list?.map(item => item._id);
+    dispatch(updateServiceQuickWishlist({ serviceIdArray: wishlistSelectedData }));
   };
   let onChangeSelectAllHandler = () => {
     dispatch(onChangeSelectAll());
