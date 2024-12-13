@@ -105,7 +105,7 @@ const ServicesListing = () => {
   };
 
 
-  let onClickAddWishlistHandler = () => {
+ let onClickAddWishlistHandler = () => {
     const wishlistSelectedData=wishList?.list?.map(item => item._id);
     dispatch(updateServiceQuickWishlist({ serviceIdArray: wishlistSelectedData }));
   };
@@ -115,6 +115,10 @@ const ServicesListing = () => {
 
     // });
   };
+  
+  const isAllSelected = list.length === wishList.list.length &&
+    list.every(item => wishList.list.some(wishItem => wishItem._id === item._id));
+
   return (
     <section className="flex sm:flex-row flex-col gap-4 sm:pt-6 pt-3 bg-white">
       <div className="flex justify-center flex-col overflow-hidden">
@@ -125,6 +129,7 @@ const ServicesListing = () => {
             <SelectAllTabs
               onChangeSelectAllHandler={onChangeSelectAllHandler}
               onClickAddWishlistHandler={onClickAddWishlistHandler}
+              isAllSelected={isAllSelected}
             />
           )}
           {loading ? (

@@ -169,10 +169,10 @@ const Edit = () => {
             <div
               className="relative"
               style={{
-                width: "180px",
+                width: "200px",
                 borderRadius: "50%",
                 border: "1px solid white",
-                height: "180px",
+                height: "200px",
               }}
             >
               {croppedImage ? (
@@ -184,19 +184,20 @@ const Edit = () => {
               ) : (
                 <div
                   style={{
-                    width: "180px",
-                    height: "180px",
+                    width: "200px",
+                    height: "200px",
                     borderRadius: "50%",
                     overflow: "hidden",
                     position: "relative",
+                    
                   }}
                 >
                   <Cropper
-                    cropShape="round"
                     image={image}
+                    // objectFit="cover"
                     crop={crop}
                     zoom={zoom}
-                    aspect={1}
+                    aspect={4 / 3}
                     onCropChange={setCrop}
                     onCropComplete={onCropComplete}
                     onZoomChange={setZoom}
@@ -206,7 +207,7 @@ const Edit = () => {
             </div>
             <label
               htmlFor="image-upload"
-              className=" absolute bottom-14  -right-5 sm:bottom-13 sm:right-11 bg-black px-2 py-2 rounded-full"
+              className=" absolute   sm:bottom-12 sm:right-10 bg-black px-2 py-2 rounded-full"
             >
               <img
                 src="/icons/profile/profile-camera.svg"
