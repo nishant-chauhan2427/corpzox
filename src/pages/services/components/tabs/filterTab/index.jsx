@@ -10,19 +10,53 @@ function Filtertab() {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
   console.log(subCategory, "subCategory");
+  // useEffect(() => {
+  //   const subCategoryIdFromParams = searchParams.get("subCategoryId");
+  //   if (subCategoryIdFromParams && subCategory?.list?.length) {
+  //     const foundIndex = subCategory.list.findIndex(
+  //       (tab) => tab._id === subCategoryIdFromParams
+  //     );
+  //     if (foundIndex !== -1) {
+  //       setActiveTabIndex(foundIndex);
+  //       dispatch(setSelectedSubCategory(subCategory.list[foundIndex]));
+  //      setSearchParams({ categoryId: searchParams.get("categoryId") || "", subCategoryId: subCategory.list[foundIndex]._id})
+  //     }
+  //   }
+  // }, [searchParams, subCategory?.list, dispatch]);
+
   useEffect(() => {
     const subCategoryIdFromParams = searchParams.get("subCategoryId");
-    if (subCategoryIdFromParams && subCategory?.list?.length) {
-      const foundIndex = subCategory.list.findIndex(
-        (tab) => tab._id === subCategoryIdFromParams
-      );
-      if (foundIndex !== -1) {
-        setActiveTabIndex(foundIndex);
-        dispatch(setSelectedSubCategory(subCategory.list[foundIndex]));
-       setSearchParams({ categoryId: searchParams.get("categoryId") || "", subCategoryId: subCategory.list[foundIndex]._id})
+  
+    if (subCategory?.list?.length) {
+      if (subCategoryIdFromParams) {
+        // If subCategoryId exists in params, find and set the subcategory
+        const foundIndex = subCategory.list.findIndex(
+          (tab) => tab._id === subCategoryIdFromParams
+        );
+        if (foundIndex !== -1) {
+          setActiveTabIndex(foundIndex);
+          dispatch(setSelectedSubCategory(subCategory.list[foundIndex]));
+        } else {
+          // If the subCategoryId in params is invalid, default to the first subcategory
+          setActiveTabIndex(0);
+          dispatch(setSelectedSubCategory(subCategory.list[0]));
+          setSearchParams({
+            categoryId: searchParams.get("categoryId") || "",
+            subCategoryId: subCategory.list[0]._id,
+          });
+        }
+      } else {
+        // If no subCategoryId in params, default to the first subcategory
+        setActiveTabIndex(0);
+        dispatch(setSelectedSubCategory(subCategory.list[0]));
+        setSearchParams({
+          categoryId: searchParams.get("categoryId") || "",
+          subCategoryId: subCategory.list[0]._id,
+        });
       }
     }
   }, [searchParams, subCategory?.list, dispatch]);
+  
   // useEffect(() => {
   //   if (subCategory?.list?.length) {
   //     const subCategoryIdFromParams = searchParams.get("subCategoryId");

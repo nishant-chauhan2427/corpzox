@@ -13,6 +13,7 @@ import {
 import { profileValidationSchema } from "./editProfileValidationSchema";
 import Cropper from "react-easy-crop";
 import { ImSpinner11, ImSpinner2 } from "react-icons/im";
+import toast from "react-hot-toast";
 
 // Function to get the cropped image
 const getCroppedImg = async (imageSrc, crop, pixelCrop) => {
@@ -110,7 +111,7 @@ const Edit = () => {
 
     if (file) {
       if (file.size > 2 * 1024 * 1024) {
-        alert("File size should not exceed 2MB");
+        toast.error("File size should not exceed 2MB");
         return;
       }
 
