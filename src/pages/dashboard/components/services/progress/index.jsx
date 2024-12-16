@@ -129,7 +129,6 @@ export const ServicesProgress = ({ data }) => {
       status: "pending",
     },
   ];
-console.log(dataUpdate.data, "progress")
   return (
     <div>
       <div className="py-2 flex flex-row sm:flex-row justify-between gap-2">
