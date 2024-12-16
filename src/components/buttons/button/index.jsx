@@ -24,7 +24,7 @@ export const Button = ({
       onClick={onClick}
       className={`${className ? className : "px-4 py-1"}
       ${disabled ? "!bg-[#FFEF9A] hover:bg-slate-500 rounded-[5px] text-[#B6B6B6]" : null} ${
-        isLoading ? "!bg-[#FFEF9A] hover:bg-slate-500 rounded-[5px]" : ""
+        isLoading ? "!bg-[#FFEF9A] hover:bg-slate-500 rounded-[5px] " : ""
       } ${
         simpleLink && !disabled && !isLoading
           ? "text-primaryText font-medium text-sm  hover:text-gray-700 rounded-[5px]"

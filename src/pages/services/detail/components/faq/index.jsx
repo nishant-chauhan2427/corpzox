@@ -128,8 +128,8 @@ export const FAQs = () => {
                 {openIndex === index && (
                   <div className="px-5 py-3 text-gray-600 bg-[#DFEAF2]">
                     {faq.answer.split("\n").map((line, idx) => (
-                      <p key={idx} className="mb-2">
-                        {line.trim()}
+                      <p key={idx} className="mb-2" dangerouslySetInnerHTML={{__html : line}}>
+                        {/* {line.trim()} */}
                       </p>
                     ))}
                   </div>

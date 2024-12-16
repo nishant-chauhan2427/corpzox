@@ -3,10 +3,9 @@ import client from "../axios-baseurl";
 
 export const changePassword = createAsyncThunk(
     "settings/changePassword",
-    async (formData, { rejectWithValue }) => {
-        console.log(formData, "formdata fropmm actions")
+    async ({passwordData, navigate}, { rejectWithValue }) => {
         try {
-            const response = await client.put("/user/change-password", formData, {
+            const response = await client.put("/user/change-password", passwordData, {
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json",
@@ -14,8 +13,12 @@ export const changePassword = createAsyncThunk(
                 },
             });
             console.log(response, "change password response")
+            if(response.data.code === 200){
+                navigate("/")
+            }
             return response.data;
         } catch (error) {
+            console.log(error, "passwrod error")
             return rejectWithValue(error.response?.data || "Something went wrong");
         }
     }

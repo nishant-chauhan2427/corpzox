@@ -71,7 +71,7 @@ export const SignIn = () => {
     const token = await recaptchaRef.current.executeAsync().then((res) => {
       console.log("check response ", res);
 
-      data = { ...data, recaptchaToken: res };
+      data = { ...data, recaptchaToken: res, userType: "end_user" };
       console.log(data, "data from form");
       dispatch(loginUser(data));
     });
@@ -144,7 +144,6 @@ export const SignIn = () => {
   return (
     <>
       <MetaTitle title={"Sign In"} />
-      <Heading>Sign In</Heading>
       <AuthLayout>
         <img className="sm:w-32 w-36" src="logo.svg" alt="CORPZO Logo" />
         <div className="w-full flex">
@@ -170,7 +169,7 @@ export const SignIn = () => {
                     placeholder="Email Id / Phone No."
                     className="border-[#D9D9D9] border"
                     errorContent={errors?.email?.message}
-                    onBlur={() => handleBlur("email")}
+                    // onBlur={() => handleBlur("email")}
                     maxLength={50}
                   />
                 )}
@@ -187,7 +186,7 @@ export const SignIn = () => {
                     className={"border-[#D9D9D9] border"}
                     placeholder={"Password"}
                     // errorContent={errors?.password?.message}
-                    onBlur={() => handleBlur("password")}
+                    // onBlur={() => handleBlur("password")}
                     maxLength={20}
                   />
                 )}
