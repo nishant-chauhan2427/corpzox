@@ -17,18 +17,47 @@ export const MainTab = () => {
     { name: "Finance and Compliance" },
     { name: "Waste Management" },
   ];
+  // useEffect(() => {
+  //   const categoryIdFromParams = searchParams.get("categoryId");
+  //   if (categoryIdFromParams && category?.list?.length) {
+  //     const foundIndex = category.list.findIndex(
+  //       (tab) => tab._id === categoryIdFromParams
+  //     );
+  //     if (foundIndex !== -1) {
+  //       setActiveTabIndex(foundIndex);
+  //       dispatch(setSelectedCategory(category.list[foundIndex]));
+  //       setSearchParams({categoryId : category?.list[foundIndex]?._id}) 
+  //     }
+  //   }
+  // }, [searchParams, category?.list, dispatch]);
+
   useEffect(() => {
     const categoryIdFromParams = searchParams.get("categoryId");
-    if (categoryIdFromParams && category?.list?.length) {
-      const foundIndex = category.list.findIndex(
-        (tab) => tab._id === categoryIdFromParams
-      );
-      if (foundIndex !== -1) {
-        setActiveTabIndex(foundIndex);
-        dispatch(setSelectedCategory(category.list[foundIndex]));
+    
+    if (category?.list?.length) {
+      if (categoryIdFromParams) {
+        // If categoryId exists in params, find and set the category
+        const foundIndex = category.list.findIndex(
+          (tab) => tab._id === categoryIdFromParams
+        );
+        if (foundIndex !== -1) {
+          setActiveTabIndex(foundIndex);
+          dispatch(setSelectedCategory(category.list[foundIndex]));
+        } else {
+          // If the categoryId in params is invalid, default to the first category
+          setActiveTabIndex(0);
+          dispatch(setSelectedCategory(category.list[0]));
+          setSearchParams({ categoryId: category.list[0]._id });
+        }
+      } else {
+        // If no categoryId in params, default to the first category
+        setActiveTabIndex(0);
+        dispatch(setSelectedCategory(category.list[0]));
+        setSearchParams({ categoryId: category.list[0]._id });
       }
     }
   }, [searchParams, category?.list, dispatch]);
+  
 
   const handleMainTab = (index) => {
     if(category?.list?.[index]){

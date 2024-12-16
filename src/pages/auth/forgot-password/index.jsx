@@ -314,7 +314,7 @@ export const ForgotPassword = () => {
                 </div> */}
                 <div className="flex items-center justify-center rounded p-2 text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
                   <div className="flex gap-2">
-                    <GoogleLogin
+                    {/* <GoogleLogin
                       clientId="1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com"
                       onSuccess={googleLogin}
                       onError={() => console.log("Errors")}
@@ -334,7 +334,7 @@ export const ForgotPassword = () => {
                           Sign in with Google
                         </button>
                       )}
-                    />
+                    /> */}
                   </div>
                 </div>
               </form>

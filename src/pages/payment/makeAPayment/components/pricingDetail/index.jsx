@@ -75,7 +75,7 @@ const PricingDetail = ({totalCost, offer,serviceCost,totalSavings,data,originalP
                 Applied Offer
               </p>
               <p className="text-base font-semibold text-[#525252]">
-                ₹{offer}
+                ₹{offer.toFixed(2)}
               </p>
             </div>
           )}
@@ -86,7 +86,7 @@ const PricingDetail = ({totalCost, offer,serviceCost,totalSavings,data,originalP
                 Applied Coupon
               </p>
               <p className="text-base font-semibold text-[#525252]">
-                ₹{couponDiscount}
+                ₹{couponDiscount.toFixed(2)}
               </p>
             </div>
           )}
@@ -95,7 +95,7 @@ const PricingDetail = ({totalCost, offer,serviceCost,totalSavings,data,originalP
         <hr />
         <div className="flex justify-between">
           <p className="font-semibold text-xl text-[#029126]">Total Price</p>
-          <p className="font-semibold text-xl text-[#029126]">₹{totalCost}</p>
+          <p className="font-semibold text-xl text-[#029126]">₹{totalCost.toFixed(2)}</p>
         </div>
         <hr />
         {/* <p className="font-semibold text-base text-[#0A1C40]">
