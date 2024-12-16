@@ -34,7 +34,7 @@ const PreviewPayment = () => {
 
   // console.log("dynamicForm", dynamicForm);
   // console.log("pdfList",pdfList);
-  
+
   // console.log("loading", loading);
 
 
@@ -151,7 +151,7 @@ const PreviewPayment = () => {
   return (
     <>
       <div className="py-5">
-      <RouteProgressBar currStep={3} totalSteps={3} />
+        <RouteProgressBar currStep={3} totalSteps={3} />
         <h1 className="font-semibold text-[#0A1C40] text-base">Form Details</h1>
         <hr />
         {loading ? <FormShimmer count={3} className={"mt-3"} /> :
@@ -159,22 +159,62 @@ const PreviewPayment = () => {
 
             {/* <Documents control={control} errors={errors} /> */}
             <div className="grid sm:grid-cols-3 grid-cols-1 gap-4 sm:w-[60%] py-5">
-              {pdfList?.map((data, index) => (
-                <div
-                  key={index}
-                  className="flex bg-[#7676801F] pt-12 rounded gap-2  pb-4 py-4 flex-col justify-center items-center"
-                >
-                  {data?.fileName}
-                  <img
-                    src="/images/payment/pdf-preview.svg"
-                    width={100}
-                    alt=""
-                  />
-                  <Link to={data?.value[0]} className="text-[#007AFF]  font-normal text-base underline">
-                    view
-                  </Link>
-                </div>
-              ))}
+              {pdfList?.map((data, index) => {
+
+                if (data?.type === "document")
+
+                  return <div
+                    key={index}
+                    className="flex bg-[#7676801F] pt-12 rounded gap-2  pb-4 py-4 flex-col justify-center items-center"
+                  >
+                    {data?.fileName}
+                    <img
+                      src="/images/payment/pdf-preview.svg"
+                      width={100}
+                      alt=""
+                    />
+                    {(data?.value && data.value[0]) ? <Link to={data?.value[0]} className="text-[#007AFF]  font-normal text-base underline">
+                      view
+                    </Link> :
+                      <p>File not uploaded</p>
+                    }
+                  </div>
+                else if (data?.type === "image") {
+                  return <div
+                    key={index}
+                    className="flex bg-[#7676801F] pt-12 rounded gap-2  pb-4 py-4 flex-col justify-center items-center"
+                  >
+                    {data?.fileName}
+                    <img
+                      src={data?.value[0]}
+                      width={100}
+                      alt="image"
+                    />
+                    {(data?.value && data.value[0]) ? <Link to={data?.value[0]} className="text-[#007AFF]  font-normal text-base underline">
+                      view
+                    </Link> :
+                      <p>File not uploaded</p>
+                    }
+                  </div>
+                } else {
+                  return <div
+                    key={index}
+                    className="flex bg-[#7676801F] pt-12 rounded gap-2  pb-4 py-4 flex-col justify-center items-center"
+                  >
+                    {data?.fileName}
+                    <img
+                      src="/images/payment/pdf-preview.svg"
+                      width={100}
+                      alt=""
+                    />
+                    {(data?.value && data.value[0]) ? <Link to={data?.value[0]} className="text-[#007AFF]  font-normal text-base underline">
+                      view
+                    </Link> :
+                      <p>File not uploaded</p>
+                    }
+                  </div>
+                }
+              })}
             </div>
             {dynamicForm?.map((field, index) =>
               field.inputType !== "file" &&
@@ -186,7 +226,7 @@ const PreviewPayment = () => {
                   {field?.lebel}
                 </p>
                 <p className="font-semibold text-[#0A1C40] text-base">
-                  {field?.value?.map(el => `${el} `)}
+                  {field?.value?.map(el => `${el||". . ."} `)}
                 </p>
               </div>
             )}
@@ -217,7 +257,7 @@ const PreviewPayment = () => {
                 Business name :
               </p>
               <p className="font-semibold text-[#0A1C40] text-base">
-                {businessDetails?.businessName}
+                {businessDetails?.businessName ||". . ."}
               </p>
             </div>
 
@@ -226,7 +266,7 @@ const PreviewPayment = () => {
                 Business type :
               </p>
               <p className="font-semibold text-[#0A1C40] text-base">
-                {businessDetails?.typeOfBusiness}
+                {businessDetails?.typeOfBusiness ||". . ."}
               </p>
             </div>
 
@@ -235,7 +275,7 @@ const PreviewPayment = () => {
                 Headquarter location :
               </p>
               <p className="font-semibold text-[#0A1C40] text-base">
-                {businessDetails?.headQuarterLocation}
+                {businessDetails?.headQuarterLocation ||". . ."}
               </p>
             </div>
 
@@ -244,7 +284,7 @@ const PreviewPayment = () => {
                 Industry type :
               </p>
               <p className="font-semibold text-[#0A1C40] text-base">
-                {businessDetails?.industry}
+                {businessDetails?.industry ||". . ."}
               </p>
             </div>
 
@@ -253,7 +293,7 @@ const PreviewPayment = () => {
                 Industry subtype :
               </p>
               <p className="font-semibold text-[#0A1C40] text-base">
-                {businessDetails?.subIndustry}
+                {businessDetails?.subIndustry ||". . ."}
               </p>
             </div>
 
@@ -262,7 +302,7 @@ const PreviewPayment = () => {
                 Year of stablish :
               </p>
               <p className="font-semibold text-[#0A1C40] text-base">
-                {new Date(businessDetails?.yearOfStablish).getFullYear() || ""}
+                {new Date(businessDetails?.yearOfStablish).getFullYear() || ". . ."}
               </p>
             </div>
             <div className="flex sm:flex-row flex-col sm:justify-between sm:w-[70%]">
@@ -299,45 +339,45 @@ const PreviewPayment = () => {
             <div className="flex sm:flex-row flex-col sm:justify-between sm:w-[70%]">
               <p className="text-[#525252] font-medium text-base">Amount:</p>
               <p className="font-semibold text-[#0A1C40] text-base flex justify-center items-center">
-              <FaRupeeSign className="ml-1" />{servicePayment?.amount}
+                <FaRupeeSign className="ml-1" />{servicePayment?.amount ||". . ."}
               </p>
             </div>
             <div className="flex sm:flex-row flex-col sm:justify-between sm:w-[70%]">
               <p className="text-[#525252] font-medium text-base">Service Name:</p>
               <p className="font-semibold text-[#0A1C40] text-base">
-                {servicePayment?.serviceDetails?.name}
+                {servicePayment?.serviceDetails?.name ||". . ."}
               </p>
             </div>
             <div className="flex sm:flex-row flex-col sm:justify-between sm:w-[70%]">
               <p className="text-[#525252] font-medium text-base">Payment Mode:</p>
               <p className="font-semibold text-[#0A1C40] text-base">
-                {servicePayment?.paymentMode}
+                {servicePayment?.paymentMode ||". . ."}
               </p>
             </div>
             <div className="flex sm:flex-row flex-col sm:justify-between sm:w-[70%]">
               <p className="text-[#525252] font-medium text-base">Payment Status:</p>
               <p className="font-semibold text-green-600 text-base">
-                {servicePayment?.paymentStatus}
+                {servicePayment?.paymentStatus ||". . ."}
               </p>
             </div>
             <div className="flex sm:flex-row flex-col sm:justify-between sm:w-[70%]">
               <p className="text-[#525252] font-medium text-base">Transaction ID:</p>
               <p className="font-semibold text-[#0A1C40] text-base">
-                {servicePayment?.transactionId}
+                {servicePayment?.transactionId ||". . ."}
               </p>
             </div>
             <div className="flex sm:flex-row flex-col sm:justify-between sm:w-[70%]">
               <p className="text-[#525252] font-medium text-base">Payment Date:</p>
               <p className="font-semibold text-[#0A1C40] text-base">
-                {new Date(servicePayment?.paymentDate).toLocaleString()}
+                {new Date(servicePayment?.paymentDate).toLocaleString() ||". . ."}
               </p>
             </div>
           </div>
         }
 
         <div className=" mt-5 flex justify-between items-center">
-          <Button primary={true} onClick={()=>navigate(-1)}>Prev</Button>
-          <Button disabled={isPaymentDetailsLoading}  onClick={() => navigate("/business")} primary={true}> Confirm</Button>
+          <Button primary={true} onClick={() => navigate(-1)}>Prev</Button>
+          <Button disabled={isPaymentDetailsLoading} onClick={() => navigate("/business")} primary={true}> Confirm</Button>
         </div>
       </div >
     </>
