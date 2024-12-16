@@ -15,13 +15,15 @@ import { ratingReviewSchema } from "../../../../../validation/ratingReviewValida
 import { useDispatch, useSelector } from "react-redux";
 import { ratingReview } from "../../../../../redux/actions/servicesDetails-actions";
 import { LinkButton } from "../../../../../components/link";
+import { ModalWrapper } from "../../../../../components/wrappers/modal";
+import { FormWrapper } from "../../../../../components/wrappers/form";
 
 export const ServicesProgress = ({ data }) => {
   const [dropdownStates, setDropdownStates] = useState(data?.map(() => false));
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [otherValue, setOtherVsalue] = useState("");
   const [serviceId, setServiceId] = useState("");
-  const [transactionId, setTransactionId] = useState("")
+  const [transactionId, setTransactionId] = useState("");
   const [rating, setRating] = useState(0);
   const dispatch = useDispatch();
 
@@ -61,7 +63,7 @@ export const ServicesProgress = ({ data }) => {
   const onConfirmationModalOpen = (data, transactionId) => {
     console.log(data, "mo idea");
     setServiceId(data);
-    setTransactionId(transactionId)
+    setTransactionId(transactionId);
     setConfirmationModal(true);
   };
   const onSubmit = (formData) => {
@@ -82,11 +84,13 @@ export const ServicesProgress = ({ data }) => {
       transparentPricingRating: formData.transparentPricingRating,
       valueForMoneyRating: formData.valueForMoneyRating,
       review: formData.review,
-    }
+    };
     if (formData.review === "") {
       delete payload.review;
     }
-    dispatch(ratingReview({ ...payload, serviceId, applicationId : transactionId }));
+    dispatch(
+      ratingReview({ ...payload, serviceId, applicationId: transactionId })
+    );
     reset(); // Reset the form after submission
   };
 
@@ -136,9 +140,14 @@ export const ServicesProgress = ({ data }) => {
           Your Service are Completed{" "}
           {dataUpdate?.total ? `(${dataUpdate?.total})` : ""}
         </Heading>
-        {dataUpdate?.data?.length > 0 && <Link to={"/services/serviceprogressdetail"} className="font-medium text-sm text-[#797979]">
-          View All
-        </Link>}
+        {dataUpdate?.data?.length > 0 && (
+          <Link
+            to={"/services/serviceprogressdetail"}
+            className="font-medium text-sm text-[#797979]"
+          >
+            View All
+          </Link>
+        )}
       </div>
       {dataUpdate?.data?.length > 0 ? (
         <div className="flex flex-col gap-4">
@@ -167,7 +176,9 @@ export const ServicesProgress = ({ data }) => {
                   <div className="flex flex-col gap-2">
                     <h6 className="text-sm text-[#7C7D80]">
                       <strong>Business:</strong>{" "}
-                      {data?.businessdetails[0]?.businessName ? data?.businessdetails[0]?.businessName : "____"}
+                      {data?.businessdetails[0]?.businessName
+                        ? data?.businessdetails[0]?.businessName
+                        : "____"}
                     </h6>
                     <p className="text-sm text-[#7C7D80]">
                       <strong className="!font-medium">Step:</strong>{" "}
@@ -176,14 +187,20 @@ export const ServicesProgress = ({ data }) => {
                   </div>
                 </div>
                 <div className="flex gap-2">
-                 {data?.data?.ratingreviewsSize === 0 &&  <Button
-                    onClick={() => {
-                      onConfirmationModalOpen(data?.service[0]?._id, data?._id);
-                    }}
-                    className="flex items-center  px-4 py-[6px] rounded-full font-medium text-[12px] text-[#0068FF] bg-[#DBE9FE]"
-                  >
-                    Rate Your Experience
-                  </Button>}
+                  {
+                     data?.data?.ratingreviewsSize === 0 &&
+                    <Button
+                      onClick={() => {
+                        onConfirmationModalOpen(
+                          data?.service[0]?._id,
+                          data?._id
+                        );
+                      }}
+                      className="flex items-center  px-4 py-[6px] rounded-full font-medium text-[12px] text-[#0068FF] bg-[#DBE9FE]"
+                    >
+                      Rate Your Experience
+                    </Button>
+                  }
 
                   <ConfirmationModal
                     isOpen={confirmationModal}
@@ -191,7 +208,7 @@ export const ServicesProgress = ({ data }) => {
                   >
                     <>
                       <div>
-                        <p className="text-[32px]  text-[#232323] font-bold">
+                        <p className="text-[32px] text-[#232323] font-bold">
                           Rate Your Experience!
                         </p>
                         <form onSubmit={handleSubmit(onSubmit)}>
@@ -367,7 +384,7 @@ export const ServicesProgress = ({ data }) => {
                   <LinkButton to={`/payment/create/${data._id}`} primary={true}>
                     Avail again
                   </LinkButton>
-                  <div className="flex items-center justify-center">
+                  {/* <div className="flex items-center justify-center">
                     <LinkButton className=" flex gap-2  rounded-2xl bg-[#FFDFDF] px-2 py-1  text-sm font-medium !text-[#FF3B3B] text-center ">
                       &#9679; On Hold
                     </LinkButton>
@@ -381,7 +398,7 @@ export const ServicesProgress = ({ data }) => {
                     <LinkButton className=" flex gap-2  rounded-2xl bg-[#FFF4D4] px-2 py-1  text-sm font-medium text-[#FBBC05] text-center ">
                       &#9679; Delayed by 2 days
                     </LinkButton>
-                  </div>
+                  </div> */}
                   <button
                     className={`${
                       dropdownStates === true && "rotate-180 "
