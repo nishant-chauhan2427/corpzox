@@ -163,7 +163,7 @@ const SubscriptionHistory = () => {
                   <p>
                     <b>{subscriptionTotal}</b> results
                   </p>
-                  <Table columns={columns} data={currentPackage.data} isExpandable={true} isExpandableData={currentPackage?.description}/></>
+                  <Table columns={columns} data={currentPackage.data} isExpandable={false} isExpandableData={currentPackage?.description}/></>
               )}
               <div className="flex justify-between items-center gap-3">
                 {/* <p>
