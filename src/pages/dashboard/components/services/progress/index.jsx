@@ -4,7 +4,7 @@ import { GoDotFill, GoTriangleDown } from "react-icons/go";
 import { ProgressBar } from "../../../../../components/progressBar";
 import { Heading } from "../../../../../components/heading";
 import { ConfirmationModal } from "../../../../../components/modal/confirmationModal";
-import { p } from "framer-motion/client";
+import { p, tr } from "framer-motion/client";
 import { ReactModal } from "../../../../../components/modal";
 import { TextArea } from "../../../../../components/inputs/textarea";
 import { Rating } from "../../../../../components/rating";
@@ -134,7 +134,8 @@ console.log(dataUpdate.data, "progress")
     <div>
       <div className="py-2 flex flex-row sm:flex-row justify-between gap-2">
         <Heading className={"py-0 "} tourButton={true}>
-          Your Service are Completed {dataUpdate?.total ? `(${dataUpdate?.total})` : ""}
+          Your Service are Completed{" "}
+          {dataUpdate?.total ? `(${dataUpdate?.total})` : ""}
         </Heading>
         {dataUpdate?.data?.length > 0 && <Link to={"/services/serviceprogressdetail"} className="font-medium text-sm text-[#797979]">
           View All
@@ -143,13 +144,19 @@ console.log(dataUpdate.data, "progress")
       {dataUpdate?.data?.length > 0 ? (
         <div className="flex flex-col gap-4">
           {dataUpdate?.data?.map((data, index) => (
-            <div key={index} className="bg-[#f3f7ff] stroke-[#dfeaf2] stroke-1 px-4 py-2 rounded-md">
+            <div
+              key={index}
+              className="bg-[#f3f7ff] stroke-[#dfeaf2] stroke-1 px-4 py-2 rounded-md "
+            >
               <div className="flex flex-col sm:flex-row items-start justify-between sm:items-center gap-2">
                 <div className="flex flex-col gap-1">
                   <div className="flex gap-2">
                     <img src="/images/dashboard/service-progress.svg" alt="" />
 
-                    <NavLink to={`/payment/create/${data._id}`} className="font-bold text-[#0068FF]">
+                    <NavLink
+                      to={`/payment/create/${data._id}`}
+                      className="font-bold text-[#0A1C40]"
+                    >
                       Service: {data?.service[0]?.name}{" "}
                     </NavLink>
                     <img
@@ -358,15 +365,32 @@ console.log(dataUpdate.data, "progress")
                       </div>
                     </>
                   </ConfirmationModal>
-                  <LinkButton to={`/payment/create/${data._id}`} primary={true}>Avail again</LinkButton>
-                  {/* <button
+                  <LinkButton to={`/payment/create/${data._id}`} primary={true}>
+                    Avail again
+                  </LinkButton>
+                  <div className="flex items-center justify-center">
+                    <LinkButton className=" flex gap-2  rounded-2xl bg-[#FFDFDF] px-2 py-1  text-sm font-medium !text-[#FF3B3B] text-center ">
+                      &#9679; On Hold
+                    </LinkButton>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <LinkButton className=" flex gap-2  rounded-2xl bg-[#DFFFE2] px-2 py-1  text-sm font-medium text-[#037847] text-center ">
+                      &#9679; On Time
+                    </LinkButton>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <LinkButton className=" flex gap-2  rounded-2xl bg-[#FFF4D4] px-2 py-1  text-sm font-medium text-[#FBBC05] text-center ">
+                      &#9679; Delayed by 2 days
+                    </LinkButton>
+                  </div>
+                  <button
                     className={`${
-                      dropdownStates === true && "rotate-180"
-                    } hidden lg:block`}
+                      dropdownStates === true && "rotate-180 "
+                    } hidden lg:block `}
                     onClick={() => handleServiceDropdown(index)}
                   >
                     <GoTriangleDown size={15} />
-                  </button> */}
+                  </button>
                 </div>
               </div>
               <Dropdown

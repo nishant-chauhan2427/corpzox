@@ -3,7 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Input } from "../../../components/inputs";
 import { Button } from "../../../components/buttons";
 import { ConfirmationModal } from "../../../components/modal/confirmationModal";
-import changePasswordSchema from "../../../validation/changePasswordSchema"
+import changePasswordSchema from "../../../validation/changePasswordSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
 import { changePassword } from "../../../redux/actions/settings-actions";
@@ -15,7 +15,7 @@ const ChangePassword = () => {
   const [isResendDisabled, setIsResendDisabled] = useState(false);
   const [isVerify, setIsVerify] = useState(false);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const inputRefs = useRef([]);
   const navigate = useNavigate()
   const {isPasswordChanging, changePasswordError} = useSelector((state)=> state.settings);
@@ -31,9 +31,9 @@ const ChangePassword = () => {
     mode: "onChange",
     resolver: yupResolver(changePasswordSchema),
     defaultValues: {
-      password : "",
-      confirmPassword : "", 
-      oldPassword : "" 
+      password: "",
+      confirmPassword: "",
+      oldPassword: "",
     },
   });
 
@@ -41,7 +41,7 @@ const ChangePassword = () => {
 
   const onSubmit = (data) => {
     // test dev branch
-    
+
     const passwordData = {
       newPassword : data.confirmPassword,
       oldPassword : data.password
@@ -133,7 +133,7 @@ const ChangePassword = () => {
       reset({
         password: "",
         confirmPassword: "",
-        newPassword: ""
+        newPassword: "",
       });
     }
   }, [isPasswordChanging]);
@@ -194,9 +194,7 @@ const ChangePassword = () => {
                 className={"px-4 py-1.5 rounded-lg"}
                 primary={true}
                 isLoading={isPasswordChanging}
-                disabled={
-                    !isValid
-                }
+                disabled={!isValid}
               >
                 Update
               </Button>
@@ -252,7 +250,10 @@ const ChangePassword = () => {
                     </span>{" "}
                   </p>
                 ) : (
-                  "Resend Code"
+                  <p className="!font-medium text-[#FF2C9C] text-sm">
+                    {" "}
+                    Resend Code
+                  </p>
                 )}
               </button>
               <Button

@@ -1,10 +1,7 @@
-
 import { ModalWrapper } from "../../../components/wrappers/modal";
 import { Outlet, useNavigate } from "react-router-dom";
 import BusinessListing from "../listing";
-const CreateBusiness = ({isEdit}) => {
-  
-
+const CreateBusiness = ({ isEdit }) => {
   return (
     <div>
       <BusinessListing />
@@ -26,15 +23,13 @@ const CreateBusiness = ({isEdit}) => {
 
           {/* Step Components */}
           <div className="p-4 h-[60vh] overflow-y-auto">
-            <Outlet/>
+            <Outlet />
             {/* {steps[currentStep]?.component} */}
           </div>
-
-         
         </div>
       </ModalWrapper>
     </div>
   );
-}; 
+};
 
 export default CreateBusiness;

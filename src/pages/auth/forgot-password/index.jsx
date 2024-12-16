@@ -39,7 +39,7 @@ export const ForgotPassword = () => {
     profile,
   } = useSelector((state) => state.auth);
 
-  console.log(  verifyMessage, "profile123e4r");
+  console.log(verifyMessage, "profile123e4r");
   const [otpMessage, setOtpMessage] = useState("");
   useEffect(() => {
     if (timer === 0 || timer == "00") {
@@ -131,7 +131,7 @@ export const ForgotPassword = () => {
 
     setOtp(["", "", "", "", "", ""]);
     setTimer(30);
-    
+
     dispatch(
       resendOtp({
         id: profile?.[0]?.id,
@@ -175,7 +175,6 @@ export const ForgotPassword = () => {
                 containerClassName={"text-left pt-2"}
                 heading={"Verification Code"}
                 subHeading={`We have sent you an OTP on your registered Email Id, ${profile[0]?.email}`}
-
               />
               <form
                 onSubmit={handleOtpSubmit}
@@ -220,7 +219,10 @@ export const ForgotPassword = () => {
                         </span>{" "}
                       </p>
                     ) : (
-                      "Resend Code"
+                      <p className="!font-medium text-[#FF2C9C] text-sm">
+                        {" "}
+                        Resend Code
+                      </p>
                     )}
                   </button>
                   <Button
