@@ -23,10 +23,14 @@ export const profileValidationSchema = yup.object({
 
         
         businessEmail: yup
-    .string()
-    .email('Invalid businessEmail address')  
-    .max(50, 'businessEmail cannot be longer than 50 characters')  
-    .nullable()  
-    .notRequired(),  
-        
+        .string()
+        .email('Invalid businessEmail address')
+        .max(50, 'businessEmail cannot be longer than 50 characters')
+        .nullable()
+        .notRequired()
+        .matches(
+          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,  
+          'Invalid businessEmail address'
+        ),
+      
 });

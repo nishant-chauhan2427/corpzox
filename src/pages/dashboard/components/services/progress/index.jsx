@@ -65,7 +65,7 @@ export const ServicesProgress = ({ data }) => {
     setConfirmationModal(true);
   };
   const onSubmit = (formData) => {
-    console.log("Submitted Data: ", formData);
+    //console.log("Submitted Data: ", formData);
     // Handle form submission logic
     console.log("Submitted Data: ", {
       serviceQualityRating: formData.serviceQualityRating,
@@ -129,7 +129,6 @@ export const ServicesProgress = ({ data }) => {
       status: "pending",
     },
   ];
-console.log(dataUpdate.data, "progress")
   return (
     <div>
       <div className="py-2 flex flex-row sm:flex-row justify-between gap-2">

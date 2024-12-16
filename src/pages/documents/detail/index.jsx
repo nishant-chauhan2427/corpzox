@@ -14,12 +14,14 @@ const DocumentDetail = () => {
     const dispatch = useDispatch();
     const { id } = useParams();
     const url = listData?.[0]?.value?.[0];
-
+    console.log(listData?.[0]?.lebel,"DOCUMENT");
+ 
     useEffect(() => {
         if (id) {
             dispatch(getfolderData(id));
         }
     }, [dispatch, id]);
+    
 
     return (
         <>
@@ -32,10 +34,10 @@ const DocumentDetail = () => {
                 <>
                     <div className="flex items-center justify-between">
                         <Heading backButton={true}>Document Detail</Heading>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2"> 
                             {url?.length>0  ? (<Search placeholder={"Search Files"} />):<></>}
-                            {/* <Search placeholder={"Search Files"} /> */}
-                        </div>
+                            <Search placeholder={"Search Files"} />
+                         </div>
                     </div>
 
                     {listData?.length > 0 && url ? (

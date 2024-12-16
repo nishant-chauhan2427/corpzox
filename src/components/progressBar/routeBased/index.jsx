@@ -128,7 +128,7 @@ export const RouteProgressBar = ({ currStep, totalSteps }) => {
               >
                 {status === "completed" ? (
                   <img
-                    src="/public/icons/payment/Progress-tick.svg"
+                    src="/icons/payment/Progress-tick.svg"
                     width={12}
                     alt="Completed"
                   />
