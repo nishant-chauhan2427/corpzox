@@ -74,7 +74,7 @@ export const Input = ({
             {...props}
             className={`${className} ${
               errorContent && touched ? "border-error" : "border-[#D9D9D9]"
-            } w-full text-black placeholder:text-[#9A9A9A] placeholder:font-normal placeholder:text-sm p-3 bg-white disabled:bg-gray-200 focus:border- h-12 dark:text-white rounded-md shadow-sm block text-sm text-bee-black dark:text-bee-white bg-bee-paleGray dark:bg-bee-ebonyGem border-1 border-gray-300 appearance-none dark:border-bee-primary dark:focus:border-bee-primary focus:outline-none focus:border-bee-primary peer`}
+            } w-full text-black placeholder:text-[#9A9A9A] placeholder:font-normal placeholder:text-sm p-3 bg-white disabled:bg-gray-200 focus:border- h-12 dark:text-white  shadow-sm block text-sm text-bee-black dark:text-bee-white bg-bee-paleGray dark:bg-bee-ebonyGem border-1  appearance-none dark:border-bee-primary dark:focus:border-bee-primary focus:outline-none focus:border-bee-primary peer border-[#D9D9D9] border rounded-[10px] `}
             type={type === "password" ? passwordType : type}
             placeholder={" "}
             value={value}
@@ -91,7 +91,7 @@ export const Input = ({
             } ${
               required &&
               "after:content-['*'] after:text-red-500 after:absolute after:-top-1"
-            } absolute -translate-y-4 scale-75 top-2 origin-[0] rounded-lg text-sm text-gray-400 dark:text-gray-400 duration-300 transform bg-white dark:bg-gray-950 peer-focus:px-2 peer-focus:text-bee-primary peer-focus:dark:text-bee-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-3 + ${labelClassName}`}
+            } absolute -translate-y-4 scale-75 top-2 origin-[0] rounded-lg text-sm text-gray-400 dark:text-gray-400 duration-300 transform bg-white dark:bg-gray-950 peer-focus:px-2 peer-focus:text-bee-primary peer-focus:dark:text-bee-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-3 + ${labelClassName}` }
           >
             <span className="mr-2">{labelIcon}</span>
             {label}

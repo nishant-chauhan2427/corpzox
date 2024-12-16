@@ -10,7 +10,10 @@ import { FaFacebookSquare, FaGoogle, FaInstagramSquare } from "react-icons/fa";
 import { DualHeadingTwo } from "../components/dualHeading/dualHeadingTwo";
 import { Checkbox } from "../../../components/inputs/checkbox";
 import { AuthLayout } from "../../../components/layout/auth";
-import { loginUser, thirdPartyLogin } from "../../../redux/actions/userAuth-action";
+import {
+  loginUser,
+  thirdPartyLogin,
+} from "../../../redux/actions/userAuth-action";
 import ReCAPTCHA from "react-google-recaptcha";
 import toast from "react-hot-toast";
 import { signinValidationSchema } from "../../../validation/authValidatiorSchema";
@@ -32,7 +35,12 @@ export const SignIn = () => {
   const RECAPTCHA_SITE_KEY = "6LemSE0qAAAAADhn4nN770nVLBJxAGRz_LoFXP6h";
   const [isSubmit, setIsSubmit] = useState(false);
 
-  const { isLoggingIn = false, error, loginMessage, profile } = useSelector((state) => state.auth);
+  const {
+    isLoggingIn = false,
+    error,
+    loginMessage,
+    profile,
+  } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [checkedCheckbox, setCheckedCheckbox] = useState(false);
@@ -101,7 +109,8 @@ export const SignIn = () => {
   useEffect(() => {
     gapi.load("client:auth2", () => {
       gapi.client.init({
-        clientId: "1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com",
+        clientId:
+          "1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com",
         scope: "",
       });
     });
@@ -159,7 +168,7 @@ export const SignIn = () => {
                 to={"/forgot-password"}
                 className="flex font-medium cursor-default text-base text-[#0A1C40]"
               >
-                <div className="cursor-pointer"> Forgot Password?</div>
+                <div className="cursor-default"> <p className="cursor-pointer">Forgot Password?</p> </div>
               </Link>
               <ReCAPTCHA
                 ref={recaptchaRef}
@@ -175,15 +184,17 @@ export const SignIn = () => {
                   onClick={(e) => e.stopPropagation()}
                   onChange={handleCheckbox}
                 />
-                <span
-                  className={`${
-                    checkedCheckbox
-                      ? "text-[#000] cursor-pointer "
-                      : "text-[#a5a3a3] cursor-pointer"
-                  }`}
-                >
-                  Keep me Signed in
-                </span>
+                <div>
+                  <span
+                    className={`${
+                      checkedCheckbox
+                        ? "text-[#000] cursor-pointer "
+                        : "text-[#a5a3a3] cursor-pointer"
+                    }`}
+                  >
+                    Keep me Signed in
+                  </span>
+                </div>
               </div>
               <Button
                 type={"submit"}

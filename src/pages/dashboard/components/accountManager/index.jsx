@@ -41,9 +41,9 @@ export const AccountManager = ({ manager, sidebar }) => {
             ? manager?.role?.toUpperCase()
             : "Manager Role"}
         </p> */}
-        <div className={`${sidebar ? "text-xs text-white" : "text-sm text-[#232323] -mt-1"} font-semibold`}>
-          <p>Manager Name :</p>
-          <span>
+        <div className={`${sidebar ? "text-xs text-white" : "text-sm text-[#232323] -mt-1"} font-bold`}>
+          <p className="font-bold">Manager Name :</p>
+          <span className="font-medium">
             {user?.agent_data?.[0]?.manager_data?.[0]?.name
               ? user?.agent_data?.[0]?.manager_data?.[0]?.name
               : "_________"}

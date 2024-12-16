@@ -17,9 +17,11 @@ const ChangePassword = () => {
 
   const dispatch = useDispatch();
   const inputRefs = useRef([]);
-  const navigate = useNavigate()
-  const {isPasswordChanging, changePasswordError} = useSelector((state)=> state.settings);
- 
+  const navigate = useNavigate();
+  const { isPasswordChanging, changePasswordError } = useSelector(
+    (state) => state.settings
+  );
+
   const {
     handleSubmit,
     control,
@@ -43,11 +45,11 @@ const ChangePassword = () => {
     // test dev branch
 
     const passwordData = {
-      newPassword : data.confirmPassword,
-      oldPassword : data.password
-    }
-    console.log(passwordData, "password Data")
-    dispatch(changePassword({passwordData, navigate}))
+      newPassword: data.confirmPassword,
+      oldPassword: data.password,
+    };
+    console.log(passwordData, "password Data");
+    dispatch(changePassword({ passwordData, navigate }));
   };
 
   const onConfirmationModalClose = () => {
@@ -154,6 +156,8 @@ const ChangePassword = () => {
                   {...field}
                   label={`Old Password`}
                   placeholder={`Enter your old password`}
+                  className={"border-[#D9D9D9] border"}
+                
                   errorContent={errors.password?.message}
                   required={true}
                   maxLength={20}
@@ -168,6 +172,8 @@ const ChangePassword = () => {
                   {...field}
                   label={`New Password`}
                   placeholder={`Enter your new password`}
+                  className={"border-[#D9D9D9] border"}
+
                   errorContent={errors.newPassword?.message}
                   required={true}
                   maxLength={20}
@@ -182,6 +188,8 @@ const ChangePassword = () => {
                   {...field}
                   label={`Re enter new Password`}
                   placeholder={`Re enter your new password`}
+                  className={"border-[#D9D9D9] border"}
+
                   errorContent={errors.confirmPassword?.message}
                   required={true}
                   maxLength={20}

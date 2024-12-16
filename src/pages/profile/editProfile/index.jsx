@@ -249,9 +249,9 @@ const Edit = () => {
               ) : (
                 <label
                   onClick={handleSave}
-                  className="save-button ml-4 cursor-pointer"
+                  className="save-button  cursor-pointer text-sm font-semibold text-[#004BBC] underline"
                 >
-                  Preview
+                  Save Photo
                 </label>
               )}
 
