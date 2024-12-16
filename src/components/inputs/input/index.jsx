@@ -91,7 +91,7 @@ export const Input = ({
             } ${
               required &&
               "after:content-['*'] after:text-red-500 after:absolute after:-top-1"
-            } absolute -translate-y-4 scale-75 top-2 origin-[0] rounded-lg text-sm text-gray-400 dark:text-gray-400 duration-300 transform bg-white dark:bg-gray-950 peer-focus:px-2 peer-focus:text-bee-primary peer-focus:dark:text-bee-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-3 + ${labelClassName}` }
+            } absolute -translate-y-4 scale-75 top-2 origin-[0] rounded-lg text-sm text-gray-400 dark:text-gray-400 duration-300 transform bg-white dark:bg-gray-950 peer-focus:px-2 peer-focus:text-bee-primary peer-focus:dark:text-bee-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-3 + ${labelClassName}`}
           >
             <span className="mr-2">{labelIcon}</span>
             {label}
@@ -113,15 +113,21 @@ export const Input = ({
             </button>
           )}
           {errorContent && (
-        <p className="absolute top-[30%] right-2"><img src="/validation-icon.svg" alt="" /></p>
-      )}
+            <p className="absolute top-[30%] right-2">
+              <img src="/validation-icon.svg" alt="" />
+            </p>
+          )}
         </div>
       </div>
-      {errorContent && (
-        <div className="absolute -top-4 right-8 bg-[#F9F9F9] rounded-[3px] px-3 py-2 mb-3">
-          <p className=" text-[#FF3B3B] font-medium  text-[10px]">{errorContent}</p>
-        </div>
-      )}
+      <div className="h-1 mb-2">
+        {errorContent && (
+          <div className="absolute -top-4 right-8 bg-[#F9F9F9] rounded-[3px] px-3 py-2 mb-3">
+            <p className=" text-[#FF3B3B] font-medium  text-[10px]">
+              {errorContent}
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
