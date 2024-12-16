@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { GoArrowLeft } from "react-icons/go";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Table } from "../../../components/table";
 import { Button } from "../../../components/buttons";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,6 +25,7 @@ const columns = [
 const SubscriptionHistory = () => {
   const [packageType, setPackageType] = useState("");
   const [packageIndex, setPackageIndex] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams()
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ const SubscriptionHistory = () => {
     const { amount, active, paymentMode, subscriptionExpireyDate, service_data, subscriptionDetails, serviceDetails
     } = subscription
 
-    
+
     console.log(subscriptionDetails?.title, "subscriptionDetails")
     return {
       subscription: subscriptionDetails ? subscriptionDetails?.title: "N/A",
@@ -117,21 +118,37 @@ const SubscriptionHistory = () => {
     );
 
     setPackageIndex(index);
+    setSearchParams({subscriptionType : label == "Active Subscription" ? "active" : label == "Expired Subscription" ? "expired" : "up-coming"})
     dispatch(dispatch(getSubscriptions({ page: 1, type: label == "Active Subscription" ? "active" : label == "Expired Subscription" ? "expired" : "up-coming" })))
   }
 
+  // useEffect(()=>{
+  //   const subscriptionType = searchParams.get("subscriptionType")
+  //   if(subscriptionType === "" || subscriptionType ===  undefined ) return
+  //    dispatch(getSubscriptions({ page: 1, type: subscriptionType}))
+  // }, [searchParams])
+  useEffect(() => {
+    const subscriptionType = searchParams.get("subscriptionType");
+    
+    // Only proceed if subscriptionType is truthy
+    if (!subscriptionType) return;
+    
+    // Dispatch the action with the valid subscriptionType
+    dispatch(getSubscriptions({ page: 1, type: subscriptionType }));
+  }, [searchParams, dispatch]);
+  
 
   return (
     <div>
-      {packageType !== "" ? (
+      {searchParams.get("subscriptionType") ? (
         <>
           {currentPackage ? (
             <div className="flex flex-col gap-4">
               <div className="flex items-center gap-2 font-semibold text-xl text-[#0A1C40]">
-                <button onClick={() => navigate(-1)}>
+                <button onClick={() => navigate("/settings/subscription-history")}>
                   <GoArrowLeft />
                 </button>
-                <p>{currentPackage.label}</p>
+                <p>{searchParams.get("subscriptionType") == "active" ? "Active Subscription" : searchParams.get("subscriptionType") == "expired" ? "Expired Subscription" : "Up-Coming Subscription"}</p>
               </div>
               <h4 className="font-semibold text-lg">
                 {currentPackage.description}

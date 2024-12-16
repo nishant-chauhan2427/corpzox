@@ -4,13 +4,16 @@ import { ServicesProgress } from "../../dashboard/components/services/progress";
 import { TextArea } from "../../../components/inputs/textarea";
 import { Rating } from "../../../components/rating";
 import { Button } from "../../../components/buttons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getMoreService } from "../../../redux/actions/dashboard-action";
 
 const ServiceprogressViewAll = ({ data }) => {
   const [dropdownStates, setDropdownStates] = useState(data?.map(() => false));
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [otherValue, setOtherVsalue] = useState("");
-  const { dataUpdate } = useSelector((state) => state.user);
+  
+  const { dataUpdate,loadingMore,page } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   console.log( dataUpdate.total," dataUpdate32");
 
   const handleServiceDropdown = (index) => {
@@ -94,6 +97,7 @@ const ServiceprogressViewAll = ({ data }) => {
                     </p>
                   </div>
                 </div>
+                
                 {/* <div className="flex gap-2">
                   <ReactModal
                     crossButton={true}
@@ -137,13 +141,22 @@ const ServiceprogressViewAll = ({ data }) => {
                   </button>
                 </div> */}
               </div>
+              
               <Dropdown
                 isOpen={dropdownStates?.[index]} // Pass the state for this specific dropdown
                 servicesProgessSteps={servicesProgessSteps}
               />
             </div>
           ))}
+          {/* {dataUpdate?.total > 0 ?
+        <div className="w-full flex justify-center items-center mb-4">
+          <Button onClick={()=> dispatch( getMoreService({page: (page+1)}) )} disabled={loadingMore} className="flex items-center sm:gap-2 p-2 hover:text-lg hover:shadow-lg" primary={true}>
+            {loadingMore?"loading...":"Load more.."}
+          </Button>
+        </div>:""
+          } */}
         </div>
+        
       ) : (
         <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
           <img src="/images/service-prgress.svg  " alt="" />
