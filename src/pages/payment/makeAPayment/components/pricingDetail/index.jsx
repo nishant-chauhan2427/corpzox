@@ -75,7 +75,7 @@ const PricingDetail = ({totalCost, offer,serviceCost,totalSavings,data,originalP
                 Applied Offer
               </p>
               <p className="text-base font-semibold text-[#525252]">
-                ₹{(Number(originalPrice) * discountPercent) / 100}
+                ₹{offer}
               </p>
             </div>
           )}

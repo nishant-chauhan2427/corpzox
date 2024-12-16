@@ -675,134 +675,369 @@ export function mergeArrays(couponArray = [], offerArray = []) {
   return [];
 }
 
-export function calculateFinalPrice(data, { serviceId, moduleId = {}, coupon = null }, state) {
-  // Validate data
-  if (!data || !Array.isArray(data) || !data.length) {
+// export function calculateFinalPrice(data, { serviceId, moduleId = {}, coupon = null }, state) {
+//   // Validate data
+//   if (!data || !Array.isArray(data) || !data.length) {
+//     console.error("Invalid data");
+//     return null;
+//   }
+
+//   let basePrice = 0; // Initialize base price
+//   let offerDetails = {}; // Store offer details
+//   let couponDetails = {}; // Store coupon details
+//   let totalOfferDiscount = 0; // Discount from offers
+//   let totalCouponDiscount = 0; // Discount from coupons
+//   let finalPrice = 0; // Final calculated price
+
+//   // Step 1: Determine base price using moduleId (subscriptionId or quotationId)
+//   if (serviceId && moduleId.subscriptionId) {
+//     // Case: Service ID and Subscription ID
+//     const subscription = data[0]?.subscription?.find(sub => sub._id === moduleId.subscriptionId);
+//     const service = data[0]?.services?.find(svc => svc._id === serviceId);
+
+//     if (subscription && service) {
+//       basePrice = subscription.amount || 0;
+//     } else {
+//       console.error("Invalid Service ID or Subscription ID");
+//       return null;
+//     }
+//   } else if (serviceId && moduleId.quotationId) {
+//     // Case: Service ID and Quotation ID
+//     const quotation = data[0]?.quotations?.find(qtn => qtn._id === moduleId.quotationId);
+//     const service = data[0]?.services?.find(svc => svc._id === serviceId);
+
+//     if (quotation && service) {
+//       basePrice = quotation.amount || 0;
+//     } else {
+//       console.error("Invalid Service ID or Quotation ID");
+//       return null;
+//     }
+//   } else if (serviceId) {
+//     // Case: Only Service ID
+//     const service = data[0]?.services?.find(svc => svc._id === serviceId);
+
+//     if (service) {
+//       basePrice = service.amount || 0;
+//     } else {
+//       console.error("Invalid Service ID");
+//       return null;
+//     }
+//   } else {
+//     console.error("Service ID is required");
+//     return null;
+//   }
+
+//   finalPrice = basePrice; // Start with base price
+
+//   // Step 2: Apply offers
+//   const offer = data[0]?.offerservices?.[0]?.offers?.[0];
+//   if (offer) {
+//     let discountAmount = 0;
+
+//     // Apply percentage discount
+//     if (offer.discountPercent) {
+//       discountAmount = basePrice * (offer.discountPercent / 100);
+//       totalOfferDiscount += discountAmount;
+//       finalPrice -= discountAmount;
+//     }
+
+//     // Apply direct discount
+//     if (offer.discountPrice) {
+//       totalOfferDiscount += offer.discountPrice;
+//       finalPrice -= offer.discountPrice;
+//     }
+
+//     offerDetails = {
+//       discountPercent: offer.discountPercent || 0,
+//       discountPrice: offer.discountPrice || 0,
+//       offerId: offer._id || null,
+//       discountType: offer.discountPercent ? "percentage" : "direct",
+//       usage: "Multi Use",
+//       amount: totalOfferDiscount,
+//     };
+//   }
+
+//   // Step 3: Apply coupon
+//   if (coupon && typeof coupon === "object") {
+//     let couponDiscountAmount = 0;
+
+//     if (coupon.discountPercent) {
+//       couponDiscountAmount = basePrice * (coupon.discountPercent / 100);
+//       totalCouponDiscount += couponDiscountAmount;
+//       finalPrice -= couponDiscountAmount;
+//     }
+
+//     if (coupon.discountPrice) {
+//       totalCouponDiscount += coupon.discountPrice;
+//       finalPrice -= coupon.discountPrice;
+//     }
+
+//     couponDetails = {
+//       couponId: coupon.couponId || null,
+//       discountType: coupon.discountPercent ? "percentage" : "direct",
+//       discountPercent: coupon.discountPercent || 0,
+//       discountPrice: coupon.discountPrice || 0,
+//       amount: couponDiscountAmount,
+//     };
+//   } else if (coupon) {
+//     console.warn("Invalid coupon format. It should be an object.");
+//   }
+
+//   // Ensure final price is not negative
+//   finalPrice = Math.max(finalPrice, 0);
+
+//   // Update state
+//   state.basePrice = basePrice;
+//   state.offerDetails = offerDetails;
+//   state.couponDetails = couponDetails;
+//   state.totalOfferDiscount = totalOfferDiscount;
+//   state.totalCouponDiscount = totalCouponDiscount;
+//   state.finalPrice = finalPrice;
+
+//   // Save final price to localStorage
+//   localStorage.setItem("finalPrice", finalPrice.toFixed(2));
+
+//   // Log details
+//   console.log(`Final price calculated and saved: ${finalPrice.toFixed(2)}`);
+//   console.log(`Total Offer Discount: ${totalOfferDiscount}`);
+//   console.log(`Total Coupon Discount: ${totalCouponDiscount}`);
+//   console.log("Offer details:", offerDetails);
+//   console.log("Coupon details:", couponDetails);
+
+//   return finalPrice.toFixed(2); // Return final price as a string
+// }
+
+export function calculateFinalPrice(data, subscriptionId, state) {
+  console.log(data, "Input data");
+
+  // Validate if the data array exists and has elements
+  if (!data || !data.length) {
     console.error("Invalid data");
-    return null;
+    return { finalPrice: 0, discountAmount: 0 }; // Return default values
   }
 
-  let basePrice = 0; // Initialize base price
-  let offerDetails = {}; // Store offer details
-  let couponDetails = {}; // Store coupon details
-  let totalOfferDiscount = 0; // Discount from offers
-  let totalCouponDiscount = 0; // Discount from coupons
-  let finalPrice = 0; // Final calculated price
+  let finalPrice = data[0]?.cost || 0; // Start with the original cost
+  let discountAmount = 0; // Initialize discount amount
+  console.log(finalPrice, "Initial cost from data");
 
-  // Step 1: Determine base price using moduleId (subscriptionId or quotationId)
-  if (serviceId && moduleId.subscriptionId) {
-    // Case: Service ID and Subscription ID
-    const subscription = data[0]?.subscription?.find(sub => sub._id === moduleId.subscriptionId);
-    const service = data[0]?.services?.find(svc => svc._id === serviceId);
+  // Case 1: Handle Quotation (offers will not be applied)
+  if (data[0]?.quotation) {
+    finalPrice = data[0]?.quotation.amount || 0;
+    console.log("Quotation amount used:", finalPrice);
 
-    if (subscription && service) {
-      basePrice = subscription.amount || 0;
-    } else {
-      console.error("Invalid Service ID or Subscription ID");
-      return null;
-    }
-  } else if (serviceId && moduleId.quotationId) {
-    // Case: Service ID and Quotation ID
-    const quotation = data[0]?.quotations?.find(qtn => qtn._id === moduleId.quotationId);
-    const service = data[0]?.services?.find(svc => svc._id === serviceId);
-
-    if (quotation && service) {
-      basePrice = quotation.amount || 0;
-    } else {
-      console.error("Invalid Service ID or Quotation ID");
-      return null;
-    }
-  } else if (serviceId) {
-    // Case: Only Service ID
-    const service = data[0]?.services?.find(svc => svc._id === serviceId);
-
-    if (service) {
-      basePrice = service.amount || 0;
-    } else {
-      console.error("Invalid Service ID");
-      return null;
-    }
-  } else {
-    console.error("Service ID is required");
-    return null;
+    // No offer should be applied in case of quotation
+    return {
+      finalPrice: finalPrice.toFixed(2),
+      discountAmount: discountAmount.toFixed(2),
+    };
   }
 
-  finalPrice = basePrice; // Start with base price
+  // Case 2: If a subscription is selected, use the subscription amount
+  if (subscriptionId) {
+    const subscription = data[0]?.subscription?.find((sub) => sub._id === subscriptionId);
+    if (subscription) {
+      finalPrice = subscription.amount;
+      console.log("Using subscription amount:", finalPrice);
+    } else {
+      console.error("Subscription ID not found");
+    }
+  }
 
-  // Step 2: Apply offers
+  // Case 3: If an offer is applied, calculate the discount
   const offer = data[0]?.offerservices?.[0]?.offers?.[0];
+  let offerDetails = {};
   if (offer) {
-    let discountAmount = 0;
-
-    // Apply percentage discount
     if (offer.discountPercent) {
-      discountAmount = basePrice * (offer.discountPercent / 100);
-      totalOfferDiscount += discountAmount;
+      // Apply percentage discount
+      discountAmount = finalPrice * (offer.discountPercent / 100);
+      state.totalCouponDiscount = (state.totalCouponDiscount || 0) + discountAmount;
       finalPrice -= discountAmount;
+      console.log(`Applied percentage discount: ${offer.discountPercent}%, Discount Amount: ${discountAmount}`);
     }
 
-    // Apply direct discount
     if (offer.discountPrice) {
-      totalOfferDiscount += offer.discountPrice;
-      finalPrice -= offer.discountPrice;
+      // Apply direct discount amount
+      discountAmount = offer.discountPrice;
+      state.totalCouponDiscount = (state.totalCouponDiscount || 0) + discountAmount;
+      finalPrice -= discountAmount;
+      console.log(`Applied direct discount: ${offer.discountPrice}`);
     }
 
+    // Store offer details
     offerDetails = {
-      discountPercent: offer.discountPercent || 0,
-      discountPrice: offer.discountPrice || 0,
+      discountPercent: offer.discountPercent || null,
       offerId: offer._id || null,
       discountType: offer.discountPercent ? "percentage" : "direct",
       usage: "Multi Use",
-      amount: totalOfferDiscount,
+      amount: discountAmount,
     };
+
+    // Prevent duplicate offers
+    const foundOffer = state?.appliedOfferArray?.find(
+      (existingOffer) => existingOffer.offerId === offerDetails.offerId
+    );
+
+    if (!foundOffer && offerDetails.offerId) {
+      state.appliedOfferArray = state.appliedOfferArray || [];
+      state.appliedOfferArray.push(offerDetails);
+      console.log("Added new offer:", offerDetails);
+    } else {
+      console.log("Offer already exists or invalid.");
+    }
   }
 
-  // Step 3: Apply coupon
-  if (coupon && typeof coupon === "object") {
-    let couponDiscountAmount = 0;
-
-    if (coupon.discountPercent) {
-      couponDiscountAmount = basePrice * (coupon.discountPercent / 100);
-      totalCouponDiscount += couponDiscountAmount;
-      finalPrice -= couponDiscountAmount;
-    }
-
-    if (coupon.discountPrice) {
-      totalCouponDiscount += coupon.discountPrice;
-      finalPrice -= coupon.discountPrice;
-    }
-
-    couponDetails = {
-      couponId: coupon.couponId || null,
-      discountType: coupon.discountPercent ? "percentage" : "direct",
-      discountPercent: coupon.discountPercent || 0,
-      discountPrice: coupon.discountPrice || 0,
-      amount: couponDiscountAmount,
-    };
-  } else if (coupon) {
-    console.warn("Invalid coupon format. It should be an object.");
+  // Update appliedCoupanArray and offerDetails in state
+  state.appliedCoupanArray = state.appliedCoupanArray || [];
+  if (offerDetails.offerId) {
+    state.appliedCoupanArray.push(offerDetails);
   }
-
-  // Ensure final price is not negative
-  finalPrice = Math.max(finalPrice, 0);
-
-  // Update state
-  state.basePrice = basePrice;
   state.offerDetails = offerDetails;
-  state.couponDetails = couponDetails;
-  state.totalOfferDiscount = totalOfferDiscount;
-  state.totalCouponDiscount = totalCouponDiscount;
-  state.finalPrice = finalPrice;
 
-  // Save final price to localStorage
+  // Save the final price to localStorage
+  finalPrice = Math.max(0, finalPrice); // Ensure the price is not negative
   localStorage.setItem("finalPrice", finalPrice.toFixed(2));
-
-  // Log details
   console.log(`Final price calculated and saved: ${finalPrice.toFixed(2)}`);
-  console.log(`Total Offer Discount: ${totalOfferDiscount}`);
-  console.log(`Total Coupon Discount: ${totalCouponDiscount}`);
-  console.log("Offer details:", offerDetails);
-  console.log("Coupon details:", couponDetails);
 
-  return finalPrice.toFixed(2); // Return final price as a string
+  // Return both final price and discount amount
+  return {
+    finalPrice: finalPrice.toFixed(2),
+    discountAmount: discountAmount.toFixed(2),
+  };
+}
+
+function calculatePriceRegular(data, state) {
+
+  console.log(data, "Invalid data for regular calculation");
+  if (typeof data !== 'object' || data === null) {
+    console.error("Invalid data for regular calculation");
+    return { finalPrice: 0, discountAmount: 0 }; // Default to 0 if no data is provided
+  }
+
+  let cost = data?.cost || 0; // Get the base cost
+  let discountAmount = 0;
+
+  let offerDetails = {}
+  // Check if there are valid offers and apply them
+  if (data?.offerservices[0]?.offers) {
+    const result = applyOfferToPrice(cost, data, state);
+    cost = result.finalPrice;
+    discountAmount = result.discountAmount;
+    offerDetails = result.offerDetails
+  } else {
+    console.log("No offers to apply for regular cost.");
+  }
+
+  
+  console.log(`Final regular price: ${cost}, Discount: ${discountAmount}`);
+  return { finalPrice: cost, discountAmount, offerDetails };
+}
+
+function calculatePriceSubscription(data, subscriptionId) {
+  console.log(data, "from subscription component")
+  if (!data || !data?.subscription.length > 0) {
+    console.error("Invalid data for subscription calculation");
+    return { finalPrice: 0, discountAmount: 0 };
+  }
+
+  const subscription = data?.subscription?.find(
+    (sub) => sub._id === subscriptionId
+  );
+
+  if (!subscription) {
+    console.error("Subscription ID not found");
+    return { finalPrice: 0, discountAmount: 0, subscription };
+  }
+
+  let subscriptionPrice = subscription.amount || 0;
+  let discountAmount = 0;
+  let offerDetails = {}
+  console.log(data?.offerservices[0]?.offers, "offer from function")
+  // Check if there are valid offers and apply them
+  if (data?.offerservices[0]?.offers) {
+    const result = applyOfferToPrice(subscriptionPrice, data);
+    subscriptionPrice = result.finalPrice;
+    discountAmount = result.discountAmount;
+    offerDetails = result.offerDetails
+  } else {
+    console.log("No offers to apply for subscription price.");
+  }
+
+  console.log(
+    `Final subscription price: ${subscriptionPrice}, Discount: ${discountAmount}`
+  );
+  return { finalPrice: subscriptionPrice, discountAmount, subscription, offerDetails };
+}
+
+function calculatePriceQuotation(data, quotationId) {
+  console.log(data, "isnide quotation block from function")
+  if (typeof data !== 'object' || data === null) {
+    console.error("Invalid data for quotation calculation");
+    return { finalPrice: 0, discountAmount: 0 };
+  }
+
+  console.log(data.quotations,quotationId, "quotations")
+  const quotation = data?.quotations?.find(
+    (quote) => quote._id === quotationId
+  );
+
+  console.log(quotation, "foiund quotaTION")
+  if (!quotation) {
+    console.error("Quotation ID not found");
+    return { finalPrice: 0, discountAmount: 0 };
+  }
+
+  const quotationPrice = quotation.amount || 0;
+  console.log(`Quotation price calculated: ${quotationPrice}`);
+  return { finalPrice: quotationPrice, discountAmount: 0 }; // No discounts for quotations
+}
+
+export function calculateFinalPriceByType(data, type, id = null) {
+  console.log(type, "from function")
+  switch (type) {
+    case "regular":
+      return calculatePriceRegular(data);
+
+    case "subscription":
+      return calculatePriceSubscription(data, id);
+
+    case "quotation":
+      return calculatePriceQuotation(data, id);
+
+    default:
+      console.error("Invalid type specified");
+      return { finalPrice: 0, discountAmount: 0 };
+  }
+}
+function applyOfferToPrice(price, data) {
+  if (!data?.offerservices[0]?.offers) {
+    console.log("No offers available for this service.");
+    return { finalPrice: price, discountAmount: 0 }; // No discount applied
+  }
+
+  const offer = data?.offerservices[0]?.offers[0]; // Assume one offer
+  console.log(offer , "offer from the function")
+  let discountAmount = 0;
+
+  // Apply discount percentage if present
+  if (offer.discountPercent) {
+    const percentDiscount = price * (offer.discountPercent / 100);
+    discountAmount += percentDiscount;
+    price -= percentDiscount;
+  }
+
+  // Apply fixed discount if present
+  if (offer.discountPrice) {
+    discountAmount += offer.discountPrice;
+    price -= offer.discountPrice;
+  }
+ const offerDetails = {
+    discountPercent: offer.discountPercent,
+    offerId: offer._id, // Assuming offer has an _id
+    discountType: offer.discountPercent ? "percentage" : "direct",
+    usage: "Multi Use",
+    amount: discountAmount,
+  };
+
+  console.log(`Price after applying offer: ${price}`);
+  return { finalPrice: price, discountAmount, offerDetails };
 }

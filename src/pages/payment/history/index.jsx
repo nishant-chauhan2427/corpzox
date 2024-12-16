@@ -249,24 +249,23 @@ const History = () => {
             <p className="font-semibold text-base  text-[#525252] ">Amount</p>
           </div>
           <hr />
+
+          <div className="flex justify-between">
+            <p className="font-semibold text-base  text-[#0A1C40] ">Amount</p>
+            <p className="font-semibold text-base  text-[#0A1C40] ">
+              ₹ {transactionDetails?.serviceDetails?.cost}
+            </p>
+          </div>
           <div className="flex justify-between">
             <p className="font-semibold text-base  text-[#0A1C40] ">
               Discount Coupon
             </p>
             <p className="font-semibold text-base text-[#0A1C40]">
-              {Array.isArray(transactionDetails?.serviceappliedcouponandoffers) &&
-                transactionDetails?.serviceappliedcouponandoffers.length > 0 &&
-                transactionDetails?.serviceappliedcouponandoffers[0]?.amount > 0
-                ? transactionDetails?.amount - transactionDetails?.serviceappliedcouponandoffers[0]?.amount
-                : "--"}
-            </p>
-
-
-          </div>
-          <div className="flex justify-between">
-            <p className="font-semibold text-base  text-[#0A1C40] ">Amount</p>
-            <p className="font-semibold text-base  text-[#0A1C40] ">
-              ₹ {transactionDetails?.amount}
+              {
+                transactionDetails?.serviceappliedcouponandoffers &&
+                transactionDetails?.serviceappliedcouponandoffers[0]?.amount +
+                (transactionDetails?.serviceappliedcouponandoffers[1]?.amount || 0)
+              }
             </p>
           </div>
           <div className="flex justify-between bg-[#FFF4BA]  px-2 py-1">
@@ -274,12 +273,13 @@ const History = () => {
               Total amount paid
             </p>
             <p className="font-semibold text-base text-[#0A1C40]">
-              ₹{
+              {/* ₹{
                 Array.isArray(transactionDetails?.serviceappliedcouponandoffers) &&
                   transactionDetails?.serviceappliedcouponandoffers.length > 0
                   ? transactionDetails?.serviceappliedcouponandoffers[0]?.amount
                   : transactionDetails?.amount
-              }
+              } */}
+              ₹ {transactionDetails?.amount}
             </p>
           </div>
           <div className="flex justify-center gap-2 pt-10">
