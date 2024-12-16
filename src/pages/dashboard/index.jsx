@@ -99,7 +99,7 @@ const Dashboard = () => {
             <Profile user={user} />
             {/* <AccountManager manager={manager} /> */}
           </div>
-          {/* <Advertisement /> */}
+          <Advertisement />
         </div>
         <Business data={business?.list} total={business?.totalPage} />
         {isRecommendedServiceLoading ? (

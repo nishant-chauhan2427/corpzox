@@ -65,7 +65,7 @@ export const ServicesProgress = ({ data }) => {
     setConfirmationModal(true);
   };
   const onSubmit = (formData) => {
-    console.log("Submitted Data: ", formData);
+    //console.log("Submitted Data: ", formData);
     // Handle form submission logic
     console.log("Submitted Data: ", {
       serviceQualityRating: formData.serviceQualityRating,

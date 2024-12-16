@@ -46,6 +46,7 @@ export const PhoneNumberInput = ({
         <div>
           <PhoneInput
             {...restProps}
+            enableSearch={true}
             // placeholder={placeholder}
             country={country} // Country code for formatting (United States in this example)
             value={value}

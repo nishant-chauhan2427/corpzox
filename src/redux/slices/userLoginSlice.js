@@ -113,7 +113,30 @@ const userSlice = createSlice({
         }).addCase(updateServiveProgress.rejected, (state, action) => {
           state.fetching = false;
           state.error = action.payload;
-        });;
+        })
+       
+            // .addCase(getMoreservice.pending, (state) => {
+            //     state.loadingMore = true;
+            //     console.log("businessPageSlice : getAllBusiness.pending");
+            // })
+            // .addCase(getMoreservice.fulfilled, (state, action) => {
+            //     console.log("businessPageSlice : getMoreBusiness.fulfilled");
+            //     console.log("getMoreBusiness.fulfilled", action.payload);
+            //     state.loadingMore=false;
+            //     state.totalCount = action.payload?.total;
+            //     if (state.dataUpdate) {
+            //         state.dataUpdate = [...state.dataUpdate, ...action.payload?.data];
+            //         if (action.payload?.data?.length > 0) {
+            //             state.page = state.page + 1;
+            //         }
+            //     }
+            //     state.error = null;
+            // })
+            // .addCase(getMoreservice.rejected, (state, action) => {
+            //     console.log("businessPageSlice :getMoreBusiness.rejected");
+            //     state.loadingMore = false;
+            //     // state.error = action.payload;
+            // });
     }
 });
 
