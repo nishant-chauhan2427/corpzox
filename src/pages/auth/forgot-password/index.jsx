@@ -148,7 +148,7 @@ export const ForgotPassword = () => {
 
     setOtp(["", "", "", "", "", ""]);
     setTimer(30);
-    
+
     dispatch(
       resendOtp({
         id: profile?.[0]?.id,
@@ -237,7 +237,10 @@ export const ForgotPassword = () => {
                         </span>{" "}
                       </p>
                     ) : (
-                      "Resend Code"
+                      <p className="!font-medium text-[#FF2C9C] text-sm">
+                        {" "}
+                        Resend Code
+                      </p>
                     )}
                   </button>
                   <Button

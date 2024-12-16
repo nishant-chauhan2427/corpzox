@@ -40,7 +40,7 @@ const settingsSlice = createSlice({
         state.isPasswordChanging = false;
         console.log(action.payload, "password changed successfully");
         if(action.payload.code === 404){
-          toast.error(action.payload.message);  
+          toast.error(action.payload?.message || "Something went wrong");  
           state.isPasswordChanging = false;
           state.changePasswordError = true
         }else{
@@ -80,7 +80,7 @@ const settingsSlice = createSlice({
         state.error = null;
       })
       .addCase(deactivateAccount.rejected, (state, action) => {
-        toast.error(action.payload.message || "Account deactivation failed");
+        toast.error(action.payload.message);
         state.isDeactivate = false;
         state.error = action.payload;
         state.success = null;
@@ -129,7 +129,6 @@ const settingsSlice = createSlice({
         }else{
           state.isUpcommingLoading = false
         }
-        toast.error(action.payload.message || "Account deactivation failed");
         state.isCountFetching = false;
         state.error = action.payload;
       

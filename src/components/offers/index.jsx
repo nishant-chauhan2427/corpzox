@@ -51,9 +51,9 @@ export const Offers = () => {
                   style={{
                     backgroundImage: `url(https://img.freepik.com/free-vector/sale-banner-badge-your-business_1017-17476.jpg?t=st=1733120748~exp=1733124348~hmac=3266181d7b16db95a0892692767f76a818da9797d6972f8a04a1444b953ec2b1&w=826)`,
                   }}
-                  className={`w-[60%] rounded-lg bg-cover bg-right overflow-hidden`}
+                  className={`w-[40%] rounded-lg bg-cover bg-right overflow-hidden`}
                 ></div>
-                <div className="flex w-[60%] flex-col  justify-between gap-1 bg-[#EEEFF3] pl-3 ">
+                <div className="flex w-[40%] flex-col  justify-between gap-1 bg-[#EEEFF3] pl-3 ">
                   <div>
                     <div className="flex ">
                       <p className="font-bold text-[12.64px]  text-[#1A202E] ">
@@ -63,8 +63,8 @@ export const Offers = () => {
                     <p className="font-extrabold  text-[#EB9527] text-[14.05px]">
                       {offer.discountPercent}% OFF
                     </p>
-                    <p className="font-normal  text-[12px] text-[#737373]">
-                      {offer.offerDetail?.substring(0, 40)}
+                    <p className="font-normal whitespace-nowrap pr-2 text-[12px] text-[#737373]">
+                      {offer.offerDetail?.substring(0, 30)}
                       {offer.offerDetail?.length > 50 ? " ..." : ""}
                     </p>
                   </div>

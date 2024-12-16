@@ -35,8 +35,10 @@ const SubscriptionHistory = () => {
     const { amount, active, paymentMode, subscriptionExpireyDate, service_data, subscriptionDetails, serviceDetails
     } = subscription
 
+    
+    console.log(subscriptionDetails?.title, "subscriptionDetails")
     return {
-      subscription: subscriptionDetails?.details ? subscriptionDetails?.details: "N/A",
+      subscription: subscriptionDetails ? subscriptionDetails?.title: "N/A",
       status: active ? "Active" : "",
       amount: amount,
       paymentMethod: paymentMode,
@@ -106,6 +108,7 @@ const SubscriptionHistory = () => {
   ];
   const currentPackage = subscriptionPackage[packageIndex];
   console.log(currentPackage,"currentPackage" )
+  
 
   const handleCard = (label) => {
     setPackageType(label)
