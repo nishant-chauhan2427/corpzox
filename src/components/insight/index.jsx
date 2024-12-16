@@ -7,7 +7,7 @@ export const Insight = () => {
       <div className="flex flex-col gap-4">
         <div className="flex justify-between items-center ">
           <p className="font-semibold text-[16px] text-[#004BBC]">Insights</p>
-          <Link className="font-medium text-xs text-[#828282]" to={"/Insight"}>
+          <Link className="font-medium text-xs text-[#828282]" to={"/insight"}>
             View All
           </Link>
           {/* <Link className="font-medium text-xs text-[#828282]">View All</Link> */}

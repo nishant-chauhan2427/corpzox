@@ -193,6 +193,14 @@ const router = createBrowserRouter([
             element: <Payments />,
             children: [
               {
+                path: ":serviceId/:subscriptionId",
+                element: <MakeAPayment />,
+              },
+              {
+                path: ":serviceId/:quotationId",
+                element: <MakeAPayment />,
+              },
+              {
                 path: ":serviceId",
                 element: <MakeAPayment />,
               },

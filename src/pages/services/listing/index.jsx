@@ -21,12 +21,14 @@ import {
 import {
   setToggleToCheckedWishlist,
   resetService,
+  onChangeSelectAll,
 } from "../../../redux/slices/serviceListingSlice";
 import toast from "react-hot-toast";
 import { Offers } from "../../../components/offers";
 import { updateServiveProgress } from "../../../redux/actions/dashboard-action";
 import { NoData } from "../../../components/errors/noData";
 import { ImSpinner2 } from "react-icons/im";
+import { MetaTitle } from "../../../components/metaTitle";
 const ServicesListing = () => {
   const dispatch = useDispatch();
   const { servicesMainTab } = useSelector((state) => state.app);
@@ -102,27 +104,35 @@ const ServicesListing = () => {
   let onCheckHandler = (service) => {
     dispatch(setToggleToCheckedWishlist(service));
   };
-  let onClickAddWishlistHandler = () => {
-    dispatch(updateServiceQuickWishlist({ serviceIdArray: wishList?.list }));
-  };
-  let onChangeSelectAllHandler = () => {
-    dispatch(onChangeSelectAllHandler());
-    // document.getElementsByClassName('service-checkbox').forEach(element => {
 
-    // });
-  };
+
+//  let onClickAddWishlistHandler = () => {
+//     const wishlistSelectedData=wishList?.list?.map(item => item._id);
+//     dispatch(updateServiceQuickWishlist({ serviceIdArray: wishlistSelectedData }));
+//     toast.success("Wishlist Created")
+//   };
+//   let onChangeSelectAllHandler = () => {
+//     dispatch(onChangeSelectAll());
+//     // document.getElementsByClassName('service-checkbox').forEach(element => {
+
+//     // });
+//   };
+  
+  
   return (
     <section className="flex sm:flex-row flex-col gap-4 sm:pt-6 pt-3 bg-white">
       <div className="flex justify-center flex-col overflow-hidden">
+      <MetaTitle title={"Service"} />
         <MainTab />
         <Filtertab />
         <>
-          {list.length != 0 && (
+          {/* {list.length != 0 && (
             <SelectAllTabs
               onChangeSelectAllHandler={onChangeSelectAllHandler}
               onClickAddWishlistHandler={onClickAddWishlistHandler}
+              
             />
-          )}
+          )} */}
           {loading ? (
           <div className="flex justify-center items-center h-full">
           <ImSpinner2 className="animate-spin text-gray-700 text-xl" />

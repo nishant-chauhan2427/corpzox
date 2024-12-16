@@ -24,6 +24,7 @@ export const ForgotPassword = () => {
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(forgotPasswordSchema),
@@ -39,8 +40,24 @@ export const ForgotPassword = () => {
     profile,
   } = useSelector((state) => state.auth);
 
-  console.log(profile,"profile123e4r");
-  const [otpMessage,setOtpMessage]= useState('')
+  const [otpMessage, setOtpMessage] = useState("");
+  useEffect(() => {
+    if (profile?.[0]) {
+      if (profile?.[0]?.email) {
+        setValue("email", profile[0]?.email);  // Automatically set email if profile exists
+      }
+      if (profile[0]?.phone) {
+        setValue("phone", profile?.[0]?.phone);  // Automatically set phone if profile exists
+      }
+    }
+  }, [profile, setValue]);
+  
+  useEffect(() => {
+    if (isOtpScreen && inputRefs.current[0]) {
+      inputRefs.current[0].focus();
+    }
+  }, [isOtpScreen]);
+  
   useEffect(() => {
     if (timer === 0 || timer == "00") {
       setIsResendDisabled(false);
@@ -57,31 +74,28 @@ export const ForgotPassword = () => {
       return () => clearTimeout(countdown);
     }
   }, [timer]);
-  
+
   useEffect(() => {
     if (isVerify && !isVerifying) {
       setIsVerify(false);
       if (verifyingError) {
         //toast.error(verifyingError);
-        setOtpMessage(verifyingError)
+        setOtpMessage(verifyingError);
       } else {
-        toast.success(verifyMessage);
+       // toast.success(verifyMessage);
         navigate("/create-new-password");
       }
     }
   }, [isVerifying]);
 
-
-  useEffect(()=>{
+  useEffect(() => {
     setTimeout(() => {
-      setOtpMessage("")
+      setOtpMessage("");
     }, 5000);
-      },[verifyingError])
-    
-        
+  }, [verifyingError]);
 
   const handleChange = (index, value) => {
-    setOtpMessage("")
+    setOtpMessage("");
     if (/^\d$/.test(value)) {
       const newOtp = [...otp];
       newOtp[index] = value;
@@ -131,7 +145,10 @@ export const ForgotPassword = () => {
   const handleResendOtp = (event) => {
     event.preventDefault();
     console.log(profile);
+
+    setOtp(["", "", "", "", "", ""]);
     setTimer(30);
+
     dispatch(
       resendOtp({
         id: profile?.[0]?.id,
@@ -174,7 +191,7 @@ export const ForgotPassword = () => {
               <DualHeadingTwo
                 containerClassName={"text-left pt-2"}
                 heading={"Verification Code"}
-                subHeading={`We have sent you an OTP on your registered email id ${profile[0]?.email}`}
+                subHeading={`We have sent you an OTP on your registered Email Id forgot-password ${profile?.[0]?.email}`}
 
               />
               <form
@@ -199,10 +216,10 @@ export const ForgotPassword = () => {
                       />
                     ))}
                   </div>
-                  
+
                   <div className="text-red-500 mt-2 font-medium text-sm text-center">
-                    { verifyingError? otpMessage: null}
-                    </div>
+                    {verifyingError ? otpMessage : null}
+                  </div>
                 </div>
 
                 <div className="w-full flex flex-col justify-center items-center">
@@ -220,13 +237,18 @@ export const ForgotPassword = () => {
                         </span>{" "}
                       </p>
                     ) : (
-                      "Resend Code"
+                      <p className="!font-medium text-[#FF2C9C] text-sm">
+                        {" "}
+                        Resend Code
+                      </p>
                     )}
                   </button>
                   <Button
                     type="submit"
                     primary={true}
-                    className="mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none"
+                    className={
+                      "mt-2 py-3 w-full rounded-lg  text-[#0A1C40] font-semibold !border-none "
+                    }
                     disabled={otp?.[otp.length - 1] == ""}
                     isLoading={isVerifying}
                   >
@@ -251,7 +273,7 @@ export const ForgotPassword = () => {
                 <Controller
                   name="email"
                   control={control}
-                  defaultValue=""
+                  defaultValue={profile?.[0]?.email ?profile?.[0]?.email:profile?.[0]?.phone}
                   render={({ field }) => (
                     <Input
                       {...field}
@@ -263,11 +285,13 @@ export const ForgotPassword = () => {
                     />
                   )}
                 />
-                
+
                 <Button
                   type="submit"
                   primary={true}
-                  className="mt-2 py-2 w-full rounded-lg text-[#0A1C40] font-semibold !border-none"
+                  className={
+                    "mt-2 py-3 w-full rounded-lg  text-[#0A1C40] font-semibold !border-none "
+                  }
                   disabled={!isValid}
                   isLoading={resendingOtp}
                 >

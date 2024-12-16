@@ -4,7 +4,7 @@ import { GoDotFill, GoTriangleDown } from "react-icons/go";
 import { ProgressBar } from "../../../../../components/progressBar";
 import { Heading } from "../../../../../components/heading";
 import { ConfirmationModal } from "../../../../../components/modal/confirmationModal";
-import { p } from "framer-motion/client";
+import { p, tr } from "framer-motion/client";
 import { ReactModal } from "../../../../../components/modal";
 import { TextArea } from "../../../../../components/inputs/textarea";
 import { Rating } from "../../../../../components/rating";
@@ -21,6 +21,7 @@ export const ServicesProgress = ({ data }) => {
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [otherValue, setOtherVsalue] = useState("");
   const [serviceId, setServiceId] = useState("");
+  const [transactionId, setTransactionId] = useState("")
   const [rating, setRating] = useState(0);
   const dispatch = useDispatch();
 
@@ -57,13 +58,14 @@ export const ServicesProgress = ({ data }) => {
     if (!isRatingAdding) setConfirmationModal(false);
   }, [isRatingAdding]);
 
-  const onConfirmationModalOpen = (data) => {
+  const onConfirmationModalOpen = (data, transactionId) => {
     console.log(data, "mo idea");
     setServiceId(data);
+    setTransactionId(transactionId)
     setConfirmationModal(true);
   };
   const onSubmit = (formData) => {
-    console.log("Submitted Data: ", formData);
+    //console.log("Submitted Data: ", formData);
     // Handle form submission logic
     console.log("Submitted Data: ", {
       serviceQualityRating: formData.serviceQualityRating,
@@ -73,7 +75,18 @@ export const ServicesProgress = ({ data }) => {
       valueForMoneyRating: formData.valueForMoneyRating,
       review: formData.review,
     });
-    dispatch(ratingReview({ ...formData, serviceId }));
+    const payload = {
+      serviceQualityRating: formData.serviceQualityRating,
+      professionalBehaviourRating: formData.professionalBehaviourRating,
+      onTimeDeliveryRating: formData.onTimeDeliveryRating,
+      transparentPricingRating: formData.transparentPricingRating,
+      valueForMoneyRating: formData.valueForMoneyRating,
+      review: formData.review,
+    }
+    if (formData.review === "") {
+      delete payload.review;
+    }
+    dispatch(ratingReview({ ...payload, serviceId, applicationId : transactionId }));
     reset(); // Reset the form after submission
   };
 
@@ -116,27 +129,34 @@ export const ServicesProgress = ({ data }) => {
       status: "pending",
     },
   ];
-
+console.log(dataUpdate.data, "progress")
   return (
     <div>
       <div className="py-2 flex flex-row sm:flex-row justify-between gap-2">
         <Heading className={"py-0 "} tourButton={true}>
-          Your Service are Completed {dataUpdate?.total ? `(${dataUpdate?.total})` : ""}
+          Your Service are Completed{" "}
+          {dataUpdate?.total ? `(${dataUpdate?.total})` : ""}
         </Heading>
-        <Link to={"/services/serviceprogressdetail"} className="font-medium text-sm text-[#797979]">
+        {dataUpdate?.data?.length > 0 && <Link to={"/services/serviceprogressdetail"} className="font-medium text-sm text-[#797979]">
           View All
-        </Link>
+        </Link>}
       </div>
       {dataUpdate?.data?.length > 0 ? (
         <div className="flex flex-col gap-4">
           {dataUpdate?.data?.map((data, index) => (
-            <div key={index} className="bg-[#f3f7ff] stroke-[#dfeaf2] stroke-1 px-4 py-2 rounded-md">
+            <div
+              key={index}
+              className="bg-[#f3f7ff] stroke-[#dfeaf2] stroke-1 px-4 py-2 rounded-md "
+            >
               <div className="flex flex-col sm:flex-row items-start justify-between sm:items-center gap-2">
                 <div className="flex flex-col gap-1">
                   <div className="flex gap-2">
                     <img src="/images/dashboard/service-progress.svg" alt="" />
 
-                    <NavLink to={`/payment/create/${data._id}`} className="font-bold text-[#0068FF]">
+                    <NavLink
+                      to={`/payment/create/${data._id}`}
+                      className="font-bold text-[#0A1C40]"
+                    >
                       Service: {data?.service[0]?.name}{" "}
                     </NavLink>
                     <img
@@ -148,7 +168,7 @@ export const ServicesProgress = ({ data }) => {
                   <div className="flex flex-col gap-2">
                     <h6 className="text-sm text-[#7C7D80]">
                       <strong>Business:</strong>{" "}
-                      {data?.businessdetails[0]?.businessName ? data?.businessdetails[0]?.businessName : "____" }
+                      {data?.businessdetails[0]?.businessName ? data?.businessdetails[0]?.businessName : "____"}
                     </h6>
                     <p className="text-sm text-[#7C7D80]">
                       <strong className="!font-medium">Step:</strong>{" "}
@@ -157,14 +177,14 @@ export const ServicesProgress = ({ data }) => {
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <Button
+                 {data?.data?.ratingreviewsSize === 0 &&  <Button
                     onClick={() => {
-                      onConfirmationModalOpen(data?.service[0]?._id);
+                      onConfirmationModalOpen(data?.service[0]?._id, data?._id);
                     }}
                     className="flex items-center  px-4 py-[6px] rounded-full font-medium text-[12px] text-[#0068FF] bg-[#DBE9FE]"
                   >
                     Rate Your Experience
-                  </Button>
+                  </Button>}
 
                   <ConfirmationModal
                     isOpen={confirmationModal}
@@ -345,15 +365,32 @@ export const ServicesProgress = ({ data }) => {
                       </div>
                     </>
                   </ConfirmationModal>
-                  <LinkButton to={`/payment/create/${data._id}`} primary={true}>Avail again</LinkButton>
-                  {/* <button
+                  <LinkButton to={`/payment/create/${data._id}`} primary={true}>
+                    Avail again
+                  </LinkButton>
+                  <div className="flex items-center justify-center">
+                    <LinkButton className=" flex gap-2  rounded-2xl bg-[#FFDFDF] px-2 py-1  text-sm font-medium !text-[#FF3B3B] text-center ">
+                      &#9679; On Hold
+                    </LinkButton>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <LinkButton className=" flex gap-2  rounded-2xl bg-[#DFFFE2] px-2 py-1  text-sm font-medium text-[#037847] text-center ">
+                      &#9679; On Time
+                    </LinkButton>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <LinkButton className=" flex gap-2  rounded-2xl bg-[#FFF4D4] px-2 py-1  text-sm font-medium text-[#FBBC05] text-center ">
+                      &#9679; Delayed by 2 days
+                    </LinkButton>
+                  </div>
+                  <button
                     className={`${
-                      dropdownStates === true && "rotate-180"
-                    } hidden lg:block`}
+                      dropdownStates === true && "rotate-180 "
+                    } hidden lg:block `}
                     onClick={() => handleServiceDropdown(index)}
                   >
                     <GoTriangleDown size={15} />
-                  </button> */}
+                  </button>
                 </div>
               </div>
               <Dropdown

@@ -41,14 +41,14 @@ export const AccountManager = ({ manager, sidebar }) => {
             ? manager?.role?.toUpperCase()
             : "Manager Role"}
         </p> */}
-       <div className={`${sidebar ? "text-xs text-white" : "text-sm text-[#232323] -mt-1"} font-semibold`}>
-  <p>Manager Name :</p>
-  <span>
-    {user?.agent_data?.[0]?.manager_data?.[0]?.name 
-      ? user?.agent_data?.[0]?.manager_data?.[0]?.name 
-      : "_________"}
-  </span>
-</div>
+        <div className={`${sidebar ? "text-xs text-white" : "text-sm text-[#232323] -mt-1"} font-semibold`}>
+          <p>Manager Name :</p>
+          <span>
+            {user?.agent_data?.[0]?.manager_data?.[0]?.name
+              ? user?.agent_data?.[0]?.manager_data?.[0]?.name
+              : "_________"}
+          </span>
+        </div>
 
 
         <div className="pt-2 flex gap-2">
@@ -68,17 +68,17 @@ export const AccountManager = ({ manager, sidebar }) => {
       </div>
       <div className={`${sidebar ? "absolute top-2 right-2" : "ps-10"}`}>
         <div>
-         {user?.agent_data?.[0]?.manager_data?.[0]?.
-              name ? <button
-            onClick={handleAccountShowBtn}
-            className={`${!sidebar && "cursor-pointer bg-[#D9D9D9] rounded-full px-1 py-1"}`}
-          >
-            { <CiMenuKebab className={`${sidebar && "text-white"}`} />}
+          {user?.agent_data?.[0]?.manager_data?.[0]?.
+            name ? <button
+              onClick={handleAccountShowBtn}
+              className={`${!sidebar && "cursor-pointer bg-[#D9D9D9] rounded-full px-1 py-1"}`}
+            >
+            {<CiMenuKebab className={`${sidebar && "text-white"}`} />}
           </button> : <></>}
           {accountShowButton && (
             <div ref={accountShowButtonRef} className="absolute  pt-3">
               <button onClick={requestManagerChange} className="px-3 py-2 cursor-pointer w-full bg-[#D9D9D9] font-medium text-xs rounded-md z-[999999]">
-                Request to Change Manager
+                {user?.agent_data?.[0]?.manager_data?.[0]?.name  ? "Request to change manager?" : "Request to add manager"}
               </button>
             </div>
           )}

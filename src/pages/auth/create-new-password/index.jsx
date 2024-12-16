@@ -29,7 +29,6 @@ export const CreateNewPassword = () => {
     mode: "onChange",
   });
   const [isOtpScreen, setIsOtpScreen] = useState(false);
-
   useEffect(() => {
     if (timer === 0) {
       setIsResendDisabled(false);
@@ -47,7 +46,7 @@ export const CreateNewPassword = () => {
      if(changingPasswordError){
        toast.error(changingPasswordError);
      }else{
-       toast.success(changingPasswordError);
+       toast.success(changedPasswordMessage);
        navigate('/sign-in')
      }
     }

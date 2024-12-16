@@ -16,31 +16,32 @@ export const Verify = () => {
   const [timer, setTimer] = useState(0);
   const [isResendDisabled, setIsResendDisabled] = useState(false);
   const [isVerify, setIsVerify] = useState(false);
-  const [otpMessage, setOtpMessage] = useState('');
-  
+  const [otpMessage, setOtpMessage] = useState("");
+
   const {
     isVerifying = false,
     verifyingError,
     verifyMessage,
     resendingOtp,
   } = useSelector((state) => state.auth);
-  
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const inputRefs = useRef([]);
   const { profile } = useSelector((state) => state.auth);
 
   useEffect(() => {
+    if (inputRefs.current && inputRefs.current[0]) {
+      inputRefs.current[0].focus();
+    }
     setTimer(30);
   }, []);
 
-  
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
   const phoneRegex = /^\d{10}$/;
 
   const profileEmailOrPhone = profile[0]?.email;
 
-  
   const isEmail = emailRegex.test(profileEmailOrPhone);
   const isPhoneNumber = phoneRegex.test(profileEmailOrPhone);
 
@@ -97,7 +98,7 @@ export const Verify = () => {
   const handleBackspace = (index, e) => {
     if (e.key === "Backspace" && index >= 0) {
       const newOtp = [...otp];
-      newOtp[index] = ""; 
+      newOtp[index] = "";
       setOtp(newOtp);
 
       if (index > 0) {
@@ -109,6 +110,8 @@ export const Verify = () => {
   const handleResendOtp = (event) => {
     event.preventDefault();
     setTimer(30);
+    setOtp(["", "", "", "", "", ""]);
+    inputRefs.current[0].focus();
     dispatch(
       resendOtp({
         id: profile?.[0]?.id || profile?.id || profile?.userId,
@@ -126,7 +129,7 @@ export const Verify = () => {
           inputRefs.current[index].focus();
           inputRefs.current[index].blur();
         });
-        inputRefs.current[4].focus(); 
+        inputRefs.current[4].focus();
       }, 0);
     }
     e.preventDefault();
@@ -134,7 +137,7 @@ export const Verify = () => {
 
   useEffect(() => {
     if (timer === 0 || timer === "00") {
-      setIsResendDisabled(false); 
+      setIsResendDisabled(false);
     } else if (timer > 0) {
       setIsResendDisabled(true);
       const countdown = setTimeout(() => {
@@ -162,7 +165,7 @@ export const Verify = () => {
                 <DualHeadingTwo
                   containerClassName={"text-left pt-2"}
                   heading={"Verification Code"}
-                  subHeading={subHeading} 
+                  subHeading={subHeading}
                 />
                 <form
                   onSubmit={handleSubmit}
@@ -206,7 +209,10 @@ export const Verify = () => {
                           </span>
                         </p>
                       ) : (
-                        "Resend Code"
+                        <p className="!font-medium text-[#FF2C9C] text-sm">
+                          {" "}
+                          Resend Code
+                        </p>
                       )}
                     </button>
                     <Button

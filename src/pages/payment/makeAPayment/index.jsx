@@ -1,6 +1,6 @@
 import { Controller, useForm } from "react-hook-form";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
+import { Link, NavLink, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Input } from "../../../components/inputs";
 import { Button } from "../../../components/buttons/button";
 import { FaPlus } from "react-icons/fa";
@@ -15,14 +15,16 @@ import { UPI } from "../makeAPayment/components/upi";
 import { NetBanking } from "./components/netBanking";
 import { useDispatch, useSelector } from "react-redux";
 import { availService, getServiceDetails, talkToAdvisor, verifyCoupon } from "../../../redux/actions/servicesDetails-actions";
-import { addCoupons, removeCoupon } from "../../../redux/slices/serviceDetailsSlice";
+import { addCoupons, removeCoupon, setAppliedOffer, updateOfferDetails } from "../../../redux/slices/serviceDetailsSlice";
 import { ConfirmationModal } from "../../../components/modal/confirmationModal";
 import { PricingDetailShimmer } from "../../../components/loader/PricingDetailShimmer";
 import { RouteProgressBar } from "../../../components/progressBar/routeBased";
+import { calculateFinalPriceByType } from "../../../utils";
 
 const MakeAPayment = () => {
   const dispatch = useDispatch()
-  const { serviceId } = useParams();
+  const { serviceId, subscriptionId, quotationId } = useParams();
+
   const [couponApplied, setCouponApplied] = useState(false);
   const [showAddIcon, setShowAddIcon] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
@@ -30,15 +32,15 @@ const MakeAPayment = () => {
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [failureModal, setFailureModal] = useState(false);
 
-const navigate = useNavigate()
+  const [subscriptionData, setSubscriptionData] = useState({})
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate()
 
   const [currentStep, setCurrentStep] = useState(0);
-  const { success,serviceDetailLoading,isCouponVerifiedLoading,quotationDetails, cost,originalPrice, appliedCoupons, coupons, availServiceData, isServiceAvailing, totalSavings, serviceCost, serviceCharge } = useSelector((state) => state.serviceDetails);
-  console.log(quotationDetails, "cost from slice ")
+  const { success, offerPrice,couponDiscount, serviceDetailLoading, finalPrice, isCouponVerifiedLoading, quotationDetails, cost, originalPrice, appliedCoupons, coupons, availServiceData, isServiceAvailing, totalSavings, serviceCost, serviceCharge } = useSelector((state) => state.serviceDetails);
   useEffect(() => {
     // PASS DYNAMIC ID HERE
     dispatch(getServiceDetails({ serviceId: serviceId }));
-    console.log("called")
   }, [dispatch])
 
   const transformedCouponArray = coupons[0]?.map((item) => {
@@ -50,7 +52,7 @@ const navigate = useNavigate()
       off: discount
     };
   });
-  console.log(transformedCouponArray, "transformedCouponArray")
+  console.log(quotationId, subscriptionId, "transformedCouponArray")
   const {
     control,
     handleSubmit,
@@ -92,11 +94,21 @@ const navigate = useNavigate()
   ];
 
   const availTheService = () => {
+    const type = searchParams.get("paymentType");
     // if(isServiceAvailing === false){
     //   onConfirmationModalClose()
     // }
-    const userData = { ...availServiceData }
-    dispatch(availService({userData , navigate}))
+    let userData  = {}
+  if(type === "subscription"){
+
+     userData = { ...availServiceData, amount : finalPrice, totalCouponDiscount : (couponDiscount || 0) + (offerPrice || 0), subscriptionDetails:subscriptionData }
+  }else{
+    userData = { ...availServiceData, amount : finalPrice, totalCouponDiscount : (couponDiscount || 0) + (offerPrice || 0) }
+  }
+
+    console.log("userdata", userData);
+
+    dispatch(availService({ userData, navigate }))
   }
 
   const onConfirmationModalClose = () => {
@@ -105,6 +117,44 @@ const navigate = useNavigate()
   const onFailureModalClose = () => {
     setFailureModal(!failureModal);
   };
+
+  useEffect(() => {
+    const type = searchParams.get("paymentType");
+    console.log(type, "data for subscription");
+
+    // Check if success is valid and contains the subscription property
+    if (type === 'subscription' && success && success.subscription && success.subscription.length > 0) {
+      const pricingData = calculateFinalPriceByType(success, type, subscriptionId);
+      console.log(pricingData, "subscription data");
+      setSubscriptionData(pricingData.subscription)
+      dispatch(setAppliedOffer({ offerPrice: pricingData.discountAmount, finalPrice: pricingData.finalPrice }))
+      if(success.offerservices[0]?.offers){
+        dispatch(updateOfferDetails(pricingData.offerDetails))
+      }
+    }
+    // Check if success is valid and contains any length of array for quotations
+    else if (type === 'quotation' && success && Object.keys(success).length > 0) {
+      console.log("isnide quotation block")
+      const pricingData = calculateFinalPriceByType(success, type, subscriptionId);
+      dispatch(setAppliedOffer({ offerPrice: pricingData.discountAmount, finalPrice: pricingData.finalPrice }))
+      console.log(pricingData, "quotation data");
+    }
+    // else if (type === 'regular'){
+    //   console.log(" insiude regular part")
+    //   const pricingData = calculateFinalPriceByType(success, type, null);
+    //   console.log(pricingData, "pricingData for cost regular")
+    //   dispatch(setAppliedOffer({offerPrice  : pricingData.discountAmount, finalPrice : pricingData.finalPrice}))
+    // }
+    else if (type === 'regular' && success && Object.keys(success).length > 0) {
+      console.log("Inside regular part");
+      const pricingData = calculateFinalPriceByType(success, type, null);
+      console.log(pricingData, "pricingData for cost regular");
+      dispatch(setAppliedOffer({ offerPrice: pricingData.discountAmount, finalPrice: pricingData.finalPrice }));
+      if(success.offerservices[0]?.offers){
+        dispatch(updateOfferDetails(pricingData.offerDetails))
+      }
+    }
+  }, [success, searchParams]);
 
   return (
     <>
@@ -117,7 +167,7 @@ const navigate = useNavigate()
         ></div>
       </div> */}
       <div>
-      <RouteProgressBar currStep={1} totalSteps={3} />
+        <RouteProgressBar currStep={1} totalSteps={3} />
         <div>
           <p className="font-medium text-[20px] text-[#000000] pb-4">
             Select a Method
@@ -157,7 +207,7 @@ const navigate = useNavigate()
               )}
             </div>
 
-            { !quotationDetails.length > 0 && coupons && coupons?.length > 0 && <div className="sm:w-[70%] pb-5 pt-4">
+            {!quotationDetails.length > 0 && coupons && coupons?.length > 0 && <div className="sm:w-[70%] pb-5 pt-4">
               <p className="font-normal text-[13px] pb-2 text-[#4F5B76]">
                 Coupon Code
               </p>
@@ -240,7 +290,7 @@ const navigate = useNavigate()
                             className="flex flex-row  sm:flex-row gap-4 bg-white m-4 rounded-sm"
                           >
                             <p className="text-xl text-center flex justify-cener items-center px-3 py-2 font-semibold bg-[#007AFF26] text-[#272727]">
-                             % {data.off}
+                               {data.off} %
                             </p>
                             <div className="py-3 flex flex-col gap-1">
                               <p className="font-medium text-[#080808] text-lg">
@@ -277,7 +327,7 @@ const navigate = useNavigate()
             </div>}
           </div>
           <div className="sm:w-[40%] mb-2 sm:mt-9 flex flex-col px-4 py-3 border rounded gap-3 border-[#C6C6C6]">
-            {serviceDetailLoading ? <PricingDetailShimmer/> : <PricingDetail totalCost={cost} originalPrice={originalPrice} availServiceData={availServiceData} totalSavings={totalSavings} serviceCost={serviceCost} serviceCharge={serviceCharge} data={success}/>}
+            {serviceDetailLoading ? <PricingDetailShimmer /> : <PricingDetail totalCost={finalPrice} originalPrice={originalPrice} offer={offerPrice} availServiceData={availServiceData} totalSavings={totalSavings} serviceCost={serviceCost} serviceCharge={serviceCharge} data={success} />}
             <div className="flex justify-center items-center pt-4 px-4 gap-2 ">
               <Button isLoading={isServiceAvailing} onClick={availTheService} primary={true}>Continue</Button>
             </div>
