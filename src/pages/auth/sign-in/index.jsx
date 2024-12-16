@@ -4,33 +4,25 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import { Input } from "../../../components/inputs";
 import { Button } from "../../../components/buttons";
-import { Heading } from "../../../components/heading";
 import { MetaTitle } from "../../../components/metaTitle";
-// import { signinValidator } from "../../../validation/auth-validator";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { MdOutlineHorizontalRule } from "react-icons/md";
 import { FaFacebookSquare, FaGoogle, FaInstagramSquare } from "react-icons/fa";
 import { DualHeadingTwo } from "../components/dualHeading/dualHeadingTwo";
-// import { setUser } from "../../../redux/slices/userLoginSlice";
 import { Checkbox } from "../../../components/inputs/checkbox";
-// import { ThemeSwitch } from "../../../components/theme/switch";
 import { AuthLayout } from "../../../components/layout/auth";
-import {
-  loginUser,
-  thirdPartyLogin,
-} from "../../../redux/actions/userAuth-action";
+import { loginUser, thirdPartyLogin } from "../../../redux/actions/userAuth-action";
 import ReCAPTCHA from "react-google-recaptcha";
 import toast from "react-hot-toast";
 import { signinValidationSchema } from "../../../validation/authValidatiorSchema";
-// import {GoogleLogin} from '@react-oauth/google';
 import { GoogleLogin } from "react-google-login";
 import { gapi } from "gapi-script";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 export const SignIn = () => {
   const {
     control,
     handleSubmit,
     formState: { errors, isValid },
-    trigger,
     watch,
   } = useForm({
     resolver: yupResolver(signinValidationSchema),
@@ -39,17 +31,8 @@ export const SignIn = () => {
   const recaptchaRef = useRef(null);
   const RECAPTCHA_SITE_KEY = "6LemSE0qAAAAADhn4nN770nVLBJxAGRz_LoFXP6h";
   const [isSubmit, setIsSubmit] = useState(false);
-  // const handleBlur = async (field) => {
-  //   await trigger(field);
-  // };
-  const {
-    isLoggingIn = false,
-    error,
-    loginMessage,
-    profile,
-  } = useSelector((state) => state.auth);
 
-  // const [error, setError] = useState("");
+  const { isLoggingIn = false, error, loginMessage, profile } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [checkedCheckbox, setCheckedCheckbox] = useState(false);
@@ -63,56 +46,37 @@ export const SignIn = () => {
       localStorage.setItem("signedIn", true);
     }
   };
+
   const phoneRegex = /^[6-9]\d{9}$/; // Regex for a valid 10-digit mobile number
   const emailOrPhone = watch("email"); // Watch the 'email' field
 
   const onSubmit = async (data) => {
     setIsSubmit(true);
+
+    // Check if the input is a phone number or email
+    const isPhoneNumber = phoneRegex.test(emailOrPhone);
+    if (isPhoneNumber) {
+      data.phone = emailOrPhone; // Send phone number to the server
+      delete data.email; // Remove email if it's a phone number
+    } else {
+      data.email = emailOrPhone; // Send email to the server
+      delete data.phone; // Remove phone if it's an email
+    }
+
     const token = await recaptchaRef.current.executeAsync().then((res) => {
       console.log("check response ", res);
-
       data = { ...data, recaptchaToken: res, userType: "end_user" };
       console.log(data, "data from form");
       dispatch(loginUser(data));
     });
-    // let newData={...data};
-    // newData.captcha=recaptchaRef.current;
-    // console.log(newData, "data");
-    // dispatch(loginUser(newData))
-    // const superAdmin = {
-    //   email: "superAdmin@gmail.com",
-    //   password: "Super@1234",
-    // };
-    // const manager = {
-    //   email: "runwallManager@gmail.com",
-    //   password: "Manager@1234",
-    // };
-    // // Reset error message
-    // setError("");
-
-    // if (
-    //   data.email === superAdmin.email &&
-    //   data.password === superAdmin.password
-    // ) {
-    //   dispatch(setUser(superAdmin));
-    //   navigate("/");
-    // } else if (
-    //   data.email === manager.email &&
-    //   data.password === manager.password
-    // ) {
-    //   dispatch(setUser(manager));
-    //   navigate("/");
-    // } else {
-    //   setError("Wrong email or password");
-    // }
   };
+
   useEffect(() => {
     if (!isLoggingIn && isSubmit) {
       setIsSubmit(false);
       if (error) {
         toast.error(error);
       } else {
-        // toast.success(loginMessage)
         if (profile?.source == "GOOGLE") {
           navigate("/dashboard");
         } else {
@@ -122,6 +86,7 @@ export const SignIn = () => {
     }
     console.log(isLoggingIn, isSubmit, profile);
   }, [isLoggingIn]);
+
   const googleLogin = (data) => {
     setIsSubmit(true);
     dispatch(
@@ -132,15 +97,16 @@ export const SignIn = () => {
       })
     );
   };
+
   useEffect(() => {
     gapi.load("client:auth2", () => {
       gapi.client.init({
-        clientId:
-          "1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com",
+        clientId: "1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com",
         scope: "",
       });
     });
   });
+
   return (
     <>
       <MetaTitle title={"Sign In"} />
@@ -157,7 +123,7 @@ export const SignIn = () => {
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-3 pt-5"
             >
-             <Controller
+              <Controller
                 name="email"
                 control={control}
                 defaultValue=""
@@ -169,7 +135,6 @@ export const SignIn = () => {
                     placeholder="Email Id / Phone No."
                     className="border-[#D9D9D9] border"
                     errorContent={errors?.email?.message}
-                    // onBlur={() => handleBlur("email")}
                     maxLength={50}
                   />
                 )}
@@ -185,8 +150,6 @@ export const SignIn = () => {
                     type={"password"}
                     className={"border-[#D9D9D9] border"}
                     placeholder={"Password"}
-                    // errorContent={errors?.password?.message}
-                    // onBlur={() => handleBlur("password")}
                     maxLength={20}
                   />
                 )}
@@ -207,12 +170,11 @@ export const SignIn = () => {
                 onClick={handleCheckbox}
                 className="flex items-center font-normal text-[14px] text-[#a5a3a3] -mt-2 gap-2"
               >
-                {" "}
                 <Checkbox
                   checked={checkedCheckbox}
                   onClick={(e) => e.stopPropagation()}
                   onChange={handleCheckbox}
-                />{" "}
+                />
                 <span
                   className={`${
                     checkedCheckbox
@@ -227,70 +189,45 @@ export const SignIn = () => {
                 type={"submit"}
                 primary={true}
                 className={
-                  "mt-2 py-3 w-full rounded-lg  text-[#0A1C40] font-semibold !border-none "
+                  "mt-2 py-3 w-full rounded-lg text-[#0A1C40] font-semibold !border-none "
                 }
-                // disabled={!isValid}
                 isLoading={isSubmit}
               >
                 {phoneRegex.test(emailOrPhone)
                   ? "Get an OTP on your Phone No."
                   : "Sign in"}
               </Button>
-              {/* <Button
-                type={"submit"}
-                v2={true}
-                mainPrimary={true}
-                className={
-                  "mt-2 py-2 w-full rounded-lg !text-[#6C6C6C] !border-[#B7B7B7] !bg-white"
-                }
-                disabled={!isValid}
-              >
-                Get an OTP on your Phone No.{" "}
-              </Button> */}
 
-              <div className="flex gap-2 items-center  ">
-                <div className="border-t w-full border-[#D9D9D9] "></div>
+              <div className="flex gap-2 items-center">
+                <div className="border-t w-full border-[#D9D9D9]" />
                 <p className="text-base text-[#6E6E6E] font-medium">or</p>
-                <div className="border-t w-full border-[#D9D9D9]"></div>
+                <div className="border-t w-full border-[#D9D9D9]" />
               </div>
-              {/* <div className="flex items-center justify-center rounded p-2  text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
-                <div className="flex gap-2">
-                  <GoogleLogin
-                    clientId="1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com"
-                    onSuccess={googleLogin}
-                    onError={() => console.log("Errors")}
-                    cookiePolicy={"single_host_origin"}
-                    scope="openid profile email"
-                  />
-                </div>
-              </div> */}
 
               <div className="flex items-center justify-center rounded p-2 text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
-                <div className="flex gap-2">
-                  <GoogleLogin
-                    clientId="1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com"
-                    onSuccess={googleLogin}
-                    onError={() => console.log("Errors")}
-                    cookiePolicy={"single_host_origin"}
-                    scope="openid profile email"
-                    render={(renderProps) => (
-                      <button
-                        onClick={renderProps.onClick}
-                        disabled={renderProps.disabled}
-                        className="flex items-center gap-2"
-                      >
-                        <img
-                          src="google.svg"
-                          alt="Google Logo"
-                          className="w-5 h-5"
-                        />
-                        Sign in with Google
-                      </button>
-                    )}
-                  />
-                </div>
+                <GoogleLogin
+                  clientId="1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com"
+                  onSuccess={googleLogin}
+                  onError={() => console.log("Errors")}
+                  cookiePolicy={"single_host_origin"}
+                  scope="openid profile email"
+                  render={(renderProps) => (
+                    <button
+                      onClick={renderProps.onClick}
+                      disabled={renderProps.disabled}
+                      className="flex items-center gap-2"
+                    >
+                      <img
+                        src="google.svg"
+                        alt="Google Logo"
+                        className="w-5 h-5"
+                      />
+                      Sign in with Google
+                    </button>
+                  )}
+                />
               </div>
-              <div className="text-center flex  justify-center gap-2 font-normal text-[#6C6C6C]">
+              <div className="text-center flex justify-center gap-2 font-normal text-[#6C6C6C]">
                 <p>
                   Need an account?
                   <Link
@@ -301,9 +238,6 @@ export const SignIn = () => {
                   </Link>
                 </p>
               </div>
-              {/* {error && (
-                <div className="text-red-500 mt-2 text-center">{error}</div>
-              )} */}
             </form>
           </div>
         </div>
