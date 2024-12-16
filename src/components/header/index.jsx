@@ -192,6 +192,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
           {
             !pathname.includes("dashboard") && 
             !pathname.includes("settings") &&
+            !pathname.includes("offersDetails") &&
             !pathname.includes("business") &&(
               <Search
                 clearSerarch={clearSearch}
