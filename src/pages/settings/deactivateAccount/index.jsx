@@ -121,7 +121,7 @@ const DeactivateAccount = () => {
             {/* If 'Other' is selected, show the TextArea */}
             {reason === "other" && (
               <TextArea
-                className="min-h-20"
+                className="min-h-20 bg-white px-[14px] py-[13px] border-[#DDDDDD] border rounded-md"
                 placeholder="We are sorry to see you go! Before you go, please let us know what happened, so we can avoid losing future users."
                 onChange={(e) => { setOtherVsalue(e.target.value) 
                   if (e.target.value) {
