@@ -20,9 +20,9 @@ export const RecommendedServices = ({ data, total }) => {
         
           Recommended Services {total ? `(${total})` : ""}
         </Heading>
-        <Link to={"/services"} className="font-medium text-sm text-[#797979]">
-          View All
-        </Link>
+        {data?.length>0 ? <Link className="font-medium text-sm text-[#797979]" to={"/services"}>
+            View All
+          </Link>:""}
       </div>
       <div
         className="grid grid-cols-1 sm:grid-cols-2 rounded-lg 

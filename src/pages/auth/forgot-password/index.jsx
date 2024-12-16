@@ -24,6 +24,7 @@ export const ForgotPassword = () => {
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(forgotPasswordSchema),
@@ -39,8 +40,24 @@ export const ForgotPassword = () => {
     profile,
   } = useSelector((state) => state.auth);
 
-  console.log(  verifyMessage, "profile123e4r");
   const [otpMessage, setOtpMessage] = useState("");
+  useEffect(() => {
+    if (profile?.[0]) {
+      if (profile?.[0]?.email) {
+        setValue("email", profile[0]?.email);  // Automatically set email if profile exists
+      }
+      if (profile[0]?.phone) {
+        setValue("phone", profile?.[0]?.phone);  // Automatically set phone if profile exists
+      }
+    }
+  }, [profile, setValue]);
+  
+  useEffect(() => {
+    if (isOtpScreen && inputRefs.current[0]) {
+      inputRefs.current[0].focus();
+    }
+  }, [isOtpScreen]);
+  
   useEffect(() => {
     if (timer === 0 || timer == "00") {
       setIsResendDisabled(false);
@@ -65,7 +82,7 @@ export const ForgotPassword = () => {
         //toast.error(verifyingError);
         setOtpMessage(verifyingError);
       } else {
-        toast.success(verifyMessage);
+       // toast.success(verifyMessage);
         navigate("/create-new-password");
       }
     }
@@ -174,7 +191,7 @@ export const ForgotPassword = () => {
               <DualHeadingTwo
                 containerClassName={"text-left pt-2"}
                 heading={"Verification Code"}
-                subHeading={`We have sent you an OTP on your registered Email Id, ${profile[0]?.email}`}
+                subHeading={`We have sent you an OTP on your registered Email Id forgot-password ${profile?.[0]?.email}`}
 
               />
               <form
@@ -253,7 +270,7 @@ export const ForgotPassword = () => {
                 <Controller
                   name="email"
                   control={control}
-                  defaultValue=""
+                  defaultValue={profile?.[0]?.email ?profile?.[0]?.email:profile?.[0]?.phone}
                   render={({ field }) => (
                     <Input
                       {...field}

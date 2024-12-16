@@ -31,6 +31,9 @@ export const Verify = () => {
   const { profile } = useSelector((state) => state.auth);
 
   useEffect(() => {
+    if (inputRefs.current && inputRefs.current[0]) {
+      inputRefs.current[0].focus();
+    }
     setTimer(30);
   }, []);
 

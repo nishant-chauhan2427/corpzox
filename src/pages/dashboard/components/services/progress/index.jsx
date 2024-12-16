@@ -123,9 +123,12 @@ export const ServicesProgress = ({ data }) => {
         <Heading className={"py-0 "} tourButton={true}>
           Your Service are Completed {dataUpdate?.total ? `(${dataUpdate?.total})` : ""}
         </Heading>
-        <Link to={"/services/serviceprogressdetail"} className="font-medium text-sm text-[#797979]">
-          View All
-        </Link>
+
+       
+          {dataUpdate?.data?.length>0 && <Link className="font-medium text-sm text-[#797979]" to={"/services/serviceprogressdetail"}>
+            View All
+          </Link>}
+    
       </div>
       {dataUpdate?.data?.length > 0 ? (
         <div className="flex flex-col gap-4">

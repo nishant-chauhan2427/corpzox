@@ -12,6 +12,7 @@ import {
 } from "../../../redux/actions/profile-actions";
 import { profileValidationSchema } from "./editProfileValidationSchema";
 import Cropper from "react-easy-crop";
+import { ImSpinner11, ImSpinner2 } from "react-icons/im";
 
 // Function to get the cropped image
 const getCroppedImg = async (imageSrc, crop, pixelCrop) => {
@@ -51,7 +52,7 @@ const Edit = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
-  const { loading } = useSelector((state) => state.profile);
+  const { loading, isloading } = useSelector((state) => state.profile);
   const { upload } = useSelector((state) => state.profile);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -61,6 +62,8 @@ const Edit = () => {
   const [imageFile, setImageFile] = useState(null);
   const [croppedImage, setCroppedImage] = useState(null);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [isImageChanged, setIsImageChanged] = useState(false);
+
 
   const {
     control,
@@ -85,20 +88,42 @@ const Edit = () => {
     formData.append("lastName", data.lastName);
     formData.append("businessEmail", data.businessEmail);
     dispatch(submitEditProfile({ formData, navigate }));
+    setIsImageChanged(false);
   };
+  //console.log(setIsImageChanged,"isValid");
+  // const handleImageChange = (e) => {
+  //   const file = e.target.files[0];
+
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setImage(reader.result);
+  //       setImageFile(file);
+  //       setIsImageChanged(true);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
 
     if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        alert("File size should not exceed 2MB");
+        return;
+      }
+
       const reader = new FileReader();
       reader.onloadend = () => {
         setImage(reader.result);
         setImageFile(file);
+        setIsImageChanged(true);
       };
       reader.readAsDataURL(file);
     }
   };
+
   const blobToFile = (url, filename) => {
     // return new File([blob], fileName, { type: blob.type });
     let mimeType = (url.match(/^data:([^;]+);/) || "")[1];
@@ -158,6 +183,7 @@ const Edit = () => {
     setValue("businessEmail", user?.busniessEmail || "");
   }, [user]);
 
+  console.log(isImageChanged, "isImageChanged");
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
@@ -189,7 +215,7 @@ const Edit = () => {
                     borderRadius: "50%",
                     overflow: "hidden",
                     position: "relative",
-                    
+
                   }}
                 >
                   <Cropper
@@ -217,12 +243,24 @@ const Edit = () => {
               />
             </label>
             <div className="text-center mt-2">
-              <label
+              {isloading ? (
+                <ImSpinner2 size={20} className="animate-spin" />
+              ) : (
+                <label
+                  onClick={handleSave}
+                  className="save-button ml-4 cursor-pointer"
+                >
+                  Preview
+                </label>
+              )}
+
+
+              {/* <label
                 onClick={handleSave}
                 className="save-button ml-4 cursor-pointer"
               >
                 Preview
-              </label>
+              </label> */}
 
               <input
                 id="image-upload"
@@ -315,15 +353,18 @@ const Edit = () => {
             </div>
           </div>
         </div>
+        {
+          console.log(isImageChanged, "isImageChanged1")}
         <div className="inline-block">
           <Button
-            disabled={!isValid}
+            disabled={!(isValid || isImageChanged)}
             className={"px-10 py-1"}
             primary={true}
             isLoading={loading}
           >
             Save
           </Button>
+
         </div>
       </form>
     </>

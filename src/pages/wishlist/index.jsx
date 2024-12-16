@@ -14,13 +14,13 @@ import { WishlistCardShimmer } from "../../components/loader/WishlistCardShimmer
 //removeServiceWishlist
 const Wishlist = () => {
   const dispatch = useDispatch();
-  const {wishList } = useSelector(
+  const {wishList,totalCount } = useSelector(
     (state) => state.wishlist
   );
   const { isLoading } = useSelector(
     (state) => state.wishlist
   );
-  console.log(isLoading ,"totalCount12334");
+  console.log( wishList?.length,"totalCount12334");
   let onClickWishList = (service) => {
  //   console.log(service,"service123");
     //setIsSubmit(true);
@@ -32,7 +32,8 @@ const Wishlist = () => {
 
 
     }//}
- // console.log((wishList, "wishList"));
+
+
  useEffect(() => {
   dispatch(getWishList());
 }, [dispatch]);

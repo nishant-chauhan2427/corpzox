@@ -19,6 +19,7 @@ import { PhoneNumberInput } from "../../../components/inputs/phoneInput";
 import { registerUser } from "../../../redux/actions/userAuth-action";
 import toast from "react-hot-toast";
 import GoogleLogin from "react-google-login";
+
 export const Signup = () => {
   const {
     control,
@@ -26,19 +27,22 @@ export const Signup = () => {
     formState: { errors, isValid },
     trigger,
   } = useForm({
-    // resolver: yupResolver(signUpValidationSchema),
-    // resolver: yupResolver(signUpValidationSchema),
+    resolver: yupResolver(signUpValidationSchema),
     mode: "onChange",
   });
+
   const {
     isRegistering = false,
     registeringError,
     registerMessage,
   } = useSelector((state) => state.auth);
+
+  // Corrected handleBlur function
   const handleBlur = async (field) => {
     console.log("field", field);
-    await trigger(field);
+    await trigger(field); // This will trigger validation for the field that is blurred
   };
+
   const googleLogin = (data) => {
     setIsSubmit(true);
     dispatch(
@@ -74,23 +78,21 @@ export const Signup = () => {
     console.log(data, "user data")
     
   };
+
   useEffect(() => {
-    // console.log(isRegistering,isSubmit,registeringError)
     if (!isRegistering && isSubmit) {
       setIsSubmit(false);
       if (registeringError) {
         toast.error(registeringError);
       } else {
-        // toast.success(registerMessage);
         navigate("/verify");
       }
     }
-    // console.log(isRegistering,isSubmit,registeringError)
   }, [isRegistering]);
+
   return (
     <>
       <MetaTitle title={"Sign Up"} />
-      <Heading>Sign Up</Heading>
       <AuthLayout>
         <img className="sm:w-32 w-36" src="logo.svg" alt="CORPZO Logo" />
         <div className="w-full  flex  ">
@@ -116,11 +118,10 @@ export const Signup = () => {
                       type={"name"}
                       placeholder={"Full Name"}
                       className={"border-[#D9D9D9] border"}
-                      errorContent={errors?.firstName?.message}
-                      onBlur={() => handleBlur("name")}
+                      errorContent={errors?.full?.message}
+                      onBlur={() => handleBlur("full")}  
                     />
                   )}
-                  // rules={{ required: "Email Address is required" }}
                 />
                 <Controller
                   name="phone"
@@ -128,47 +129,14 @@ export const Signup = () => {
                   render={({ field }) => (
                     <PhoneNumberInput
                       {...field}
-                      // label={"Phone Number"}
                       country={"in"}
                       placeholder={"Phone No."}
                       touched={true}
-                      errorContent={errors?.phoneNumber?.message}
+                      errorContent={errors?.phone?.message}
+                      onBlur={() => handleBlur("phone")} 
                     />
                   )}
                 />
-                {/* <Controller
-                  name="lastName"
-                  control={control}
-                  defaultValue=""
-                  render={({ field }) => (
-                    <Input
-                      {...field}
-                      label={"Last name"}
-                      type={"name"}
-                      placeholder={"Last Name"}
-                      className={"border-[#D9D9D9] border"}
-                      errorContent={errors?.lastName?.message}
-                      onBlur={() => handleBlur("name")}
-                    />
-                  )}
-                  // rules={{ required: "Email Address is required" }}
-                /> */}
-              </div>
-              <div className="">
-                {/* <Controller
-                  name="phone"
-                  control={control}
-                  render={({ field }) => (
-                    <PhoneNumberInput
-                      {...field}
-                      // label={"Phone Number"}
-                      country={"in"}
-                      placeholder={"Phone No."}
-                      touched={true}
-                      errorContent={errors?.phoneNumber?.message}
-                    />
-                  )}
-                /> */}
               </div>
               <div className="-mt-2 flex flex-col gap-3">
                 <Controller
@@ -183,11 +151,10 @@ export const Signup = () => {
                       placeholder={"Email Id"}
                       className={"border-[#D9D9D9] border"}
                       errorContent={errors?.email?.message}
-                      onBlur={() => handleBlur("email")}
+                      onBlur={() => handleBlur("email")} 
                       maxLength={50}
                     />
                   )}
-                  // rules={{ required: "Email Address is required" }}
                 />
                 <Controller
                   name="password"
@@ -201,10 +168,9 @@ export const Signup = () => {
                       className={"border-[#D9D9D9] border"}
                       placeholder={"Password"}
                       errorContent={errors.password?.message}
-                      onBlur={() => handleBlur("password")}
+                      onBlur={() => handleBlur("password")} 
                     />
                   )}
-                  // rules={{ required: "Password is required" }}
                 />
               </div>
 
@@ -226,16 +192,7 @@ export const Signup = () => {
                   <p className="text-base text-[#6E6E6E] font-medium">or</p>
                   <div className="border-t w-full border-[#D9D9D9]"></div>
                 </div>
-                {/* <div className="flex items-center justify-center rounded p-2 gap-2 text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
-                  <GoogleLogin
-                    clientId="1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com"
-                    onSuccess={googleLogin}
-                    onError={() => console.log("Errors")}
-                    cookiePolicy={"single_host_origin"}
-                    scope="openid profile email"
-                  />
-                  <img src="" alt="" />
-                </div> */}
+
                 <div className="flex items-center justify-center rounded p-2 text-center !text-[#0A1C40] font-semibold border border-[#E6E8E7] !bg-white">
                   <div className="flex gap-2">
                     <GoogleLogin
@@ -261,6 +218,7 @@ export const Signup = () => {
                     />
                   </div>
                 </div>
+
                 <div className="text-center flex  justify-center gap-2 font-normal text-[#6C6C6C]">
                   <p>
                     Already have an account?
