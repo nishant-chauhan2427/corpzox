@@ -136,7 +136,7 @@ export const ServicesProgress = ({ data }) => {
           {dataUpdate?.data?.map((data, index) => (
             <div
               key={index}
-              className="bg-[#f3f7ff] stroke-[#dfeaf2] stroke-1 px-4 py-2 rounded-md"
+              className="bg-[#f3f7ff] stroke-[#dfeaf2] stroke-1 px-4 py-2 rounded-md "
             >
               <div className="flex flex-col sm:flex-row items-start justify-between sm:items-center gap-2">
                 <div className="flex flex-col gap-1">
