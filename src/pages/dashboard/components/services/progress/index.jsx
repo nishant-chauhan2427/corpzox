@@ -15,6 +15,8 @@ import { ratingReviewSchema } from "../../../../../validation/ratingReviewValida
 import { useDispatch, useSelector } from "react-redux";
 import { ratingReview } from "../../../../../redux/actions/servicesDetails-actions";
 import { LinkButton } from "../../../../../components/link";
+import { ModalWrapper } from "../../../../../components/wrappers/modal";
+import { FormWrapper } from "../../../../../components/wrappers/form";
 
 export const ServicesProgress = ({ data }) => {
   const [dropdownStates, setDropdownStates] = useState(data?.map(() => false));
@@ -85,10 +87,13 @@ export const ServicesProgress = ({ data }) => {
       valueForMoneyRating: formData.valueForMoneyRating,
       review: formData.review,
     };
+    };
     if (formData.review === "") {
       delete payload.review;
     }
-    dispatch(ratingReview({ ...payload, serviceId, applicationId: transactionId }));
+    dispatch(
+      ratingReview({ ...payload, serviceId, applicationId: transactionId })
+    );
     reset(); // Reset the form after submission
   };
 

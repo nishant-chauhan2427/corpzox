@@ -10,7 +10,10 @@ import { setBusinessPage } from "../../../redux/slices/userLoginSlice";
 import { calculateAge } from "../../../utils/index";
 import { BusinessCard } from "./components/businessCard";
 import { Heading } from "../../../components/heading";
-import { getAllBusiness, getMoreBusiness } from "../../../redux/actions/businessPage-action";
+import {
+  getAllBusiness,
+  getMoreBusiness,
+} from "../../../redux/actions/businessPage-action";
 import { BusinessCardShimmer } from "../../../components/loader/BusinessCardShimmer";
 import { resetBusiness } from "../../../redux/slices/businessSlice";
 // import { loadMoreBusiness } from "../../../redux/slices/businessPageSlice";
@@ -24,18 +27,16 @@ const BusinessListing = () => {
   const searchValue = queryParams.get("search");
 
   // const { business, businessLoading, businessError } = useSelector((state) => state.user);
-  const { business,isLoading,totalCount,page,error,loadingMore } = useSelector((state) => state.businessList);
+  const { business, isLoading, totalCount, page, error, loadingMore } =
+    useSelector((state) => state.businessList);
 
+  console.log("businessData", business, totalCount, isLoading, error, page);
 
-  console.log("businessData",business,totalCount,isLoading,error,page);
-  
-  
+  useEffect(() => {
+    dispatch(getAllBusiness({ query: searchValue, page: 1 }));
+  }, [searchValue]);
 
-  useEffect(()=>{
-    dispatch(getAllBusiness({ query: searchValue,page:1})); 
-  },[searchValue])
-
- // console.log("User Business",business);
+  // console.log("User Business",business);
   // useEffect(()=>{
   //   dispatch(getUserBusiness({}));
   // },[])
@@ -45,38 +46,26 @@ const BusinessListing = () => {
   //   }
   // }, [searchValue, business?.page]);
 
-
-  
-
   const handleScroll = (e) => {
     console.log("handleScroll");
-    
+
     const bottom =
       e.target.scrollHeight === e.target.scrollTop + e.target.clientHeight;
-    if (
-      bottom &&
-      !isLoading &&
-      business?.length < totalCount
-    ) {
+    if (bottom && !isLoading && business?.length < totalCount) {
       console.log("loading more...");
-      
+
       // dispatch(loadMoreBusiness(page + 1)); // Load next page
     }
 
     console.log("Not loading...");
-    
   };
 
   // return<div>Business page</div>
 
-  if(isLoading) return <BusinessCardShimmer count={8} className={"p-2"}/>
-
+  if (isLoading) return <BusinessCardShimmer count={8} className={"p-2"} />;
 
   return (
-    <div
-      className="flex flex-col overflow-y-auto"
-      onScroll={handleScroll}
-    >
+    <div className="flex flex-col overflow-y-auto pb-4" onScroll={handleScroll}>
       <div className="flex flex-col md:flex-row justify-between gap-4">
         <Heading title={"Business"} tourButton={true}>
           Your Business {totalCount ? `(${totalCount})` : ""}
@@ -85,7 +74,14 @@ const BusinessListing = () => {
           {/* <LinkButton to={"create"} primary={true} leftIcon={<IoMdAddCircle />}>
             New Business
           </LinkButton> */}
-          <LinkButton  onClick={()=>{ dispatch(resetBusiness());navigate("/business/create")}} primary={true} leftIcon={<IoMdAddCircle />}>
+          <LinkButton
+            onClick={() => {
+              dispatch(resetBusiness());
+              navigate("/business/create");
+            }}
+            primary={true}
+            leftIcon={<IoMdAddCircle />}
+          >
             New Business
           </LinkButton>
           {/* <LinkButton className="font-semibold text-[#606060]">View all</LinkButton> */}
@@ -93,19 +89,19 @@ const BusinessListing = () => {
       </div>
       {business?.length > 0 ? (
         <>
-          <div className="pb-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 mt-4">
+          <div className="pb-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 mt-4">
             {business?.map((data, index) => (
               <BusinessCard key={index} data={data} />
             ))}
           </div>
           {!isLoading && business?.length < totalCount && (
-            <div className="mt-10 flex justify-center">
+            <div className=" flex justify-center">
               <Button
                 primary={true}
-                onClick={() => dispatch(getMoreBusiness({page:page + 1}))}
+                onClick={() => dispatch(getMoreBusiness({ page: page + 1 }))}
                 disabled={loadingMore}
               >
-                {loadingMore?"loading...":"Load More"}
+                {loadingMore ? "Loading" : "Load More"}
               </Button>
             </div>
           )}
