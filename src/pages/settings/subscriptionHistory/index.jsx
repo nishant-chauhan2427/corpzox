@@ -148,7 +148,7 @@ const SubscriptionHistory = () => {
                 <button onClick={() => navigate("/settings/subscription-history")}>
                   <GoArrowLeft />
                 </button>
-                <p>{currentPackage.label}</p>
+                <p>{searchParams.get("subscriptionType") == "active" ? "Active Subscription" : searchParams.get("subscriptionType") == "expired" ? "Expired Subscription" : "Up-Coming Subscription"}</p>
               </div>
               <h4 className="font-semibold text-lg">
                 {currentPackage.description}
