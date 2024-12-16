@@ -21,6 +21,7 @@ export const ServicesProgress = ({ data }) => {
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [otherValue, setOtherVsalue] = useState("");
   const [serviceId, setServiceId] = useState("");
+  const [transactionId, setTransactionId] = useState("")
   const [rating, setRating] = useState(0);
   const dispatch = useDispatch();
 
@@ -57,13 +58,14 @@ export const ServicesProgress = ({ data }) => {
     if (!isRatingAdding) setConfirmationModal(false);
   }, [isRatingAdding]);
 
-  const onConfirmationModalOpen = (data) => {
+  const onConfirmationModalOpen = (data, transactionId) => {
     console.log(data, "mo idea");
     setServiceId(data);
+    setTransactionId(transactionId)
     setConfirmationModal(true);
   };
   const onSubmit = (formData) => {
-    console.log("Submitted Data: ", formData);
+    //console.log("Submitted Data: ", formData);
     // Handle form submission logic
     console.log("Submitted Data: ", {
       serviceQualityRating: formData.serviceQualityRating,
@@ -73,7 +75,18 @@ export const ServicesProgress = ({ data }) => {
       valueForMoneyRating: formData.valueForMoneyRating,
       review: formData.review,
     });
-    dispatch(ratingReview({ ...formData, serviceId }));
+    const payload = {
+      serviceQualityRating: formData.serviceQualityRating,
+      professionalBehaviourRating: formData.professionalBehaviourRating,
+      onTimeDeliveryRating: formData.onTimeDeliveryRating,
+      transparentPricingRating: formData.transparentPricingRating,
+      valueForMoneyRating: formData.valueForMoneyRating,
+      review: formData.review,
+    }
+    if (formData.review === "") {
+      delete payload.review;
+    }
+    dispatch(ratingReview({ ...payload, serviceId, applicationId : transactionId }));
     reset(); // Reset the form after submission
   };
 
@@ -116,7 +129,7 @@ export const ServicesProgress = ({ data }) => {
       status: "pending",
     },
   ];
-
+console.log(dataUpdate.data, "progress")
   return (
     <div>
       <div className="py-2 flex flex-row sm:flex-row justify-between gap-2">
@@ -124,12 +137,9 @@ export const ServicesProgress = ({ data }) => {
           Your Service are Completed{" "}
           {dataUpdate?.total ? `(${dataUpdate?.total})` : ""}
         </Heading>
-        <Link
-          to={"/services/serviceprogressdetail"}
-          className="font-medium text-sm text-[#797979]"
-        >
+        {dataUpdate?.data?.length > 0 && <Link to={"/services/serviceprogressdetail"} className="font-medium text-sm text-[#797979]">
           View All
-        </Link>
+        </Link>}
       </div>
       {dataUpdate?.data?.length > 0 ? (
         <div className="flex flex-col gap-4">
@@ -158,9 +168,7 @@ export const ServicesProgress = ({ data }) => {
                   <div className="flex flex-col gap-2">
                     <h6 className="text-sm text-[#7C7D80]">
                       <strong>Business:</strong>{" "}
-                      {data?.businessdetails[0]?.businessName
-                        ? data?.businessdetails[0]?.businessName
-                        : "____"}
+                      {data?.businessdetails[0]?.businessName ? data?.businessdetails[0]?.businessName : "____"}
                     </h6>
                     <p className="text-sm text-[#7C7D80]">
                       <strong className="!font-medium">Step:</strong>{" "}
@@ -169,14 +177,14 @@ export const ServicesProgress = ({ data }) => {
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <Button
+                 {data?.data?.ratingreviewsSize === 0 &&  <Button
                     onClick={() => {
-                      onConfirmationModalOpen(data?.service[0]?._id);
+                      onConfirmationModalOpen(data?.service[0]?._id, data?._id);
                     }}
                     className="flex items-center  px-4 py-[6px] rounded-full font-medium text-[12px] text-[#0068FF] bg-[#DBE9FE]"
                   >
                     Rate Your Experience
-                  </Button>
+                  </Button>}
 
                   <ConfirmationModal
                     isOpen={confirmationModal}

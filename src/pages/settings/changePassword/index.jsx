@@ -7,6 +7,7 @@ import changePasswordSchema from "../../../validation/changePasswordSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
 import { changePassword } from "../../../redux/actions/settings-actions";
+import { useNavigate } from "react-router-dom";
 const ChangePassword = () => {
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -16,11 +17,9 @@ const ChangePassword = () => {
 
   const dispatch = useDispatch();
   const inputRefs = useRef([]);
-
-  const { isPasswordChanging, changePasswordError } = useSelector(
-    (state) => state.settings
-  );
-
+  const navigate = useNavigate()
+  const {isPasswordChanging, changePasswordError} = useSelector((state)=> state.settings);
+ 
   const {
     handleSubmit,
     control,
@@ -44,11 +43,11 @@ const ChangePassword = () => {
     // test dev branch
 
     const passwordData = {
-      newPassword: data.confirmPassword,
-      oldPassword: data.password,
-    };
-    console.log(passwordData, "password Data");
-    dispatch(changePassword(passwordData));
+      newPassword : data.confirmPassword,
+      oldPassword : data.password
+    }
+    console.log(passwordData, "password Data")
+    dispatch(changePassword({passwordData, navigate}))
   };
 
   const onConfirmationModalClose = () => {

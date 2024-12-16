@@ -146,7 +146,7 @@ export const Pricing = ({ pricing = true, data, serviceId, offer }) => {
 const PricingCard = ({ data, serviceId, navigate, dispatch, offer }) => {
   console.log(data, "subscription data");
   const handleServicePayment = (cost, stateWiseServiceCharge) => {
-    navigate(`/payment/${serviceId}`);
+    navigate(`/payment/${serviceId}/${data?._id}?paymentType=subscription`);
     // dispatch(
     //   stePaymentDetails({ subscriptionCost: cost + stateWiseServiceCharge ? stateWiseServiceCharge : 0, stateWiseServiceCharge })
     // );
@@ -221,7 +221,8 @@ const QuotationCard = ({ quotation, serviceId, dispatch, navigate }) => {
     dispatch(
       stePaymentDetails({ subscriptionCost: cost, stateWiseServiceCharge: stateWiseServiceCharge })
     );
-    navigate(`/payment/${serviceId}`);
+    console.log(quotation, "Quotation hai yaha")
+    navigate(`/payment/${serviceId}/${quotation._id}?paymentType=quotation`);
   };
   return (
     <div className="m-6 p-10 border rounded-lg bg-white shadow-md hover:shadow-lg">

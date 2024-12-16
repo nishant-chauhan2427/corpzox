@@ -14,6 +14,7 @@ export const Details = ({
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {subscriptionId} = useParams()
   // const navigateToService = () => {
   //   navigate(`/payment/${serviceId}`);
   // };
@@ -39,11 +40,15 @@ export const Details = ({
 
   // const { id: serviceId } = useParams();
 
-  const subscription = success?.subscription?.[0] || null;
-  let subscriptionId = subscription?.id || serviceId;
+  const subscription = success?.subscription?.[0] || null
 
   const navigateToService = () => {
-    navigate(`/payment/${subscriptionId}`);
+    if(subscription){
+
+      navigate(`/payment/${serviceId}/${subscription._id}?paymentType=subscription`);
+    }else{
+      navigate(`/payment/${serviceId}?paymentType=regular`);
+    }
   };
   return (
     <section className="flex flex-col gap-2">

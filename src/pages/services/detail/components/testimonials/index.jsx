@@ -123,7 +123,7 @@ export const Testimonials = ({ serviceId }) => {
                 percentage={ratingPercentage(rating.score)}
               />
               <div className="-mt-2.5 text-white text-[10px] font-bold">
-                {rating.score}
+                {rating.score ? rating.score :"N/A"}
               </div>
               <p className="font-medium text-[11px] text-white">
                 {rating.title}

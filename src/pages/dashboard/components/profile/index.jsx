@@ -7,7 +7,7 @@ import {
 import "react-circular-progressbar/dist/styles.css";
 
 export const Profile = ({ user = {} }) => {
-  const [percentage, setPercentage] = useState(100);
+  const [percentage, setPercentage] = useState(0);
   // const calculatePercentage = (data) => {
   //   try {
   //     const totalProperties = Object.keys(data[0])?.length; // Total number of properties
