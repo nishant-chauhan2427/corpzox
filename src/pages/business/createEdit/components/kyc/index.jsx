@@ -10,7 +10,7 @@ import { updateKYCDetails, updateRegistrationDetails } from "../../../../../redu
 
 export const KYCDetails = ({ isEdit }) => {
 
-  const { business, businessId } = useSelector((state) => state.business);
+  const { business, businessId, loading } = useSelector((state) => state.business);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -53,10 +53,8 @@ export const KYCDetails = ({ isEdit }) => {
       //  console.log("Response", response?.payload);
       // const newBusinessId = response.payload;
       // dispatch(setBusinessId(newBusinessId)); 
+      isEdit ? navigate("/business/edit/funding") : navigate("/business/create/funding")
     });
-
-    isEdit ? navigate("/business/edit/funding") : navigate("/business/create/funding")
-
   };
 
   return (
@@ -147,8 +145,8 @@ export const KYCDetails = ({ isEdit }) => {
         <Button type="button" primary onClick={() => navigate(-1)}>
           Prev
         </Button>
-        <Button type="submit" primary disabled={!isValid} >
-          Save & Next
+        <Button type="submit" primary disabled={!isValid || loading} isLoading={loading} >
+          {loading?"saving...":"Save & Next"}
         </Button>
       </div>
     </form>

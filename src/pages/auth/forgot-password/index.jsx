@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { forgotPasswordSchema } from "../../../validation/authValidatiorSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { resendOtp, verifyUser } from "../../../redux/actions/userAuth-action";
+import { resendOtp, thirdPartyLogin, verifyUser } from "../../../redux/actions/userAuth-action";
 import toast from "react-hot-toast";
 //  import {updateProfile} from '../../../redux/slices/userAuth-slice';
 import { useNavigate } from "react-router-dom";
