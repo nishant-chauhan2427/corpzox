@@ -12,7 +12,7 @@ import { financialSchema } from "../../../../../validation/createBusinessValidat
 export const FinancialDetails = ({ isEdit }) => {
 
 
-  const { business, businessId } = useSelector((state) => state.business);
+  const { business, businessId ,loading} = useSelector((state) => state.business);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   // console.log("business,businessId",business,businessId);
@@ -70,10 +70,10 @@ export const FinancialDetails = ({ isEdit }) => {
       //  console.log("Response", response?.payload);
       // const newBusinessId = response.payload;
       // dispatch(setBusinessId(newBusinessId)); 
+      isEdit ? navigate("/business/edit/kyc") : navigate("/business/create/kyc")
     });
 
     // navigate("/business/create/kyc");
-    isEdit ? navigate("/business/edit/kyc") : navigate("/business/create/kyc")
 
 
   };
@@ -157,8 +157,8 @@ export const FinancialDetails = ({ isEdit }) => {
         <Button type="button" primary onClick={() => navigate(-1)}>
           Prev
         </Button>
-        <Button type="submit" primary disabled={!isValid} >
-          Save & Next
+        <Button type="submit" primary disabled={!isValid || loading} isLoading={loading} >
+          {loading?"saving...":"Save & Next"}
         </Button>
       </div>
     </form>

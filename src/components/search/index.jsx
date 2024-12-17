@@ -48,22 +48,19 @@ export const Search = (props) => {
   //     console.log("necche bhi gaya ")
   //     setSearchParams(searchParams);
   //   }
-  //   setQuery(""); 
+  //   setQuery("");
   // };
   const handleClearSearch = () => {
-    if( props.clearSerarch){
-      props.clearSerarch()
-      setQuery(""); 
-    }else{
+    if (props.clearSerarch) {
+      props.clearSerarch();
+      setQuery("");
+    } else {
       const updatedParams = new URLSearchParams(location.search);
-      updatedParams.delete("search"); 
-      setSearchParams(updatedParams); 
-      
+      updatedParams.delete("search");
+      setSearchParams(updatedParams);
     }
-   
   };
-  
-  
+
   let searchEvent = null;
   const handleKeyPress = (e) => {
     // console.log('49',query)
@@ -86,7 +83,7 @@ export const Search = (props) => {
   const handleFilterMenu = () => {
     setFilterMenu(!filterMenu);
   };
-  
+
   useOutsideClick(filterMenuRef, handleFilterMenu);
 
   return (
@@ -95,17 +92,17 @@ export const Search = (props) => {
         props.containerClassName
           ? props.containerClassName
           : "flex items-center justify-center gap-2 my-2"
-      } bg-[#F4F5F8] dark:bg-slate-900 min-w-60 rounded`}
+      } bg-[#F4F5F8] dark:bg-slate-900 min-w-96 rounded`}
     >
       <div className="relative shadow-sm">
         <LuSearch
           size={18}
-          className="absolute top-1/2 -translate-y-1/2 left-2 dark:text-white text-gray-400 "
+          className="absolute top-1/2 -translate-y-1/2 left-2 text-white"
         />
         <input
           className={`${
             props?.inputClassName ? props.inputClassName : "p-2 h-[49px]"
-          } bg-[#F4F5F8] dark:bg-slate-900 dark:text-white rounded-md pl-8`}
+          } bg-[#F4F5F8] dark:bg-slate-900  rounded-md pl-8 !placeholder:text-[15px] !placeholder:font-normal pr-4 placeholder:text-white `}
           type="text"
           value={query}
           onChange={handleInputChange}

@@ -133,7 +133,7 @@ const router = createBrowserRouter([
               },   
               {
                 path: "edit",
-                element: <CreateBusiness />,
+                element: <CreateBusiness isEdit={true}/>,
                 children: [
                   { index: true, element: <RegistrationDetails isEdit={true}/> }, // Default child for /edit
                   { path: "registration", element: <RegistrationDetails isEdit={true} /> },

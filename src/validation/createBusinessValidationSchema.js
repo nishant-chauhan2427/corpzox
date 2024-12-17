@@ -32,10 +32,12 @@ export const registrationSchema = Yup.object().shape({
       .required("Industry Type is required."),
     subIndustry: Yup.string()
       .required("Sub Industry Type is required."),
-    sizeOfCompany: Yup.number()
+      sizeOfCompany: Yup.number()
+      .transform((value, originalValue) => (originalValue === "" ? undefined : value)) // Treat empty string as `undefined`
       .required("Size of the Company is required.")
       .min(1, "Size must be at least 1 employee.")
-      .max(100000, "Size cannot exceed 100,000 employees."),
+      .max(100000, "Size cannot exceed 100,000 employees.")
+    ,
     funded: Yup.string()
       .required("Funding Status is required.")
       .oneOf(["funded", "bootstrap"], "Invalid funding status."),
@@ -54,9 +56,9 @@ export const addressSchema = Yup.object().shape({
       required("Line 2 is required")
       .min(3, "Line 2 must be at least 3 characters.")
       .max(50, "Line 2 must be at most 50 characters."),
-      businessAddressPin: Yup.number()
+      businessAddressPin: Yup.string()
       .required("Pin is required")
-      .test('len', 'Must be exactly 6 characters', val => val.toString().length === 6),
+      .matches(/^\d{6}$/, "Must be exactly 6 digits and contain only numbers"),    
       businessAddressCity: Yup.string().required("City is required"),
       businessAddressState: Yup.string()
       .required("State is required"),
@@ -68,9 +70,9 @@ export const addressSchema = Yup.object().shape({
       .required("Line 2 is required")
       .min(3, "Line 2 must be at least 3 characters.")
       .max(50, "Line 2 must be at most 50 characters."),
-      communicationAddressPin: Yup.number()
-      .required("PIN Code is required")
-      .test('len', 'Must be exactly 6 characters', val => val.toString().length === 6),
+      communicationAddressPin: Yup.string()
+      .required("Pin is required")
+      .matches(/^\d{6}$/, "Must be exactly 6 digits and contain only numbers"),  
       communicationAddressCity: Yup.string()
       .required("City is required"),
       communicationAddressState: Yup.string()
