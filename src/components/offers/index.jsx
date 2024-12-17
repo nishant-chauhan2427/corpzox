@@ -19,7 +19,7 @@ export const Offers = () => {
 
   //useEffect here.. to fetch/dispatch all offer in store
   useEffect(() => {
-    console.log("Offer page render");
+    // console.log("Offer page render");
 
     dispatch(getOffers({}));
   }, []);
@@ -49,7 +49,7 @@ export const Offers = () => {
               >
                 <div
                   style={{
-                    backgroundImage: `url(https://img.freepik.com/free-vector/sale-banner-badge-your-business_1017-17476.jpg?t=st=1733120748~exp=1733124348~hmac=3266181d7b16db95a0892692767f76a818da9797d6972f8a04a1444b953ec2b1&w=826)`,
+                    backgroundImage: `url(${offer?.imageUrl})`,
                   }}
                   className={`w-[40%] rounded-lg bg-cover bg-right overflow-hidden`}
                 ></div>
