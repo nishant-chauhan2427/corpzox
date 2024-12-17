@@ -151,6 +151,7 @@ export const SignIn = () => {
                     className={"border-[#D9D9D9] border"}
                     placeholder={"Password"}
                     maxLength={20}
+                    errorContent={errors?.password?.message}
                   />
                 )}
                 rules={{ required: "Password is required" }}

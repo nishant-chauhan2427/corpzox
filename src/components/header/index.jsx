@@ -93,7 +93,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
   //     // Perform additional sign-out tasks like redirecting to the login page
   //   });
   // };
-  console.log(user, "jhhj");
+
 
   const handleLogout = () => {
     dispatch(clearUser());
@@ -254,10 +254,10 @@ export const Header = ({ className, collapse, setCollapse }) => {
                       {user?.name
                         ? user.name.slice(0, 25) +
                         (user.name.length > 25 ? "..." : "")
-                        : "User Name"}
+                        : <></>}
                     </h5>
                     <p className="text-[9px] text-white">
-                      {user?.name ? user?.email : "Designation"}
+                      {user?.name ? user?.email : <></>}
                     </p>
                   </div>
                   <img src="/icons/header/down-arrow.svg" alt="" />
