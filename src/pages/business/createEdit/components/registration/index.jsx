@@ -1,4 +1,3 @@
-
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { Input } from "../../../../../components/inputs";
 import { Selector } from "../../../../../components/select";
@@ -8,13 +7,17 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../../../../../components/buttons";
 import { registrationSchema } from "../../../../../validation/createBusinessValidationSchema";
-import { registrationDetails, updateRegistrationDetails } from "../../../../../redux/actions/business-action";
+import {
+  registrationDetails,
+  updateRegistrationDetails,
+} from "../../../../../redux/actions/business-action";
 import { setBusinessId } from "../../../../../redux/slices/businessSlice";
-
 
 export const RegistrationDetails = ({ isEdit }) => {
   const [subIndustryOptions, setSubIndustryOptions] = useState([]);
-  const { business, businessId ,loading} = useSelector((state) => state.business);
+  const { business, businessId, loading } = useSelector(
+    (state) => state.business
+  );
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -22,8 +25,6 @@ export const RegistrationDetails = ({ isEdit }) => {
   // console.log("businessStore", business);
   // console.log("subIndustryOptions", subIndustryOptions);
   // console.log("loading",loading);
-  
-
 
   const {
     handleSubmit,
@@ -43,7 +44,6 @@ export const RegistrationDetails = ({ isEdit }) => {
   // console.log("isValid", isValid, errors);
   // console.log("getValues", getValues());
 
-
   const selectedIndustry = useWatch({
     control,
     name: "registration.industry",
@@ -51,8 +51,6 @@ export const RegistrationDetails = ({ isEdit }) => {
   });
 
   // console.log("selectedIndustry:", selectedIndustry);
-
-
 
   useEffect(() => {
     if (selectedIndustry && subIndustryOption[selectedIndustry]) {
@@ -76,7 +74,7 @@ export const RegistrationDetails = ({ isEdit }) => {
     { label: "Cooperative", value: "cooperative" },
     { label: "Producer Company", value: "producer_company" },
     { label: "Foreign Corporation", value: "foreign_corporation" },
-  ]
+  ];
 
   const roleOption = [
     { label: "Director/Founder/Owner", value: "director" },
@@ -126,16 +124,15 @@ export const RegistrationDetails = ({ isEdit }) => {
 
   const onSubmit = (data) => {
     // console.log("Submitted Data:", data?.registration);
-    const payload = data?.registration
+    const payload = data?.registration;
 
     if (!businessId) {
       // Perform POST API call here
       dispatch(registrationDetails(payload)).then((response) => {
         // console.log("Response", response?.payload);
         // const newBusinessId = response.payload;
-        // dispatch(setBusinessId(newBusinessId)); 
-        navigate("/business/create/address")
-
+        // dispatch(setBusinessId(newBusinessId));
+        navigate("/business/create/address");
       });
     } else {
       //PUT API to update changes
@@ -145,38 +142,40 @@ export const RegistrationDetails = ({ isEdit }) => {
       dispatch(updateRegistrationDetails(payload)).then((response) => {
         // console.log("Response", response?.payload);
         // const newBusinessId = response.payload;
-        // dispatch(setBusinessId(newBusinessId)); 
-        isEdit ? navigate("/business/edit/address") : navigate("/business/create/address")
+        // dispatch(setBusinessId(newBusinessId));
+        isEdit
+          ? navigate("/business/edit/address")
+          : navigate("/business/create/address");
       });
     }
   };
 
   // console.log("registration.subIndustry", "hour", business?.registration.subIndustry);
 
+  useEffect(() => {
+    // console.log("useeffect");
+
+    setValue(
+      "registration.roleOfCompany",
+      business?.registration.roleOfCompany
+    );
+    // setValue("registration.subIndustry", business?.registration.subIndustry )
+  }, []);
 
   useEffect(() => {
     // console.log("useeffect");
 
-    setValue("registration.roleOfCompany", business?.registration.roleOfCompany)
+    setValue("registration.industry", business?.registration.industry);
     // setValue("registration.subIndustry", business?.registration.subIndustry )
-  }, [])
-
-  useEffect(() => {
-    // console.log("useeffect");
-
-    setValue("registration.industry", business?.registration.industry)
-    // setValue("registration.subIndustry", business?.registration.subIndustry )
-  }, [])
+  }, []);
 
   useEffect(() => {
     // console.log(business?.registration.subIndustry , 'ok' );
 
-    setValue("registration.subIndustry", business?.registration.subIndustry)
-  }, [watch("registration.industry")])
-
+    setValue("registration.subIndustry", business?.registration.subIndustry);
+  }, [watch("registration.industry")]);
 
   // console.log(watch("registration.industry"), getValues("registration.subIndustry"), business?.registration.subIndustry, "watch ok");
-
 
   return (
     <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
@@ -213,7 +212,6 @@ export const RegistrationDetails = ({ isEdit }) => {
                 (option) => option.value === field.value
               );
 
-
               return (
                 <Selector
                   {...field}
@@ -227,7 +225,10 @@ export const RegistrationDetails = ({ isEdit }) => {
                   onChange={(selectedValue) => {
                     // On change, set only the selected value (not the full object)
                     field.onChange(selectedValue.value);
-                    setValue("registration.typeOfBusiness", selectedValue.value);
+                    setValue(
+                      "registration.typeOfBusiness",
+                      selectedValue.value
+                    );
                   }}
                 />
               );
@@ -275,7 +276,6 @@ export const RegistrationDetails = ({ isEdit }) => {
               const selectedRole = roleOption.find(
                 (option) => option.value === field.value
               );
-
 
               return (
                 <Selector
@@ -338,9 +338,7 @@ export const RegistrationDetails = ({ isEdit }) => {
                 {...field}
                 label="Headquarter Location"
                 placeholder="Enter your headquarter location"
-                errorContent={
-                  errors.registration?.headQuarterLocation?.message
-                }
+                errorContent={errors.registration?.headQuarterLocation?.message}
                 required
                 maxLength={50}
               />
@@ -357,7 +355,6 @@ export const RegistrationDetails = ({ isEdit }) => {
               );
 
               // console.log("registration field", field);
-
 
               return (
                 <Selector
@@ -398,12 +395,13 @@ export const RegistrationDetails = ({ isEdit }) => {
                   errorContent={errors.registration?.subIndustry?.message}
                   options={subIndustryOptions}
                   value={selectedSubIndustry || null}
-                  onChange={(selectedValue) => field.onChange(selectedValue.value)}
+                  onChange={(selectedValue) =>
+                    field.onChange(selectedValue.value)
+                  }
                 />
               );
             }}
           />
-
 
           {/* Company Size */}
           <Controller
@@ -451,16 +449,19 @@ export const RegistrationDetails = ({ isEdit }) => {
               );
             }}
           />
-
-
         </div>
       </div>
 
       {/* Navigation Buttons */}
       <div className="flex justify-between items-center gap-4">
         <div></div>
-        <Button type="submit" primary disabled={!isValid || loading} isLoading={loading}>
-         {loading?"saving...":"Save & Next"}
+        <Button
+          type="submit"
+          primary
+          disabled={!isValid || loading}
+          isLoading={loading}
+        >
+          {loading ? "saving..." : "Save & Next"}
         </Button>
       </div>
     </form>
