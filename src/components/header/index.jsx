@@ -193,6 +193,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
           {/* Search */}
           {
             !pathname.includes("dashboard") && 
+            !pathname.includes("wishlist") && 
             !pathname.includes("settings") &&
             !pathname.includes("offersDetails") &&
             !pathname.includes("business") &&(

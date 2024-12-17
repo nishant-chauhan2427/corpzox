@@ -87,7 +87,7 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
   const [items, setItems] = useState(initialSidebarItems);
   const [percentage, setPercentage] = useState(100);
 
-  let fieldsKey = ['name', 'gender', 'email', 'busniessEmail', 'phone', 'role', 'profile_picture_url']
+  let fieldsKey = ['name', 'email', 'busniessEmail', 'phone', 'profile_picture_url']
   
   let calculatePercentageHandler = () => {
     let count = 0;  

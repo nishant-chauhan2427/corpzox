@@ -147,7 +147,7 @@ export const ServicesProgress = ({ data }) => {
               Your Services are Completed{" "}
               {dataUpdate?.total ? `(${dataUpdate?.total})` : ""}
             </Heading>
-            {dataUpdate?.data?.length > 0 && (
+            {dataUpdate?.data?.length > 9 && (
               <Link
                 to={"/services/serviceprogressdetail"}
                 className="font-medium text-sm text-[#797979]"

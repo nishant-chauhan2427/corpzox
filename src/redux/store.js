@@ -26,7 +26,7 @@ import businessPageSlice from "./slices/businessPageSlice";
 const persistConfig = {
   key: "root",
   storage,
-  blacklist :['service','serviceDetails','wishlist','document',]
+  blacklist :['service','serviceDetails','wishlist','document','profile']
 };
 
 // Combine all slices into a single root reducer

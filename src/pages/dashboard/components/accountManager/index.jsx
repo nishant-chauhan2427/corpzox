@@ -46,13 +46,13 @@ export const AccountManager = ({ manager, sidebar }) => {
           <span className="font-medium">
             {user?.agent_data?.[0]?.manager_data?.[0]?.name
               ? user?.agent_data?.[0]?.manager_data?.[0]?.name
-              : "_________"}
+              : "------"}
           </span>
         </div>
 
 
         <div className="pt-2 flex gap-2">
-          <Link
+          {/* <Link
             to="mailto:example@example.com"
             className="bg-[#D9D9D9] rounded-full px-1 py-1"
           >
@@ -63,7 +63,7 @@ export const AccountManager = ({ manager, sidebar }) => {
             className="bg-[#D9D9D9] rounded-full px-1 py-1"
           >
             <IoMdCall />
-          </a>
+          </a> */}
         </div>
       </div>
       <div className={`${sidebar ? "absolute top-2 right-2" : "ps-10"}`}>
