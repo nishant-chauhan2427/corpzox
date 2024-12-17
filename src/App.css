@@ -94,6 +94,37 @@
   transform: rotate(40deg);
 }
 
+/* Style the radio button */
+input[type="radio"] {
+  appearance: none; /* Remove default styling */
+  width: 20px; 
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #C6C6C6; /* Light border color */
+  outline: none; /* Remove outline */
+  background-color: #EBEBEB;
+  transition: all 0.3s ease; /* Smooth transition */
+  position: relative;
+}
+
+/* Change color when the radio button is checked */
+input[type="radio"]:checked {
+  background-color: #F68922; /* Blue when selected */
+  border-color: #EE7400; /* Border color changes to match the background */
+}
+
+/* Optional: Style the inner circle to show when selected */
+input[type="radio"]:checked::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #F68922; /* Inner circle color */
+}
+
 @keyframes pop {
   0% {
     transform: scale(1);

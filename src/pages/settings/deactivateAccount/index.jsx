@@ -137,7 +137,7 @@ const DeactivateAccount = () => {
             <div className="flex justify-start items-center gap-3">
               <Button
                 type="submit"
-                className="px-4 py-1.5 rounded-lg"
+                className="px-10 py-1.5 rounded-lg"
                 primary={true}
                 disabled={!isValid || otherError}
               >
@@ -189,6 +189,7 @@ const CheckMarkLabel = ({ label, value, selectedValue, onChange }) => {
         value={value}
         checked={selectedValue === value}
         onChange={() => onChange(value)}
+        className="!bg-white accent-[#EE7400]  "
       />
     </div>
   );

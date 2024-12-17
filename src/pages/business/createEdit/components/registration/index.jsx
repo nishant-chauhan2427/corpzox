@@ -14,13 +14,15 @@ import { setBusinessId } from "../../../../../redux/slices/businessSlice";
 
 export const RegistrationDetails = ({ isEdit }) => {
   const [subIndustryOptions, setSubIndustryOptions] = useState([]);
-  const { business, businessId } = useSelector((state) => state.business);
+  const { business, businessId ,loading} = useSelector((state) => state.business);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // console.log("businessStore", business);
   // console.log("subIndustryOptions", subIndustryOptions);
+  // console.log("loading",loading);
+  
 
 
   const {
@@ -144,10 +146,8 @@ export const RegistrationDetails = ({ isEdit }) => {
         // console.log("Response", response?.payload);
         // const newBusinessId = response.payload;
         // dispatch(setBusinessId(newBusinessId)); 
+        isEdit ? navigate("/business/edit/address") : navigate("/business/create/address")
       });
-
-      isEdit ? navigate("/business/edit/address") : navigate("/business/create/address")
-
     }
   };
 
@@ -258,6 +258,7 @@ export const RegistrationDetails = ({ isEdit }) => {
               <Input
                 {...field}
                 label="CIN No."
+                maxLength={21}
                 placeholder="Enter your CIN number"
                 errorContent={errors.registration?.cinNumber?.message}
                 required
@@ -412,6 +413,8 @@ export const RegistrationDetails = ({ isEdit }) => {
               <Input
                 {...field}
                 label="Size of the company"
+                max={100000}
+                type="number"
                 placeholder="Enter size of the company"
                 errorContent={errors.registration?.sizeOfCompany?.message}
                 required
@@ -456,8 +459,8 @@ export const RegistrationDetails = ({ isEdit }) => {
       {/* Navigation Buttons */}
       <div className="flex justify-between items-center gap-4">
         <div></div>
-        <Button type="submit" primary disabled={!isValid}>
-          Save & Next
+        <Button type="submit" primary disabled={!isValid || loading} isLoading={loading}>
+         {loading?"saving...":"Save & Next"}
         </Button>
       </div>
     </form>

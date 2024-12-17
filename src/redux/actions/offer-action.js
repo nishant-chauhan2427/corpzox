@@ -4,7 +4,7 @@ import client from "../axios-baseurl";
 export const getOffers = createAsyncThunk(
     "offer/getOffers",
     async ({page=1,query}, { rejectWithValue }) => {
-        console.log("Action : getOffers");
+        // console.log("Action : getOffers");
         
       try {
 
@@ -14,7 +14,7 @@ export const getOffers = createAsyncThunk(
 
         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
         const token = userInfo?.token;
-        console.log(token, "token")
+        // console.log(token, "token")
   
         if (!token) {
           return rejectWithValue("No token found");
@@ -28,7 +28,7 @@ export const getOffers = createAsyncThunk(
           },
           params:params
         });
-        console.log("getOffers",response.data.data);
+        // console.log("getOffers",response.data.data);
         return response.data.data;
       } catch (error) {
         console.log(error, "get offer list error");
@@ -41,8 +41,8 @@ export const getOffers = createAsyncThunk(
   
 export const loadMoreOffers = createAsyncThunk(
     "offer/loadMoreOffers",
-    async ({ page, sort_by = 'date_desc', query }, { rejectWithValue }) => {
-        console.log("Action : loadMoreOffers");
+    async ({ page, sort_by = 'date_asc', query }, { rejectWithValue }) => {
+        // console.log("Action : loadMoreOffers");
         // let params = new URLSearchParams(new URL(window.location.href).search);
         // console.log("params",params.get("search"));
         
@@ -52,7 +52,7 @@ export const loadMoreOffers = createAsyncThunk(
       try {
         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
         const token = userInfo?.token;
-        console.log(token, "token")
+        // console.log(token, "token")
   
         if (!token) {
           return rejectWithValue("No token found");
@@ -66,7 +66,7 @@ export const loadMoreOffers = createAsyncThunk(
           },
           params:params
         });
-        console.log("loadMoreOffers",response.data.data);
+        // console.log("loadMoreOffers",response.data.data);
         return response.data.data;
       } catch (error) {
         console.log(error, "get offer list error");

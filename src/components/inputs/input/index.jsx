@@ -88,10 +88,11 @@ export const Input = ({
             for={label}
             className={`${leftIcon ? "mx-3" : "px-2"} ${
               leftIcon ? "flex justify-center items-center px-2.5" : "px-2"
-            } ${
+            } 
+            ${
               required &&
               "after:content-['*'] after:text-red-500 after:absolute after:-top-1"
-            } absolute -translate-y-4 scale-75 top-2 origin-[0] rounded-lg text-sm text-gray-400 dark:text-gray-400 duration-300 transform bg-white dark:bg-gray-950 peer-focus:px-2 peer-focus:text-bee-primary peer-focus:dark:text-bee-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-3 + ${labelClassName}`}
+            } absolute -translate-y-4 scale-75 top-2 origin-[0] rounded-lg text-sm text-gray-400 dark:text-gray-400 duration-300 transform bg-white dark:bg-gray-950 peer-focus:px-2 peer-focus:text-bee-primary peer-focus:dark:text-bee-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-3 +${labelClassName}`}
           >
             <span className="mr-2">{labelIcon}</span>
             {label}
@@ -100,7 +101,9 @@ export const Input = ({
             <button
               type="button"
               onClick={viewPassword}
-              className={`${errorContent ? "right-8" : "right-4"} absolute top-1/2 -translate-y-1/2`}
+              className={`${
+                errorContent ? "right-8" : "right-4"
+              } absolute top-1/2 -translate-y-1/2`}
               // ${
               //   errorContent ? "right-10" : "right-4"
               // }

@@ -11,7 +11,7 @@ import { updateFundingDetails, updateRegistrationDetails } from "../../../../../
 
 export const FundingDetails = ({ isEdit }) => {
 
-  const { business, businessId } = useSelector((state) => state.business);
+  const { business, businessId, loading } = useSelector((state) => state.business);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -72,9 +72,9 @@ export const FundingDetails = ({ isEdit }) => {
       //  console.log("Response", response?.payload);
       // const newBusinessId = response.payload;
       // dispatch(setBusinessId(newBusinessId)); 
+      isEdit ? navigate(-5) : navigate("/business/preview");
     });
 
-    isEdit ? navigate(-5) : navigate("/business/preview");
 
   };
 
@@ -162,8 +162,8 @@ export const FundingDetails = ({ isEdit }) => {
           Prev
         </Button>
 
-        <Button type="submit" primary disabled={!isValid} >
-          {isEdit ? "Save & Continue" : "Save & Preview"}
+        <Button type="submit" primary disabled={!isValid || loading} isLoading={loading} >
+         {loading?"saving...": isEdit ? "Save & Continue" : "Save & Preview"}
         </Button>
       </div>
     </form>

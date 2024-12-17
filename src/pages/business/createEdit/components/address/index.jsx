@@ -333,7 +333,7 @@ import { addressSchema } from "../../../../../validation/createBusinessValidatio
 import { yupResolver } from "@hookform/resolvers/yup";
 
 export const AddressDetails = ({ isEdit }) => {
-  const { business, businessId } = useSelector((state) => state.business);
+  const { business, businessId, loading } = useSelector((state) => state.business);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -410,10 +410,10 @@ export const AddressDetails = ({ isEdit }) => {
       //  console.log("Response", response?.payload);
       // const newBusinessId = response.payload;
       // dispatch(setBusinessId(newBusinessId)); 
+      isEdit ? navigate("/business/edit/financial") : navigate("/business/create/financial")
     });
 
     // navigate("/business/create/financial");
-    isEdit ? navigate("/business/edit/financial") : navigate("/business/create/financial")
 
 
   };
@@ -534,8 +534,10 @@ export const AddressDetails = ({ isEdit }) => {
                 <Input
                   {...field}
                   label="PIN Code"
+                  maxLength={6}
                   placeholder="Enter your pincode"
                   errorContent={errors?.address?.businessAddressPin?.message}
+
                   required
                   onBlur={() => handleFieldBlur("address.businessAddressPin")}
                   onChange={(e) => {
@@ -651,6 +653,7 @@ export const AddressDetails = ({ isEdit }) => {
                 <Input
                   {...field}
                   label="PIN Code"
+                  maxLength={6}
                   placeholder="Enter your pincode"
                   errorContent={errors?.address?.communicationAddressPin?.message}
                   required
@@ -671,8 +674,8 @@ export const AddressDetails = ({ isEdit }) => {
         <Button type="button" primary onClick={() => navigate(-1)}>
           Prev
         </Button>
-        <Button type="submit" primary disabled={!isValid}>
-          Save & Next
+        <Button type="submit" primary disabled={!isValid || loading} isLoading={loading}>
+          {loading?"saving...":"Save & Next"}
         </Button>
       </div>
     </form>

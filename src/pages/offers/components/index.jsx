@@ -9,19 +9,21 @@ import { OfferShimmer } from "../../../components/loader/OfferShimmer";
 import { NoData } from "../../../components/errors/noData";
 import { getOffers, loadMoreOffers } from "../../../redux/actions/offer-action";
 import toast from "react-hot-toast";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { ImSpinner2 } from "react-icons/im";
 
 
 function OffersDetails() {
   const dispatch = useDispatch();
 
-  const { offers,page, totalCount, isLoading,loadingMore, error } = useSelector((state) => state.offers);
-  
-  const urlParams = new URLSearchParams( useLocation().search);
-  const navigate = useNavigate();
-  const url = new URL(window.location);
+  const { offers, page, totalCount, isLoading, loadingMore, error } = useSelector((state) => state.offers);
+
+  // const urlParams = new URLSearchParams( useLocation().search);
+  // const navigate = useNavigate();
+  // const url = new URL(window.location);
   // let page =urlParams.get("page") ||1 ;
 
-  
+
 
   const [expandedIndex, setExpandedIndex] = useState(null); // To track which offer is expanded
 
@@ -47,7 +49,7 @@ function OffersDetails() {
   //   }else{
   //     toast.error("No more data found")
   //   }
-   
+
   // }
 
   // useEffect(()=>{
@@ -62,9 +64,9 @@ function OffersDetails() {
   return (
     <>
       <Heading title={"Offers"} backButton={true}>
-       {`Offers(${totalCount})`}
+        {`Offers(${totalCount||0})`}
       </Heading>
-      <div>
+      {/* <div>
         {offers ? offers?.map((offer, index) => (
           <div
             key={index}
@@ -111,7 +113,81 @@ function OffersDetails() {
           </Button>
         </div>:""
           }
-      </div>
+      </div> */}
+
+
+
+
+
+
+      <InfiniteScroll
+        dataLength={totalCount} //This is important field to render the next data
+        next={() => dispatch(loadMoreOffers({ page: (page + 1) }))}   //function call to load more
+        hasMore={(totalCount % offers?.length > 0)}  //true : more data to load, false: No more data to load
+        loader={  <div className="flex justify-center items-center p-1"><ImSpinner2 className="animate-spin text-black !text-xl" /></div>  }
+        endMessage={
+          <p style={{ textAlign: 'center' }}>
+            <b>Yay! You have seen it all</b>
+          </p>
+        }
+
+      >
+        {/* Simple rendering of Array to show cards/lists */}
+        <div>
+          {offers ? offers?.map((offer, index) => (
+            <div
+              key={index}
+              className="flex sm:flex-row flex-col gap-3 px-4 py-4 mb-6 bg-[#F3F7FF] border border-[#DFEAF2] rounded-lg    "
+            >
+              <div
+                style={{ backgroundImage: `url(${offer?.imageUrl})` }}
+                className={`sm:w-[30%] rounded-lg bg-cover bg-no-repeat bg-center overflow-hidden`}
+              ></div>
+              <div className="flex sm:w-[70%] flex-col gap-2">
+                <p className="font-bold text-[20px]  text-[#0A1C40]">
+                  {offer.offerTitle}
+                </p>
+                <div className="flex items-center gap-4 ">
+                  <p className="font-bold rounded-full text-[14px] text-white bg-[#4CAF50] px-2 py-1 ">
+                    {`${offer.discountPercent}% OFF`}
+                  </p>
+                  <p className="font-normal  text-[12px] text-[#737373] ">
+                    {`Valid till : ${formatDate(offer.validity)}`}
+                  </p>
+                </div>
+                <p className="font-medium text-[12px] text-[#0A1C40]">
+                  {expandedIndex == index ? offer.offerDetail : `${offer.offerDetail?.substring(0, 200)} ${offer.offerDetail?.length > 200 ? "..." : ""}`}
+                  <span
+                    onClick={() => toggleReadMore(index)}
+                    className="text-blue-500 cursor-pointer ml-2"
+                  >
+
+                    {offer.offerDetail?.length > 200 && (expandedIndex == index ? "Read Less" : "Read More")}
+                  </span>
+                </p>
+                <div className="flex justify-end pt-5">
+                  <LinkButton to={"/services"} primary={true}> Avail Now</LinkButton>
+                </div>
+              </div>
+            </div>
+          )) : <NoData />
+          }
+
+          {/* {totalCount % offers?.length > 0 ?
+            <div className="w-full flex justify-center items-center mb-4">
+              <Button onClick={() => dispatch(loadMoreOffers({ page: (page + 1) }))} disabled={loadingMore} className="flex items-center sm:gap-2 p-2 hover:text-lg hover:shadow-lg" primary={true}>
+                {loadingMore ? "loading..." : "Load more.."}
+              </Button>
+            </div> : ""
+          } */}
+        </div>
+      </InfiniteScroll>
+
+
+
+
+
+
     </>
   );
 }

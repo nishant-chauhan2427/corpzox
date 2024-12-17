@@ -16,6 +16,8 @@ import {
 } from "../../../redux/actions/businessPage-action";
 import { BusinessCardShimmer } from "../../../components/loader/BusinessCardShimmer";
 import { resetBusiness } from "../../../redux/slices/businessSlice";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { ImSpinner2 } from "react-icons/im";
 // import { loadMoreBusiness } from "../../../redux/slices/businessPageSlice";
 
 const BusinessListing = () => {
@@ -46,26 +48,26 @@ const BusinessListing = () => {
   //   }
   // }, [searchValue, business?.page]);
 
-  const handleScroll = (e) => {
-    console.log("handleScroll");
+  // const handleScroll = (e) => {
+  //   console.log("handleScroll");
 
-    const bottom =
-      e.target.scrollHeight === e.target.scrollTop + e.target.clientHeight;
-    if (bottom && !isLoading && business?.length < totalCount) {
-      console.log("loading more...");
+  //   const bottom =
+  //     e.target.scrollHeight === e.target.scrollTop + e.target.clientHeight;
+  //   if (bottom && !isLoading && business?.length < totalCount) {
+  //     console.log("loading more...");
 
-      // dispatch(loadMoreBusiness(page + 1)); // Load next page
-    }
+  //     // dispatch(loadMoreBusiness(page + 1)); // Load next page
+  //   }
 
-    console.log("Not loading...");
-  };
+  //   console.log("Not loading...");
+  // };
 
   // return<div>Business page</div>
 
   if (isLoading) return <BusinessCardShimmer count={8} className={"p-2"} />;
 
   return (
-    <div className="flex flex-col overflow-y-auto pb-4" onScroll={handleScroll}>
+    <div className="flex flex-col overflow-y-auto pb-4" >
       <div className="flex flex-col md:flex-row justify-between gap-4">
         <Heading title={"Business"} tourButton={true}>
           Your Business {totalCount ? `(${totalCount})` : ""}
@@ -87,36 +89,44 @@ const BusinessListing = () => {
           {/* <LinkButton className="font-semibold text-[#606060]">View all</LinkButton> */}
         </div>
       </div>
-      {business?.length > 0 ? (
-        <>
+
+      <InfiniteScroll
+        dataLength={business?.length || 0} // Use the currently loaded data length
+        next={() => dispatch(getMoreBusiness({ page: page + 1 }))} // Load more data
+        hasMore={business?.length < totalCount} // true if more data exists, false otherwise
+        loader={
+          <div className="flex justify-center items-center p-1">
+            <ImSpinner2 className="animate-spin text-black !text-xl" />
+          </div>
+        }
+        endMessage={
+          (totalCount && totalCount>0) && <p style={{ textAlign: 'center' }}>
+            <b>Yay! You have seen it all</b>
+          </p>
+        }
+      >
+        {business?.length > 0 ? (
           <div className="pb-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 mt-4">
-            {business?.map((data, index) => (
+            {business.map((data, index) => (
               <BusinessCard key={index} data={data} />
             ))}
           </div>
-          {!isLoading && business?.length < totalCount && (
-            <div className=" flex justify-center">
-              <Button
-                primary={true}
-                onClick={() => dispatch(getMoreBusiness({ page: page + 1 }))}
-                disabled={loadingMore}
-              >
-                {loadingMore ? "Loading" : "Load More"}
-              </Button>
-            </div>
-          )}
-        </>
-      ) : (
-        <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
-          <img src="/images/business/no-business.svg" alt="" />
-          <p className="font-bold  text-xl text-[#000000] ">
-            No Business Created
-          </p>
-          <p className="font-normal text-[#797979]">
-            Create one to start your services
-          </p>
-        </div>
-      )}
+        ) : (
+          <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
+            <img src="/images/business/no-business.svg" alt="" />
+            <p className="font-bold text-xl text-[#000000]">
+              No Business Created
+            </p>
+            <p className="font-normal text-[#797979]">
+              Create one to start your services
+            </p>
+          </div>
+        )}
+      </InfiniteScroll>
+
+
+
+
     </div>
   );
 };
