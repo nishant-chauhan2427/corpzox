@@ -1,20 +1,17 @@
-import { Link, useSearchParams } from "react-router-dom";
-import { Button } from "../../../components/buttons";
-import { Heading } from "../../../components/heading";
-import { Table } from "../../../components/table";
-import { useEffect, useState } from "react";
-import { ReactModal } from "../../../components/modal";
-import { FaPlus } from "react-icons/fa";
-import { downloadInvoice, getPaymentTransaction } from "../../../redux/actions/payment-history-action";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { formatReadableDate } from "../../../utils";
-import { TableShimmer } from "../../../components/loader/TableShimmer";
+import { useSearchParams } from "react-router-dom";
+import { useReactToPrint } from "react-to-print";
+import { Button } from "../../../components/buttons";
 import { NoData } from "../../../components/errors/noData";
+import { TableShimmer } from "../../../components/loader/TableShimmer";
 import { ConfirmationModal } from "../../../components/modal/confirmationModal";
-import { talkToAdvisor } from "../../../redux/actions/servicesDetails-actions";
 import Pagination from "../../../components/Pagination";
+import { Table } from "../../../components/table";
+import { downloadInvoice, getPaymentTransaction } from "../../../redux/actions/payment-history-action";
+import { talkToAdvisor } from "../../../redux/actions/servicesDetails-actions";
 import { clearUrl } from "../../../redux/slices/paymentHistorySlice";
-import { set } from "react-hook-form";
+import { formatReadableDate } from "../../../utils";
 
 const History = () => {
   const dispatch = useDispatch()
@@ -26,6 +23,8 @@ const History = () => {
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [viewTransactionDetails, setViewTransactionDetails] = useState(false);
   const [transactionDetails, setTransactionDetails] = useState({})
+  const contentRef = useRef()
+  const reactToPrintFn = useReactToPrint({ contentRef });
   const transformedTransactionHistory = paymentHistory?.map((history) => {
     return {
       id: {
@@ -140,8 +139,6 @@ const History = () => {
     }
   }, [downloadTransactionUrl, dispatch])
 
-
-  console.log(downloadTransactionUrl, "downloadTransactionUrl")
   return (
     <>
       <div>
@@ -199,7 +196,7 @@ const History = () => {
         isOpen={viewTransactionDetails}
         onClose={onViewTransactionClose}
       >
-        <div className="flex flex-col gap-2 ">
+        <div ref={contentRef} className="flex flex-col gap-2 ">
           <div className="flex justify-center">
             <img src="/public/Corpzo-logo-Modal.svg" width={150} alt="" />
           </div>
@@ -256,9 +253,9 @@ const History = () => {
               ₹ {transactionDetails?.serviceDetails?.cost}
             </p>
           </div>
-          <div className="flex justify-between">
+          {transactionDetails?.serviceappliedcouponandoffers && <div className="flex justify-between">
             <p className="font-semibold text-base  text-[#0A1C40] ">
-              Discount Coupon
+              Discount Amount
             </p>
             <p className="font-semibold text-base text-[#0A1C40]">
               {
@@ -267,7 +264,7 @@ const History = () => {
                 (transactionDetails?.serviceappliedcouponandoffers[1]?.amount || 0)
               }
             </p>
-          </div>
+          </div>}
           <div className="flex justify-between bg-[#FFF4BA]  px-2 py-1">
             <p className="font-semibold text-base  text-[#0A1C40] ">
               Total amount paid
@@ -283,7 +280,7 @@ const History = () => {
             </p>
           </div>
           <div className="flex justify-center gap-2 pt-10">
-            <Button outline={true}>
+            <Button outline={true} onClick={reactToPrintFn}>
               {" "}
               <img src="/public/icons/payment/print.svg" alt="" />
               Print
