@@ -14,12 +14,20 @@ import { clearUrl } from "../../../redux/slices/paymentHistorySlice";
 import { formatReadableDate } from "../../../utils";
 
 const History = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
-  const [serviceId, setServiceId] = useState("")
-  const { paymentHistory, isPaymentHistoryLoading, downloadTransactionUrl, isTransactionDownloading, totalTransaction } = useSelector((state) => state.paymentHistory)
-  const { isTalkToAdvisorLoading } = useSelector((state) => state.serviceDetails)
+  const [serviceId, setServiceId] = useState("");
+  const {
+    paymentHistory,
+    isPaymentHistoryLoading,
+    downloadTransactionUrl,
+    isTransactionDownloading,
+    totalTransaction,
+  } = useSelector((state) => state.paymentHistory);
+  const { isTalkToAdvisorLoading } = useSelector(
+    (state) => state.serviceDetails
+  );
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [viewTransactionDetails, setViewTransactionDetails] = useState(false);
   const [transactionDetails, setTransactionDetails] = useState({})
@@ -28,20 +36,20 @@ const History = () => {
   const transformedTransactionHistory = paymentHistory?.map((history) => {
     return {
       id: {
-        serviceId: history?.serviceId
+        serviceId: history?.serviceId,
       },
       _id: {
-        _id: history?._id
+        _id: history?._id,
       },
       transaction_id: history?.invoiceNumber,
       status: history?.paymentStatus,
       amount: history?.amount,
       currency: "INR",
       payment_date: formatReadableDate(history?.paymentDate),
-    }
-  })
+    };
+  });
 
-  console.log(paymentHistory, "transformedTransactionHistory")
+  console.log(paymentHistory, "transformedTransactionHistory");
   const columns = [
     { header: "Transaction ID", accessor: "transaction_id" },
     { header: "Status", accessor: "status" },
@@ -53,7 +61,7 @@ const History = () => {
 
   useEffect(() => {
     const page = searchParams.get("page") || 1;
-    const query = searchParams.get('search') || ""
+    const query = searchParams.get("search") || "";
     setCurrentPage(Number(page));
     dispatch(getPaymentTransaction({ page, query }));
   }, [searchParams, dispatch]);
@@ -62,19 +70,18 @@ const History = () => {
   };
   const onViewTransactionClose = () => {
     setViewTransactionDetails(false);
-
   };
 
   const openViewTransactionDetails = (id) => {
-    console.log(id, "transactionId")
+    console.log(id, "transactionId");
     setViewTransactionDetails(true);
     const transactionDetails = paymentHistory.filter((payment) => {
-      return payment._id === id
-    })
+      return payment._id === id;
+    });
 
-    setTransactionDetails(transactionDetails ? transactionDetails[0] : {})
-  }
-  console.log(transactionDetails, "transasdn,fkldnf")
+    setTransactionDetails(transactionDetails ? transactionDetails[0] : {});
+  };
+  console.log(transactionDetails, "transasdn,fkldnf");
   const handleNavigation = (direction) => {
     const totalPages = Math.ceil(totalTransaction / 10); // Calculate total pages
     const newPage = direction === "Next" ? currentPage + 1 : currentPage - 1;
@@ -86,24 +93,23 @@ const History = () => {
 
   const openCallToAdvisor = (serviceId) => {
     setServiceId(serviceId);
-    setConfirmationModal(true)
-  }
+    setConfirmationModal(true);
+  };
   const handleTalkTouOurAdvisors = (serviceId) => {
-    console.log(serviceId, "clicked")
+    console.log(serviceId, "clicked");
     const requestData = {
-      userId: JSON.parse(localStorage.getItem('userInfo'))?.userId,
+      userId: JSON.parse(localStorage.getItem("userInfo"))?.userId,
       serviceId: serviceId,
       status: "negotiation",
-      quotationDate: Date.now()
-    }
-    dispatch(talkToAdvisor(requestData))
-
-  }
+      quotationDate: Date.now(),
+    };
+    dispatch(talkToAdvisor(requestData));
+  };
   useEffect(() => {
     if (!isTalkToAdvisorLoading) {
-      onConfirmationModalClose()
+      onConfirmationModalClose();
     }
-  }, [isTalkToAdvisorLoading])
+  }, [isTalkToAdvisorLoading]);
   const actionMenu = (id, _id) => {
     return (
       <div className="flex py-2 justify-evenly items-center">
@@ -121,7 +127,7 @@ const History = () => {
   //   dispatch(downloadInvoice({transactionId}))
   // }
   const downloadTransaction = (transactionId) => {
-    dispatch(downloadInvoice({ transactionId }))
+    dispatch(downloadInvoice({ transactionId }));
   };
   useEffect(() => {
     if (downloadTransactionUrl) {
@@ -135,35 +141,32 @@ const History = () => {
 
       // Reset the URL after downloading to avoid re-triggering
       dispatch(clearUrl());
-      onViewTransactionClose()
+      onViewTransactionClose();
     }
-  }, [downloadTransactionUrl, dispatch])
+  }, [downloadTransactionUrl, dispatch]);
 
   return (
     <>
       <div>
-        {
-          isPaymentHistoryLoading ? (
-            <TableShimmer />
-          ) : (
-            transformedTransactionHistory && transformedTransactionHistory.length > 0 ? (
-              <>
-                <Table
-                  isExpandable={false}
-                  columns={columns}
-                  data={transformedTransactionHistory}
-                  actionMenu={actionMenu}
-                />
-              </>
-            ) : (
-              <div><NoData /></div>
-            )
-          )
-        }
-
+        {isPaymentHistoryLoading ? (
+          <TableShimmer />
+        ) : transformedTransactionHistory &&
+          transformedTransactionHistory.length > 0 ? (
+          <>
+            <Table
+              isExpandable={false}
+              columns={columns}
+              data={transformedTransactionHistory}
+              actionMenu={actionMenu}
+            />
+          </>
+        ) : (
+          <div>
+            <NoData />
+          </div>
+        )}
 
         <div className="flex justify-center items-center">
-
           <div className="flex items-center gap-2 pt-4">
             {/* <Button disabled={currentPage === 1} onClick={() => handleNavigation("Previous")} outline={true}>
               Previous
@@ -171,7 +174,9 @@ const History = () => {
             <Button disabled={currentPage === Math.ceil(totalTransaction / 10)} onClick={() => handleNavigation("Next")} outline={true}>
               Next
             </Button> */}
-            {totalTransaction > 10 && <Pagination totalItems={totalTransaction} itemsPerPage={10} />}
+            {totalTransaction > 10 && (
+              <Pagination totalItems={totalTransaction} itemsPerPage={10} />
+            )}
           </div>
         </div>
       </div>
@@ -188,7 +193,14 @@ const History = () => {
             Your Assistant Manager will get in touch with you soon.
           </p>
           <div className="flex justify-center">
-            <Button primary={true} isLoading={isTalkToAdvisorLoading} onClick={() => handleTalkTouOurAdvisors(serviceId)}> Continue</Button>
+            <Button
+              primary={true}
+              isLoading={isTalkToAdvisorLoading}
+              onClick={() => handleTalkTouOurAdvisors(serviceId)}
+            >
+              {" "}
+              Continue
+            </Button>
           </div>
         </div>
       </ConfirmationModal>
@@ -258,11 +270,10 @@ const History = () => {
               Discount Amount
             </p>
             <p className="font-semibold text-base text-[#0A1C40]">
-              {
-                transactionDetails?.serviceappliedcouponandoffers &&
+              {transactionDetails?.serviceappliedcouponandoffers &&
                 transactionDetails?.serviceappliedcouponandoffers[0]?.amount +
-                (transactionDetails?.serviceappliedcouponandoffers[1]?.amount || 0)
-              }
+                  (transactionDetails?.serviceappliedcouponandoffers[1]
+                    ?.amount || 0)}
             </p>
           </div>}
           <div className="flex justify-between bg-[#FFF4BA]  px-2 py-1">
@@ -285,7 +296,11 @@ const History = () => {
               <img src="/public/icons/payment/print.svg" alt="" />
               Print
             </Button>
-            <Button primary={true} isLoading={isTransactionDownloading} onClick={() => downloadTransaction(transactionDetails._id)}>
+            <Button
+              primary={true}
+              isLoading={isTransactionDownloading}
+              onClick={() => downloadTransaction(transactionDetails._id)}
+            >
               {" "}
               <img src="/public/icons/payment/download.svg" alt="" />
               Download
