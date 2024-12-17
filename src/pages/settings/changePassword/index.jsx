@@ -17,9 +17,11 @@ const ChangePassword = () => {
 
   const dispatch = useDispatch();
   const inputRefs = useRef([]);
-  const navigate = useNavigate()
-  const {isPasswordChanging, changePasswordError} = useSelector((state)=> state.settings);
- 
+  const navigate = useNavigate();
+  const { isPasswordChanging, changePasswordError } = useSelector(
+    (state) => state.settings
+  );
+
   const {
     handleSubmit,
     control,
@@ -43,11 +45,11 @@ const ChangePassword = () => {
     // test dev branch
 
     const passwordData = {
-      newPassword : data.confirmPassword,
-      oldPassword : data.password
-    }
-    console.log(passwordData, "password Data")
-    dispatch(changePassword({passwordData, navigate}))
+      newPassword: data.confirmPassword,
+      oldPassword: data.password,
+    };
+    console.log(passwordData, "password Data");
+    dispatch(changePassword({ passwordData, navigate }));
   };
 
   const onConfirmationModalClose = () => {
@@ -141,11 +143,11 @@ const ChangePassword = () => {
     <>
       <div className="mt-4 w-full">
         <p className="font-bold text-xl text-black">Change Password</p>
-        <p className="text-sm text-[#4E4E4E]">
+        <p className="text-sm pt-2 text-[#4E4E4E]">
           Change your password to keep account secure.
         </p>
         <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-          <div className="mt-4 w-full md:w-1/3 flex flex-col gap-4">
+          <div className="mt-4 w-full md:w-[50%] flex flex-col gap-4">
             <Controller
               name={`password`}
               control={control}
@@ -154,6 +156,8 @@ const ChangePassword = () => {
                   {...field}
                   label={`Old Password`}
                   placeholder={`Enter your old password`}
+                  className={"border-[#D9D9D9] border"}
+                  type={"password"}
                   errorContent={errors.password?.message}
                   required={true}
                   maxLength={20}
@@ -167,7 +171,9 @@ const ChangePassword = () => {
                 <Input
                   {...field}
                   label={`New Password`}
+                  type={"password"}
                   placeholder={`Enter your new password`}
+                  className={"border-[#D9D9D9] border"}
                   errorContent={errors.newPassword?.message}
                   required={true}
                   maxLength={20}
@@ -182,13 +188,15 @@ const ChangePassword = () => {
                   {...field}
                   label={`Re enter new Password`}
                   placeholder={`Re enter your new password`}
+                  className={"border-[#D9D9D9] border"}
+                  type={"password"}
                   errorContent={errors.confirmPassword?.message}
                   required={true}
                   maxLength={20}
                 />
               )}
             />
-            <div className="flex justify-start items-center gap-3">
+            <div className="flex justify-start items-center gap-3 mt-14">
               <Button
                 type={"submit"}
                 className={"px-4 py-1.5 rounded-lg"}

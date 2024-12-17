@@ -220,7 +220,7 @@ const serviceDetailSlice = createSlice({
         );
       } else {
         console.log("Coupon not found. Returning without changes.");
-        return;
+        return; 
       }
       console.log(JSON.parse(JSON.stringify(state.appliedOfferArray)), "removed")
 
@@ -574,7 +574,7 @@ const serviceDetailSlice = createSlice({
         state.isServiceAvailing = true;
       })
       .addCase(availService.fulfilled, (state, action) => {
-        state.isServiceAvailing = false;
+        state.isServiceAvailing = true;
         console.log(action.payload, "talk to")
         toast.success(action.payload.message)
 
@@ -595,6 +595,7 @@ const serviceDetailSlice = createSlice({
         state.cost = originalCost
         console.log(action.payload, "talk to")
         state.isPaymentSuccessful = true
+        state.appliedOfferArray= []
 
       })
       .addCase(paymentStatus.rejected, (state, action) => {

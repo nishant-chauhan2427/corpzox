@@ -221,11 +221,12 @@ function SelectBusiness() {
 
     setDynamicForm([...dynamicForm]);
   }
-  const handleFileValueChange = (index, {fileUrl,filename}) => {
+  const handleFileValueChange = (index, {fileUrl,filename,fileType}) => {
 
     const field = dynamicForm[index];
     field.value[0] = fileUrl;
     field.fileName = filename;
+    field.type = fileType;
 
     if (field?.isRequired && (field?.value.length <= 0)) {
       field.isRequiredMsg = "Required field";
@@ -281,7 +282,7 @@ function SelectBusiness() {
         attributeId: field._id,
         value: value,
         fileName: (value instanceof File) ? value.name : field.fileName,
-        type: (value instanceof File) ? value.type : field.inputType
+        type: (value instanceof File) ? value.type : field.type
       }
     })
 
@@ -422,7 +423,8 @@ function SelectBusiness() {
         outline={true}
         primary={true}
         // disabled={(dynamicForm?.some((field,idx) => {return field.error === true})) }
-        disabled={!dynamicForm || dynamicForm.length <= 0 || isSaving || (dynamicForm?.some((field, idx) => field?.isRequiredMsg || field?.error === true))}
+        disabled={!dynamicForm || dynamicForm.length <= 0 || isSaving || (dynamicForm?.some((field, idx) => 
+          field?.isRequiredMsg || field?.error === true || (field?.isRequired === true && !field?.value[0])))}
         className={" py-2 "}
         onClick={handleSubmit}
       >

@@ -6,7 +6,7 @@ import { Button } from "../../../components/buttons/button";
 import { FaPlus } from "react-icons/fa";
 import { ReactModal } from "../../../components/modal/";
 import { CheckOffer } from "../../../database/";
-import { ImCross } from "react-icons/im";
+import { ImCross, ImSpinner2 } from "react-icons/im";
 import { useEffect, useState } from "react";
 import PricingDetail from "./components/pricingDetail";
 import { Heading } from "../../../components/heading";
@@ -78,11 +78,7 @@ const MakeAPayment = () => {
     setShowAddIcon(!showAddIcon);
   };
 
-  useEffect(() => {
-    if (!isCouponVerifiedLoading) {
-      setModalOpen(false);
-    }
-  }, [isCouponVerifiedLoading]);
+  
   const PaymentTabs = [
     { id: "Card", icon: "/icons/payment/debit.svg", label: "Card" },
     { id: "UPI", icon: "/icons/payment/upi.svg", label: "UPI" },
@@ -118,6 +114,15 @@ const MakeAPayment = () => {
     setFailureModal(!failureModal);
   };
 
+  const closeModal =()=>{
+    setModalOpen(false)
+  }
+  useEffect(() => {
+    if (!isCouponVerifiedLoading) {
+      setModalOpen(false);
+      closeModal()
+    }
+  }, [isCouponVerifiedLoading]);
   useEffect(() => {
     const type = searchParams.get("paymentType");
     console.log(type, "data for subscription");
@@ -265,7 +270,7 @@ const MakeAPayment = () => {
                   <ReactModal
                     isOpen={modalOpen}
                     crossButton={true}
-                    onRequestClose={() => setModalOpen(false)}
+                    onRequestClose={closeModal}
                     button={
                       showAddIcon && (
                         <FaPlus
@@ -304,13 +309,13 @@ const MakeAPayment = () => {
                               </Link> */}
                             </div>
                             <div className="flex flex-col gap-1 text-center items-center px-2 justify-center">
-                              <Button
+                              {isCouponVerifiedLoading ?(<ImSpinner2 className="animate-spin text-gray hover:text-white !text-xl" />) :(<Button
                                 primary={true}
                                 isLoading={isServiceAvailing}
                                 onClick={() => handleApplyCoupon({ id: data.id, offerCost: data.off, title: data.title })}
                               >
                                 Apply
-                              </Button>
+                              </Button>)}
 
                               {/* <p className="flex font-medium text-sm text-[#000000]">
                                 <img src="/images/payment/coupon.svg" alt="" />
