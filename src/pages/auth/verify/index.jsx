@@ -40,16 +40,15 @@ export const Verify = () => {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
   const phoneRegex = /^\d{10}$/;
 
-  const profileEmailOrPhone = profile[0]?.email;
+  const profileEmail = profile?.[0]?.email;
+  const profilePhone = profile?.[0]?.phone;
 
-  const isEmail = emailRegex.test(profileEmailOrPhone);
-  const isPhoneNumber = phoneRegex.test(profileEmailOrPhone);
+  const isEmail = emailRegex.test(profileEmail);
+  const isPhone = phoneRegex.test(profilePhone);
 
   const subHeading = isEmail
-    ? `We have sent you an OTP on your registered email id ${profileEmailOrPhone}`
-    : isPhoneNumber
-    ? `We have sent you an OTP on your registered phone number ${profileEmailOrPhone}`
-    : "Invalid contact information provided.";
+    ? `We have sent you an OTP on your registered email id ${profileEmail}`
+    : `We have sent you an OTP on your registered phone number ${profilePhone}`;
 
   const validateOtp = (enteredOtp) => {
     if (enteredOtp.trim().length !== 4) {
@@ -230,7 +229,7 @@ export const Verify = () => {
                 </form>
               </div>
               <div>
-                <div className="text-center flex justify-center gap-2 pt-4 font-normal text-[#6C6C6C]">
+                {/* <div className="text-center flex justify-center gap-2 pt-4 font-normal text-[#6C6C6C]">
                   <p>
                     Need an account?
                     <Link
@@ -240,7 +239,7 @@ export const Verify = () => {
                       Create one
                     </Link>
                   </p>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

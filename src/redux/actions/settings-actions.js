@@ -14,7 +14,7 @@ export const changePassword = createAsyncThunk(
             });
             console.log(response, "change password response")
             if(response.data.code === 200){
-                navigate("/")
+                navigate("/sign-in")
             }
             return response.data;
         } catch (error) {

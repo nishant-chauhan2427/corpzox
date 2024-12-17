@@ -30,14 +30,15 @@ export const ServicesCard = ({
 
   let onClickAddWishlistHandler = () => {
     const wishlistSelectedData = wishList?.list?.map(item => item._id);
-  
-    dispatch(updateServiceQuickWishlist({ serviceIdArray: wishlistSelectedData }));
+    if(wishlistSelectedData?.length){
+    dispatch(updateServiceQuickWishlist({ serviceIdArray: wishlistSelectedData }))}
  
+    console.log(wishlistSelectedData?.length,"wishlistSelectedData");
     if (wishlistSelectedData?.length > 0) {
       toast.success("Wishlist Created");
     }
     else{
-      toast.error("Please select at least on service")
+      toast.error("Please select at least one service")
     }
   };
   

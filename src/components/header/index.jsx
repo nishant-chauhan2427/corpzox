@@ -80,6 +80,8 @@ export const Header = ({ className, collapse, setCollapse }) => {
         return "Settings";
       case pathname.includes("profile"):
         return "Profile";
+      case pathname.includes("offersDetails"):
+        return "Offers";
       default:
         return "";
     }
@@ -93,7 +95,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
   //     // Perform additional sign-out tasks like redirecting to the login page
   //   });
   // };
-  console.log(user, "jhhj");
+
 
   const handleLogout = () => {
     dispatch(clearUser());
@@ -254,10 +256,10 @@ export const Header = ({ className, collapse, setCollapse }) => {
                       {user?.name
                         ? user.name.slice(0, 25) +
                         (user.name.length > 25 ? "..." : "")
-                        : "User Name"}
+                        : <></>}
                     </h5>
                     <p className="text-[9px] text-white">
-                      {user?.name ? user?.email : "Designation"}
+                      {user?.name ? user?.email : <></>}
                     </p>
                   </div>
                   <img src="/icons/header/down-arrow.svg" alt="" />
@@ -315,7 +317,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
           <div className="flex items-center gap-2">
             <div className="hidden sm:flex items-center gap-2">
               <Link v3={true} to={"/sign-in"}>
-                Sign in
+                Sign In
               </Link>
             </div>
             <button
@@ -375,7 +377,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
               ) : (
                 <div className="flex items-center gap-2">
                   <Link v3={true} className="w-fit" to={"/signin"}>
-                    Sign in
+                    Sign In
                   </Link>
                   <Link
                     v2={true}

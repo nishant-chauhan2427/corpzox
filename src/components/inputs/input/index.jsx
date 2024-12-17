@@ -52,7 +52,7 @@ export const Input = ({
   return (
     <div className={`${containerClassName} relative`}>
       <div className="w-full flex flex-col">
-        <div className="flex items-center relative">
+        <div className="flex items-center">
           {/* <label
             className={`${
               required &&
@@ -74,9 +74,9 @@ export const Input = ({
             {...props}
             className={`${className} ${
               errorContent && touched ? "border-error" : "border-[#D9D9D9]"
-            } w-full text-black placeholder:text-[#9A9A9A] placeholder:font-normal placeholder:text-sm p-3 bg-white disabled:bg-gray-200 focus:border- h-12 dark:text-white rounded-md shadow-sm block text-sm text-bee-black dark:text-bee-white bg-bee-paleGray dark:bg-bee-ebonyGem border-1 border-gray-300 appearance-none dark:border-bee-primary dark:focus:border-bee-primary focus:outline-none focus:border-bee-primary peer`}
+            } w-full text-black placeholder:text-[#9A9A9A] placeholder:font-normal placeholder:text-sm p-3 bg-white disabled:bg-gray-200 focus:border- h-12 dark:text-white  shadow-sm block text-sm text-bee-black dark:text-bee-white bg-bee-paleGray dark:bg-bee-ebonyGem border-1  appearance-none dark:border-bee-primary dark:focus:border-bee-primary focus:outline-none focus:border-bee-primary peer border-[#D9D9D9] border rounded-[10px] `}
             type={type === "password" ? passwordType : type}
-            placeholder={" "}
+            placeholder={""}
             value={value}
             onChange={handleChange}
             name={name}
@@ -100,7 +100,7 @@ export const Input = ({
             <button
               type="button"
               onClick={viewPassword}
-              className={`absolute top-1/2 -translate-y-1/2 right-4`}
+              className={`${errorContent ? "right-8" : "right-4"} absolute top-1/2 -translate-y-1/2`}
               // ${
               //   errorContent ? "right-10" : "right-4"
               // }
@@ -113,15 +113,21 @@ export const Input = ({
             </button>
           )}
           {errorContent && (
-        <p className="absolute top-[30%] right-2"><img src="/validation-icon.svg" alt="" /></p>
-      )}
+            <p className="absolute top-1/2 -translate-y-1/2 right-2">
+              <img src="/validation-icon.svg" alt="" />
+            </p>
+          )}
         </div>
       </div>
-      {errorContent && (
-        <div className="absolute -top-4 right-8 bg-[#F9F9F9] rounded-[3px] px-3 py-2 mb-3">
-          <p className=" text-[#FF3B3B] font-medium  text-[10px]">{errorContent}</p>
-        </div>
-      )}
+      <div className="h-1 mb-2">
+        {errorContent && (
+          <div className="absolute -top-4 right-8 bg-[#F9F9F9] rounded-[3px] px-3 py-2 mb-3">
+            <p className=" text-[#FF3B3B] font-medium  text-[10px]">
+              {errorContent}
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
