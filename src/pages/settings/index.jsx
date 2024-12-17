@@ -13,12 +13,12 @@ const Settings = () => {
     },
     {
       label: "Deactivate Account",
-      icon: "/icons/settings/lock.svg",
+      icon: "/icons/settings/deactivate.svg",
       url: "/settings/deactivate-account",
     },
     {
       label: "Subscription History",
-      icon: "/icons/settings/lock.svg",
+      icon: "/icons/settings/subscriptions.svg",
       url: "/settings/subscription-history",
     },
   ];
@@ -38,7 +38,7 @@ export default Settings;
 const Tabs = ({ tabs }) => {
   const { pathname } = useLocation();
   return (
-    <div className="py-2 flex flex-wrap items-center gap-4">
+    <div className="py-2 flex flex-wrap items-center gap-7">
       {tabs.map((data, index) => (
         <Link
           to={data.url}
