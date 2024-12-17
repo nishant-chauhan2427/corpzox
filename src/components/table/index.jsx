@@ -58,9 +58,9 @@ export const Table = ({ data, columns, isExpandable = true, actionMenu, isExpand
                               cell === "Under-Review" ||
                               cell === "Inactive" ||
                               cell === "Not leased"
-                            ? "bg-yellow-200 text-yellow-700"
+                            ? "bg-[#FFF4D4] text-yellow-700"
                             : cell === "PENDING"
-                            ? "bg-gray-200 text-gray-700"
+                            ? "bg-[#FFF4D4] text-[#FBBC05]"
                             : cell === "EXPIRED"
                             ? " bg-pink-200 text-pink-700"
                             : cell === "Vacant"

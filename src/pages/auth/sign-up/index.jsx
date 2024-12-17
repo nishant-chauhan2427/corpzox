@@ -16,10 +16,9 @@ import { Checkbox } from "../../../components/inputs/checkbox";
 import { ThemeSwitch } from "../../../components/theme/switch";
 import { AuthLayout } from "../../../components/layout/auth";
 import { PhoneNumberInput } from "../../../components/inputs/phoneInput";
-import { registerUser } from "../../../redux/actions/userAuth-action";
+import { registerUser, thirdPartyLogin } from "../../../redux/actions/userAuth-action";
 import toast from "react-hot-toast";
 import GoogleLogin from "react-google-login";
-
 export const Signup = () => {
   const {
     control,
@@ -35,8 +34,9 @@ export const Signup = () => {
     isRegistering = false,
     registeringError,
     registerMessage,
+    profile
   } = useSelector((state) => state.auth);
-
+  
   // Corrected handleBlur function
   const handleBlur = async (field) => {
     console.log("field", field);
@@ -84,11 +84,16 @@ export const Signup = () => {
       if (registeringError) {
         toast.error(registeringError);
       } else {
-        navigate("/verify");
+        if (profile?.source == "GOOGLE") {
+          navigate("/dashboard");
+        } else {
+          navigate("/verify");
+        }
       }
     }
-  }, [isRegistering]);
+  }, [isRegistering,profile]);
 
+  
   return (
     <>
       <MetaTitle title={"Sign Up"} />
@@ -201,6 +206,7 @@ export const Signup = () => {
                       cookiePolicy={"single_host_origin"}
                       scope="openid profile email"
                       render={(renderProps) => (
+                        
                         <button
                           onClick={renderProps.onClick}
                           disabled={renderProps.disabled}

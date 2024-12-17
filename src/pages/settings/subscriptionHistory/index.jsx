@@ -220,15 +220,15 @@ const Card = ({ number, label, description, onClick, loading }) => {
   return (
     <div
       onClick={onClick}
-      className="flex flex-col items-start gap-4 px-5 py-5 border border-[#DFEAF2] hover:bg-[#007AFF] hover:text-white transition-all duration-300 ease-in-out hover:transition-all hover:duration-300 hover:ease-in-out rounded-[25px] cursor-pointer"
+      className="flex flex-col items-start gap-4 px-5 py-5 border border-[#DFEAF2] hover:bg-[#007AFF] hover:text-white transition-all duration-300 ease-in-out hover:transition-all hover:duration-300 hover:ease-in-out rounded-[20px] cursor-pointer"
     >
-      {loading ? <ImSpinner2 className="animate-spin text-gray hover:text-white !text-xl" /> : <h2 className="font-bold text-4xl">{number}</h2>}
+      {loading ? <ImSpinner2 className="animate-spin text-gray hover:text-white !text-xl" /> : <h2 className="font-semibold text-3xl">{number}</h2>}
 
       <div>
-        <label className="font-bold text-lg">{label}</label>
+        <label className="font-semibold text-base">{label}</label>
         <p className="text-sm">{description}</p>
       </div>
-      {!loading && number > 0 && <button>View All</button>}
+      {!loading && number > 0 && <button className="text-sm">View All</button>}
     </div>
   );
 };

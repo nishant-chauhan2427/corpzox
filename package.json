@@ -33,6 +33,7 @@
     "react-router-dom": "^6.27.0",
     "react-select": "^5.8.3",
     "react-step-progress-bar": "^1.0.3",
+    "react-to-print": "^3.0.2",
     "react-tooltip": "^5.28.0",
     "redux": "^5.0.1",
     "redux-devtools-extension": "^2.13.9",
