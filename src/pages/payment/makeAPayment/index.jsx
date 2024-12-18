@@ -37,7 +37,7 @@ const MakeAPayment = () => {
   const navigate = useNavigate()
 
   const [currentStep, setCurrentStep] = useState(0);
-  const { success, offerPrice,couponDiscount, serviceDetailLoading, finalPrice, isCouponVerifiedLoading, quotationDetails, cost, originalPrice, appliedCoupons, coupons, availServiceData, isServiceAvailing, totalSavings, serviceCost, serviceCharge } = useSelector((state) => state.serviceDetails);
+  const { success, offerPrice, couponDiscount, serviceDetailLoading, isOfferRemoved, finalPrice, isCouponVerifiedLoading, quotationDetails, cost, originalPrice, appliedCoupons, coupons, availServiceData, isServiceAvailing, totalSavings, serviceCost, serviceCharge } = useSelector((state) => state.serviceDetails);
   useEffect(() => {
     // PASS DYNAMIC ID HERE
     dispatch(getServiceDetails({ serviceId: serviceId }));
@@ -78,7 +78,7 @@ const MakeAPayment = () => {
     setShowAddIcon(!showAddIcon);
   };
 
-  
+
   const PaymentTabs = [
     { id: "Card", icon: "/icons/payment/debit.svg", label: "Card" },
     { id: "UPI", icon: "/icons/payment/upi.svg", label: "UPI" },
@@ -94,17 +94,38 @@ const MakeAPayment = () => {
     // if(isServiceAvailing === false){
     //   onConfirmationModalClose()
     // }
-    let userData  = {}
-  if(type === "subscription"){
-
-     userData = { ...availServiceData, amount : finalPrice, totalCouponDiscount : (couponDiscount || 0) + (offerPrice || 0), subscriptionDetails:subscriptionData }
-  }else{
-    userData = { ...availServiceData, amount : finalPrice, totalCouponDiscount : (couponDiscount || 0) + (offerPrice || 0) }
-  }
+    let userData = {}
+    if (type === "subscription") {
+      let totalCouponDiscount = 0
+      if (isOfferRemoved) {
+        totalCouponDiscount = offerPrice - couponDiscount;
+      } else {
+        (couponDiscount || 0) + offerPrice
+      }
+      userData = {
+        ...availServiceData, amount: finalPrice,
+        totalCouponDiscount: Math.abs(totalCouponDiscount),
+        subscriptionDetails: subscriptionData
+      }
+    } else if (type === "quotation") {
+      userData = { ...availServiceData, amount: finalPrice, totalCouponDiscount: 0 }
+    } else if (type === "regular") {
+      let totalCouponDiscount = 0
+      if (isOfferRemoved) {
+        totalCouponDiscount = offerPrice - couponDiscount;
+      } else {
+        couponDiscount + offerPrice
+      }
+      userData = {
+        ...availServiceData, amount: finalPrice,
+        totalCouponDiscount: Math.abs(totalCouponDiscount),
+        subscriptionDetails: subscriptionData
+      }
+    }
 
     console.log("userdata", userData);
 
-    dispatch(availService({ userData, navigate }))
+    // dispatch(availService({ userData, navigate }))
   }
 
   const onConfirmationModalClose = () => {
@@ -114,7 +135,7 @@ const MakeAPayment = () => {
     setFailureModal(!failureModal);
   };
 
-  const closeModal =()=>{
+  const closeModal = () => {
     setModalOpen(false)
   }
   useEffect(() => {
@@ -133,7 +154,7 @@ const MakeAPayment = () => {
       console.log(pricingData, "subscription data");
       setSubscriptionData(pricingData.subscription)
       dispatch(setAppliedOffer({ offerPrice: pricingData.discountAmount, finalPrice: pricingData.finalPrice }))
-      if(success.offerservices[0]?.offers){
+      if (success.offerservices[0]?.offers) {
         dispatch(updateOfferDetails(pricingData.offerDetails))
       }
     }
@@ -155,7 +176,7 @@ const MakeAPayment = () => {
       const pricingData = calculateFinalPriceByType(success, type, null);
       console.log(pricingData, "pricingData for cost regular");
       dispatch(setAppliedOffer({ offerPrice: pricingData.discountAmount, finalPrice: pricingData.finalPrice }));
-      if(success.offerservices[0]?.offers){
+      if (success.offerservices[0]?.offers) {
         dispatch(updateOfferDetails(pricingData.offerDetails))
       }
     }
@@ -295,7 +316,7 @@ const MakeAPayment = () => {
                             className="flex flex-row  sm:flex-row gap-4 bg-white m-4 rounded-sm"
                           >
                             <p className="text-xl text-center flex justify-cener items-center px-3 py-2 font-semibold bg-[#007AFF26] text-[#272727]">
-                               {data.off} %
+                              {data.off} %
                             </p>
                             <div className="py-3 flex flex-col gap-1">
                               <p className="font-medium text-[#080808] text-lg">
@@ -309,7 +330,7 @@ const MakeAPayment = () => {
                               </Link> */}
                             </div>
                             <div className="flex flex-col gap-1 text-center items-center px-2 justify-center">
-                              {isCouponVerifiedLoading ?(<ImSpinner2 className="animate-spin text-gray hover:text-white !text-xl" />) :(<Button
+                              {isCouponVerifiedLoading ? (<ImSpinner2 className="animate-spin text-gray hover:text-white !text-xl" />) : (<Button
                                 primary={true}
                                 isLoading={isServiceAvailing}
                                 onClick={() => handleApplyCoupon({ id: data.id, offerCost: data.off, title: data.title })}

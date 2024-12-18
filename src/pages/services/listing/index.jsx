@@ -29,6 +29,8 @@ import { updateServiveProgress } from "../../../redux/actions/dashboard-action";
 import { NoData } from "../../../components/errors/noData";
 import { ImSpinner2 } from "react-icons/im";
 import { MetaTitle } from "../../../components/metaTitle";
+import { CategorySubCategoryTabLoader } from "../../../components/loader/CategorySubCategoryTabLoader";
+import { BusinessCardShimmer } from "../../../components/loader/ProfileShimmer";
 const ServicesListing = () => {
   const dispatch = useDispatch();
   const { servicesMainTab } = useSelector((state) => state.app);
@@ -37,56 +39,97 @@ const ServicesListing = () => {
     (state) => state.service
   );
 
-  console.log(subCategory, "subCategory");
   const [searchParams, setSearchParams] = useSearchParams();
+  const categoryId = searchParams.get("categoryId");
+  const subCategoryId = searchParams.get("subCategoryId");
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const searchValue = queryParams.get("search");
   const [isSubmit, setIsSubmit] = useState(false);
+  const [isServicesFetched, setIsServicesFetched] = useState(false);
   useEffect(() => {
-    dispatch(resetService({}));
+    // dispatch(resetService({}));
     category?.list && category?.list?.length === 0 && dispatch(getUserServicesCatagory({}));
 
   }, []);
+
   // useEffect(() => {
-  //   const categoryId = searchParams.get("categoryId");
   //   if (categoryId) {
   //     dispatch(
   //       getUserServicesSubCatagory({
-  //         // categoryId: category?.selectedCategory?.categoryId ? category?.selectedCategory?.categoryId : categoryId,
-  //         categoryId: categoryId ? category : category?.selectedCategory?.categoryId,
+  //         categoryId: categoryId, // Use categoryId directly from searchParams
   //       })
   //     );
   //   }
-  // }, [searchParams]);
-  useEffect(() => {
-    const categoryId = searchParams.get("categoryId");
-    if (categoryId)
-     {
-      dispatch(
-        getUserServicesSubCatagory({
-          categoryId: categoryId, // Use categoryId directly from searchParams
-        })
-      );
-    }
-  }, [searchParams]);
+  // }, [categoryId]);
+
+  // useEffect(() => {
+  //   const search = searchParams.get("search")
+  //   // if (categoryId || subCategoryId) {
+  //   // }
+  //   !subCategory?.subCategoryLoading && dispatch(
+  //     getUserServices({
+  //       categoryId: categoryId,
+  //       subCategoryId: subCategoryId,
+  //       page,
+  //       limit,
+  //       query: search ? search : searchValue,
+  //     })
+  //   );
+  // }, [categoryId, subCategoryId,subCategory?.subCategoryLoading,  searchValue]);
 
   useEffect(() => {
-    const categoryId = searchParams.get("categoryId");
-    const subCategoryId = searchParams.get("subCategoryId");
-    const search = searchParams.get("search")
-    if (category?.selectedCategory && subCategory?.selectedSubCategory || categoryId) {
+    if (categoryId) {
+      dispatch(getUserServicesSubCatagory({ categoryId }));
     }
-    dispatch(
-      getUserServices({
-        categoryId: category?.selectedCategory?._id ? category?.selectedCategory?._id : categoryId,
-        subCategoryId: subCategoryId,
-        page,
-        limit,
-        query: search ? search : searchValue,
-      })
-    );
-  }, [ searchParams, searchValue]);
+  }, [categoryId]);
+
+  // Fetch user services only after subcategories are fetched or when changing category/subcategory
+  // useEffect(() => {
+  //   if (
+  //     categoryId && 
+  //     !subCategory?.subCategoryLoading && 
+  //     !loading && 
+  //     !isServicesFetched
+  //   ) {
+  //     const search = searchParams.get("search");
+  //     dispatch(
+  //       getUserServices({
+  //         categoryId,
+  //         subCategoryId,
+  //         page,
+  //         limit,
+  //         query: search || searchValue,
+  //       })
+  //     );
+  //     setIsServicesFetched(true);
+  //   }
+  // }, [categoryId, subCategoryId, subCategory?.subCategoryLoading, searchValue]);
+  useEffect(() => {
+    if (
+      categoryId &&
+      subCategoryId &&
+      !subCategory?.subCategoryLoading &&
+      !loading &&
+      !isServicesFetched
+    ) {
+      const search = searchParams.get("search");
+      dispatch(
+        getUserServices({
+          categoryId,
+          subCategoryId,
+          page,
+          limit,
+          query: search || searchValue,
+        })
+      );
+      setIsServicesFetched(true);
+    }
+  }, [categoryId, subCategoryId, subCategory?.subCategoryLoading, searchValue, isServicesFetched]);
+
+  useEffect(() => {
+    setIsServicesFetched(false);
+  }, [categoryId, subCategoryId]);
 
   useEffect(() => {
     if (isSubmit && !wishList?.loading) {
@@ -107,38 +150,32 @@ const ServicesListing = () => {
   };
 
 
-//  let onClickAddWishlistHandler = () => {
-//     const wishlistSelectedData=wishList?.list?.map(item => item._id);
-//     dispatch(updateServiceQuickWishlist({ serviceIdArray: wishlistSelectedData }));
-//     toast.success("Wishlist Created")
-//   };
-//   let onChangeSelectAllHandler = () => {
-//     dispatch(onChangeSelectAll());
-//     // document.getElementsByClassName('service-checkbox').forEach(element => {
+  //  let onClickAddWishlistHandler = () => {
+  //     const wishlistSelectedData=wishList?.list?.map(item => item._id);
+  //     dispatch(updateServiceQuickWishlist({ serviceIdArray: wishlistSelectedData }));
+  //     toast.success("Wishlist Created")
+  //   };
+  //   let onChangeSelectAllHandler = () => {
+  //     dispatch(onChangeSelectAll());
+  //     // document.getElementsByClassName('service-checkbox').forEach(element => {
 
-//     // });
-//   };
-  
-  
+  //     // });
+  //   }; 
+
   return (
     <section className="flex sm:flex-row flex-col gap-4 sm:pt-6 pt-3 bg-white">
-      <div className="flex justify-center flex-col overflow-hidden">
-      <MetaTitle title={"Service"} />
-        <MainTab />
-        <Filtertab />
-        <>
-          {/* {list.length != 0 && (
-            <SelectAllTabs
-              onChangeSelectAllHandler={onChangeSelectAllHandler}
-              onClickAddWishlistHandler={onClickAddWishlistHandler}
-              
-            />
-          )} */}
-          {loading ? (
-          <div className="flex justify-center items-center h-full">
-          <ImSpinner2 className="animate-spin text-gray-700 text-xl" />
+      <div className="w-full flex justify-center flex-col overflow-hidden">
+        <MetaTitle title={"Service"} />
+        <div className="w-full mb-4">
+          {category.categoryLoading ? <CategorySubCategoryTabLoader /> : <MainTab />}
+          {subCategory?.subCategoryLoading ? <CategorySubCategoryTabLoader /> : <Filtertab />}
         </div>
-        
+        <>
+          {loading ? (
+            <div className="flex justify-center items-center h-full">
+              <BusinessCardShimmer />
+            </div>
+
           ) : (
 
             list && list.length > 0 ? (
