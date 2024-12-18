@@ -41,8 +41,8 @@ const serviceDetailSlice = createSlice({
     finalPrice: 0,
     appliedOfferArray: [],
     appliedOffer: 0,
-    priceBeforeCoupanAplled: 0, 
-    isOfferRemoved : false,
+    priceBeforeCoupanAplled: 0,
+    isOfferRemoved: false,
   },
   reducers: {
     clearState: (state) => {
@@ -61,14 +61,30 @@ const serviceDetailSlice = createSlice({
     setAppliedOffer: (state, action) => {
       state.finalPrice = action.payload.finalPrice;
       state.offerPrice = action.payload.offerPrice;
+      console.log(action.payload, "offer detail")
+      if (action.payload.offerPrice) {
+        state.totalCouponDiscount += action.payload.offerPrice
+        state.availServiceData = {
+          ...state.availServiceData,
+          totalCouponDiscount: action.payload.offerPrice
+        }
+      } else {
+        state.availServiceData = {
+          ...state.availServiceData,
+          totalCouponDiscount: 0
+        }
+      }
     },
     updateOfferDetails: (state, action) => {
       state.offerDetails = action.payload;
 
+      console.log(action.payload, "data for offer")
+      console.log(JSON.parse(JSON.stringify(state.appliedOfferArray, "data for offer")))
+      console.log(current(state.appliedOfferArray), "data for offer")
       const existingOfferIndex = state.appliedOfferArray.findIndex(
         (coupon) => coupon.offerId === action.payload.offerId // Assuming each offer has a unique `id`
       );
-
+      console.log(existingOfferIndex, "existingOfferIndex")
       if (existingOfferIndex !== -1) {
         // Update the existing offer
         state.appliedOfferArray[existingOfferIndex] = {
@@ -78,6 +94,11 @@ const serviceDetailSlice = createSlice({
       } else {
         // Add the new offer
         state.appliedOfferArray.push(action.payload);
+        console.log(current(state.appliedOfferArray), "data for offer")
+      }
+      state.availServiceData = {
+        ...state.availServiceData,
+        appliedCoupan : state.appliedOfferArray
       }
     },
     addCoupons: (state, action) => {
@@ -130,7 +151,6 @@ const serviceDetailSlice = createSlice({
 
       console.log(couponDiscount, "couponDiscount")
       // Get the price after the offer was applied using the calculateFinalPrice function
-      // const finalPriceAfterOffer = calculateFinalPrice([state.success], localStorage.getItem("subscriptionId"), state);
 
       // Check if the final price after offer is valid
       let newFinalPrice = state.finalPrice + couponDiscount;  // Reverting the effect of the coupon
@@ -140,10 +160,10 @@ const serviceDetailSlice = createSlice({
 
       // Update total savings after removing the coupon
       state.totalSavings -= couponDiscount;
-       // Subtract the coupon discount
+      // Subtract the coupon discount
       let newcoupanDiscount = state.totalCouponDiscount - couponDiscount
       console.log(newcoupanDiscount, "newcoupanDiscount")
-      state.totalCouponDiscount  = state.offerPrice
+      state.totalCouponDiscount = state.offerPrice
       console.log(`Removed coupon with id ${id}. Discount of ${couponDiscount} removed. New cost: ${state.cost}`);
       const foundCoupon = state?.appliedOfferArray?.find(
         (coupon) => coupon.couponId === id
@@ -170,7 +190,7 @@ const serviceDetailSlice = createSlice({
       state.availServiceData = {
         ...state.availServiceData,
         appliedCoupan: JSON.parse(JSON.stringify(arrayToManipulate)),
-        totalCouponDiscount : newPricetosend
+        totalCouponDiscount: newPricetosend
       };
 
       console.log(JSON.parse(JSON.stringify(state.availServiceData)), "removed")
@@ -231,17 +251,6 @@ const serviceDetailSlice = createSlice({
         }
 
         console.log(action.payload, "acion pa")
-        // Calculate the final price using the reusable function
-        // const finalPrice = calculateFinalPrice(
-        //   [action.payload], // Wrap payload in an array to match function expectations
-        //   localStorage.getItem("subscriptionId"),
-        //   state // Use the first subscription ID or adjust as needed
-        // );
-
-        // console.log(finalPrice, "finalPricefinalPrice")
-        // if (finalPrice) {
-        //   state.cost = parseFloat(finalPrice); // Update state cost with final price
-        // }
 
         console.log("finalDaaa", JSON.parse(JSON.stringify(state.appliedOfferArray)))
 
@@ -258,7 +267,7 @@ const serviceDetailSlice = createSlice({
           // totalCouponDiscount: state.totalCouponDiscount,
           duration: selectedSubscription ? selectedSubscription.duration : action.payload.duration,
           amount: state.cost,
-          appliedCoupan: JSON.parse(JSON.stringify(state.appliedOfferArray)),
+          // appliedCoupan: state.appliedOfferArray,
           paymentMode: "Net Banking",
           paymentStatus: "PENDING",
           paymentDate: Date.now(),
@@ -419,7 +428,7 @@ const serviceDetailSlice = createSlice({
         state.availServiceData = {
           ...state.availServiceData,
           amount: state.cost,
-          totalCouponDiscount: discount + (state.totalCouponDiscount || 0), // Safeguard against undefined
+          totalCouponDiscount: discount + (state.totalCouponDiscount), // Safeguard against undefined
         };
 
         // state.totalCouponDiscount += discount
@@ -504,94 +513,6 @@ const serviceDetailSlice = createSlice({
       })
   },
 });
-
-function calculateFinalPrice(data, subscriptionId, state) {
-  console.log(data, "from function");
-  let finalPrice = data[0]?.cost;
-  console.log(finalPrice, "cost from data");
-
-  // Check if data is available
-  if (!data || !data.length) {
-    console.error("Invalid data");
-  }
-
-  // Find the subscription based on the provided subscriptionId
-  const subscription = data[0]?.subscription?.find(
-    (sub) => sub._id === subscriptionId
-  );
-  if (!subscription) {
-    console.error("Subscription ID not found");
-  }
-
-  console.log("dataoffer", data);
-  finalPrice = subscription?.amount;
-
-  let offerDetails = {};
-
-  // Update final price if cost exists
-  if (data[0]?.cost) {
-    finalPrice = data[0]?.cost; // Ensure you get the `cost` from the correct location
-  }
-
-  // Find any offers for the service
-  const offer = data[0]?.offerservices?.[0]?.offers?.[0];
-  let discountAmount = 0;
-
-  if (offer) {
-    console.log("finalPricedaa", offer);
-
-    // Apply discount percentage if available
-    if (offer.discountPercent) {
-      discountAmount = finalPrice * (offer.discountPercent / 100);
-      finalPrice -= discountAmount; // Apply discount
-      console.log("finalPricedaa", finalPrice);
-
-    }
-
-    // Apply direct discount amount if available
-    if (offer.discountPrice) {
-      finalPrice -= offer.discountPrice;
-    }
-
-    // Create offer details
-    offerDetails = {
-      discountPercent: offer.discountPercent,
-      offerId: offer._id, // Assuming offer has an _id
-      discountType: offer.discountPercent ? "percentage" : "direct",
-      usage: "Multi Use",
-      amount: discountAmount,
-    };
-  }
-
-  // Prevent duplicate offers
-  const foundOffer = state?.appliedOfferArray?.find(
-    (offer) => offer.offerId === offerDetails.offerId
-  );
-
-  console.log(foundOffer, "foundOffer");
-
-  if (foundOffer) {
-    console.log("Offer already exists. Do not add.");
-  } else if (offerDetails?.offerId) {
-    console.log("Offer not found. Adding new offer.");
-    state.appliedOfferArray.push(offerDetails); // Add offer to the state
-  }
-
-  // Save offer details to the appliedCoupanArray and state
-  state.appliedCoupanArray = state.appliedCoupanArray
-  // state.appliedCoupanArray.push(offerDetails);
-  state.offerDetails = offerDetails;
-
-  // Save the final price to localStorage
-  localStorage.setItem("finalPrice", finalPrice?.toFixed(2)); // Save with 2 decimal places for precision
-  console.log(`Final price calculated and saved: ${finalPrice?.toFixed(2)}`);
-  return finalPrice?.toFixed(2);
-}
-
-// Example Usage:
-const serviceData = {
-  data: [ /* Paste your JSON data here */]
-};
 
 export const { clearState, addCoupons, updateOfferDetails, removeCoupon, setAppliedOffer, stePaymentDetails } = serviceDetailSlice.actions;
 export default serviceDetailSlice.reducer;
