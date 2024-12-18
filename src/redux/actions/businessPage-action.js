@@ -4,7 +4,7 @@ import client from "../axios-baseurl";
 export const getAllBusiness = createAsyncThunk("getAllBusiness", async ({ page=1, sort_by = 'date_asc', query }, { rejectWithValue }) => {
 
     try {
-        console.log("business-page action:getAllBusiness");
+        // console.log("business-page action:getAllBusiness");
       let params = new URLSearchParams();
       if (page) params.append('page', page);
       if (sort_by) params.append('sort_by', sort_by);
@@ -17,7 +17,7 @@ export const getAllBusiness = createAsyncThunk("getAllBusiness", async ({ page=1
         },
       });
 
-      console.log("response.data",response.data);
+      // console.log("response.data",response.data);
       
       if (response?.data?.code == 200 || response?.data?.code == 201) {
         return response.data;
@@ -28,10 +28,10 @@ export const getAllBusiness = createAsyncThunk("getAllBusiness", async ({ page=1
       return rejectWithValue(error?.response?.data?.message || error?.message);
     }
   });
-export const getMoreBusiness = createAsyncThunk("getMoreBusiness", async ({ page, sort_by = 'date_desc', query }, { rejectWithValue }) => {
+export const getMoreBusiness = createAsyncThunk("getMoreBusiness", async ({ page, sort_by = 'date_asc', query }, { rejectWithValue }) => {
 
     try {
-        console.log("business-page action:getMoreBusiness , page",page);
+        // console.log("business-page action:getMoreBusiness , page",page);
       let params = new URLSearchParams();
       if (page) params.append('page', page);
       if (sort_by) params.append('sort_by', sort_by);
@@ -44,7 +44,7 @@ export const getMoreBusiness = createAsyncThunk("getMoreBusiness", async ({ page
         },
       });
 
-      console.log("response.data",response.data);
+      // console.log("response.data",response.data);
       
       if (response?.data?.code == 200 || response?.data?.code == 201) {
         return response.data;

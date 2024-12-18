@@ -142,15 +142,19 @@ const businessSlice = createSlice({
 
       builder.addCase(registrationDetails.pending, (state,action)=>{
           // console.log("registrationDetails.pending",action.payload);
+          state.loading = true;
           
       }).addCase( registrationDetails.rejected, (state,action)=>{
         // console.log("registrationDetails.rejected",action.payload);
+        state.loading = false;
+        toast.error("Registration details not saved")
         
 
       }).addCase( registrationDetails.fulfilled, (state,action)=>{
         // console.log("registrationDetails.fulfilled",action.payload);
         state.businessId = action.payload?.businessId;
         state.business.registration = action.payload?.data;
+        state.loading = false;
         toast.success("Registration details saved")
       })
 
@@ -158,13 +162,17 @@ const businessSlice = createSlice({
 
       builder.addCase(updateRegistrationDetails.pending, (state,action)=>{
           // console.log("updateRegistrationDetails.pending",action.payload);
+          state.loading = true;
           
       }).addCase( updateRegistrationDetails.rejected, (state,action)=>{
         // console.log("updateRegistrationDetails.rejected",action.payload);
+        toast.error("Registration details not saved")
+        state.loading = false;
         
 
       }).addCase( updateRegistrationDetails.fulfilled, (state,action)=>{
         // console.log("updateRegistrationDetails.fulfilled",action.payload?.data);
+        state.loading = false;
         state.business.registration = action.payload?.data;
         toast.success("Registration details saved")
       })
@@ -172,57 +180,69 @@ const businessSlice = createSlice({
 
       builder.addCase(updateAddressDetails.pending, (state,action)=>{
           // console.log("updateAddressDetails.pending",action.payload);
+          state.loading = true;
           
       }).addCase( updateAddressDetails.rejected, (state,action)=>{
         // console.log("updateAddressDetails.rejected",action.payload);
-        
+        toast.error("Address details not saved")
+        state.loading = false;
 
       }).addCase( updateAddressDetails.fulfilled, (state,action)=>{
         // console.log("updateAddressDetails.fulfilled",action.payload?.data);
         state.business.address = action.payload?.data;
+        state.loading = false;
         toast.success("Address details saved")
       })
 
 
       builder.addCase(updateFinancialDetails.pending, (state,action)=>{
           // console.log("updateFinancialDetails.pending",action.payload);
+          state.loading = true;
           
       }).addCase( updateFinancialDetails.rejected, (state,action)=>{
         // console.log("updateFinancialDetails.rejected",action.payload);
-        
+        toast.error("Financial details not saved")
+        state.loading = false;
 
       }).addCase( updateFinancialDetails.fulfilled, (state,action)=>{
         // console.log("updateFinancialDetails.fulfilled",action.payload?.data);
         state.business.financial = action.payload?.data;
+        state.loading = false;
         toast.success("Financial details saved")
       })
 
 
       builder.addCase(updateKYCDetails.pending, (state,action)=>{
           // console.log("updateKYCDetails.pending",action.payload);
+          state.loading = true;
           
       }).addCase( updateKYCDetails.rejected, (state,action)=>{
         // console.log("updateKYCDetails.rejected",action.payload);
-        
+        toast.error("KYC details not saved")
+        state.loading = false;
 
       }).addCase( updateKYCDetails.fulfilled, (state,action)=>{
         // console.log("updateKYCDetails.fulfilled",action.payload?.data);
         state.business.kyc = action.payload?.data;
+        state.loading = false;
         toast.success("KYC details saved")
       })
 
 
       builder.addCase(updateFundingDetails.pending, (state,action)=>{
           // console.log("updateKupdateFundingDetailsYCDetails.pending",action.payload);
+          state.loading = true;
           
       }).addCase( updateFundingDetails.rejected, (state,action)=>{
         // console.log("updateFundingDetails.rejected",action.payload);
-        
+        toast.error("Funding details not saved")
+        state.loading = false;
 
       }).addCase( updateFundingDetails.fulfilled, (state,action)=>{
         // console.log("updateFundingDetails.fulfilled",action.payload?.data);
 
         state.business.funding = action.payload?.data;
+        state.loading = false;
         toast.success("Funding details saved")
       })
   }

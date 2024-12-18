@@ -9,17 +9,17 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { MdOutlineHorizontalRule } from "react-icons/md";
 import { FaFacebookSquare, FaGoogle, FaInstagramSquare } from "react-icons/fa";
 import { DualHeadingTwo } from "../components/dualHeading/dualHeadingTwo";
-import { useEffect, useState } from "react";
+import { useRef,useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import ReCAPTCHA from "react-google-recaptcha";
 import { setUser } from "../../../redux/slices/userLoginSlice";
 import { Checkbox } from "../../../components/inputs/checkbox";
 import { ThemeSwitch } from "../../../components/theme/switch";
 import { AuthLayout } from "../../../components/layout/auth";
 import { PhoneNumberInput } from "../../../components/inputs/phoneInput";
-import { registerUser } from "../../../redux/actions/userAuth-action";
+import { registerUser, thirdPartyLogin } from "../../../redux/actions/userAuth-action";
 import toast from "react-hot-toast";
 import GoogleLogin from "react-google-login";
-
 export const Signup = () => {
   const {
     control,
@@ -30,13 +30,15 @@ export const Signup = () => {
     resolver: yupResolver(signUpValidationSchema),
     mode: "onChange",
   });
-
+  const recaptchaRef = useRef(null);
+  const RECAPTCHA_SITE_KEY = "6LemSE0qAAAAADhn4nN770nVLBJxAGRz_LoFXP6h";
   const {
     isRegistering = false,
     registeringError,
     registerMessage,
+    profile
   } = useSelector((state) => state.auth);
-
+  
   // Corrected handleBlur function
   const handleBlur = async (field) => {
     console.log("field", field);
@@ -59,7 +61,7 @@ export const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     setIsSubmit(true);
     if (data?.phone) {
       data.countryCode = `+${data.phone.toString().slice(0, 2)}`;
@@ -68,14 +70,25 @@ export const Signup = () => {
     console.log(data);
     // Reset error message
     setError("");
+
+    // const token = await recaptchaRef.current.executeAsync().then((res) => {
+    //   console.log("check response ", res);
+    //   data = { ...data, recaptchaToken: res, userType: "end_user" };
+    //   console.log(data, "data from form");
+    //   dispatch(loginUser(data));
+    // });
+    const token = await recaptchaRef.current.executeAsync().then((res) => {
     const userData = {
       ...data,
+      
       firstName: data.full,
+      recaptchaToken: res
     };
     delete userData.full;
     dispatch(registerUser(userData));
     // dispatch(registerUser(data));
     console.log(data, "user data");
+  })
   };
 
   useEffect(() => {
@@ -84,11 +97,16 @@ export const Signup = () => {
       if (registeringError) {
         toast.error(registeringError);
       } else {
-        navigate("/verify");
+        if (profile?.source == "GOOGLE") {
+          navigate("/dashboard");
+        } else {
+          navigate("/verify");
+        }
       }
     }
-  }, [isRegistering]);
+  }, [isRegistering,profile]);
 
+  
   return (
     <>
       <MetaTitle title={"Sign Up"} />
@@ -171,6 +189,14 @@ export const Signup = () => {
                     />
                   )}
                 />
+
+<ReCAPTCHA
+                ref={recaptchaRef}
+                size="invisible"
+                sitekey={RECAPTCHA_SITE_KEY}
+              />
+
+                
               </div>
 
               <div className="flex flex-col gap-4 sm:pt-4">
@@ -201,6 +227,7 @@ export const Signup = () => {
                       cookiePolicy={"single_host_origin"}
                       scope="openid profile email"
                       render={(renderProps) => (
+                        
                         <button
                           onClick={renderProps.onClick}
                           disabled={renderProps.disabled}

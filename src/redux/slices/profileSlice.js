@@ -7,6 +7,7 @@ const profileSlice = createSlice({
   initialState: {
     loading: false,
     isloading: false,
+    isUpdatingImage: false,
     error: null,
     success: null,
     upload: null,
@@ -43,18 +44,21 @@ const profileSlice = createSlice({
 
       .addCase(updateProfilePicture.pending, (state) => {  
         state.error = null;
-        state.isloading = true;
+        //state.isloading = true;
+        state.isUpdatingImage = true;
         state.upload  = null;
       })
       .addCase(updateProfilePicture.fulfilled, (state, action) => {
         state.upload = action.payload?.data?.url;
-        state.isloading = false;
+        //state.isloading = false;
+        state.isUpdatingImage = false;
         //console.log(action.payload?.data?.url,"upload");
         state.error = null;
       })
       .addCase(updateProfilePicture.rejected, (state, action) => {
         state.error = action.payload;
-        state.isloading = false;
+        //state.isloading = false;
+        state.isUpdatingImage = false;
         state.upload = null;
       
       })

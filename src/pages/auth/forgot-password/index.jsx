@@ -5,16 +5,19 @@ import { Controller, useForm } from "react-hook-form";
 import { AuthLayout } from "../../../components/layout/auth";
 import { DualHeadingTwo } from "../components/dualHeading/dualHeadingTwo";
 import { MetaTitle } from "../../../components/metaTitle";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { forgotPasswordSchema } from "../../../validation/authValidatiorSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { resendOtp, verifyUser } from "../../../redux/actions/userAuth-action";
+import { resendOtp, thirdPartyLogin, verifyUser } from "../../../redux/actions/userAuth-action";
 import toast from "react-hot-toast";
 //  import {updateProfile} from '../../../redux/slices/userAuth-slice';
 import { useNavigate } from "react-router-dom";
 import GoogleLogin from "react-google-login";
 export const ForgotPassword = () => {
+  const location = useLocation();
+  const emailOrPhone = location.state?.email;
+  console.log("Email or Phone :", emailOrPhone);
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [timer, setTimer] = useState(30);
   const [isResendDisabled, setIsResendDisabled] = useState(true);
@@ -39,18 +42,24 @@ export const ForgotPassword = () => {
     resendingOtp,
     profile,
   } = useSelector((state) => state.auth);
-
+console.log(profile,123456789);
   const [otpMessage, setOtpMessage] = useState("");
+ 
+  // useEffect(() => {
+  //   if (profile?.[0]) {
+  //     if (profile?.[0]?.email) {
+  //       setValue("email", profile[0]?.email);  // Automatically set email if profile exists
+  //     }
+  //     if (profile[0]?.phone) {
+  //       setValue("phone", profile?.[0]?.phone);  // Automatically set phone if profile exists
+  //     }
+  //   }
+  // }, [profile, setValue]);
   useEffect(() => {
-    if (profile?.[0]) {
-      if (profile?.[0]?.email) {
-        setValue("email", profile[0]?.email);  // Automatically set email if profile exists
-      }
-      if (profile[0]?.phone) {
-        setValue("phone", profile?.[0]?.phone);  // Automatically set phone if profile exists
-      }
+    if (emailOrPhone) {
+      setValue("email", emailOrPhone); // Set the email in the form if passed
     }
-  }, [profile, setValue]);
+  }, [emailOrPhone, setValue]);
   
   useEffect(() => {
     if (isOtpScreen && inputRefs.current[0]) {
@@ -292,7 +301,7 @@ export const ForgotPassword = () => {
                   className={
                     "mt-2 py-3 w-full rounded-lg  text-[#0A1C40] font-semibold !border-none "
                   }
-                  disabled={!isValid}
+                  //disabled={!isValid}
                   isLoading={resendingOtp}
                 >
                   Continue

@@ -146,7 +146,6 @@ const ChangePassword = () => {
         <p className="text-sm pt-2 text-[#4E4E4E]">
           Change your password to keep account secure.
         </p>
-        
         <form onSubmit={handleSubmit(onSubmit)} className="w-full">
           <div className="mt-4 w-full md:w-[50%] flex flex-col gap-4">
             <Controller
@@ -197,10 +196,10 @@ const ChangePassword = () => {
                 />
               )}
             />
-            <div className="flex justify-start items-center gap-3">
+            <div className="  flex justify-start items-center gap-3 mt-14">
               <Button
                 type={"submit"}
-                className={"px-4 py-1.5 rounded-lg"}
+                className={"px-10 py-1.5 rounded-lg"}
                 primary={true}
                 isLoading={isPasswordChanging}
                 disabled={!isValid}

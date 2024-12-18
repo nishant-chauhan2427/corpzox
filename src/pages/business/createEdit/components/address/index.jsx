@@ -8,7 +8,6 @@
 // export const AddressDetails = () => {
 //   const { business } = useSelector((state) => state.business);
 
-
 //   const {
 //     handleSubmit,
 //     control,
@@ -39,8 +38,6 @@
 //   //     setValue("address.communicationAddressState", business?.address?.communicationAddressState || "");
 //   //   }
 //   // }, [business, setValue]);
-
-
 
 //   const cityOption = [
 //     { label: "Noida", value: 1 },
@@ -306,20 +303,6 @@
 //   );
 // };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Controller, useForm } from "react-hook-form";
@@ -328,17 +311,20 @@ import { Selector } from "../../../../../components/select";
 import { PhoneNumberInput } from "../../../../../components/inputs/phoneInput";
 import { Button } from "../../../../../components/buttons";
 import { useNavigate } from "react-router-dom";
-import { updateAddressDetails, updateRegistrationDetails } from "../../../../../redux/actions/business-action";
+import {
+  updateAddressDetails,
+  updateRegistrationDetails,
+} from "../../../../../redux/actions/business-action";
 import { addressSchema } from "../../../../../validation/createBusinessValidationSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Checkbox } from "../../../../../components/inputs/checkbox";
 
 export const AddressDetails = ({ isEdit }) => {
-  const { business, businessId } = useSelector((state) => state.business);
+  const { business, businessId, loading } = useSelector(
+    (state) => state.business
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-
-
 
   const {
     handleSubmit,
@@ -354,7 +340,6 @@ export const AddressDetails = ({ isEdit }) => {
     defaultValues: business || {},
     resolver: yupResolver(addressSchema), // Apply the validation schema here
   });
-
 
   // useEffect(() => {
   //   if (business) {
@@ -372,8 +357,6 @@ export const AddressDetails = ({ isEdit }) => {
   //     setValue("address.communicationAddressState", business?.address?.communicationAddressState || "");
   //   }
   // }, [business, setValue]);
-
-
 
   const cityOption = [
     { label: "Noida", value: "noida" },
@@ -399,7 +382,7 @@ export const AddressDetails = ({ isEdit }) => {
 
   const onSubmit = (data) => {
     // console.log("Submitted Data:", data);
-    const payload = data?.address
+    const payload = data?.address;
     if (!businessId) {
       console.log("No businessId exist is in business Store");
     }
@@ -409,13 +392,13 @@ export const AddressDetails = ({ isEdit }) => {
     dispatch(updateAddressDetails(payload)).then((response) => {
       //  console.log("Response", response?.payload);
       // const newBusinessId = response.payload;
-      // dispatch(setBusinessId(newBusinessId)); 
+      // dispatch(setBusinessId(newBusinessId));
+      isEdit
+        ? navigate("/business/edit/financial")
+        : navigate("/business/create/financial");
     });
 
     // navigate("/business/create/financial");
-    isEdit ? navigate("/business/edit/financial") : navigate("/business/create/financial")
-
-
   };
 
   return (
@@ -433,10 +416,21 @@ export const AddressDetails = ({ isEdit }) => {
       <div className="w-full pt-4 flex flex-col md:flex-row md:justify-between gap-4">
         <div className="w-full">
           <div className="my-4">
+            <p
+              className=" flex invisible items-center gap-2 font-semibold text-sm text-[#4D4D4F]
+            "
+            >
+              {" "}
+              <Checkbox />
+              Same as Communication Address{" "}
+            </p>
+
             <h5 className="font-semibold text-base text-[#4D4D4F] dark:text-gray-200">
               Complete Business Address
             </h5>
-            <p className="text-xs">Provide the necessary address of your own business.</p>
+            <p className="text-xs">
+              Provide the necessary address of your own business.
+            </p>
           </div>
           <div className="w-full grid grid-cols-1 gap-4">
             <Controller
@@ -482,22 +476,29 @@ export const AddressDetails = ({ isEdit }) => {
               name="address.businessAddressState"
               control={control}
               render={({ field }) => {
-                const selectedState = stateOption.find((option) => option.value === field.value);
+                const selectedState = stateOption.find(
+                  (option) => option.value === field.value
+                );
                 return (
                   <Selector
                     {...field}
                     label="State"
                     placeholder="Select state"
-                    errorContent={errors?.address?.businessAddressState?.message}
+                    errorContent={
+                      errors?.address?.businessAddressState?.message
+                    }
                     options={stateOption}
                     required
                     value={selectedState || {}}
                     onChange={(selectedValue) => {
                       field.onChange(selectedValue.value);
-                      setValue("address.businessAddressState", selectedValue.value);
+                      setValue(
+                        "address.businessAddressState",
+                        selectedValue.value
+                      );
                       // trigger("address.businessAddressState"); // Manually trigger validation
                     }}
-                  // onBlur={() => handleFieldBlur("address.businessAddressState")}
+                    // onBlur={() => handleFieldBlur("address.businessAddressState")}
                   />
                 );
               }}
@@ -507,7 +508,9 @@ export const AddressDetails = ({ isEdit }) => {
               name="address.businessAddressCity"
               control={control}
               render={({ field }) => {
-                const selectedCity = cityOption.find((option) => option.value === field.value);
+                const selectedCity = cityOption.find(
+                  (option) => option.value === field.value
+                );
                 return (
                   <Selector
                     {...field}
@@ -519,10 +522,15 @@ export const AddressDetails = ({ isEdit }) => {
                     value={selectedCity || {}}
                     onChange={(selectedValue) => {
                       field.onChange(selectedValue.value);
-                      setValue("address.businessAddressCity", selectedValue.value);
+                      setValue(
+                        "address.businessAddressCity",
+                        selectedValue.value
+                      );
                       trigger("address.businessAddressCity"); // Manually trigger validation
                     }}
-                    onBlur={() => handleFieldBlur("address.businessAddressCity")}
+                    onBlur={() =>
+                      handleFieldBlur("address.businessAddressCity")
+                    }
                   />
                 );
               }}
@@ -534,6 +542,7 @@ export const AddressDetails = ({ isEdit }) => {
                 <Input
                   {...field}
                   label="PIN Code"
+                  maxLength={6}
                   placeholder="Enter your pincode"
                   errorContent={errors?.address?.businessAddressPin?.message}
                   required
@@ -545,15 +554,26 @@ export const AddressDetails = ({ isEdit }) => {
                 />
               )}
             />
-
           </div>
         </div>
 
         {/* Communication Address */}
         <div className="w-full">
           <div className="my-4">
-            <h5 className="font-semibold text-base text-[#4D4D4F] dark:text-gray-200">Complete Communication Address</h5>
-            <p className="text-xs">Provide the necessary address of your own business.</p>
+            <p
+              className="flex items-center gap-2 font-semibold text-sm text-[#4D4D4F]
+            "
+            >
+              {" "}
+              <Checkbox />
+              Same as Communication Address{" "}
+            </p>
+            <h5 className="font-semibold text-base text-[#4D4D4F] dark:text-gray-200">
+              Complete Communication Address
+            </h5>
+            <p className="text-xs">
+              Provide the necessary address of your own business.
+            </p>
           </div>
           <div className="w-full grid grid-cols-1 gap-4">
             <Controller
@@ -564,9 +584,13 @@ export const AddressDetails = ({ isEdit }) => {
                   {...field}
                   label="Line 1"
                   placeholder="Line 1"
-                  errorContent={errors?.address?.communicationAddressL1?.message}
+                  errorContent={
+                    errors?.address?.communicationAddressL1?.message
+                  }
                   required
-                  onBlur={() => handleFieldBlur("address.communicationAddressL1")}
+                  onBlur={() =>
+                    handleFieldBlur("address.communicationAddressL1")
+                  }
                   onChange={(e) => {
                     field.onChange(e);
                     trigger("address.communicationAddressL1");
@@ -583,9 +607,13 @@ export const AddressDetails = ({ isEdit }) => {
                   {...field}
                   label="Line 2"
                   placeholder="Line 2"
-                  errorContent={errors?.address?.communicationAddressL2?.message}
+                  errorContent={
+                    errors?.address?.communicationAddressL2?.message
+                  }
                   required
-                  onBlur={() => handleFieldBlur("address.communicationAddressL2")}
+                  onBlur={() =>
+                    handleFieldBlur("address.communicationAddressL2")
+                  }
                   onChange={(e) => {
                     field.onChange(e);
                     trigger("address.communicationAddressL2");
@@ -599,22 +627,31 @@ export const AddressDetails = ({ isEdit }) => {
               name="address.communicationAddressState"
               control={control}
               render={({ field }) => {
-                const selectedState = stateOption.find((option) => option.value === field.value);
+                const selectedState = stateOption.find(
+                  (option) => option.value === field.value
+                );
                 return (
                   <Selector
                     {...field}
                     label="State"
                     placeholder="Select state"
-                    errorContent={errors?.address?.communicationAddressState?.message}
+                    errorContent={
+                      errors?.address?.communicationAddressState?.message
+                    }
                     options={stateOption}
                     required
                     value={selectedState || {}}
                     onChange={(selectedValue) => {
                       field.onChange(selectedValue.value);
-                      setValue("address.communicationAddressState", selectedValue.value);
+                      setValue(
+                        "address.communicationAddressState",
+                        selectedValue.value
+                      );
                       trigger("address.communicationAddressState");
                     }}
-                    onBlur={() => handleFieldBlur("address.communicationAddressState")}
+                    onBlur={() =>
+                      handleFieldBlur("address.communicationAddressState")
+                    }
                   />
                 );
               }}
@@ -623,24 +660,32 @@ export const AddressDetails = ({ isEdit }) => {
               name="address.communicationAddressCity"
               control={control}
               render={({ field }) => {
-                const selectedCity = cityOption.find((option) => option.value === field.value);
+                const selectedCity = cityOption.find(
+                  (option) => option.value === field.value
+                );
                 return (
                   <Selector
                     {...field}
                     label="City"
                     placeholder="Select city"
-                    errorContent={errors?.address?.communicationAddressCity?.message}
+                    errorContent={
+                      errors?.address?.communicationAddressCity?.message
+                    }
                     options={cityOption}
                     required
                     value={selectedCity || {}}
                     onChange={(selectedValue) => {
                       field.onChange(selectedValue.value);
-                      setValue("address.communicationAddressCity", selectedValue.value);
+                      setValue(
+                        "address.communicationAddressCity",
+                        selectedValue.value
+                      );
                       trigger("address.communicationAddressCity"); // Manually trigger validation
                     }}
-                    onBlur={() => handleFieldBlur("address.communicationAddressCity")}
+                    onBlur={() =>
+                      handleFieldBlur("address.communicationAddressCity")
+                    }
                   />
-
                 );
               }}
             />
@@ -651,10 +696,15 @@ export const AddressDetails = ({ isEdit }) => {
                 <Input
                   {...field}
                   label="PIN Code"
+                  maxLength={6}
                   placeholder="Enter your pincode"
-                  errorContent={errors?.address?.communicationAddressPin?.message}
+                  errorContent={
+                    errors?.address?.communicationAddressPin?.message
+                  }
                   required
-                  onBlur={() => handleFieldBlur("address.communicationAddressPin")}
+                  onBlur={() =>
+                    handleFieldBlur("address.communicationAddressPin")
+                  }
                   onChange={(e) => {
                     field.onChange(e);
                     trigger("address.communicationAddressPin");
@@ -662,7 +712,6 @@ export const AddressDetails = ({ isEdit }) => {
                 />
               )}
             />
-
           </div>
         </div>
       </div>
@@ -671,8 +720,13 @@ export const AddressDetails = ({ isEdit }) => {
         <Button type="button" primary onClick={() => navigate(-1)}>
           Prev
         </Button>
-        <Button type="submit" primary disabled={!isValid}>
-          Save & Next
+        <Button
+          type="submit"
+          primary
+          disabled={!isValid || loading}
+          isLoading={loading}
+        >
+          {loading ? "saving..." : "Save & Next"}
         </Button>
       </div>
     </form>

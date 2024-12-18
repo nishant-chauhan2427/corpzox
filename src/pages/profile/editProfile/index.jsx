@@ -14,6 +14,7 @@ import { profileValidationSchema } from "./editProfileValidationSchema";
 import Cropper from "react-easy-crop";
 import { ImSpinner11, ImSpinner2 } from "react-icons/im";
 import toast from "react-hot-toast";
+import { LinkButton } from "../../../components/link";
 
 // Function to get the cropped image
 const getCroppedImg = async (imageSrc, crop, pixelCrop) => {
@@ -53,7 +54,7 @@ const Edit = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
-  const { loading, isloading } = useSelector((state) => state.profile);
+  const { loading, isloading ,isUpdatingImage} = useSelector((state) => state.profile);
   const { upload } = useSelector((state) => state.profile);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -64,6 +65,7 @@ const Edit = () => {
   const [croppedImage, setCroppedImage] = useState(null);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [isImageChanged, setIsImageChanged] = useState(false);
+  const [imageSelected, setImageSelected] = useState(false);
 
 
   const {
@@ -119,7 +121,8 @@ const Edit = () => {
       reader.onloadend = () => {
         setImage(reader.result);
         setImageFile(file);
-        setIsImageChanged(true);
+        setImageSelected(true); 
+        // setIsImageChanged(true);
       };
       reader.readAsDataURL(file);
     }
@@ -136,7 +139,6 @@ const Edit = () => {
         return new File([buf], filename, { type: mimeType });
       });
   };
-
   const handleSave = async () => {
     if (croppedAreaPixels) {
       const croppedImgBlob = await getCroppedImg(
@@ -146,7 +148,7 @@ const Edit = () => {
       );
       console.log("image", imageFile);
       const fileName = imageFile?.name;
-
+      
       const croppedImgFile = await blobToFile(croppedImgBlob, fileName);
       console.log("croppedImgFile", croppedImgFile);
 
@@ -162,9 +164,12 @@ const Edit = () => {
       // Dispatch the action with formData
       const imageUrl = await dispatch(updateProfilePicture({ formData }));
       console.log("imageUrl", imageUrl);
+      
+      setIsImageChanged(true);
+     
     }
   };
-
+  
   useEffect(() => {
     const str = user?.name || "";
     let data = [];
@@ -188,7 +193,7 @@ const Edit = () => {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-        <Heading title={"Profile Picture"} backButton={true}>
+        <Heading title={"Edit Profile"} backButton={true}>
           Edit Profile
         </Heading>
         <div className="flex sm:flex-row flex-col shadow-md bg-[#F4F9FF] border items-center  rounded-2xl justify-center py-10 gap-4 px-2 border-[#DFEAF2]">
@@ -232,28 +237,39 @@ const Edit = () => {
                   />
                 </div>
               )}
-                 <label
-              htmlFor="image-upload"
-              className=" absolute bottom-0  right-0 sm:bottom-2 sm:right-2 bg-black px-2 py-2 rounded-full"
-            >
-              <img
-                src="/icons/profile/profile-camera.svg"
-                className="h-5"
-                alt=""
-              />
-            </label>
+              <label
+                htmlFor="image-upload"
+                className=" absolute bottom-0  right-0 sm:bottom-2 sm:right-2 bg-black px-2 py-2 rounded-full"
+              >
+                <img
+                  src="/icons/profile/profile-camera.svg"
+                  className="h-5"
+                  alt=""
+                />
+              </label>
             </div>
-         
+
             <div className="text-center mt-2">
-              {isloading ? (
+              {isUpdatingImage ? (
                 <ImSpinner2 size={20} className="animate-spin" />
               ) : (
-                <label
+                // <LinkButton
+                // disabled={!(setIsImageSaved)}
+                //   onClick={handleSave}
+                //   className="save-button  cursor-pointer text-sm font-semibold text-[#004BBC] underline"
+                // >
+                //   Save Photo
+                // </LinkButton>
+
+                <Button
+                  //disabled={t}
+                  type="button"
+                  disabled={!imageSelected}
                   onClick={handleSave}
-                  className="save-button  cursor-pointer text-sm font-semibold text-[#004BBC] underline"
+                  className="save-button cursor-pointer text-sm font-semibold text-[#004BBC] underline"
                 >
                   Save Photo
-                </label>
+                </Button>
               )}
 
 
@@ -355,8 +371,7 @@ const Edit = () => {
             </div>
           </div>
         </div>
-        {
-          console.log(isImageChanged, "isImageChanged1")}
+
         <div className="inline-block">
           <Button
             disabled={!(isValid || isImageChanged)}

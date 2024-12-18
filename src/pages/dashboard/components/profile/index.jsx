@@ -52,7 +52,7 @@ export const Profile = ({ user = {} }) => {
   //   +financePercentage
   // );
   //console.log(user, "user")
-  let fieldsKey = ['name', 'gender', 'email', 'busniessEmail', 'phone', 'role', 'profile_picture_url']
+  let fieldsKey = ['name', 'email', 'busniessEmail', 'phone',  'profile_picture_url']
   
   let calculatePercentageHandler = () => {
     let count = 0;  
@@ -100,7 +100,7 @@ export const Profile = ({ user = {} }) => {
       </div>
       <div>
         <p className="font-bold text-lg">{percentage}%</p>
-        <p className="font-semibold text-sm text-[#232323]"> {user?.name ? (user.name.slice(0, 25) + (user.name.length > 25 ? "..." : "")) : "User Name"}</p>
+        <p className="font-semibold text-sm text-[#232323]"> {user?.name ? (user.name.slice(0, 25) + (user.name.length > 25 ? "..." : "")) : <></>}</p>
         {/* <Link to={"/profile"} className="font-semibold text-[11px] text-[#FF4141]">
           Complete Your Profile
         </Link> */}

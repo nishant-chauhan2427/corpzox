@@ -143,11 +143,11 @@ export const ServicesProgress = ({ data }) => {
       {dataUpdate?.data?.length > 0 ? (
         <>
           <div className="py-2 flex flex-row sm:flex-row justify-between gap-2">
-            <Heading className={"py-0 "} tourButton={true}>
+            <Heading title={"Dashboard"} className={"py-0 "} tourButton={true}>
               Your Services are Completed{" "}
               {dataUpdate?.total ? `(${dataUpdate?.total})` : ""}
             </Heading>
-            {dataUpdate?.data?.length > 0 && (
+            {dataUpdate?.data?.length > 9 && (
               <Link
                 to={"/services/serviceprogressdetail"}
                 className="font-medium text-sm text-[#797979]"
