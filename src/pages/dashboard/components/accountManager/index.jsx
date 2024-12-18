@@ -52,10 +52,10 @@ export const AccountManager = ({ manager, sidebar }) => {
             sidebar ? "text-xs text-white" : "text-sm text-[#232323] -mt-1"
           } font-bold`}
         >
-          <p className="font-semibold text-xs text-black">Account Manager</p>
+          <p className="font-semibold text-xs text-gray-700">Account Manager</p>
           <p className="max-w-24 whitespace-nowrap overflow-hidden font-medium text-xs">
             {user?.agent_data?.[0]?.manager_data?.[0]?.name
-              ? user?.agent_data?.[0]?.manager_data?.[0]?.name
+              ? user?.agent_data?.[0]?.manager_data?.[0]?.name.slice(0, 15) + "..."
               : "------"}
           </p>
         </div>
