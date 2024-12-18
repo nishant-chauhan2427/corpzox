@@ -40,11 +40,12 @@ export const Details = ({
 
   // const { id: serviceId } = useParams();
 
-  const subscription = success?.subscription?.[0] || null
+  const subscription = success?.subscription[0] || null
 
   const navigateToService = () => {
     if(subscription){
-
+      console.log(success?.subscription?.[0], "success?.subscription?.[0]")
+      // navigate(`/payment/${serviceId}/${data?._id}?paymentType=subscription`);
       navigate(`/payment/${serviceId}/${subscription._id}?paymentType=subscription`);
     }else{
       navigate(`/payment/${serviceId}?paymentType=regular`);
