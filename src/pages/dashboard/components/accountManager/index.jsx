@@ -76,9 +76,9 @@ export const AccountManager = ({ manager, sidebar }) => {
             {<CiMenuKebab className={`${sidebar && "text-white"}`} />}
           </button> : <></>}
           {accountShowButton && (
-            <div ref={accountShowButtonRef} className="absolute  pt-3">
+            <div ref={accountShowButtonRef} className="absolute  pt-3 z-50">
               <button onClick={requestManagerChange} className="px-3 py-2 cursor-pointer w-full bg-[#D9D9D9] font-medium text-xs rounded-md z-[999999]">
-                {user?.agent_data?.[0]?.manager_data?.[0]?.name  ? "Request to change manager?" : "Request to add manager"}
+                {user?.agent_data?.[0]?.manager_data?.[0]?.name ? "Request to change manager?" : "Request to add manager"}
               </button>
             </div>
           )}
