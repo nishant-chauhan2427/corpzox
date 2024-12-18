@@ -61,7 +61,8 @@ const ServicesListing = () => {
   // }, [searchParams]);
   useEffect(() => {
     const categoryId = searchParams.get("categoryId");
-    if (categoryId) {
+    if (categoryId)
+     {
       dispatch(
         getUserServicesSubCatagory({
           categoryId: categoryId, // Use categoryId directly from searchParams
