@@ -370,7 +370,7 @@ const MakeAPayment = () => {
             {" "}
             Try Again{" "}
           </Button>
-        </div>
+        </div> 
       </ConfirmationModal>
       <ConfirmationModal isOpen={confirmationModal}
         onClose={onConfirmationModalClose}>
