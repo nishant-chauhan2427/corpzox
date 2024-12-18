@@ -30,7 +30,7 @@ export const PrimaryLayout = () => {
         <Sidebar
           className={`${
             sidebarClassName ? sidebarClassName : ""
-          } hidden lg:block max-w-48 fixed top-4 bottom-4 left-10 z-[1001] bg-gray-600 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100`}
+          } hidden lg:block w-52 max-w-48 fixed top-4 bottom-4 left-10 z-[1001] bg-gray-600 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100`}
         />
         <Sidebar
           className={`${sidebarClassName ? sidebarClassName : ""} ${
