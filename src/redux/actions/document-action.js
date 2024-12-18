@@ -71,37 +71,65 @@ export const getServiceData = createAsyncThunk(
     }
   );
 
-
-
-
+//   export const getUserServices = createAsyncThunk("getUserServices", async ({page,sort_by='date_desc',query,categoryId,subCategoryId}, { rejectWithValue }) => {
+//     try {
+//         let params=new URLSearchParams();
+//         if(page) params.append('page',page);
+//         if(sort_by) params.append('sort_by',sort_by);
+//         if(query) params.append('query',query);
+//         if(categoryId) params.append('categoryId',categoryId);
+//         if(subCategoryId) params.append('subCategoryId',subCategoryId);
+//         const response = await client.get(`/user/service${params&&`?${params}`}`,{
+//             headers: {
+//               Accept: "application/json",
+//               "Content-Type": "application/json",
+//               'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+//             },
+//           });
+//         console.log(response,'services..');
+//         if(response?.data?.code==200||response?.data?.code==201){
+//             return response.data;
+//         }else{
+//             return rejectWithValue(response?.data?.message);            
+//         }
+//     } catch (error) {
+//         return rejectWithValue(error?.response?.data?.message || error?.message);
+//     }
+// });
 export const getfolderData = createAsyncThunk(
   "document/getfolderData",
-  async (id, { rejectWithValue }) => {
-   console.log("app id",id);
+  async ({ id, query }, { rejectWithValue }) => {
+    console.log("app id", id);
+
     try {
-      const token = JSON.parse(localStorage.getItem('userInfo'))?.token;
+      // Prepare the params to be sent
+      let params = new URLSearchParams();
+      if (query) params.append('query', query);
+
+      // Get the token from localStorage
+      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      const token = userInfo?.token;
 
       if (!token) {
         return rejectWithValue("Authentication token not found");
       }
 
-      const response = await client.get(`/application/documents?applicationId=${id}`, {
-       
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
-            },
-        
+      // Make the GET request with the query parameters
+      const response = await client.get(`/application/documents?applicationId=${id}&${params.toString()}`, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Using token directly here
+        },
       });
 
-      if (response.status === 200 ) {
-        return response.data.forms; // Return the services array
+      if (response.status === 200) {
+        return response.data.forms; // Return the forms data from the response
       } else {
         return rejectWithValue("Unexpected response structure from server");
       }
     } catch (error) {
-      
+      // Check for network or server errors
       return rejectWithValue(
         error.response?.data?.message || "Failed to fetch services"
       );

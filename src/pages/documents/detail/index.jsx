@@ -5,22 +5,30 @@ import { useDispatch, useSelector } from "react-redux";
 import { FolderListShimmer } from "../../../components/loader/FolderDataShimmer";
 import { NoData } from "../../../components/errors/noData";
 import DocumentViewer from "./Components";
-import { useParams } from "react-router-dom";
+//import { useParams } from "react-router-dom";
 import { getfolderData } from "../../../redux/actions/document-action";
 import { list } from "postcss";
-
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
 const DocumentDetail = () => {
     const { isDocumentLoading, listData = [] } = useSelector((state) => state.document);
     const dispatch = useDispatch();
     const { id } = useParams();
     const url = listData?.[0]?.value?.[0];
-    console.log(listData?.[0]?.lebel,"DOCUMENT");
- 
+   
+   const [searchParams] = useSearchParams(); 
+    const location = useLocation(); 
+    const queryParams = new URLSearchParams(location.search);
+    const searchValue = queryParams.get("search") || searchParams.get("search"); 
+
+    console.log(searchValue, "searchValue");
+
     useEffect(() => {
+        
         if (id) {
-            dispatch(getfolderData(id));
+            dispatch(getfolderData({ id, query: searchValue || "" }));
         }
-    }, [dispatch, id]);
+    }, [dispatch, id, searchValue]); 
+
     
 
     return (
@@ -34,10 +42,10 @@ const DocumentDetail = () => {
                 <>
                     <div className="flex items-center justify-between">
                         <Heading backButton={true}>Document Detail</Heading>
-                        <div className="flex items-center gap-2"> 
+                        {/* <div className="flex items-center gap-2"> 
                             {url?.length>0  ? (<Search placeholder={"Search Files"} />):<></>}
-                            <Search placeholder={"Search Files"} />
-                         </div>
+                          
+                         </div> */}
                     </div>
 
                     {listData?.length > 0 && url ? (
