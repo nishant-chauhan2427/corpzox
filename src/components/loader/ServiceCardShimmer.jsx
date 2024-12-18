@@ -8,7 +8,7 @@ export const ServiceCardShimmer = ({ className }) => {
           <div className="flex gap-2 mb-2">
             <div className=" bg-gray-400 dark:bg-gray-900 w-14 h-12 animate-pulse rounded"></div>
             <div>
-              <div className=" mb-2 bg-gray-400 dark:bg-gray-900 w-40 h-4 animate-pulse rounded"></div>
+              < div className=" mb-2 bg-gray-400 dark:bg-gray-900 w-40 h-4 animate-pulse rounded"></div>
               <div className=" bg-gray-400 dark:bg-gray-900 w-20 h-4 animate-pulse rounded"></div>
             </div>
           </div>

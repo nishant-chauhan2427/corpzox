@@ -2,21 +2,16 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setServicesMainTab } from "../../../../../redux/slices/appSlice";
 import { setSelectedCategory } from "../../../../../redux/slices/serviceListingSlice";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 // import { useSelector } from "react-redux";
 export const MainTab = () => {
   // const [mainactiveTab, setmainActiveTab] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams()
   const { category } = useSelector((state) => state.service);
   const [activeTabIndex, setActiveTabIndex] = useState(0);
+  const navigate = useNavigate()
   const dispatch = useDispatch();
 
-  const mainTabs = [
-    { name: "Top Services" },
-    { name: "Business Setup" },
-    { name: "Finance and Compliance" },
-    { name: "Waste Management" },
-  ];
   // useEffect(() => {
   //   const categoryIdFromParams = searchParams.get("categoryId");
   //   if (categoryIdFromParams && category?.list?.length) {
@@ -55,11 +50,14 @@ export const MainTab = () => {
         dispatch(setSelectedCategory(category.list[0]));
         setSearchParams({ categoryId: category.list[0]._id });
       }
+      
     }
   }, [searchParams, category?.list, dispatch]);
   
 
   const handleMainTab = (index) => {
+    // searchParams.delete("subCategory")
+    navigate(`/services?categoryId=${category?.list[index]?._id}`)
     if(category?.list?.[index]){
       dispatch(setSelectedCategory(category?.list[index]));
       console.log(category?.list[index], "category?.list[index]")

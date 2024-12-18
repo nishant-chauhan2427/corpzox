@@ -81,6 +81,7 @@ const serviceListingSlice = createSlice({
     builder
       .addCase(getUserServicesCatagory.pending, (state, action) => {
         state.category.categoryLoading = true;
+        state.list =[]
       })
       .addCase(getUserServicesCatagory.fulfilled, (state, action) => {
         state.category.categoryLoading = false;
@@ -96,6 +97,7 @@ const serviceListingSlice = createSlice({
     builder
       .addCase(getUserServicesSubCatagory.pending, (state, action) => {
         state.subCategory.subCategoryLoading = true;
+        state.list =[]
       })
       .addCase(getUserServicesSubCatagory.fulfilled, (state, action) => {
         state.subCategory.subCategoryLoading = false;
