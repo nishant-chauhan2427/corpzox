@@ -41,6 +41,7 @@ export const SignIn = () => {
     loginMessage,
     profile,
   } = useSelector((state) => state.auth);
+  console.log(profile,1234567891);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [checkedCheckbox, setCheckedCheckbox] = useState(false);
@@ -167,6 +168,7 @@ export const SignIn = () => {
               />
               <Link
                 to={"/forgot-password"}
+                state={{ email: emailOrPhone }}  // Passing email/phone as state
                 className="flex font-medium cursor-default text-base text-[#0A1C40]"
               >
                 <div className="cursor-default"> <p className="cursor-pointer">Forgot Password?</p> </div>

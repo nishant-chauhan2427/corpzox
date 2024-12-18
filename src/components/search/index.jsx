@@ -97,7 +97,7 @@ export const Search = (props) => {
       <div className="relative shadow-sm">
         <LuSearch
           size={18}
-          className="absolute top-1/2 -translate-y-1/2 left-2 text-white text-gray-400 "
+          className="absolute top-1/2 -translate-y-1/2 left-2 text-white"
         />
         <input
           className={`${

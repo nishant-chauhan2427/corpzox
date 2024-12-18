@@ -270,10 +270,11 @@ const History = () => {
               Discount Amount
             </p>
             <p className="font-semibold text-base text-[#0A1C40]">
-              {transactionDetails?.serviceappliedcouponandoffers &&
+              {/* {transactionDetails?.serviceappliedcouponandoffers &&
                 transactionDetails?.serviceappliedcouponandoffers[0]?.amount +
                   (transactionDetails?.serviceappliedcouponandoffers[1]
-                    ?.amount || 0)}
+                    ?.amount || 0)} */}
+                    {transactionDetails?.totalCouponDiscount ? transactionDetails?.totalCouponDiscount : ""}
             </p>
           </div>}
           <div className="flex justify-between bg-[#FFF4BA]  px-2 py-1">

@@ -65,11 +65,12 @@ const BusinessListing = () => {
   // return<div>Business page</div>
 
   if (isLoading) return <BusinessCardShimmer count={8} className={"p-2"} />;
-
+  const title = location.pathname.includes("profile") ? "Profile" : "Business";
   return (
     <div className="flex flex-col overflow-y-auto pb-4" >
       <div className="flex flex-col md:flex-row justify-between gap-4">
-        <Heading title={"Business"} tourButton={true}>
+      
+        <Heading title={title} tourButton={true}>
           Your Business {totalCount ? `(${totalCount})` : ""}
         </Heading>
         <div className="flex items-center gap-2">

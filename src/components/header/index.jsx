@@ -196,7 +196,9 @@ export const Header = ({ className, collapse, setCollapse }) => {
             {getPageHeading(pathname)}
           </h1>
           {/* Search */}
-          {!pathname.includes("dashboard") &&
+          {
+            !pathname.includes("dashboard") && 
+            !pathname.includes("wishlist") && 
             !pathname.includes("settings") &&
             !pathname.includes("offersDetails") &&
             !pathname.includes("business") && (

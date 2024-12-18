@@ -5,7 +5,7 @@ import { servicesListing } from "../../database";
 import { Button } from "../../components/buttons";
 import { useDispatch, useSelector } from "react-redux";
 import { getWishList, removeServiceWishlistData1 } from "../../redux/actions/wishlist-actions";
-import { ServiceCardShimmer } from "../../components/loader/ServiceCardShimmer copy";
+import { ServiceCardShimmer } from "../../components/loader/ServiceCardShimmer";
 import { removeServiceWishlist} from "../../redux/actions/servicesListing-action";
 import { NoData } from "../../components/errors/noData";
 import { ImSpinner2 } from "react-icons/im";

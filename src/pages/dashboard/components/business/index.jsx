@@ -26,7 +26,7 @@ export const Business = ({ data = [], total }) => {
           >
             Add Business
           </LinkButton>
-          {data?.length>0 ? <Link className="font-medium text-sm text-[#797979]" to={"/business"}>
+          {data?.length>2 ? <Link className="font-medium text-sm text-[#797979]" to={"/business"}>
             View All
           </Link>:""}
           
