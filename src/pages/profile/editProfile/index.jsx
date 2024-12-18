@@ -65,7 +65,7 @@ const Edit = () => {
   const [croppedImage, setCroppedImage] = useState(null);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [isImageChanged, setIsImageChanged] = useState(false);
-  const [isImageSaved, setIsImageSaved] = useState(false);
+  const [imageSelected, setImageSelected] = useState(false);
 
 
   const {
@@ -92,7 +92,6 @@ const Edit = () => {
     formData.append("businessEmail", data.businessEmail);
     dispatch(submitEditProfile({ formData, navigate }));
     setIsImageChanged(false);
-    setIsImageSaved(false);
   };
   //console.log(setIsImageChanged,"isValid");
   // const handleImageChange = (e) => {
@@ -122,6 +121,7 @@ const Edit = () => {
       reader.onloadend = () => {
         setImage(reader.result);
         setImageFile(file);
+        setImageSelected(true); 
         // setIsImageChanged(true);
       };
       reader.readAsDataURL(file);
@@ -139,7 +139,6 @@ const Edit = () => {
         return new File([buf], filename, { type: mimeType });
       });
   };
-  console.log(isImageSaved, "isImageSaved");
   const handleSave = async () => {
     if (croppedAreaPixels) {
       const croppedImgBlob = await getCroppedImg(
@@ -149,7 +148,7 @@ const Edit = () => {
       );
       console.log("image", imageFile);
       const fileName = imageFile?.name;
-
+      
       const croppedImgFile = await blobToFile(croppedImgBlob, fileName);
       console.log("croppedImgFile", croppedImgFile);
 
@@ -165,11 +164,12 @@ const Edit = () => {
       // Dispatch the action with formData
       const imageUrl = await dispatch(updateProfilePicture({ formData }));
       console.log("imageUrl", imageUrl);
+      
       setIsImageChanged(true);
-      setIsImageSaved(true);
+     
     }
   };
-console.log(setIsImageSaved,"setIsImageSaved");
+  
   useEffect(() => {
     const str = user?.name || "";
     let data = [];
@@ -264,7 +264,7 @@ console.log(setIsImageSaved,"setIsImageSaved");
                 <Button
                   //disabled={t}
                   type="button"
-                  disabled={(setIsImageSaved)}
+                  disabled={!imageSelected}
                   onClick={handleSave}
                   className="save-button cursor-pointer text-sm font-semibold text-[#004BBC] underline"
                 >
