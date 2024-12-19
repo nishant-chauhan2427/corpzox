@@ -70,6 +70,31 @@ export const getUserServices = createAsyncThunk("getUserServices", async ({page,
         return rejectWithValue(error?.response?.data?.message || error?.message);
     }
 });
+export const getMoreUserServices = createAsyncThunk("getMoreUserServices", async ({page,sort_by='date_desc',query,categoryId,subCategoryId}, { rejectWithValue }) => {
+    try {
+        let params=new URLSearchParams();
+        if(page) params.append('page',page);
+        if(sort_by) params.append('sort_by',sort_by);
+        if(query) params.append('query',query);
+        if(categoryId) params.append('categoryId',categoryId);
+        if(subCategoryId) params.append('subCategoryId',subCategoryId);
+        const response = await client.get(`/user/service${params&&`?${params}`}`,{
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+            },
+          });
+        // console.log(response,'services..');
+        if(response?.data?.code==200||response?.data?.code==201){
+            return response.data;
+        }else{
+            return rejectWithValue(response?.data?.message);            
+        }
+    } catch (error) {
+        return rejectWithValue(error?.response?.data?.message || error?.message);
+    }
+});
 export const updateServiceWishlist = createAsyncThunk("updateServiceWishlist", async (wishListData, { rejectWithValue }) => {
     try {
         const response = await client.put(`/user/service-wishlist`,wishListData,{
@@ -138,7 +163,7 @@ export const removeServiceWishlist = createAsyncThunk("removeServiceWishlist", a
 
 export const updateServiceQuickWishlist = createAsyncThunk("updateServiceQuickWishlist", async (wishListData, { rejectWithValue }) => {
     try {
-        console.log(wishListData,'AddWishlistservices');
+        // console.log(wishListData,'AddWishlistservices');
         const response = await client.put(`/user/service-quick-wishlist`,wishListData,{
             headers: {
               Accept: "application/json",
@@ -146,7 +171,7 @@ export const updateServiceQuickWishlist = createAsyncThunk("updateServiceQuickWi
               'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
             },
           });
-        console.log(response,'services12..');
+        // console.log(response,'services12..');
         if(response?.data?.code==200||response?.data?.code==201){
             return response.data;
         }else{

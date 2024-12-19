@@ -6,12 +6,13 @@ import {
   updateServiceWishlist,
   removeServiceWishlist,
   recommendedServiceListing,
+  getMoreUserServices,
   
 } from "../actions/servicesListing-action";
 import toast from "react-hot-toast";
 const initialState = {
   list: [],
-  totalPage: 0,
+  totalCount: 0,
   isAdding: {},
   removeLoading:{},
   addLoading:{},
@@ -19,6 +20,7 @@ const initialState = {
   page: 1,
   limit: 10,
   loading: false,
+  loadingMore: false,
   error: null,
   isRecommendedServiceLoading : false, 
   recommendedServiceList : [], 
@@ -59,6 +61,8 @@ const serviceListingSlice = createSlice({
       state.list=[]
     },
     setToggleToCheckedWishlist(state,action){
+      // console.log("setToggleToCheckedWishlist");
+      
       let data=state.wishList.list.filter((service)=>service._id==action.payload._id);
       if(data?.length!=0){
         state.wishList.list=state.wishList.list.filter((service)=>service._id!=action.payload._id)
@@ -67,11 +71,32 @@ const serviceListingSlice = createSlice({
       }
     },
     onChangeSelectAll(state,action){
+      // console.log("onChangeSelectAll");
+      
       if(state.list.length==state.wishList.list.length){
         state.wishList.list=[]
       }else{
         state.wishList.list=state.list
       }
+    },
+    updateServiceWishlistFlag(state,action){
+      // console.log("updatewishlistCount, checkedList",action.payload);
+      const checkedList = action.payload;
+      // Safeguard for state.list being undefined or not an array
+    if (Array.isArray(state.list)) {
+      state.list.forEach((service) => {
+        if (checkedList?.includes(service._id)) {
+          service.wishlistCount = 1; // Set count to 1 if the ID is in checkedList
+        } 
+      //   else {
+      //     service.wishlistCount = 0; // Reset count if the ID is not in checkedList
+      //  }
+      })
+    }
+
+    //Reset checkList state to []
+      state.wishList.list=[];
+
     },
     // clearUser(state) {
     //     state.user = null;
@@ -117,11 +142,37 @@ const serviceListingSlice = createSlice({
       .addCase(getUserServices.fulfilled, (state, action) => {
         state.loading = false;
         state.error = action.payload.message;
-        state.totalPage = action.payload.total;
+        state.totalCount = action.payload.total;
         state.list = action.payload?.data;
       })
       .addCase(getUserServices.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.payload;
+      });
+
+    builder
+      .addCase(getMoreUserServices.pending, (state, action) => {
+        // console.log("getMoreUserServices.pending");
+        
+        state.loadingMore = true;
+      })
+      .addCase(getMoreUserServices.fulfilled, (state, action) => {
+        // console.log("getMoreUserServices.fulfilled",action.payload?.data);
+        
+        state.loadingMore = false;
+        state.error = action.payload.message;
+        state.totalCount = action.payload.total;
+        if(state.list){
+          state.list = [...state.list, ...action.payload?.data];
+          if (action.payload?.data?.length > 0) {
+              state.page = state.page + 1;
+          }
+        }
+      })
+      .addCase(getMoreUserServices.rejected, (state, action) => {
+        // console.log("getMoreUserServices.rejected");
+        
+        state.loadingMore = false;
         state.error = action.payload;
       });
 
@@ -151,14 +202,14 @@ const serviceListingSlice = createSlice({
       .addCase(updateServiceWishlist.pending, (state, action) => {
         state.wishList.loading = true;
         state.addLoading[action.meta.arg.serviceId] = true;
-        console.log(action.payload," WERERE PENDING");
+        // console.log(action.payload," WERERE PENDING");
         state.isfetching=true;
         // console.log(action.meta.arg.serviceId,'updateservicewishlist');
         
         state.isAdding[action.meta.arg.serviceId] = true;
       })
       .addCase(updateServiceWishlist.fulfilled, (state, action) => {
-        console.log(action.payload," WERERE UPDATE");
+        // console.log(action.payload," WERERE UPDATE");
         state.wishList.loading = false;
         state.isfetching=false;
         state.addLoading[action.payload.data.serviceId]=false;
@@ -258,7 +309,7 @@ const serviceListingSlice = createSlice({
 });
 
 // Export actions
-export const { setSelectedCategory, setSelectedSubCategory,setToggleToCheckedWishlist,onChangeSelectAll,resetService } =
+export const { setSelectedCategory, setSelectedSubCategory,setToggleToCheckedWishlist,onChangeSelectAll,resetService,updateServiceWishlistFlag } =
   serviceListingSlice.actions;
 
 // Export the reducer

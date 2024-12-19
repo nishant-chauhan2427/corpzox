@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import client from "../axios-baseurl";
+import { childLoading, setTransactionLoading } from "../slices/paymentHistorySlice";
 
 export const getPaymentTransaction = createAsyncThunk("getPaymentTransaction", async ({ page, query }, { rejectWithValue }) => {
     try {
@@ -27,8 +28,9 @@ export const getPaymentTransaction = createAsyncThunk("getPaymentTransaction", a
     }
 });
 
-export const downloadInvoice = createAsyncThunk("downloadInvoice", async ({ transactionId }, { rejectWithValue }) => {
+export const downloadInvoice = createAsyncThunk("downloadInvoice", async ({ transactionId }, { rejectWithValue, dispatch }) => {
     try {
+        dispatch(childLoading({ transactionId, loading: true }));
         const response = await client.get(`/application/download-invoice?transactionId=${transactionId}`, {
             headers: {
                 Accept: "application/json",
@@ -38,11 +40,14 @@ export const downloadInvoice = createAsyncThunk("downloadInvoice", async ({ tran
         });
 
         if (response?.data?.code == 200 || response?.data?.code == 201) {
+            dispatch(childLoading({transactionId, loading : false}))
             return response.data?.data
         } else {
+            dispatch(childLoading({transactionId, loading : false}))
             return rejectWithValue(response?.data?.message);
         }
     } catch (error) {
+        dispatch(childLoading({transactionId, loading : false}))
         return rejectWithValue(error?.response?.data?.message || error?.message);
     }
 });

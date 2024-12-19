@@ -8,7 +8,7 @@ import { FaRupeeSign } from "react-icons/fa";
 import { SelectAllTabs } from "../../../components/tabs/selectAllTab";
 import { updateServiceQuickWishlist } from "../../../../../redux/actions/servicesListing-action";
 import toast from "react-hot-toast";
-import { onChangeSelectAll } from "../../../../../redux/slices/serviceListingSlice";
+import { onChangeSelectAll, updateServiceWishlistFlag } from "../../../../../redux/slices/serviceListingSlice";
 
 export const ServicesCard = ({
   data,
@@ -28,10 +28,29 @@ export const ServicesCard = ({
   const { list } = useSelector((state) => state.service);
   const [selectAllChecked, setSelectAllChecked] = useState(false)
 
+  // console.log("selectAllChecked",selectAllChecked);
+  // console.log("checkList:",wishList?.list);
+  let checkListSet = new Set(wishList?.list?.map((service) => service._id))   //checkListSet :["serviceId1","serviceId2",....]
+
+  
+
+
+
+  useEffect(()=>{
+    setSelectAllChecked(wishList?.list?.length == list?.length);
+    // console.log("Checked:",wishList?.list?.length == list?.length);
+    
+  },[wishList])
+
   let onClickAddWishlistHandler = () => {
     const wishlistSelectedData = wishList?.list?.map(item => item._id);
     if(wishlistSelectedData?.length){
-    dispatch(updateServiceQuickWishlist({ serviceIdArray: wishlistSelectedData }))}
+    dispatch(updateServiceQuickWishlist({ serviceIdArray: wishlistSelectedData })).then((res)=>{
+      // console.log("updateServiceQuickWishlist res",res);
+      dispatch(updateServiceWishlistFlag(Array.from(checkListSet)));//ie: mark there service as wishlist:true
+      
+    })}
+    //after succes, update service.wishlistCount = 1, in service store/state to avoid refresh 
  
     console.log(wishlistSelectedData?.length,"wishlistSelectedData");
     if (wishlistSelectedData?.length > 0) {
@@ -44,8 +63,9 @@ export const ServicesCard = ({
   
 
   const onChangeSelectAllHandler = () => {
-    const newSelectAllChecked = !selectAllChecked; 
-    setSelectAllChecked(newSelectAllChecked); 
+    // const newSelectAllChecked = !selectAllChecked; 
+    // if(wishList?.list?.length == list?.length)
+    // setSelectAllChecked(newSelectAllChecked); 
     dispatch(onChangeSelectAll()); 
   };
 
@@ -56,11 +76,15 @@ export const ServicesCard = ({
   const handleNavigate = () => {
     navigate("/services/detail");
   };
-  console.log(data, "DATA WISH");
+  // console.log(data, "DATA WISH");
+
 
   return (
     <>{list.length !== 0 && url.includes("services") && (
       <SelectAllTabs
+        hideBtn = {wishList?.list?.length<=0}
+        checked={selectAllChecked}
+        checkListCount = {wishList?.list?.length}
         onChangeSelectAllHandler={onChangeSelectAllHandler}
         onClickAddWishlistHandler={onClickAddWishlistHandler}
       />
@@ -96,9 +120,18 @@ export const ServicesCard = ({
                 </div>
 
 
-                {url.includes("services") ? <Checkbox
+                {/* {url.includes("services") ?
+                 <Checkbox
                   className="service-checkbox"
                   {...(selectAllChecked ? { checked: true } : {})}
+                  onChange={() => onCheckedChange(service)}
+                /> : <></>} */}
+                {url.includes("services") ?
+                 <Checkbox
+                  className="service-checkbox"
+                  // {...(selectAllChecked ? { checked: true } : {})}
+                  // checked={wishList?.list?.some((el) => el?._id === service?._id)}   //O(n^2) 
+                  checked={checkListSet.has( service?._id)}   //O(n)
                   onChange={() => onCheckedChange(service)}
                 /> : <></>}
               </div>
@@ -137,11 +170,13 @@ export const ServicesCard = ({
                   {addLoading[service._id] || removeLoading[service._id] || childLoading[service.serviceId]  ? <img
                         src="/icons/wishlist/grey-heart.svg"
                         alt="Red Heart"
-                      />: <button
-                    onClick={() => {
-                      onClick(service);
-                    }}
-                  >
+                      />
+                      : 
+                    <button
+                      onClick={() => {
+                        onClick(service);
+                      }}
+                    >
                     {location.pathname === "/wishlist" ? (
                       <img
                         src="/icons/wishlist/red-heart.svg"
