@@ -101,7 +101,6 @@ export const Header = ({ className, collapse, setCollapse }) => {
   //   });
   // };
 
-
   const handleLogout = () => {
     dispatch(clearUser());
     navigate("/sign-in");
@@ -197,11 +196,9 @@ export const Header = ({ className, collapse, setCollapse }) => {
           </h1>
           {/* Search */}
           {
-            !pathname.includes("dashboard") && 
-            pathname.includes("documents/detail") && 
-            !pathname.includes("wishlist") && 
             !pathname.includes("settings") &&
             !pathname.includes("offersDetails") &&
+            !pathname.includes("dashboard") &&
             !pathname.includes("business") && (
               <Search
                 clearSerarch={clearSearch}
@@ -259,10 +256,12 @@ export const Header = ({ className, collapse, setCollapse }) => {
 
                   <div className="hidden sm:flex flex-col items-start">
                     <h5 className="font-semibold text-sm text-white">
-                      {user?.name
-                        ? user.name.slice(0, 25) +
+                      {user?.name ? (
+                        user.name.slice(0, 25) +
                         (user.name.length > 25 ? "..." : "")
-                        : <></>}
+                      ) : (
+                        <></>
+                      )}
                     </h5>
                     <p className="text-[9px] text-white">
                       {user?.name ? user?.email : <></>}
@@ -278,7 +277,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
                     animate={{ scale: 1 }}
                     exit={{ scale: 0 }}
                     ref={signedInMenuPopupRef}
-                    className="p-4 sm:w-full fixed sm:absolute top-16 right-0 bg-white dark:text-white dark:bg-darkPrimary border border-gray-200 dark:border-gray-700 shadow rounded-md z-10 flex flex-col items-start justify-start gap-2"
+                    className="p-4 sm:w-32 fixed top-20 right-1 sm:right-4 bg-white dark:text-white dark:bg-darkPrimary border border-gray-200 dark:border-gray-700 shadow rounded-md z-10 flex flex-col items-start justify-start gap-2"
                   >
                     <Link
                       onClick={() => setSignedInMenuPopup(!signedInMenuPopup)}
@@ -335,7 +334,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
           </div>
         )}
         {/* Mobile Hamburger Menu */}
-        <AnimatePresence>
+        {/* <AnimatePresence>
           {hamburgerOpen && (
             <motion.div
               initial={{ scale: 0, translateX: 500 }}
@@ -396,7 +395,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
               )}
             </motion.div>
           )}
-        </AnimatePresence>
+        </AnimatePresence> */}
 
         {/* Sign Out Modal */}
         <ConfirmationModal

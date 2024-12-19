@@ -8,7 +8,10 @@ import { TableShimmer } from "../../../components/loader/TableShimmer";
 import { ConfirmationModal } from "../../../components/modal/confirmationModal";
 import Pagination from "../../../components/Pagination";
 import { Table } from "../../../components/table";
-import { downloadInvoice, getPaymentTransaction } from "../../../redux/actions/payment-history-action";
+import {
+  downloadInvoice,
+  getPaymentTransaction,
+} from "../../../redux/actions/payment-history-action";
 import { talkToAdvisor } from "../../../redux/actions/servicesDetails-actions";
 import { clearUrl } from "../../../redux/slices/paymentHistorySlice";
 import { formatReadableDate } from "../../../utils";
@@ -30,8 +33,8 @@ const History = () => {
   );
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [viewTransactionDetails, setViewTransactionDetails] = useState(false);
-  const [transactionDetails, setTransactionDetails] = useState({})
-  const contentRef = useRef()
+  const [transactionDetails, setTransactionDetails] = useState({});
+  const contentRef = useRef();
   const reactToPrintFn = useReactToPrint({ contentRef });
   const transformedTransactionHistory = paymentHistory?.map((history) => {
     return {
@@ -207,91 +210,97 @@ const History = () => {
       <ConfirmationModal
         isOpen={viewTransactionDetails}
         onClose={onViewTransactionClose}
+        modalClassName={" d"}
       >
-        <div ref={contentRef} className="flex flex-col gap-2 ">
-          <div className="flex justify-center">
+        <div ref={contentRef} className="py-4 flex flex-col justify-between">
+          <div className="pb-4 border-b flex justify-center">
             <img src="/public/Corpzo-logo-Modal.svg" width={150} alt="" />
           </div>
-          <div className="flex flex-row justify-between gap-2 pb-8 pt-4">
-            <p className="font-semibold text-base  text-[#525252] ">
-              Invoice Number -{" "}
-              <span className="font-semibold text-base text-[#0A1C40]">
-                {transactionDetails?.invoiceNumber}
-              </span>
-            </p>
-            <p className="font-semibold text-base  text-[#525252] flex gap-2 ">
-              Date of issue:
-              <span className="font-semibold text-base text-[#0A1C40]">
-                {formatReadableDate(transactionDetails?.paymentDate)}
-              </span>
-            </p>
-          </div>
-          <div className="pt-1">
-            <div className="flex justify-between gap-2">
-              <p className="font-semibold text-base  text-[#525252] flex  gap-4 ">
-                Your order id
+          <div className="max-h-[60vh] overflow-y-auto p-4 flex flex-col gap-2">
+            <div className="flex flex-row justify-between gap-2 pb-8 pt-4">
+              <p className="font-semibold text-base  text-[#525252] ">
+                Invoice Number -{" "}
                 <span className="font-semibold text-base text-[#0A1C40]">
-                  {transactionDetails?.transactionId}
+                  {transactionDetails?.invoiceNumber}
                 </span>
               </p>
-              <p className="font-semibold text-base  text-[#525252]  text-start ">
-                Billed To: <br />
+              <p className="font-semibold text-base  text-[#525252] flex gap-2 ">
+                Date of issue:
                 <span className="font-semibold text-base text-[#0A1C40]">
-                  CorpZo Pvt. Ltd.
+                  {formatReadableDate(transactionDetails?.paymentDate)}
                 </span>
               </p>
             </div>
-            <div className="flex justify-between ">
-              <p className="font-semibold text-base  text-[#525252] flex gap-4">
-                Payment method
-                <span className="font-semibold text-base text-[#0A1C40]">
-                  {transactionDetails?.paymentMode}
-                </span>
-              </p>
-              <p></p>
+            <div className="pt-1">
+              <div className="flex justify-between gap-2">
+                <p className="font-semibold text-base  text-[#525252] flex  gap-4 ">
+                  Your order id
+                  <span className="font-semibold text-base text-[#0A1C40]">
+                    {transactionDetails?.transactionId}
+                  </span>
+                </p>
+                <p className="font-semibold text-base  text-[#525252]  text-start ">
+                  Billed To: <br />
+                  <span className="font-semibold text-base text-[#0A1C40]">
+                    CorpZo Pvt. Ltd.
+                  </span>
+                </p>
+              </div>
+              <div className="flex justify-between ">
+                <p className="font-semibold text-base  text-[#525252] flex gap-4">
+                  Payment method
+                  <span className="font-semibold text-base text-[#0A1C40]">
+                    {transactionDetails?.paymentMode}
+                  </span>
+                </p>
+                <p></p>
+              </div>
             </div>
-          </div>
-          <div className="flex justify-between pt-8">
-            <p className="font-semibold text-base  text-[#525252] ">
-              Description
-            </p>
-            <p className="font-semibold text-base  text-[#525252] ">Amount</p>
-          </div>
-          <hr />
-
-          <div className="flex justify-between">
-            <p className="font-semibold text-base  text-[#0A1C40] ">Amount</p>
-            <p className="font-semibold text-base  text-[#0A1C40] ">
-              ₹ {transactionDetails?.serviceDetails?.cost}
-            </p>
-          </div>
-          {transactionDetails?.serviceappliedcouponandoffers && <div className="flex justify-between">
-            <p className="font-semibold text-base  text-[#0A1C40] ">
-              Discount Amount
-            </p>
-            <p className="font-semibold text-base text-[#0A1C40]">
-              {/* {transactionDetails?.serviceappliedcouponandoffers &&
+            <div className="flex justify-between pt-8">
+              <p className="font-semibold text-base  text-[#525252] ">
+                Description
+              </p>
+              <p className="font-semibold text-base  text-[#525252] ">Amount</p>
+            </div>
+            <hr />
+            <div className="flex justify-between">
+              <p className="font-semibold text-base  text-[#0A1C40] ">Amount</p>
+              <p className="font-semibold text-base  text-[#0A1C40] ">
+                ₹ {transactionDetails?.serviceDetails?.cost}
+              </p>
+            </div>
+            {transactionDetails?.serviceappliedcouponandoffers && (
+              <div className="flex justify-between">
+                <p className="font-semibold text-base  text-[#0A1C40] ">
+                  Discount Amount
+                </p>
+                <p className="font-semibold text-base text-[#0A1C40]">
+                  {/* {transactionDetails?.serviceappliedcouponandoffers &&
                 transactionDetails?.serviceappliedcouponandoffers[0]?.amount +
                   (transactionDetails?.serviceappliedcouponandoffers[1]
                     ?.amount || 0)} */}
-                    {transactionDetails?.totalCouponDiscount ? transactionDetails?.totalCouponDiscount : ""}
-            </p>
-          </div>}
-          <div className="flex justify-between bg-[#FFF4BA]  px-2 py-1">
-            <p className="font-semibold text-base  text-[#0A1C40] ">
-              Total amount paid
-            </p>
-            <p className="font-semibold text-base text-[#0A1C40]">
-              {/* ₹{
+                  {transactionDetails?.totalCouponDiscount
+                    ? transactionDetails?.totalCouponDiscount
+                    : ""}
+                </p>
+              </div>
+            )}
+            <div className="flex justify-between bg-[#FFF4BA]  px-2 py-1">
+              <p className="font-semibold text-base  text-[#0A1C40] ">
+                Total amount paid
+              </p>
+              <p className="font-semibold text-base text-[#0A1C40]">
+                {/* ₹{
                 Array.isArray(transactionDetails?.serviceappliedcouponandoffers) &&
                   transactionDetails?.serviceappliedcouponandoffers.length > 0
                   ? transactionDetails?.serviceappliedcouponandoffers[0]?.amount
                   : transactionDetails?.amount
               } */}
-              ₹ {transactionDetails?.amount}
-            </p>
+                ₹ {transactionDetails?.amount}
+              </p>
+            </div>
           </div>
-          <div className="flex justify-center gap-2 pt-10">
+          <div className="print:hidden pt-4 border-t flex justify-center gap-2">
             <Button outline={true} onClick={reactToPrintFn}>
               {" "}
               <img src="/public/icons/payment/print.svg" alt="" />

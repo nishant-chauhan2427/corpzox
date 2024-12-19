@@ -20,7 +20,7 @@ export const Insight = () => {
           >
             <div
               style={{ backgroundImage: `url(${blog.image})` }}
-              className={`w-[40%] rounded-lg bg-cover overflow-hidden`}
+              className={`min-w-[40%] rounded-lg bg-cover bg-center overflow-hidden`}
             ></div>
             <div className="flex w-[60%] flex-col gap-1">
               <div className="flex ">

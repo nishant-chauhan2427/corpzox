@@ -23,12 +23,13 @@ export const ConfirmationModal = ({
         exit={{ scale: 0, translateY: 500 }}
         className={`${
           containerClassName && containerClassName
-        } fixed inset-0 bg-opacity-50 flex items-center justify-center z-[1005]`}
+        } fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-[1005]`}
       >
+         
         <div
           className={`${
-            modalClassName && modalClassName
-          } max-w-md relative bg-white p-4 rounded-2xl shadow-lg`}
+            modalClassName ? modalClassName : "p-4"
+          } max-h-[90vh] max-w-[90%] sm:max-w-xl relative bg-white rounded-2xl shadow-lg` }
         >
           {children ? (
             children

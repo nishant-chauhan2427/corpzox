@@ -6,6 +6,8 @@ import { useOutsideClick } from "../../../../utils";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { requestChangeManager } from "../../../../redux/actions/dashboard-action";
+import { FaExchangeAlt } from "react-icons/fa";
+import { IoAdd } from "react-icons/io5";
 
 export const AccountManager = ({ manager, sidebar }) => {
   const [accountShowButton, setAccountShowButton] = useState(false);
@@ -21,16 +23,20 @@ export const AccountManager = ({ manager, sidebar }) => {
   // console.log(manager, "manager1234");
 
   const requestManagerChange = () => {
-    dispatch(requestChangeManager())
-    handleAccountShowBtn()
-  }
+    dispatch(requestChangeManager());
+    handleAccountShowBtn();
+  };
   return (
     <div
-      className={`${sidebar ? "relative px-2 py-4 bg-[url('/images/dashboard/am-bg.svg')] bg-no-repeat bg-cover items-start gap-2" : "bg-white px-[17px] py-[17px] gap-4"} w-full sm:w-auto flex border border-[#DFEAF2] rounded-2xl`}
+      className={`${
+        sidebar
+          ? "relative px-2 py-3 bg-[url('/images/dashboard/am-bg.svg')] bg-no-repeat bg-cover items-start gap-2"
+          : "bg-white px-[17px] py-[17px] gap-4"
+      } w-full sm:w-auto flex border border-[#DFEAF2] rounded-2xl`}
     >
       <div className="flex items-center">
         <img
-          className={`${sidebar ? "w-05 h-05" : "w-12 h-20"} rounded-full`}
+          className={`${sidebar ? "w-8 h-8" : "w-12 h-20"} rounded-full`}
           src="/images/dashboard/asuthosh-gupta.svg"
           alt=""
         />
@@ -41,18 +47,21 @@ export const AccountManager = ({ manager, sidebar }) => {
             ? manager?.role?.toUpperCase()
             : "Manager Role"}
         </p> */}
-        <div className={`${sidebar ? "text-xs text-white" : "text-sm text-[#232323] -mt-1"} font-bold`}>
-          <p className="font-bold">Manager Name :</p>
-          <span className="font-medium">
+        <div
+          className={`${
+            sidebar ? "text-xs text-white" : "text-sm text-[#232323] -mt-1"
+          } font-bold`}
+        >
+          <p className="font-semibold text-xs text-gray-700">Account Manager</p>
+          <p className="max-w-24 whitespace-nowrap overflow-hidden font-medium text-xs">
             {user?.agent_data?.[0]?.manager_data?.[0]?.name
-              ? user?.agent_data?.[0]?.manager_data?.[0]?.name
+              ? user?.agent_data?.[0]?.manager_data?.[0]?.name.slice(0, 15) + "..."
               : "------"}
-          </span>
+          </p>
         </div>
 
-
-        <div className="pt-2 flex gap-2">
-          {/* <Link
+        {/* <div className="pt-2 flex gap-2">
+          <Link
             to="mailto:example@example.com"
             className="bg-[#D9D9D9] rounded-full px-1 py-1"
           >
@@ -63,27 +72,49 @@ export const AccountManager = ({ manager, sidebar }) => {
             className="bg-[#D9D9D9] rounded-full px-1 py-1"
           >
             <IoMdCall />
-          </a> */}
-        </div>
+          </a>
+          <button
+            data-tooltip-content={user?.agent_data?.[0]?.manager_data?.[0]?.name ? "Request to change manager?" : "Request to add manager"}
+            data-tooltip-id="my-tooltip"
+            onClick={requestManagerChange}
+            className="bg-[#D9D9D9] rounded-full px-1 py-1"
+          >
+            {user?.agent_data?.[0]?.manager_data?.[0]?.name ? (
+              <FaExchangeAlt />
+            ) : (
+              <IoAdd />
+            )}
+          </button>
+        </div> */}
       </div>
-      <div className={`${sidebar ? "absolute top-2 right-2" : "ps-10"}`}>
+      {/* <div className={`${sidebar ? "absolute top-2 right-2" : "ps-10"}`}>
         <div>
-          {user?.agent_data?.[0]?.manager_data?.[0]?.
-            name ? <button
+          {user?.agent_data?.[0]?.manager_data?.[0]?.name ? (
+            <button
               onClick={handleAccountShowBtn}
-              className={`${!sidebar && "cursor-pointer bg-[#D9D9D9] rounded-full px-1 py-1"}`}
+              className={`${
+                !sidebar && "cursor-pointer bg-[#D9D9D9] rounded-full px-1 py-1"
+              }`}
             >
-            {<CiMenuKebab className={`${sidebar && "text-white"}`} />}
-          </button> : <></>}
+              {<CiMenuKebab className={`${sidebar && "text-white"}`} />}
+            </button>
+          ) : (
+            <></>
+          )}
           {accountShowButton && (
-            <div ref={accountShowButtonRef} className="absolute  pt-3">
-              <button onClick={requestManagerChange} className="px-3 py-2 cursor-pointer w-full bg-[#D9D9D9] font-medium text-xs rounded-md z-[999999]">
-                {user?.agent_data?.[0]?.manager_data?.[0]?.name  ? "Request to change manager?" : "Request to add manager"}
+            <div ref={accountShowButtonRef} className="absolute pt-3">
+              <button
+                onClick={requestManagerChange}
+                className="px-3 py-2 cursor-pointer w-full bg-[#D9D9D9] font-medium text-xs rounded-md"
+              >
+                {user?.agent_data?.[0]?.manager_data?.[0]?.name
+                  ? "Request to change manager?"
+                  : "Request to add manager"}
               </button>
             </div>
           )}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

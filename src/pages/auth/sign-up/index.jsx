@@ -20,6 +20,7 @@ import { PhoneNumberInput } from "../../../components/inputs/phoneInput";
 import { registerUser, thirdPartyLogin } from "../../../redux/actions/userAuth-action";
 import toast from "react-hot-toast";
 import GoogleLogin from "react-google-login";
+import { setRedirectTo } from "../../../redux/slices/appSlice";
 export const Signup = () => {
   const {
     control,
@@ -87,6 +88,7 @@ export const Signup = () => {
     delete userData.full;
     dispatch(registerUser(userData));
     // dispatch(registerUser(data));
+    dispatch(setRedirectTo("verify"))
     console.log(data, "user data");
   })
   };

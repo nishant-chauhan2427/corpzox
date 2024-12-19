@@ -46,15 +46,15 @@ export const Offers = () => {
             <div className="!rounded-lg overflow-hidden">
               <div
                 key={index}
-                className="flex !rounded-lg px-2 py-2 bg-[#EEEFF3] hover:shadow-lg  "
+                className="flex rounded-lg px-2 py-2 bg-[#EEEFF3] hover:shadow-lg"
               >
                 <div
                   style={{
                     backgroundImage: `url(${offer?.imageUrl})`,
                   }}
-                  className={`w-[40%] rounded-lg bg-cover bg-right overflow-hidden`}
+                  className={`min-w-[40%] rounded-lg bg-cover bg-center overflow-hidden`}
                 ></div>
-                <div className="flex w-[40%] flex-col  justify-between gap-1 bg-[#EEEFF3] pl-3 ">
+                <div className="flex flex-col  justify-between gap-1 bg-[#EEEFF3] pl-3 ">
                   <div>
                     <div className="flex ">
                       <p className="font-bold text-[12.64px]  text-[#1A202E] ">
@@ -64,7 +64,7 @@ export const Offers = () => {
                     <p className="font-extrabold  text-[#EB9527] text-[14.05px]">
                       {offer.discountPercent}% OFF
                     </p>
-                    <p className="font-normal whitespace-nowrap pr-2 text-[12px] text-[#737373]">
+                    <p className="font-normal pr-2 text-[12px] text-[#737373]">
                       {offer.offerDetail?.substring(0, 30)}
                       {offer.offerDetail?.length > 50 ? " ..." : ""}
                     </p>

@@ -11,7 +11,7 @@ const ProfileCard = ({ userData, loading }) => {
   return (
     <>
       {loading ? (
-        <BusinessCardShimmer />
+        <BusinessCardShimmer className={"py-4"} />
       ) : (
         <div className="pb-4">
           {/* <div className="flex items-center py-6 gap-4 font-semibold text-2xl text-[#0A1C40"> */}
