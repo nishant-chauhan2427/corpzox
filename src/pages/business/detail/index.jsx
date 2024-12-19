@@ -152,18 +152,18 @@ const BusinessDetail = () => {
                 </p> */}
               </div>
             </div>
-            <div className="w-full md:w-1/2">
-              <table>
+            <div className="w-full md:w-1/2 overflow-x-auto">
+              <table className="min-w-full table-auto border-collapse bg-white shadow-md">
                 <tbody>
                   {businessTableData.map((item, index) => (
                     <tr key={index}>
                       <td>
-                        <span className="pr-6 font-medium text-base text-[#000000B2]">
+                        <span className="pr-6 font-medium text-base text-[#000000B2] whitespace-nowrap">
                           {item.label}:
                         </span>
                       </td>
                       <td>
-                        <span className="px-6 font-semibold text-base text-black">
+                        <span className="px-6 font-semibold text-base text-black whitespace-nowrap">
                           {item.value}
                         </span>
                       </td>
