@@ -221,10 +221,11 @@ export const getMoreServiceUpdate = createAsyncThunk("getMoreServiceUpdate", asy
 
   try {
       // console.log("business-page action:getMoreBusiness , page",page);
+      console.log("page",page);
     let params = new URLSearchParams();
     if (page) params.append('page', page);
-    if (sort_by) params.append('sort_by', sort_by);
-    if (query) params.append('query', query);
+    // if (sort_by) params.append('sort_by', sort_by);
+    // if (query) params.append('query', query);
     const response = await client.get(`/user/service-progress-update${(params) && `?${params}`}`, {
       headers: {
         Accept: "application/json",

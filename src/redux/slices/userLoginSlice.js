@@ -1,5 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { getMoreService,getMoreServiceUpdate, getUser, getUserBusiness, getUserServices, updateServiveProgress } from '../actions/dashboard-action';
+import { createSlice } from "@reduxjs/toolkit";
+import {
+  getMoreService,
+  getMoreServiceUpdate,
+  getUser,
+  getUserBusiness,
+  getUserServices,
+  updateServiveProgress,
+} from "../actions/dashboard-action";
 const initialState = {
   loading: false,
   user: null,
@@ -9,7 +16,6 @@ const initialState = {
   page: 0,
   error: null,
   loadingMore: false,
-
 
   business: {
     list: [],
@@ -33,78 +39,82 @@ const initialState = {
 };
 
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
     setUser(state, action) {
       state.user = action.payload;
       // localStorage.setItem("userInfo",action.payload);
-
     },
     clearUser(state) {
       state.user = null;
-      localStorage.removeItem("userInfo")
-
+      localStorage.removeItem("userInfo");
     },
     setBusinessPage(state, action) {
       state.business.page = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(getUser.pending, (state, action) => {
-      state.loading = true;
-    }).addCase(getUser.fulfilled, (state, action) => {
-      state.loading = false;
+    builder
+      .addCase(getUser.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        state.loading = false;
 
-      // state.isVerificationSuccessfull = true;
+        // state.isVerificationSuccessfull = true;
 
-      state.error = action.payload.message;
-      state.user = action.payload;
+        state.error = action.payload.message;
+        state.user = action.payload;
 
-      state.manager = action.payload?.agent_data?.[0]?.manager_data?.[0];
-      // state.profile={...action.payload?.data?.[0],isVerified:true};
-      // localStorage.setItem("userInfo", JSON.stringify(state.profile));
-      // if (action.payload?.isVerification) {
-      //   state.profile = { ...state.profile, isVerified: true };
-      //   localStorage.setItem("userInfo", JSON.stringify(state.profile));
-      // } else {
-      //   state.resetPasswordUrl = action.payload?.url;
-      // }
-    }).addCase(getUser.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    });
-    builder.addCase(getUserBusiness.pending, (state, action) => {
-      state.businessLoading = true;
-    }).addCase(getUserBusiness.fulfilled, (state, action) => {
-      state.businessLoading = false;
-      state.businessError = action.payload.message;
-      // console.log('6',state.business.list,action.payload);
-      // if(state.business.list.length>0){
-      //   state.business.list=[...state.business.list,...action.payload.data];
-      // }else{
-      state.business.list = action.payload.data;
-      // }
-      state.business.totalPage = action.payload?.total;
-    }).addCase(getUserBusiness.rejected, (state, action) => {
-      state.businessLoading = false;
-      state.businessError = action.payload;
-    });
-    builder.addCase(getUserServices.pending, (state, action) => {
-      state.serviceLoading = true;
-
-    }).addCase(getUserServices.fulfilled, (state, action) => {
-
-      state.serviceLoading = false;
-      state.servicesError = action.payload.message;
-      state.service.list = action.payload.data;
-      state.service.totalPage = action.payload?.total;
-      state.service.totalCount = action.payload?.total;
-
-    }).addCase(getUserServices.rejected, (state, action) => {
-      state.serviceLoading = false;
-      state.servicesError = action.payload;
-    })
+        state.manager = action.payload?.agent_data?.[0]?.manager_data?.[0];
+        // state.profile={...action.payload?.data?.[0],isVerified:true};
+        // localStorage.setItem("userInfo", JSON.stringify(state.profile));
+        // if (action.payload?.isVerification) {
+        //   state.profile = { ...state.profile, isVerified: true };
+        //   localStorage.setItem("userInfo", JSON.stringify(state.profile));
+        // } else {
+        //   state.resetPasswordUrl = action.payload?.url;
+        // }
+      })
+      .addCase(getUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+    builder
+      .addCase(getUserBusiness.pending, (state, action) => {
+        state.businessLoading = true;
+      })
+      .addCase(getUserBusiness.fulfilled, (state, action) => {
+        state.businessLoading = false;
+        state.businessError = action.payload.message;
+        // console.log('6',state.business.list,action.payload);
+        // if(state.business.list.length>0){
+        //   state.business.list=[...state.business.list,...action.payload.data];
+        // }else{
+        state.business.list = action.payload.data;
+        // }
+        state.business.totalPage = action.payload?.total;
+      })
+      .addCase(getUserBusiness.rejected, (state, action) => {
+        state.businessLoading = false;
+        state.businessError = action.payload;
+      });
+    builder
+      .addCase(getUserServices.pending, (state, action) => {
+        state.serviceLoading = true;
+      })
+      .addCase(getUserServices.fulfilled, (state, action) => {
+        state.serviceLoading = false;
+        state.servicesError = action.payload.message;
+        state.service.list = action.payload.data;
+        state.service.totalPage = action.payload?.total;
+        state.service.totalCount = action.payload?.total;
+      })
+      .addCase(getUserServices.rejected, (state, action) => {
+        state.serviceLoading = false;
+        state.servicesError = action.payload;
+      })
 
       .addCase(updateServiveProgress.pending, (state, action) => {
         state.fetching = true;
@@ -114,10 +124,11 @@ const userSlice = createSlice({
         state.fetching = false;
         state.error = action.payload.message;
         // console.log(action.payload,"action.payload22");
+        console.log(action.payload);
         state.dataUpdate = action.payload;
         //state.manager=action.payload?.agent_data?.[0]?.manager_data?.[0];
-
-      }).addCase(updateServiveProgress.rejected, (state, action) => {
+      })
+      .addCase(updateServiveProgress.rejected, (state, action) => {
         state.fetching = false;
         state.error = action.payload;
       })
@@ -128,26 +139,18 @@ const userSlice = createSlice({
       })
 
       .addCase(getMoreServiceUpdate.fulfilled, (state, action) => {
-        console.log("H1234");
-        console.log("getMoreServices.fulfilled", action.payload);
-        state.totalCount = action.payload?.total
-        console.log(state.totalCount,"getMoreServices.fulfilled1");
-        console.log(action.payload?.data?.length,"getMoreServices.fulfilled2");
+        state.totalCount = action.payload?.total;
         state.loadingMore = false;
-      
-        //state.totalCount = action.payload?.total;
-        console.log(state.totalCount,"H12344");
         if (state.dataUpdate) {
-          console.log(action.payload?.data?.length,"getMoreServices3");
-          state.dataUpdate = [...state.dataUpdate, ...action.payload?.data];
-          console.log("getMoreServices4");
+          console.log("state", JSON.stringify(state.dataUpdate.data));
+          console.log("data",action.payload?.data);
+          state.dataUpdate.data = [...state.dataUpdate.data, ...action.payload?.data];
           if (action.payload?.data?.length > 0) {
-            console.log("getMoreServices4");
-            state.page = state.page + 1;
-            //console.log( state.page,"getMoreServices");
+              state.page = state.page + 1;
           }
-        }
-        console.log( state.page,"getMoreServices5");
+      }
+
+        console.log(state.page, "getMoreServices5");
         state.error = null;
       })
       .addCase(getMoreServiceUpdate.rejected, (state, action) => {
@@ -155,7 +158,7 @@ const userSlice = createSlice({
         state.loadingMore = false;
         // state.error = action.payload;
       });
-  }
+  },
 });
 
 // import { createSlice } from "@reduxjs/toolkit";
@@ -212,7 +215,6 @@ const userSlice = createSlice({
 //                 state.totalCount = null;
 //             });
 
-
 //         //For pagination
 //         builder
 //             .addCase(getMoreBusiness.pending, (state) => {
@@ -243,8 +245,6 @@ const userSlice = createSlice({
 
 // export const { clearState } = businessPageSlice.actions;
 // export default businessPageSlice.reducer;
-
-
 
 // Export actions
 export const { setUser, clearUser, setBusinessPage } = userSlice.actions;

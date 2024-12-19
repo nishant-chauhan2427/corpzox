@@ -27,7 +27,7 @@ const ServiceprogressViewAll = ({ data }) => {
     dataUpdate?.data?.map(() => false)
   );
   const dispatch = useDispatch();
-  console.log(dataUpdate.total, "dataUpdate32");
+  console.log(dataUpdate.data, "dataUpdate32");
 
   const handleServiceDropdown = (index) => {
     setDropdownStates((prevState) =>
@@ -38,10 +38,12 @@ const ServiceprogressViewAll = ({ data }) => {
   const onConfirmationModalClose = () => {
     setConfirmationModal(!confirmationModal);
   };
-
+  console.log(dataUpdate?.data, "DebugdataUpdate1");
   useEffect(() => {
     //console.log(dataUpdate?.length, "jhbj");
-    if (dataUpdate?.length == 0) dispatch(updateServiveProgress({ page: 1 }));
+    if (dataUpdate?.length == 0 || dataUpdate?.length == undefined) {
+      dispatch(updateServiveProgress({ page: 1 }));
+    }
   }, []);
 
   const servicesProgessSteps = [
@@ -83,8 +85,7 @@ const ServiceprogressViewAll = ({ data }) => {
       status: "pending",
     },
   ];
-  console.log(dataUpdate?.data?.length, "dataUpdate1");
-  console.log(dataUpdate?.total, "dataUpdate2");
+  
   return (
     <>
       <div className="flex flex-col md:flex-row justify-between gap-4">
@@ -166,6 +167,7 @@ const ServiceprogressViewAll = ({ data }) => {
                             </label>
                             <Rating size={40} />
                           </div>
+                          {console.log(dataUpdate?.data, "DebugdataUpdate5")}
                           <div className="flex justify-between items-center pb-5">
                             <label className="text-sm font-semibold text-gray-600">
                               Transparent Pricing
@@ -240,10 +242,10 @@ const ServiceprogressViewAll = ({ data }) => {
               />
             </div>
           ))}
-
+{console.log(page,"page1")}
           <InfiniteScroll
             dataLength={dataUpdate?.data?.length || 0}
-            next={() => dispatch(getMoreServiceUpdate({ page: page + 1 }))}
+            next={() => dispatch(getMoreServiceUpdate({page: 2  }))}
             hasMore={dataUpdate?.data?.length < dataUpdate?.total}
             loader={
               <div className="flex justify-center items-center p-1">
@@ -265,7 +267,7 @@ const ServiceprogressViewAll = ({ data }) => {
           <img src="/images/service-prgress.svg" alt="" />
           <p className="font-bold text-xl text-[#000000]">No Services</p>
           <p className="font-normal text-[#797979]">
-            Create a Business to add your Service
+            Create a Service
           </p>
         </div>
       )}
