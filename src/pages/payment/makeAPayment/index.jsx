@@ -104,7 +104,7 @@ const MakeAPayment = () => {
       }
       userData = {
         ...availServiceData, amount: finalPrice,
-        totalCouponDiscount: Math.abs(totalCouponDiscount),
+        // totalCouponDiscount: Math.abs(totalCouponDiscount),
         subscriptionDetails: subscriptionData
       }
     } else if (type === "quotation") {
@@ -118,14 +118,14 @@ const MakeAPayment = () => {
       }
       userData = {
         ...availServiceData, amount: finalPrice,
-        totalCouponDiscount: Math.abs(totalCouponDiscount),
+        // totalCouponDiscount: Math.abs(totalCouponDiscount),
         subscriptionDetails: subscriptionData
       }
     }
-
     console.log("userdata", userData);
 
-    // dispatch(availService({ userData, navigate }))
+
+    dispatch(availService({ userData, navigate }))
   }
 
   const onConfirmationModalClose = () => {
@@ -165,12 +165,6 @@ const MakeAPayment = () => {
       dispatch(setAppliedOffer({ offerPrice: pricingData.discountAmount, finalPrice: pricingData.finalPrice }))
       console.log(pricingData, "quotation data");
     }
-    // else if (type === 'regular'){
-    //   console.log(" insiude regular part")
-    //   const pricingData = calculateFinalPriceByType(success, type, null);
-    //   console.log(pricingData, "pricingData for cost regular")
-    //   dispatch(setAppliedOffer({offerPrice  : pricingData.discountAmount, finalPrice : pricingData.finalPrice}))
-    // }
     else if (type === 'regular' && success && Object.keys(success).length > 0) {
       console.log("Inside regular part");
       const pricingData = calculateFinalPriceByType(success, type, null);
@@ -376,7 +370,7 @@ const MakeAPayment = () => {
             {" "}
             Try Again{" "}
           </Button>
-        </div>
+        </div> 
       </ConfirmationModal>
       <ConfirmationModal isOpen={confirmationModal}
         onClose={onConfirmationModalClose}>

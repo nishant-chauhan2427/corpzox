@@ -2,6 +2,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../../../../../components/buttons";
 import { Rating } from "../../../../../components/rating";
 import { useNavigate, useParams } from "react-router-dom";
+import { talkToAdvisor } from "../../../../../redux/actions/servicesDetails-actions";
+import { useEffect, useState } from "react";
+import { ConfirmationModal } from "../../../../../components/modal/confirmationModal";
 
 export const Details = ({
   pricing = true,
@@ -14,18 +17,19 @@ export const Details = ({
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {subscriptionId} = useParams()
+  const { subscriptionId } = useParams()
+  const [confirmationModal, setConfirmationModal] = useState(false);
   // const navigateToService = () => {
   //   navigate(`/payment/${serviceId}`);
   // };
 
-  const { success, serviceDetailLoading, quotationDetails } = useSelector(
+  const { success, serviceDetailLoading, quotationDetails, isTalkToAdvisorLoading } = useSelector(
     (state) => state.serviceDetails
   );
 
   // Safely retrieve data
   const subscriptionAmount =
-   quotationDetails?.[0]?.amount|| success?.subscription?.[0]?.amount || data?.cost || 0;
+    quotationDetails?.[0]?.amount || success?.subscription?.[0]?.amount || data?.cost || 0;
 
   const discountPercent =
     success?.offerservices?.[0]?.offers?.[0]?.discountPercent || offer || 0;
@@ -41,15 +45,35 @@ export const Details = ({
   // const { id: serviceId } = useParams();
 
   const subscription = success?.subscription?.[0] || null
+  const ratingDetails = success?.total_rating_count?.length > 0 ? success.total_rating_count[0] : null;
 
   const navigateToService = () => {
-    if(subscription){
-
+    if (subscription) {
+      console.log(success?.subscription?.[0], "success?.subscription?.[0]")
+      // navigate(`/payment/${serviceId}/${data?._id}?paymentType=subscription`);
       navigate(`/payment/${serviceId}/${subscription._id}?paymentType=subscription`);
-    }else{
+    } else {
       navigate(`/payment/${serviceId}?paymentType=regular`);
     }
   };
+  const onConfirmationModalClose = () => {
+    setConfirmationModal(false);
+  };
+  const handleTalkTouOurAdvisors = () => {
+    console.log(serviceId, "clicked");
+    const requestData = {
+      userId: JSON.parse(localStorage.getItem("userInfo"))?.userId,
+      serviceId: serviceId,
+      status: "negotiation",
+      quotationDate: Date.now(),
+    };
+    dispatch(talkToAdvisor(requestData));
+  };
+  useEffect(() => {
+    if (!isTalkToAdvisorLoading) {
+      onConfirmationModalClose();
+    }
+  }, [isTalkToAdvisorLoading]);
   return (
     <section className="flex flex-col gap-2">
       <div className="flex flex-col text-start gap-2">
@@ -126,11 +150,11 @@ export const Details = ({
               }
             </div>
             <div className="py-4 flex justify-between items-center">
-              {data?.rating && (
+              {ratingDetails && (
                 <div className="flex flex-col gap-1">
-                  <p className="font-extrabold text-xl text-[#0A1C40]">{data?.rating}/5</p>
-                  <Rating rating={data?.rating} />
-                  <p className="text-[11px]">Based on 102 reviews</p>
+                  <p className="font-extrabold text-xl text-[#0A1C40]">{ratingDetails?.average}/5</p>
+                  <Rating rating={ratingDetails?.average} />
+                  <p className="text-[11px]">{`Based on ${ratingDetails?.count ? ratingDetails?.count : 0} reviews`}</p>
                 </div>
               )}
               <div className="flex flex-col">
@@ -152,8 +176,8 @@ export const Details = ({
                 Avail services
               </Button>
               <Button
-                isLoading={isLoading}
-                onClick={handleRequest}
+                // isLoading={isLoading}
+                onClick={() => setConfirmationModal(true)}
                 className={"text-xs px-2 py-1 rounded-sm"}
                 primary={true}
               >
@@ -162,6 +186,30 @@ export const Details = ({
             </div>
           </div>
         )}
+        <ConfirmationModal
+          isOpen={confirmationModal}
+          onClose={onConfirmationModalClose}
+        >
+          <div className="flex flex-col gap-2 items-center justify-center ">
+            <img src="/public/icons/payment/callback.svg" width={200} alt="" />
+            <p className="text-3xl font-bold text-[#0A1C40]">
+              Request Call back?
+            </p>
+            <p className="font-medium text-[16px] text-[#595959]">
+              Your Assistant Manager will get in touch with you soon.
+            </p>
+            <div className="flex justify-center">
+              <Button
+                primary={true}
+              isLoading={isTalkToAdvisorLoading}
+              onClick={handleTalkTouOurAdvisors}
+              >
+                {" "}
+                Continue
+              </Button>
+            </div>
+          </div>
+        </ConfirmationModal>
       </div>
     </section>
   );
