@@ -17,6 +17,7 @@ import {
   updateServiceWishlist,
   removeServiceWishlist,
   updateServiceQuickWishlist,
+  getMoreUserServices,
 } from "../../../redux/actions/servicesListing-action";
 import {
   setToggleToCheckedWishlist,
@@ -31,11 +32,12 @@ import { ImSpinner2 } from "react-icons/im";
 import { MetaTitle } from "../../../components/metaTitle";
 import { CategorySubCategoryTabLoader } from "../../../components/loader/CategorySubCategoryTabLoader";
 import { BusinessCardShimmer } from "../../../components/loader/ProfileShimmer";
+import InfiniteScroll from "react-infinite-scroll-component";
 const ServicesListing = () => {
   const dispatch = useDispatch();
   const { servicesMainTab } = useSelector((state) => state.app);
-  console.log(servicesMainTab, "serviceMainTab");
-  const { category, subCategory, loading, page, limit, totalCount, totalPage, list, wishList } = useSelector(
+  // console.log(servicesMainTab, "serviceMainTab");
+  const { category, subCategory, loading, loadingMore, page, limit, totalCount, totalPage, list, wishList } = useSelector(
     (state) => state.service
   );
 
@@ -47,6 +49,12 @@ const ServicesListing = () => {
   const searchValue = queryParams.get("search");
   const [isSubmit, setIsSubmit] = useState(false);
   const [isServicesFetched, setIsServicesFetched] = useState(false);
+
+  // console.log("list", list);
+  // console.log("service totalCount:", totalCount);
+  // console.log("service page:", page);
+
+
   useEffect(() => {
     // dispatch(resetService({}));
     category?.list && category?.list?.length === 0 && dispatch(getUserServicesCatagory({}));
@@ -162,6 +170,27 @@ const ServicesListing = () => {
   //     // });
   //   }; 
 
+  const loadMoreServices = () => {
+    if (
+      categoryId &&
+      subCategoryId &&
+      !subCategory?.subCategoryLoading &&
+      !loading &&
+      !isServicesFetched
+    ) {
+      const search = searchParams.get("search");
+      dispatch(
+        getMoreUserServices({
+          categoryId,
+          subCategoryId,
+          page: page + 1,
+          limit,
+          query: search || searchValue,
+        })
+      );
+    }
+  }
+
   return (
     <section className="flex sm:flex-row flex-col gap-4 sm:pt-6 pt-3 bg-white">
       <div className="w-full flex justify-center flex-col overflow-hidden">
@@ -179,15 +208,39 @@ const ServicesListing = () => {
           ) : (
 
             list && list.length > 0 ? (
-              <ServicesCard
-                data={list}
-                onClick={(service) => onClickWishList(service)}
-                onCheckedChange={(val) => onCheckHandler(val)}
-              />
+
+              <InfiniteScroll
+                dataLength={list?.length || 0} // Use the currently loaded data length
+                next={loadMoreServices} // Load more data
+                hasMore={list?.length < totalCount} // true if more data exists, false otherwise
+                loader={
+                  <div className="flex justify-center items-center p-1">
+                    <ImSpinner2 className="animate-spin text-black !text-xl" />
+                  </div>
+                }
+                endMessage={
+                  (totalCount && totalCount > 0) && <p style={{ textAlign: 'center' }}>
+                    <b>Yay! You have seen it all</b>
+                  </p>
+                }
+              >
+
+
+                <ServicesCard
+                  data={list}
+                  onClick={(service) => onClickWishList(service)}
+                  onCheckedChange={(val) => onCheckHandler(val)}
+                />
+
+
+              </InfiniteScroll>
+
+
+
             ) : (<NoData />)
           )}
 
-          {list && list.length > 5 && (
+          {/* {list && list.length > 5 && (
             <div className="mt-10 flex justify-center">
               {list.length == totalCount ? (
                 <></>
@@ -195,7 +248,7 @@ const ServicesListing = () => {
                 <Button primary={true}>Load More </Button>
               )}
             </div>
-          )}
+          )} */}
 
         </>
       </div>
