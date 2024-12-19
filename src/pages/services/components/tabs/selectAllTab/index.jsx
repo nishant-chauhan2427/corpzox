@@ -1,17 +1,33 @@
 import { Button } from "../../../../../components/buttons"
 
-export const SelectAllTabs = ({onChangeSelectAllHandler=()=>{},onClickAddWishlistHandler=()=>{}}) => {
+export const SelectAllTabs = ({ onChangeSelectAllHandler = () => { }, onClickAddWishlistHandler = () => { }, checked, hideBtn, checkListCount }) => {
+  // console.log("checked,", checked);
+
   return (
-    <div className="flex space-x-5  overflow-x-auto scrollbar-hide whitespace-nowrap pb-4 pt-4 ">
-          <label>
+    <div className="flex items-start space-x-  overflow-x-auto scrollbar-hide whitespace-nowrap pb-4 pt-4 ">
+      <div className="flex flex-col justify-center items-center">
+        <div className="border py-1 px-2 rounded-2xl bg-[#F3F7FF] w-fit flex justify-between items-center">
+          <label htmlFor="checklist">
             Select All
-            <input type='checkbox' onChange={onChangeSelectAllHandler}/>
           </label>
-          <Button primary={true}
-            onClick={onClickAddWishlistHandler}
-          >
-            Add Wishlist
-          </Button>
+          <div className="">
+          <input id="checklist" type='checkbox' className=" mx-1 w-4 h-4  bg-green-400" checked={checked} onChange={onChangeSelectAllHandler} />
+          </div>
+
+
+        </div>
+        <div className="px-2">
+          {checkListCount>0 &&<span><span className="font-bold ">{checkListCount}</span> Selected</span>}
+        </div>
       </div>
+      <div className="p-1">
+        {!hideBtn && <Button primary={true}
+          onClick={onClickAddWishlistHandler}
+        >
+          Add Wishlist
+        </Button>}
+      </div>
+
+    </div>
   )
 }

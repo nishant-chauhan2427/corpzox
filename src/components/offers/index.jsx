@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getOffers } from "../../redux/actions/offer-action";
 import { OfferShimmer } from "../loader/OfferShimmer";
 import { NoData } from "../errors/noData";
+import { LinkButton } from "../link";
 
 export const Offers = () => {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ export const Offers = () => {
     (state) => state.offers
   );
 
-  console.log("offers:::", offers, isLoading);
+  // console.log("offers:::", offers, isLoading);
 
   //useEffect here.. to fetch/dispatch all offer in store
   useEffect(() => {
@@ -69,14 +70,8 @@ export const Offers = () => {
                     </p>
                   </div>
                   <div className="flex pt-2">
-                    <Button
-                      className={
-                        "!text-[11px] !font-medium !text-[#0A1C40]  px-4 rounded-md py-1 "
-                      }
-                      primary={true}
-                    >
-                      Avail Now
-                    </Button>
+                    <LinkButton to={"/services"} primary={true}> Avail Now</LinkButton>
+                  
                   </div>
                 </div>
               </div>
