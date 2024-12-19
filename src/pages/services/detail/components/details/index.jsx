@@ -29,7 +29,8 @@ export const Details = ({
 
   // Safely retrieve data
   const subscriptionAmount =
-    quotationDetails?.[0]?.amount || success?.subscription?.[0]?.amount || data?.cost || 0;
+    // quotationDetails?.[0]?.amount || success?.subscription?.[0]?.amount || data?.cost || 0;
+    success?.subscription?.[0]?.amount || data?.cost || 0;
 
   const discountPercent =
     success?.offerservices?.[0]?.offers?.[0]?.discountPercent || offer || 0;

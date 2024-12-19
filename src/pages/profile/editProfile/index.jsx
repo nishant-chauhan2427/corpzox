@@ -94,24 +94,10 @@ const Edit = () => {
     dispatch(submitEditProfile({ formData, navigate }));
     setIsImageChanged(false);
   };
-  //console.log(setIsImageChanged,"isValid");
-  // const handleImageChange = (e) => {
-  //   const file = e.target.files[0];
-
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setImage(reader.result);
-  //       setImageFile(file);
-  //       setIsImageChanged(true);
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
-
   const handleImageChange = (e) => {
     const file = e.target.files[0];
 
+    console.log(file, "new file")
     if (file) {
       if (file.size > 2 * 1024 * 1024) {
         toast.error("File size should not exceed 2MB");
@@ -123,7 +109,11 @@ const Edit = () => {
         setImage(reader.result);
         setImageFile(file);
         setImageSelected(true); 
-        // setIsImageChanged(true);
+       
+  
+        // Reset crop and zoom values when a new image is selected
+        setCrop({ x: 0, y: 0 });
+        setZoom(1);
       };
       reader.readAsDataURL(file);
     }

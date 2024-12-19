@@ -12,20 +12,6 @@ export const MainTab = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   const categoryIdFromParams = searchParams.get("categoryId");
-  //   if (categoryIdFromParams && category?.list?.length) {
-  //     const foundIndex = category.list.findIndex(
-  //       (tab) => tab._id === categoryIdFromParams
-  //     );
-  //     if (foundIndex !== -1) {
-  //       setActiveTabIndex(foundIndex);
-  //       dispatch(setSelectedCategory(category.list[foundIndex]));
-  //       setSearchParams({categoryId : category?.list[foundIndex]?._id}) 
-  //     }
-  //   }
-  // }, [searchParams, category?.list, dispatch]);
-
   useEffect(() => {
     const categoryIdFromParams = searchParams.get("categoryId");
     
@@ -56,7 +42,7 @@ export const MainTab = () => {
   
 
   const handleMainTab = (index) => {
-    // searchParams.delete("subCategory")
+    searchParams.delete("subCategory")
     navigate(`/services?categoryId=${category?.list[index]?._id}`)
     if(category?.list?.[index]){
       dispatch(setSelectedCategory(category?.list[index]));
