@@ -33,7 +33,7 @@ export const Business = ({ data = [], total }) => {
         </div>
       </div>
       {data.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 ">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4 ">
           {data.slice(0, 2).map((data, index) => (
             <BusinessCard key={index} data={data} />
           ))}

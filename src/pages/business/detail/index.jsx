@@ -8,7 +8,10 @@ import { getBusiness } from "../../../redux/actions/business-action";
 import { useDispatch, useSelector } from "react-redux";
 import { Heading } from "../../../components/heading";
 import { BusinessCardShimmer } from "../../../components/loader/BusinessCardShimmer";
-import { getUser, updateServiveProgress } from "../../../redux/actions/dashboard-action";
+import {
+  getUser,
+  updateServiveProgress,
+} from "../../../redux/actions/dashboard-action";
 import { LinkButton } from "../../../components/link";
 import { resetBusiness } from "../../../redux/slices/businessSlice";
 import { TableShimmer } from "../../../components/loader/TableShimmer";
@@ -26,143 +29,155 @@ const BusinessDetail = () => {
     if (businessId) {
       // console.log("Dispatching action with businessId:", businessId);
       dispatch(getBusiness({ businessId }));
-
     } else {
       console.log("No businessId found");
     }
   }, [businessId, dispatch]);
   // console.log(business, "BUSINESSSS");
 
-
   const handleEditBusiness = () => {
-    navigate("/business/edit/registration")
-  }
+    navigate("/business/edit/registration");
+  };
 
   useEffect(() => {
-    
-    dispatch(updateServiveProgress({ page: 1, businessId:businessId  }));
-   
-  }, [businessId])
-  
+    dispatch(updateServiveProgress({ page: 1, businessId: businessId }));
+  }, [businessId]);
+
+  const businessTableData = [
+    {
+      label: "Type",
+      value: business?.registration?.typeOfBusiness || "-------",
+    },
+    {
+      label: "Registered Office",
+      value:
+        business?.address?.businessAddressL1 &&
+        business?.address?.businessAddressCity &&
+        business?.address?.businessAddressPin
+          ? `${business.address.businessAddressL1}, ${business.address.businessAddressCity}, ${business.address.businessAddressPin}`
+          : "-------",
+    },
+    {
+      label: "Headquarter Location",
+      value: business?.registration?.headQuarterLocation
+        ? business?.registration?.headQuarterLocation
+        : "-------",
+    },
+    {
+      label: "Company Status",
+      value: business?.registration?.active ? "Active" : "In Active",
+    },
+    {
+      label: "Company Size",
+      value: business?.registration?.sizeOfCompany
+        ? business?.registration?.sizeOfCompany
+        : "-------",
+    },
+    {
+      label: "Company Age",
+      value: calculateAge(business?.registration?.yearOfStablish) || "-------",
+    },
+  ];
+
   return (
     <>
-      {loading ? <><TableShimmer /><TableShimmer /></> : <section className="pb-10">
-        <div className="flex flex-col gap-4 ">
-          <div className="flex flex-col md:flex-row justify-between gap-4 ">
-            <Heading
-              title={"Business Detail"}
-              backButton={true}
-              tourButton={true}
-            >
-              Business Detail
-            </Heading>
-            <div className="flex gap-2 items-center">
-              {/* <LinkButton className = {"px-4 py-1"} to={"/business/create"} primary={true} leftIcon={<IoMdAddCircle />}>
+      {loading ? (
+        <div className="py-4">
+          <TableShimmer />
+        </div>
+      ) : (
+        <section className="pb-10">
+          <div className="flex flex-col gap-4 ">
+            <div className="flex flex-col md:flex-row justify-between gap-4 ">
+              <Heading
+                title={"Business Detail"}
+                backButton={true}
+                tourButton={true}
+              >
+                Business Detail
+              </Heading>
+              <div className="flex gap-2 items-center">
+                {/* <LinkButton className = {"px-4 py-1"} to={"/business/create"} primary={true} leftIcon={<IoMdAddCircle />}>
             New Business
           </LinkButton> */}
 
-              <LinkButton className={"px-4 py-1"} onClick={() => { dispatch(resetBusiness()); navigate("/business/create") }} primary={true} leftIcon={<IoMdAddCircle />}>
-                New Business
-              </LinkButton>
+                <LinkButton
+                  className={"px-4 py-1"}
+                  onClick={() => {
+                    dispatch(resetBusiness());
+                    navigate("/business/create");
+                  }}
+                  primary={true}
+                  leftIcon={<IoMdAddCircle />}
+                >
+                  New Business
+                </LinkButton>
 
-              {/* <Button primary={true} leftIcon={<IoMdAddCircle />}>
+                {/* <Button primary={true} leftIcon={<IoMdAddCircle />}>
                 New Business
               </Button> */}
-              <Button primary={true} onClick={handleEditBusiness}>Edit</Button>
-            </div>
-          </div>
-          <div className="flex items-start gap-2">
-            <img
-              src="/images/business/business-logo-2.svg"
-              width={125}
-              alt=""
-            />
-            <div>
-              <div className="flex gap-2 items-center">
-                <div className="flex gap-1 items-center">
-                  <img
-                    src="/icons/business/critical-icon.svg"
-                    width={20}
-                    alt=""
-                  />
-                  <p className="font-bold text-xs text-[#FF3B3B]">CRITICAL</p>
-                </div>
+                <Button primary={true} onClick={handleEditBusiness}>
+                  Edit
+                </Button>
               </div>
-              <h3 className="font-semibold text-2xl text-[#171717]">
-                {console.log(business, "Business123456")}
-                {(business?.registration?.businessName) ? business?.registration?.businessName : "..."}
-              </h3>
-              <p className="font-semibold text-base text-[#343C6A]">
-                Business #{business?.registration?.businessNumber}
-              </p>
-              {/* <p className="font-semibold text-base text-black">
+            </div>
+            <div className="flex items-start gap-2">
+              <img
+                src="/images/business/business-logo-2.svg"
+                width={125}
+                alt=""
+              />
+              <div>
+                <div className="flex gap-2 items-center">
+                  <div className="flex gap-1 items-center">
+                    <img
+                      src="/icons/business/critical-icon.svg"
+                      width={20}
+                      alt=""
+                    />
+                    <p className="font-bold text-xs text-[#FF3B3B]">CRITICAL</p>
+                  </div>
+                </div>
+                <h3 className="font-semibold text-2xl text-[#171717]">
+                  {console.log(business, "Business123456")}
+                  {business?.registration?.businessName
+                    ? business?.registration?.businessName
+                    : "..."}
+                </h3>
+                <p className="font-semibold text-base text-[#343C6A]">
+                  Business #{business?.registration?.businessNumber}
+                </p>
+                {/* <p className="font-semibold text-base text-black">
                   {business?.businessNumber}
                 </p> */}
+              </div>
+            </div>
+            <div className="w-full md:w-1/2">
+              <table>
+                <tbody>
+                  {businessTableData.map((item, index) => (
+                    <tr key={index}>
+                      <td>
+                        <span className="pr-6 font-medium text-base text-[#000000B2]">
+                          {item.label}:
+                        </span>
+                      </td>
+                      <td>
+                        <span className="px-6 font-semibold text-base text-black">
+                          {item.value}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
 
-            </div>
+            {/* Service Progress */}
+            <ServicesProgress data={servicesProgress} />
           </div>
-          <div>
-            <div className="flex flex-col text-start gap-1 w-full md:w-[40%]">
-              <div className="flex justify-between">
-                <p className="font-medium text-base text-[#000000B2] ">Type:</p>
-                <p className="font-semibold text-base text-black">{business?.registration?.typeOfBusiness}</p>
-              </div>
-              <div className="flex justify-between">
-                <p className="font-medium text-base text-[#000000B2] ">
-                  Registered Office:
-                </p>
-                
-                <p className="font-semibold text-base text-black">
-                  {
-                    business?.address?.businessAddressL1 && business?.address?.businessAddressCity && business?.address?.businessAddressPin
-                      ? `${business.address.businessAddressL1}, ${business.address.businessAddressCity}, ${business.address.businessAddressPin}`
-                      : "-------"
-                  }
-
-                </p>
-              </div>
-              <div className="flex justify-between">
-                <p className="font-medium text-base text-[#000000B2] ">
-                  Company Status:
-                </p>
-                <p className="font-semibold text-base text-black">
-                  {business?.registration?.active ? "Active" : "In Active"}
-                </p>
-              </div>
-              <div className="flex justify-between">
-                <p className="font-medium text-base text-[#000000B2] ">
-                  Company Age:{" "}
-                </p>
-                <p className="font-semibold text-base text-black">{calculateAge(business?.registration?.yearOfStablish)} </p>
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col gap-1 w-[40%]">
-            <p className="font-semibold text-lg text-[#171717] ">
-              Contact Detail
-            </p>
-            <div className="flex justify-between">
-              <p className="font-medium text-base text-[#000000B2] ">
-                PhoneNo:
-              </p>
-              <p className="font-semibold text-base text-black">
-                {(user?.phone)?user?.phone:"---"}
-              </p>
-            </div>
-            <div className="flex justify-between">
-              <p className="font-medium text-base text-[#000000B2]">
-                Email Id:
-              </p>
-              <p className="font-semibold text-base text-black">
-               {(user?.email)?user?.email:"---"}
-              </p>
-            </div>
-          </div>
-
-          {/* Service Progress */}
-          <ServicesProgress data={servicesProgress} />
-        </div>
-      </section>}
+        </section>
+      )}
     </>
   );
 };
