@@ -13,7 +13,7 @@ const initialState = {
   dataUpdate: [],
   manager: null,
   totalCount: null,
-  page: 0,
+  morePage: 0,
   error: null,
   loadingMore: false,
 
@@ -48,6 +48,7 @@ const userSlice = createSlice({
     },
     clearUser(state) {
       state.user = null;
+      state.morePage = 0;
       localStorage.removeItem("userInfo");
     },
     setBusinessPage(state, action) {
@@ -141,16 +142,18 @@ const userSlice = createSlice({
       .addCase(getMoreServiceUpdate.fulfilled, (state, action) => {
         state.totalCount = action.payload?.total;
         state.loadingMore = false;
+        state.totalCount = action.payload?.total;
+        console.log(state.totalCount,"totalCount12345");
         if (state.dataUpdate) {
           console.log("state", JSON.stringify(state.dataUpdate.data));
           console.log("data",action.payload?.data);
           state.dataUpdate.data = [...state.dataUpdate.data, ...action.payload?.data];
           if (action.payload?.data?.length > 0) {
-              state.page = state.page + 1;
+              state.morePage = state.morePage + 1;
           }
       }
 
-        console.log(state.page, "getMoreServices5");
+        console.log(state.morePage, "getMoreServices5");
         state.error = null;
       })
       .addCase(getMoreServiceUpdate.rejected, (state, action) => {

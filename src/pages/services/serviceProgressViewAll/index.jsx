@@ -22,7 +22,7 @@ const ServiceprogressViewAll = ({ data }) => {
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [otherValue, setOtherVsalue] = useState("");
 
-  const { dataUpdate, loadingMore, page } = useSelector((state) => state.user);
+  const { dataUpdate,totalCount, loadingMore, page ,morePage} = useSelector((state) => state.user);
   const [dropdownStates, setDropdownStates] = useState(
     dataUpdate?.data?.map(() => false)
   );
@@ -41,7 +41,7 @@ const ServiceprogressViewAll = ({ data }) => {
   console.log(dataUpdate?.data, "DebugdataUpdate1");
   useEffect(() => {
     //console.log(dataUpdate?.length, "jhbj");
-    if (dataUpdate?.length == 0 || dataUpdate?.length == undefined) {
+    if (dataUpdate?.data?.length == 0 ) {
       dispatch(updateServiveProgress({ page: 1 }));
     }
   }, []);
@@ -242,19 +242,19 @@ const ServiceprogressViewAll = ({ data }) => {
               />
             </div>
           ))}
-{console.log(page,"page1")}
+{console.log(morePage,"page1")}
           <InfiniteScroll
             dataLength={dataUpdate?.data?.length || 0}
-            next={() => dispatch(getMoreServiceUpdate({page: 2  }))}
-            hasMore={dataUpdate?.data?.length < dataUpdate?.total}
+            next={() => dispatch(getMoreServiceUpdate({page: morePage+1  }))}
+            hasMore={dataUpdate?.data?.length < totalCount}
             loader={
               <div className="flex justify-center items-center p-1">
                 <ImSpinner2 className="animate-spin text-black !text-xl" />
               </div>
             }
             endMessage={
-              dataUpdate?.total &&
-              dataUpdate?.total > 0 && (
+              dataUpdate?.data?.length &&
+              dataUpdate?.data?.length > 0 && (
                 <p style={{ textAlign: "center" }}>
                   <b>Yay! You have seen it all</b>
                 </p>
