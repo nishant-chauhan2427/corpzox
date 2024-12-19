@@ -15,6 +15,7 @@ import Cropper from "react-easy-crop";
 import { ImSpinner11, ImSpinner2 } from "react-icons/im";
 import toast from "react-hot-toast";
 import { LinkButton } from "../../../components/link";
+import { getUser } from "../../../redux/actions/dashboard-action";
 
 // Function to get the cropped image
 const getCroppedImg = async (imageSrc, crop, pixelCrop) => {
@@ -153,7 +154,6 @@ const Edit = () => {
 
       // Dispatch the action with formData
       const imageUrl = await dispatch(updateProfilePicture({ formData }));
-      console.log("imageUrl", imageUrl);
       
       setIsImageChanged(true);
      
@@ -179,7 +179,11 @@ const Edit = () => {
     setValue("businessEmail", user?.busniessEmail || "");
   }, [user]);
 
-  console.log(isImageChanged, "isImageChanged");
+  useEffect(() => {
+    if (!user?.email) {  
+      dispatch(getUser()); 
+    }
+  }, [dispatch, user?.email]);  
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">

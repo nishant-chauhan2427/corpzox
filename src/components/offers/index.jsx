@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getOffers } from "../../redux/actions/offer-action";
 import { OfferShimmer } from "../loader/OfferShimmer";
 import { NoData } from "../errors/noData";
+import { LinkButton } from "../link";
 
 export const Offers = () => {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ export const Offers = () => {
     (state) => state.offers
   );
 
-  console.log("offers:::", offers, isLoading);
+  // console.log("offers:::", offers, isLoading);
 
   //useEffect here.. to fetch/dispatch all offer in store
   useEffect(() => {
@@ -45,15 +46,15 @@ export const Offers = () => {
             <div className="!rounded-lg overflow-hidden">
               <div
                 key={index}
-                className="flex !rounded-lg px-2 py-2 bg-[#EEEFF3] hover:shadow-lg  "
+                className="flex rounded-lg px-2 py-2 bg-[#EEEFF3] hover:shadow-lg"
               >
                 <div
                   style={{
                     backgroundImage: `url(${offer?.imageUrl})`,
                   }}
-                  className={`w-[40%] rounded-lg bg-cover bg-right overflow-hidden`}
+                  className={`min-w-[40%] rounded-lg bg-cover bg-center overflow-hidden`}
                 ></div>
-                <div className="flex w-[40%] flex-col  justify-between gap-1 bg-[#EEEFF3] pl-3 ">
+                <div className="flex flex-col  justify-between gap-1 bg-[#EEEFF3] pl-3 ">
                   <div>
                     <div className="flex ">
                       <p className="font-bold text-[12.64px]  text-[#1A202E] ">
@@ -63,20 +64,14 @@ export const Offers = () => {
                     <p className="font-extrabold  text-[#EB9527] text-[14.05px]">
                       {offer.discountPercent}% OFF
                     </p>
-                    <p className="font-normal whitespace-nowrap pr-2 text-[12px] text-[#737373]">
+                    <p className="font-normal pr-2 text-[12px] text-[#737373]">
                       {offer.offerDetail?.substring(0, 30)}
                       {offer.offerDetail?.length > 50 ? " ..." : ""}
                     </p>
                   </div>
                   <div className="flex pt-2">
-                    <Button
-                      className={
-                        "!text-[11px] !font-medium !text-[#0A1C40]  px-4 rounded-md py-1 "
-                      }
-                      primary={true}
-                    >
-                      Avail Now
-                    </Button>
+                    <LinkButton to={"/services"} primary={true}> Avail Now</LinkButton>
+                  
                   </div>
                 </div>
               </div>

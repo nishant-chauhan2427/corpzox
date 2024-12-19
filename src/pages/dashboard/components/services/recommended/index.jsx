@@ -35,12 +35,13 @@ export const RecommendedServices = ({ data, total }) => {
           >
             <div className="flex items-center gap-2">
               <img
+              className="w-8"
                 src="/images/dashboard/recommended-services.svg"
                 alt="recommended-services"
               />
               <div className="flex  flex-col text-start">
-                <p className="font-semibold text-[#171717]">{data.name}</p>
-                <p className="font-medium text-[12px]">
+                <p className="font-semibold text-sm text-[#0a1c40]">{data.name}</p>
+                <p className="font- text-[12px]">
                   {data?.details?.length > 50
                     ? data?.details?.slice(0, 40) + "..."
                     : data?.details}{" "}

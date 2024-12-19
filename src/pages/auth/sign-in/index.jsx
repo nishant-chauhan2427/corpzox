@@ -20,6 +20,7 @@ import { signinValidationSchema } from "../../../validation/authValidatiorSchema
 import { GoogleLogin } from "react-google-login";
 import { gapi } from "gapi-script";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { setRedirectTo } from "../../../redux/slices/appSlice";
 
 export const SignIn = () => {
   const {
@@ -78,6 +79,7 @@ export const SignIn = () => {
       console.log(data, "data from form");
       dispatch(loginUser(data));
     });
+    dispatch(setRedirectTo("verify"))
   };
 
   useEffect(() => {
@@ -116,6 +118,8 @@ export const SignIn = () => {
       });
     });
   });
+
+ 
 
   return (
     <>
