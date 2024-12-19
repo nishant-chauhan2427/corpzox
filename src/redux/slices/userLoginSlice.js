@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getMoreService, getUser, getUserBusiness, getUserServices, updateServiveProgress } from '../actions/dashboard-action';
+import { getMoreService,getMoreServiceUpdate, getUser, getUserBusiness, getUserServices, updateServiveProgress } from '../actions/dashboard-action';
 const initialState = {
   loading: false,
   user: null,
@@ -92,14 +92,15 @@ const userSlice = createSlice({
     });
     builder.addCase(getUserServices.pending, (state, action) => {
       state.serviceLoading = true;
+
     }).addCase(getUserServices.fulfilled, (state, action) => {
-      console.log(action.payload.total, "action.payload13");
+
       state.serviceLoading = false;
       state.servicesError = action.payload.message;
       state.service.list = action.payload.data;
       state.service.totalPage = action.payload?.total;
       state.service.totalCount = action.payload?.total;
-      console.log(state.service.totalCount, "1234");
+
     }).addCase(getUserServices.rejected, (state, action) => {
       state.serviceLoading = false;
       state.servicesError = action.payload;
@@ -121,24 +122,35 @@ const userSlice = createSlice({
         state.error = action.payload;
       })
 
-      .addCase(getMoreService.pending, (state) => {
+      .addCase(getMoreServiceUpdate.pending, (state) => {
         state.loadingMore = true;
         console.log("businessPageSlice : getAllService.pending");
       })
-      .addCase(getMoreService.fulfilled, (state, action) => {
-        console.log("getMoreService :getMoreService .fulfilled");
+
+      .addCase(getMoreServiceUpdate.fulfilled, (state, action) => {
+        console.log("H1234");
         console.log("getMoreServices.fulfilled", action.payload);
+        state.totalCount = action.payload?.total
+        console.log(state.totalCount,"getMoreServices.fulfilled1");
+        console.log(action.payload?.data?.length,"getMoreServices.fulfilled2");
         state.loadingMore = false;
-        state.totalCount = action.payload?.total;
+      
+        //state.totalCount = action.payload?.total;
+        console.log(state.totalCount,"H12344");
         if (state.dataUpdate) {
+          console.log(action.payload?.data?.length,"getMoreServices3");
           state.dataUpdate = [...state.dataUpdate, ...action.payload?.data];
+          console.log("getMoreServices4");
           if (action.payload?.data?.length > 0) {
+            console.log("getMoreServices4");
             state.page = state.page + 1;
+            //console.log( state.page,"getMoreServices");
           }
         }
+        console.log( state.page,"getMoreServices5");
         state.error = null;
       })
-      .addCase(getMoreService.rejected, (state, action) => {
+      .addCase(getMoreServiceUpdate.rejected, (state, action) => {
         console.log("businessPageSlice :getMoreService.rejected");
         state.loadingMore = false;
         // state.error = action.payload;

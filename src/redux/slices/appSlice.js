@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   pin: false,
   servicesMainTab: 0,
+  redirectedTo: ""
 };
 
 const appSlice = createSlice({
@@ -15,9 +16,13 @@ const appSlice = createSlice({
     setServicesMainTab: (state, action) => {
       state.servicesMainTab = action.payload;
     },
+    setRedirectTo: (state, action) => {
+      console.log(action, "redirect slice");
+      state.redirectedTo = action.payload;
+    },
   },
 });
 
-export const { setPin, setServicesMainTab } = appSlice.actions;
+export const { setPin, setServicesMainTab, setRedirectTo } = appSlice.actions;
 
 export default appSlice.reducer;

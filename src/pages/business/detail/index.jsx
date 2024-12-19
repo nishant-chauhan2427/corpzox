@@ -8,7 +8,7 @@ import { getBusiness } from "../../../redux/actions/business-action";
 import { useDispatch, useSelector } from "react-redux";
 import { Heading } from "../../../components/heading";
 import { BusinessCardShimmer } from "../../../components/loader/BusinessCardShimmer";
-import { getUser } from "../../../redux/actions/dashboard-action";
+import { getUser, updateServiveProgress } from "../../../redux/actions/dashboard-action";
 import { LinkButton } from "../../../components/link";
 import { resetBusiness } from "../../../redux/slices/businessSlice";
 import { TableShimmer } from "../../../components/loader/TableShimmer";
@@ -38,6 +38,12 @@ const BusinessDetail = () => {
     navigate("/business/edit/registration")
   }
 
+  useEffect(() => {
+    
+    dispatch(updateServiveProgress({ page: 1, businessId:businessId  }));
+   
+  }, [businessId])
+  
   return (
     <>
       {loading ? <><TableShimmer /><TableShimmer /></> : <section className="pb-10">
