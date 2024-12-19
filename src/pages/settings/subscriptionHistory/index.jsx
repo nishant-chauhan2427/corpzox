@@ -108,14 +108,17 @@ const SubscriptionHistory = () => {
     },
   ];
   const currentPackage = subscriptionPackage[packageIndex];
-  console.log(currentPackage,"currentPackage" )
   
 
-  const handleCard = (label) => {
+  const handleCard = (label, data) => {
+    if(data.number === 0){
+      return
+    }
     setPackageType(label)
     const index = subscriptionPackage.findIndex(
       (pkg) => pkg.label === label
     );
+    console.log(data, "subscriptionPackage")
 
     setPackageIndex(index);
     setSearchParams({subscriptionType : label == "Active Subscription" ? "active" : label == "Expired Subscription" ? "expired" : "up-coming"})
@@ -203,7 +206,7 @@ const SubscriptionHistory = () => {
                 number={data.number}
                 label={data.label}
                 description={data.description}
-                onClick={() => handleCard(data.label)}
+                onClick={() => handleCard(data.label, data)}
                 loading={data.loading}
               />
             ))}
@@ -220,7 +223,7 @@ const Card = ({ number, label, description, onClick, loading }) => {
   return (
     <div
       onClick={onClick}
-      className="flex flex-col items-start gap-4 px-5 py-5 border border-[#DFEAF2] hover:bg-[#007AFF] hover:text-white transition-all duration-300 ease-in-out hover:transition-all hover:duration-300 hover:ease-in-out rounded-[20px] cursor-pointer"
+      className={`flex flex-col items-start gap-4 px-5 py-5 border border-[#DFEAF2] hover:bg-[#007AFF] hover:text-white transition-all duration-300 ease-in-out hover:transition-all hover:duration-300 hover:ease-in-out rounded-[20px] ${number > 0 ? "cursor-pointer" : "cursor-default"}`}
     >
       {loading ? <ImSpinner2 className="animate-spin text-gray hover:text-white !text-xl" /> : <h2 className="font-semibold text-3xl">{number}</h2>}
 
