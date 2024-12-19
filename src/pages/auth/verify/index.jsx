@@ -23,6 +23,7 @@ export const Verify = () => {
     verifyingError,
     verifyMessage,
     resendingOtp,
+    email,
   } = useSelector((state) => state.auth);
 
   const {
@@ -33,6 +34,7 @@ export const Verify = () => {
   const navigate = useNavigate();
   const inputRefs = useRef([]);
   const { profile } = useSelector((state) => state.auth);
+
 
   useEffect(() => {
     if (inputRefs.current && inputRefs.current[0]) {
@@ -53,12 +55,12 @@ export const Verify = () => {
 
   const isEmail = emailRegex.test(profileEmail);
   const isPhone = phoneRegex.test(profilePhone);
-console.log(profile ,"VERTER");
+
 const subHeading = isEmail
 ? `We have sent you an OTP on your registered email id ${profileEmail}`
 : profilePhone
 ? `We have sent you an OTP on your registered phone number ${profilePhone}`
-: `We have sent you an OTP on your registered email id or phone number`;
+: `We have sent you an OTP on your registered email id ${email} `;
 
   const validateOtp = (enteredOtp) => {
     if (enteredOtp.trim().length !== 4) {

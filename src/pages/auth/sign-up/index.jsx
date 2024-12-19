@@ -21,6 +21,7 @@ import { registerUser, thirdPartyLogin } from "../../../redux/actions/userAuth-a
 import toast from "react-hot-toast";
 import GoogleLogin from "react-google-login";
 import { setRedirectTo } from "../../../redux/slices/appSlice";
+import { updateEmail } from "../../../redux/slices/userAuth-slice";
 export const Signup = () => {
   const {
     control,
@@ -59,6 +60,8 @@ export const Signup = () => {
 
   const [error, setError] = useState("");
   const [isSubmit, setIsSubmit] = useState(false);
+  const [emailSignUp, setEmailSignUp] = useState("");
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -86,10 +89,15 @@ export const Signup = () => {
       recaptchaToken: res
     };
     delete userData.full;
+    setEmailSignUp(data.email)
+    dispatch(updateEmail(data.email))
     dispatch(registerUser(userData));
     // dispatch(registerUser(data));
+
+
     dispatch(setRedirectTo("verify"))
-    console.log(data, "user data");
+    //navigate("/verify", { state: { emailSign: data.email } })
+    //console.log(data, "user data");
   })
   };
 
@@ -188,6 +196,7 @@ export const Signup = () => {
                       placeholder={"Password"}
                       errorContent={errors.password?.message}
                       onBlur={() => handleBlur("password")} 
+                      maxLength={20}
                     />
                   )}
                 />
