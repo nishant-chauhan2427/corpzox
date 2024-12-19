@@ -10,7 +10,7 @@ export const SelectAllTabs = ({
   // console.log("checked,", checked);
 
   return (
-    <div className="flex items-start gap-1 overflow-x-auto scrollbar-hide whitespace-nowrap">
+    <div className="py-4 flex items-center gap-1 overflow-x-auto scrollbar-hide whitespace-nowrap">
       <div className="flex flex-col justify-center items-center">
         <div className="border py-1 px-2 rounded-2xl bg-[#F3F7FF] w-fit flex justify-between items-center">
           <label htmlFor="checklist">Select All</label>

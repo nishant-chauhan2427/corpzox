@@ -87,7 +87,7 @@ export const ServicesCard = ({
           onClickAddWishlistHandler={onClickAddWishlistHandler}
         />
       )}
-      <div className="grid grid-cols-1 sm:pt-3 pt-4  sm:grid-cols-2 2xl:grid-cols-3  gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-4">
         {data &&
           data.map((service, index) => (
             <div
