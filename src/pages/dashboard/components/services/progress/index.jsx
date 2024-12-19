@@ -285,7 +285,7 @@ export const ServicesProgress = ({ data }) => {
       <ConfirmationModal
         isOpen={confirmationModal}
         onClose={onConfirmationModalClose}
-        modalClassName={"sm:max-w-xl"}
+        modalClassName={"sm:max-w-xl lg:min-w-[32rem]"}
       >
         <form
           onSubmit={handleSubmit(onSubmit)}
