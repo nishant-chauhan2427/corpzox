@@ -163,10 +163,11 @@ export const ServicesProgress = ({ data }) => {
                 </Link>
               )}
             </div>
-            {dataUpdate?.data?.map((data, index) => {
+            {dataUpdate?.data?.slice(0, 3)?.map((data, index) => {
               const { status, delay } = calculateCompletionStatus(
                 data?.expectedCompletionDate
               );
+              console.log(status, delay, "sdfdsf");
 
               return (
                 <div
@@ -177,12 +178,13 @@ export const ServicesProgress = ({ data }) => {
                     <div className="flex flex-col gap-1">
                       <div className="flex gap-2">
                         <img
+                          className="w-4"
                           src="/images/dashboard/service-progress.svg"
                           alt=""
                         />
                         <NavLink
                           to={`/payment/create/${data._id}`}
-                          className="font-bold text-[#0A1C40]"
+                          className="font-semibold text-sm text-[#0A1C40]"
                         >
                           Service: {data?.service[0]?.name}{" "}
                         </NavLink>
@@ -192,13 +194,17 @@ export const ServicesProgress = ({ data }) => {
                           alt=""
                         />
                       </div>
-                      <div className="flex flex-col gap-2">
-                        <h6 className="text-sm text-[#7C7D80]">
-                          <strong>Business:</strong>{" "}
-                          {data?.businessdetails[0]?.businessName || "____"}
+                      <div className="flex flex-row gap-2">
+                        <h6 className="font-medium text-sm text-[#7C7D80]">
+                          <span className="font-medium text-[#0A1C40]">
+                            Business:
+                          </span>{" "}
+                          {data?.businessdetails[0]?.businessName || "Rahul"}
                         </h6>
-                        <p className="text-sm text-[#7C7D80]">
-                          <strong className="!font-medium">Step:</strong>{" "}
+                        <p className="font-medium text-sm text-[#7C7D80]">
+                          <span className="font-medium text-[#0A1C40]">
+                            Step:
+                          </span>{" "}
                           {data?.status}
                         </p>
                       </div>
