@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ratingReview } from "../../../../../redux/actions/servicesDetails-actions";
 import { LinkButton } from "../../../../../components/link";
 import { TextArea } from "../../../../../components/inputs/textarea";
+import { GoDotFill } from "react-icons/go";
 
 export const ServicesProgress = ({ data }) => {
   const [dropdownStates, setDropdownStates] = useState(data?.map(() => false));
@@ -167,8 +168,6 @@ export const ServicesProgress = ({ data }) => {
               const { status, delay } = calculateCompletionStatus(
                 data?.expectedCompletionDate
               );
-              console.log(status, delay, "sdfdsf");
-
               return (
                 <div
                   key={index}
@@ -209,7 +208,7 @@ export const ServicesProgress = ({ data }) => {
                         </p>
                       </div>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex gap-3">
                       {data?.ratingreviewsSize === 0 && (
                         <Button
                           onClick={() =>
@@ -218,23 +217,16 @@ export const ServicesProgress = ({ data }) => {
                               data?._id
                             )
                           }
-                          className="flex items-center px-4 py-[6px] rounded-full font-medium text-[12px] text-[#0068FF] bg-[#DBE9FE]"
+                          className="font-medium text-[12px] text-[#0068FF] underline underline-offset-4"
                         >
                           Rate Your Experience
                         </Button>
                       )}
-                      {/* <ConfirmationModal
-                      isOpen={confirmationModal}
-                      onClose={onConfirmationModalClose}
-                    >
-                      <form onSubmit={handleSubmit(onSubmit)}>
-                        <div>
-                       
-                        </div>
-                      </form>
-                    </ConfirmationModal> */}
 
                       <LinkButton
+                        className={
+                          "px-4 py-2 font-medium text-xs text-[#0A1C40]"
+                        }
                         to={`/payment/create/${data._id}`}
                         primary={true}
                       >
@@ -242,13 +234,22 @@ export const ServicesProgress = ({ data }) => {
                       </LinkButton>
                       <div className="flex items-center justify-center">
                         {status === "Delayed" ? (
-                          <LinkButton className="flex gap-2 rounded-2xl bg-[#FFDFDF] px-2 py-1 text-sm font-medium !text-[#FF3B3B] text-center">
-                            &#9679; Delayed by {delay} days
-                          </LinkButton>
+                          <div className="flex justify-center items-center gap-1 rounded-2xl bg-[#FFDFDF] px-2 py-1 text-xs font-medium !text-[#FF3B3B] text-center">
+                            <GoDotFill />
+                            <p>Delayed by {delay} days</p>
+                          </div>
+                        ) : status === "On Time" ? (
+                          <div className="flex justify-center items-center gap-1 rounded-2xl bg-[#DFFFE2] px-2 py-1 text-xs font-medium text-[#037847] text-center">
+                            <GoDotFill />
+                            <p>On Time</p>
+                          </div>
                         ) : (
-                          <LinkButton className="flex gap-2 rounded-2xl bg-[#DFFFE2] px-2 py-1 text-sm font-medium text-[#037847] text-center">
-                            &#9679; On Time
-                          </LinkButton>
+                          <>
+                            <div className="flex justify-center items-center gap-1 rounded-2xl bg-[#DFFFE2] px-2 py-1 text-xs font-medium text-[#037847] text-center">
+                              <GoDotFill />
+                              <p>On Time</p>
+                            </div>
+                          </>
                         )}
                       </div>
                     </div>
