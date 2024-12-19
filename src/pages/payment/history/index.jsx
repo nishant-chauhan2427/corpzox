@@ -10,7 +10,7 @@ import Pagination from "../../../components/Pagination";
 import { Table } from "../../../components/table";
 import { downloadInvoice, getPaymentTransaction } from "../../../redux/actions/payment-history-action";
 import { talkToAdvisor } from "../../../redux/actions/servicesDetails-actions";
-import { clearUrl } from "../../../redux/slices/paymentHistorySlice";
+import {  clearUrl } from "../../../redux/slices/paymentHistorySlice";
 import { formatReadableDate } from "../../../utils";
 
 const History = () => {
@@ -23,7 +23,8 @@ const History = () => {
     isPaymentHistoryLoading,
     downloadTransactionUrl,
     isTransactionDownloading,
-    totalTransaction,
+    totalTransaction, 
+    childLoading
   } = useSelector((state) => state.paymentHistory);
   const { isTalkToAdvisorLoading } = useSelector(
     (state) => state.serviceDetails
@@ -81,7 +82,6 @@ const History = () => {
 
     setTransactionDetails(transactionDetails ? transactionDetails[0] : {});
   };
-  console.log(transactionDetails, "transasdn,fkldnf");
   const handleNavigation = (direction) => {
     const totalPages = Math.ceil(totalTransaction / 10); // Calculate total pages
     const newPage = direction === "Next" ? currentPage + 1 : currentPage - 1;
@@ -105,11 +105,11 @@ const History = () => {
     };
     dispatch(talkToAdvisor(requestData));
   };
-  useEffect(() => {
-    if (!isTalkToAdvisorLoading) {
-      onConfirmationModalClose();
-    }
-  }, [isTalkToAdvisorLoading]);
+  // useEffect(() => {
+  //   if (!childLoading[transactionDetails && transactionDetails._id]) {
+  //     onConfirmationModalClose();
+  //   }
+  // }, [!childLoading[transactionDetails && transactionDetails._id]]);
   const actionMenu = (id, _id) => {
     return (
       <div className="flex py-2 justify-evenly items-center">
@@ -127,7 +127,8 @@ const History = () => {
   //   dispatch(downloadInvoice({transactionId}))
   // }
   const downloadTransaction = (transactionId) => {
-    dispatch(downloadInvoice({ transactionId }));
+    // dispatch(downloadInvoice({ transactionId }));
+    dispatch(downloadInvoice({ transactionId }))
   };
   useEffect(() => {
     if (downloadTransactionUrl) {
@@ -299,8 +300,9 @@ const History = () => {
             </Button>
             <Button
               primary={true}
-              isLoading={isTransactionDownloading}
-              onClick={() => downloadTransaction(transactionDetails._id)}
+              // onClick={() => downloadTransaction(transactionDetails && transactionDetails._id)}
+              isLoading={childLoading[transactionDetails && transactionDetails._id] }
+              onClick={() => downloadTransaction( transactionDetails._id)}
             >
               {" "}
               <img src="/public/icons/payment/download.svg" alt="" />

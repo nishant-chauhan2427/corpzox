@@ -53,64 +53,17 @@ const ServicesListing = () => {
 
   }, []);
 
-  // useEffect(() => {
-  //   if (categoryId) {
-  //     dispatch(
-  //       getUserServicesSubCatagory({
-  //         categoryId: categoryId, // Use categoryId directly from searchParams
-  //       })
-  //     );
-  //   }
-  // }, [categoryId]);
-
-  // useEffect(() => {
-  //   const search = searchParams.get("search")
-  //   // if (categoryId || subCategoryId) {
-  //   // }
-  //   !subCategory?.subCategoryLoading && dispatch(
-  //     getUserServices({
-  //       categoryId: categoryId,
-  //       subCategoryId: subCategoryId,
-  //       page,
-  //       limit,
-  //       query: search ? search : searchValue,
-  //     })
-  //   );
-  // }, [categoryId, subCategoryId,subCategory?.subCategoryLoading,  searchValue]);
-
   useEffect(() => {
     if (categoryId) {
       dispatch(getUserServicesSubCatagory({ categoryId }));
     }
   }, [categoryId]);
 
-  // Fetch user services only after subcategories are fetched or when changing category/subcategory
-  // useEffect(() => {
-  //   if (
-  //     categoryId && 
-  //     !subCategory?.subCategoryLoading && 
-  //     !loading && 
-  //     !isServicesFetched
-  //   ) {
-  //     const search = searchParams.get("search");
-  //     dispatch(
-  //       getUserServices({
-  //         categoryId,
-  //         subCategoryId,
-  //         page,
-  //         limit,
-  //         query: search || searchValue,
-  //       })
-  //     );
-  //     setIsServicesFetched(true);
-  //   }
-  // }, [categoryId, subCategoryId, subCategory?.subCategoryLoading, searchValue]);
   useEffect(() => {
     if (
       categoryId &&
       subCategoryId &&
       !subCategory?.subCategoryLoading &&
-      !loading &&
       !isServicesFetched
     ) {
       const search = searchParams.get("search");

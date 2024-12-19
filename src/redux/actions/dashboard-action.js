@@ -124,7 +124,7 @@ export const requestChangeManager = createAsyncThunk(
 
 export const getRatingReviews = createAsyncThunk(
   "getRatingReviews",
-  async (serviceId , { rejectWithValue }) => {
+  async (serviceId, { rejectWithValue }) => {
     try {
       console.log(serviceId, "service id from action")
       let params = new URLSearchParams();
@@ -191,7 +191,7 @@ export const updateServiveProgress = createAsyncThunk("updateServiveProgress", a
 export const getMoreService = createAsyncThunk("getMoreService", async ({ page, sort_by = 'date_desc', query }, { rejectWithValue }) => {
 
   try {
-      console.log("business-page action:getMoreBusiness , page",page);
+    console.log("business-page action:getMoreBusiness , page", page);
     let params = new URLSearchParams();
     if (page) params.append('page', page);
     if (sort_by) params.append('sort_by', sort_by);
@@ -204,8 +204,8 @@ export const getMoreService = createAsyncThunk("getMoreService", async ({ page, 
       },
     });
 
-    console.log("response.data",response.data);
-    
+    console.log("response.data", response.data);
+
     if (response?.data?.code == 200 || response?.data?.code == 201) {
       return response.data;
     } else {
