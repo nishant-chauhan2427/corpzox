@@ -101,7 +101,6 @@ export const Header = ({ className, collapse, setCollapse }) => {
   //   });
   // };
 
-
   const handleLogout = () => {
     dispatch(clearUser());
     navigate("/sign-in");
@@ -197,11 +196,9 @@ export const Header = ({ className, collapse, setCollapse }) => {
           </h1>
           {/* Search */}
           {
-            !pathname.includes("dashboard") && 
-            pathname.includes("documents/detail") && 
-            !pathname.includes("wishlist") && 
             !pathname.includes("settings") &&
             !pathname.includes("offersDetails") &&
+            !pathname.includes("dashboard") &&
             !pathname.includes("business") && (
               <Search
                 clearSerarch={clearSearch}
@@ -259,10 +256,12 @@ export const Header = ({ className, collapse, setCollapse }) => {
 
                   <div className="hidden sm:flex flex-col items-start">
                     <h5 className="font-semibold text-sm text-white">
-                      {user?.name
-                        ? user.name.slice(0, 25) +
+                      {user?.name ? (
+                        user.name.slice(0, 25) +
                         (user.name.length > 25 ? "..." : "")
-                        : <></>}
+                      ) : (
+                        <></>
+                      )}
                     </h5>
                     <p className="text-[9px] text-white">
                       {user?.name ? user?.email : <></>}

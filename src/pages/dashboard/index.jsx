@@ -40,8 +40,10 @@ const Dashboard = () => {
   );
   const dispatch = useDispatch();
   const location = useLocation();
+  const {  businessId } = useSelector((state) => state.business);
   const queryParams = new URLSearchParams(location.search);
   const searchValue = queryParams.get("search");
+  const url = window.location.href
 
   const {
     user = {},
@@ -67,12 +69,10 @@ const Dashboard = () => {
       };
     }
   );
-
   useEffect(() => {
-    // dispatch(getUserBusiness({}));
-    // dispatch(getUserServices({}));
-    dispatch(updateServiveProgress({ page: 1 }));
-  }, []);
+      dispatch(updateServiveProgress({ page: 1 }));
+  }, [url, dispatch]);
+  
   useEffect(() => {
     const storedUserInfo = localStorage.getItem("userInfo");
 
@@ -113,7 +113,7 @@ const Dashboard = () => {
             data={formattedRecommendedServices}
             total={formattedRecommendedServices?.length}
           />
-        )}
+        )}  
         <ServicesProgress data={servicesProgress} />
       </section>
     </>

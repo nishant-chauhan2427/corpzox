@@ -64,6 +64,7 @@ const businessPageSlice = createSlice({
                 console.log("getMoreBusiness.fulfilled", action.payload);
                 state.loadingMore=false;
                 state.totalCount = action.payload?.total;
+                console.log(state.business,"state.business");
                 if (state.business) {
                     state.business = [...state.business, ...action.payload?.data];
                     if (action.payload?.data?.length > 0) {

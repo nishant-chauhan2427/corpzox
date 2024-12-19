@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ratingReview } from "../../../../../redux/actions/servicesDetails-actions";
 import { LinkButton } from "../../../../../components/link";
 import { TextArea } from "../../../../../components/inputs/textarea";
+import { GoTriangleDown } from "react-icons/go";
 import { GoDotFill } from "react-icons/go";
 
 export const ServicesProgress = ({ data }) => {

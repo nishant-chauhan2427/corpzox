@@ -33,9 +33,23 @@ export const IsLoggedInWrapper = () => {
   
     setSignedInFlag(!!userInfo);
   }, []); 
+
+  // console.log(signedInFlag,"signedInFlag");
+  // console.log(location.pathname.includes('verfiy'),"path");
+  
+  // if (!signedInFlag && location.pathname.includes('verify')) {
+  //   return <Navigate to="/sign-in" />;
+  // }
+
   if (signedInFlag && (location.pathname.includes('sign-in') || location.pathname.includes('sign-up') || location.pathname.includes('forgot-password') || location.pathname.includes('verify'))) {
     return <Navigate to="/dashboard" />;
   }
+
+  //console.log((signedInFlag && (location.pathname.includes('verfiy')));
+  // if (signedInFlag && (location.pathname.includes('verfiy') )) {
+    
+  //   return <Navigate to="sign-in" />;
+  // }
   return <Outlet />;
 };
 
