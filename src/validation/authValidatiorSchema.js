@@ -6,9 +6,19 @@ export const signUpValidationSchema = Yup.object().shape({
     .max(60, 'Full name should not exceed 60 characters')
     .matches(/^[a-zA-Z ]+$/, 'Please enter a valid full name'),
 
-  phone: Yup.number()
-    .typeError('Phone number must be a number')
-    .required('Please enter phone number'),
+  // phone: Yup.number()
+  //   .typeError('Phone number must be a number')
+  //   .required('Please enter phone number'),
+  // phone: Yup.string()
+  //   .required('Please enter phone number')
+  //   .matches(
+  //     /^(\+?[1-9]\d{1,14}|(\d{3}[-\s]?)?\d{3}[-\s]?\d{4})$/, 
+  //     'Please enter a valid phone number'
+  //   )
+  //   .min(10, 'Phone number must be at least 10 characters')
+  //   .max(20, 'Phone number cannot exceed 20 characters'),
+    phone: Yup.string()
+    .matches(/^[0-9]{12}$/, 'Phone number is not valid').required('Phone no is required'),
 
   email: Yup.string()
     .email('Invalid email address') // Check if the email is valid

@@ -160,7 +160,7 @@ export const Signup = () => {
                       placeholder={"Phone No."}
                       touched={true}
                       errorContent={errors?.phone?.message}
-                      onBlur={() => handleBlur("phone")} 
+                      //onBlur={() => handleBlur("phone")} 
                     />
                   )}
                 />
