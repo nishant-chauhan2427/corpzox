@@ -1,19 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setSelectedSubCategory } from "../../../../../redux/slices/serviceListingSlice";
 import { useSearchParams } from "react-router-dom";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa"; // Importing arrow icons
+
 function Filtertab() {
   const { subCategory } = useSelector((state) => state.service);
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
   const [categoryactiveTab, setcategoryActiveTab] = useState(0);
   const [activeTabIndex, setActiveTabIndex] = useState(0);
+
+  const scrollContainerRef = useRef(null); // Ref for the scroll container
+  const tabRefs = useRef([]); // Ref for individual tab buttons
+
   useEffect(() => {
     const subCategoryIdFromParams = searchParams.get("subCategoryId");
-  
+
     if (subCategory?.list?.length > 0) {
       if (subCategoryIdFromParams) {
-        // If subCategoryId exists in params, find and set the subcategory
         const foundIndex = subCategory.list.findIndex(
           (tab) => tab._id === subCategoryIdFromParams
         );
@@ -21,16 +26,14 @@ function Filtertab() {
           setActiveTabIndex(foundIndex);
           dispatch(setSelectedSubCategory(subCategory.list[foundIndex]));
         } else {
-          // If the subCategoryId in params is invalid, default to the first subcategory
           setActiveTabIndex(0);
           dispatch(setSelectedSubCategory(subCategory.list[0]));
-          setSearchParams({
-            categoryId: searchParams.get("categoryId") || "",
-            subCategoryId: subCategory.list[0]._id,
-          });
+          // setSearchParams({
+          //   categoryId: searchParams.get("categoryId") || "",
+          //   subCategoryId: subCategory.list[0]._id,
+          // });
         }
       } else {
-        // If no subCategoryId in params, default to the first subcategory
         setActiveTabIndex(0);
         dispatch(setSelectedSubCategory(subCategory.list[0]));
         setSearchParams({
@@ -40,75 +43,64 @@ function Filtertab() {
       }
     }
   }, [searchParams, subCategory?.list, dispatch]);
-  
-  // useEffect(() => {
-  //   const subCategoryIdFromParams = searchParams.get("subCategoryId");
-  
-  //   if (subCategory?.list?.length) {
-  //     // If subCategoryId exists in params
-  //     if (subCategoryIdFromParams) {
-  //       const foundIndex = subCategory.list.findIndex(
-  //         (tab) => tab._id === subCategoryIdFromParams
-  //       );
-  
-  //       if (foundIndex !== -1) {
-  //         // If the subcategoryId exists and is valid
-  //         setActiveTabIndex(foundIndex);
-  //         dispatch(setSelectedSubCategory(subCategory.list[foundIndex]));
-  //       } else {
-  //         // If the subcategoryId in params is invalid, default to the first subcategory
-  //         if (subCategoryIdFromParams !== subCategory.list[0]._id) {
-  //           setActiveTabIndex(0);
-  //           dispatch(setSelectedSubCategory(subCategory.list[0]));
-  //           // Update the URL with the default subCategoryId (only if it doesn't match the first one)
-  //           setSearchParams({
-  //             categoryId: searchParams.get("categoryId") || "",
-  //             subCategoryId: subCategory.list[0]._id,
-  //           });
-  //         }
-  //       }
-  //     } else {
-  //       // If no subCategoryId in params, default to the first subcategory
-  //       if (subCategoryIdFromParams !== subCategory.list[0]._id) {
-  //         setActiveTabIndex(0);
-  //         dispatch(setSelectedSubCategory(subCategory.list[0]));
-  //         setSearchParams({
-  //           categoryId: searchParams.get("categoryId") || "",
-  //           subCategoryId: subCategory.list[0]._id,
-  //         });
-  //       }
-  //     }
-  //   }
-  // }, [searchParams, subCategory?.list, dispatch]);
-  
+
   const handleTab = (tab) => {
-    console.log(tab, "tab")
-    dispatch(setSelectedSubCategory(tab))
-    setSearchParams({ categoryId: searchParams.get("categoryId") || "", subCategoryId: tab._id })
-  }
+    dispatch(setSelectedSubCategory(tab));
+    setSearchParams({ categoryId: searchParams.get("categoryId") || "", subCategoryId: tab._id });
+  };
+
+  // Scroll left handler
+  const scrollLeft = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({
+        left: -500, // Increase/decrease scroll distance based on your needs
+        behavior: "smooth", // Smooth scrolling
+      });
+    }
+  };
+
+  // Scroll right handler
+  const scrollRight = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({
+        left: 500, // Increase/decrease scroll distance based on your needs
+        behavior: "smooth", // Smooth scrolling
+      });
+    }
+  };
+
   return (
-    <>
-      <div className="flex space-x-5  overflow-x-auto scrollbar-hide whitespace-nowrap pb-4 pt-4 ">
+    <div className="relative flex items-center gap-2">
+      {/* Left Arrow Button */}
+     {subCategory?.list?.length > 0 && <button onClick={scrollLeft} className="z-10">
+        <FaArrowLeft size={20} />
+      </button>}
+
+      <div
+        className="flex items-center gap-4 overflow-x-auto scrollbar-hide whitespace-nowrap border-b"
+        ref={scrollContainerRef}
+      >
         {subCategory.list.map((tab, index) => (
           <button
             key={index}
-            // className={`sm: ${subCategory?.selectedSubCategory.subCategoryId ===
-            //     tab.subCategoryId
-            //     ? "text-[#0A1C40] text-sm font-bold border-b-4 py-1 border-[#004BBC]  rounded pr-2 "
-            //     : "font-normal text-sm pr-2 py-1 text-[#7E7E7E]"
-            //   }`}
+            ref={(el) => (tabRefs.current[index] = el)} // Assign tab button refs
             className={`${
               activeTabIndex === index
-                ? "text-[#0A1C40] text-sm font-bold border-b-4 py-1 border-[#004BBC] rounded pr-2"
-                : "font-normal text-sm pr-2 py-1 text-[#7E7E7E]"
+                ? "text-[#0A1C40] text-sm font-bold border-b-4 py-1 border-[#004BBC] rounded"
+                : "font-normal text-sm py-1 text-[#7E7E7E]"
             }`}
-            onClick={() => (handleTab(tab))}
+            onClick={() => handleTab(tab)}
           >
             {tab.subSectionTitle}
           </button>
         ))}
       </div>
-    </>
+
+      {/* Right Arrow Button */}
+     {subCategory?.list?.length > 0 && <button onClick={scrollRight} className="z-10">
+        <FaArrowRight size={20} />
+      </button>}
+    </div>
   );
 }
 

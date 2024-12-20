@@ -16,7 +16,7 @@ import { clearState } from "../../../redux/slices/serviceDetailsSlice";
 const ServiceDetail = () => {
   const { serviceId } = useParams()
   const dispatch = useDispatch();
-  const { success, statesList, subscription,stateWiseServiceCharge, isTalkToAdvisorLoading, isQuotationAvailable, isOfferAvailable } = useSelector((state) => state.serviceDetails);
+  const { success, statesList,callBackMessage, subscription,stateWiseServiceCharge, isTalkToAdvisorLoading, isQuotationAvailable, isOfferAvailable } = useSelector((state) => state.serviceDetails);
 
   console.log(success, "from component")
   useEffect(() => {
@@ -44,11 +44,13 @@ const ServiceDetail = () => {
             <LinkButton primary={true}>Contact</LinkButton>
           </div>
           <Details data={success} stateWiseServiceCharge={stateWiseServiceCharge?.estimatedTotal}  pricing={true} serviceId={serviceId} offer={success?.offerservices?.[0]?.offers?.[0]?.discountPercent} handleRequest={handleTalkTouOurAdvisors} isLoading={isTalkToAdvisorLoading} />
-          <Features />
+          {/* <Features /> */}
           <Pricing data={subscription} pricing={!isQuotationAvailable} serviceId={serviceId} offer={success?.offerservices?.[0]?.offers?.[0]?.discountPercent}/>
           <Advisor
             handleRequest={handleTalkTouOurAdvisors}
-            isLoading={isTalkToAdvisorLoading} />
+            isLoading={isTalkToAdvisorLoading}
+            message={callBackMessage}
+            />
           <Testimonials serviceId={serviceId} />
           <Steps data={success?.servicesteps}/>
           <FAQs />
@@ -57,6 +59,7 @@ const ServiceDetail = () => {
             description="Contact us for more information or assistance."
             handleRequest={handleTalkTouOurAdvisors}
             isLoading={isTalkToAdvisorLoading}
+            message={callBackMessage}
           />
         </div>
       </section>

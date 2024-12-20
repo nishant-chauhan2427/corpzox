@@ -179,11 +179,11 @@ export const Selector = ({
         isDisabled={isDisabled}
         {...props}
       />
-      {errorContent && touched && (
         <div className="h-1 mb-2">
+      {errorContent && touched && (
           <p className=" text-error text-xs">{errorContent}</p>
+        )}
         </div>
-      )}
       <i className="absolute top-1/2 -translate-y-1/2 ml-3">{lefticon}</i>
     </div>
   );

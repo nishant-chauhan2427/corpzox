@@ -9,7 +9,7 @@ const CreateBusiness = ({ isEdit=false }) => {
       <ModalWrapper title={isEdit?"Edit Business Details":"Add Business Details"}>
         <div
           // onSubmit={handleSubmit(onSubmit)}
-          className="px-4 my-2 flex flex-col gap-4"
+          className="px-4 my-2  flex flex-col gap-4"
         >
           {/* Progress bar */}
           {/* <div className="w-full h-2 bg-gray-200 mb-4 rounded-full">

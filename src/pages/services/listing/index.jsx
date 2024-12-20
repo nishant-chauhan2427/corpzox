@@ -37,9 +37,18 @@ const ServicesListing = () => {
   const dispatch = useDispatch();
   const { servicesMainTab } = useSelector((state) => state.app);
   // console.log(servicesMainTab, "serviceMainTab");
-  const { category, subCategory, loading, loadingMore, page, limit, totalCount, totalPage, list, wishList } = useSelector(
-    (state) => state.service
-  );
+  const {
+    category,
+    subCategory,
+    loading,
+    loadingMore,
+    page,
+    limit,
+    totalCount,
+    totalPage,
+    list,
+    wishList,
+  } = useSelector((state) => state.service);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryId = searchParams.get("categoryId");
@@ -49,75 +58,92 @@ const ServicesListing = () => {
   const searchValue = queryParams.get("search");
   const [isSubmit, setIsSubmit] = useState(false);
   const [isServicesFetched, setIsServicesFetched] = useState(false);
-
+  const [isSubCategorySet, setIsSubCategorySet] = useState(false);
   // console.log("list", list);
   // console.log("service totalCount:", totalCount);
   // console.log("service page:", page);
 
-
   useEffect(() => {
     // dispatch(resetService({}));
-    category?.list && category?.list?.length === 0 && dispatch(getUserServicesCatagory({}));
-
+    category?.list &&
+      category?.list?.length === 0 &&
+      dispatch(getUserServicesCatagory({}));
   }, []);
 
   // useEffect(() => {
   //   if (categoryId) {
-  //     dispatch(
-  //       getUserServicesSubCatagory({
-  //         categoryId: categoryId, // Use categoryId directly from searchParams
-  //       })
-  //     );
+  //     dispatch(getUserServicesSubCatagory({ categoryId }));
   //   }
   // }, [categoryId]);
-
   // useEffect(() => {
-  //   const search = searchParams.get("search")
-  //   // if (categoryId || subCategoryId) {
-  //   // }
-  //   !subCategory?.subCategoryLoading && dispatch(
-  //     getUserServices({
-  //       categoryId: categoryId,
-  //       subCategoryId: subCategoryId,
-  //       page,
-  //       limit,
-  //       query: search ? search : searchValue,
-  //     })
-  //   );
-  // }, [categoryId, subCategoryId,subCategory?.subCategoryLoading,  searchValue]);
-
+  //   if (categoryId) {
+  //     dispatch(getUserServicesSubCatagory({ categoryId }))
+  //     .unwrap()
+  //       .then((response) => {
+  //         if (response) {
+  //          console.log(response, "from suub cat")
+  //           const firstSubCategoryId = response?.data?.[0]?._id; // Adjust key as per your API
+  //           setSearchParams((prev) => {
+  //             const params = new URLSearchParams(prev);
+  //             params.set("subCategoryId", firstSubCategoryId);
+  //             return params;
+  //           });
+  //           setIsSubCategorySet(true);
+  //         }
+  //       })
+  //       .catch(() => {
+  //         setIsSubCategorySet(false);
+  //       });
+  //   }
+  // }, [dispatch, categoryId]);
   useEffect(() => {
     if (categoryId) {
-      dispatch(getUserServicesSubCatagory({ categoryId }));
+      // Clear only subCategoryId when categoryId changes
+      setSearchParams((prev) => {
+        const params = new URLSearchParams(prev);
+        params.delete("subCategoryId"); // Only delete subCategoryId, keep categoryId
+        params.set("categoryId", categoryId); // Always set the new categoryId
+        return params;
+      });
+  
+      dispatch(getUserServicesSubCatagory({ categoryId }))
+        .unwrap()
+        .then((response) => {
+          if (response?.data?.length > 0) {
+            const firstSubCategoryId = response?.data[0]?._id;
+  
+            // Only update subCategoryId if it was not set or changed
+            setSearchParams((prev) => {
+              const params = new URLSearchParams(prev);
+              params.set("subCategoryId", firstSubCategoryId); // Set subCategoryId to the first one
+              return params;
+            });
+  
+            setIsSubCategorySet(true);
+          } else {
+            setSearchParams((prev) => {
+              const params = new URLSearchParams(prev);
+              params.delete("subCategoryId"); // Delete subCategoryId if no sub-categories found
+              return params;
+            });
+  
+            setIsSubCategorySet(false);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching sub-categories:", error);
+          setIsSubCategorySet(false);
+        });
     }
-  }, [categoryId]);
-
-  // Fetch user services only after subcategories are fetched or when changing category/subcategory
-  // useEffect(() => {
-  //   if (
-  //     categoryId && 
-  //     !subCategory?.subCategoryLoading && 
-  //     !loading && 
-  //     !isServicesFetched
-  //   ) {
-  //     const search = searchParams.get("search");
-  //     dispatch(
-  //       getUserServices({
-  //         categoryId,
-  //         subCategoryId,
-  //         page,
-  //         limit,
-  //         query: search || searchValue,
-  //       })
-  //     );
-  //     setIsServicesFetched(true);
-  //   }
-  // }, [categoryId, subCategoryId, subCategory?.subCategoryLoading, searchValue]);
+  }, [categoryId, dispatch]);
+  
+  
   useEffect(() => {
     if (
       categoryId &&
       subCategoryId &&
       !subCategory?.subCategoryLoading &&
+      !isServicesFetched &&
       !loading 
     ) {
       const search = searchParams.get("search");
@@ -132,7 +158,13 @@ const ServicesListing = () => {
       );
       setIsServicesFetched(true);
     }
-  }, [categoryId, subCategoryId, subCategory?.subCategoryLoading, searchValue, isServicesFetched]);
+  }, [
+    categoryId,
+    subCategoryId,
+    subCategory?.subCategoryLoading,
+    searchValue,
+    isServicesFetched,
+  ]);
 
   useEffect(() => {
     setIsServicesFetched(false);
@@ -156,7 +188,6 @@ const ServicesListing = () => {
     dispatch(setToggleToCheckedWishlist(service));
   };
 
-
   //  let onClickAddWishlistHandler = () => {
   //     const wishlistSelectedData=wishList?.list?.map(item => item._id);
   //     dispatch(updateServiceQuickWishlist({ serviceIdArray: wishlistSelectedData }));
@@ -167,7 +198,7 @@ const ServicesListing = () => {
   //     // document.getElementsByClassName('service-checkbox').forEach(element => {
 
   //     // });
-  //   }; 
+  //   };
 
   const loadMoreServices = () => {
     if (
@@ -188,55 +219,64 @@ const ServicesListing = () => {
         })
       );
     }
-  }
+  };
 
   return (
-    <section className="flex sm:flex-row flex-col gap-4 sm:pt-6 pt-3 bg-white">
+    <section className="flex sm:flex-row flex-col gap-4 sm:pt-4 pt-2 bg-white">
       <div className="w-full flex justify-center flex-col overflow-hidden">
         <MetaTitle title={"Service"} />
-        <div className="w-full mb-4">
-          {category.categoryLoading ? <CategorySubCategoryTabLoader /> : <MainTab />}
-          {subCategory?.subCategoryLoading ? <CategorySubCategoryTabLoader /> : <Filtertab />}
+        <div className="w-full space-y-4">
+          {category.categoryLoading ? (
+            <div className="pt-4">
+              <CategorySubCategoryTabLoader />
+            </div>
+          ) : (
+            <MainTab />
+          )}
+          {subCategory?.subCategoryLoading ? (
+            <div className="pt-4">
+              <CategorySubCategoryTabLoader />
+            </div>
+          ) : (
+            <Filtertab />
+          )}
         </div>
         <>
           {loading ? (
-            <div className="flex justify-center items-center h-full">
-              <BusinessCardShimmer />
+            <div className="py-4 grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-4">
+              {Array.from({ length: 9 }).map((_, index) => (
+                <div key={index}>
+                  <BusinessCardShimmer />
+                </div>
+              ))}
             </div>
-
-          ) : (
-
-            list && list.length > 0 ? (
-
-              <InfiniteScroll
-                dataLength={list?.length || 0} // Use the currently loaded data length
-                next={loadMoreServices} // Load more data
-                hasMore={list?.length < totalCount} // true if more data exists, false otherwise
-                loader={
-                  <div className="flex justify-center items-center p-1">
-                    <ImSpinner2 className="animate-spin text-black !text-xl" />
-                  </div>
-                }
-                endMessage={
-                  (totalCount && totalCount > 0 && list?.length>6) && <p style={{ textAlign: 'center' }}>
+          ) : list && list.length > 0 ? (
+            <InfiniteScroll
+              dataLength={list?.length || 0} // Use the currently loaded data length
+              next={loadMoreServices} // Load more data
+              hasMore={list?.length < totalCount} // true if more data exists, false otherwise
+              loader={
+                <div className="flex justify-center items-center p-1">
+                  <ImSpinner2 className="animate-spin text-black !text-xl" />
+                </div>
+              }
+              endMessage={
+                totalCount &&
+                totalCount > 0 && list?.length>6 && (
+                  <p className="text-center py-4">
                     <b>Yay! You have seen it all</b>
                   </p>
-                }
-              >
-
-
-                <ServicesCard
-                  data={list}
-                  onClick={(service) => onClickWishList(service)}
-                  onCheckedChange={(val) => onCheckHandler(val)}
-                />
-
-
-              </InfiniteScroll>
-
-
-
-            ) : (<NoData />)
+                )
+              }
+            >
+              <ServicesCard
+                data={list}
+                onClick={(service) => onClickWishList(service)}
+                onCheckedChange={(val) => onCheckHandler(val)}
+              />
+            </InfiniteScroll>
+          ) : (
+            <NoData />
           )}
 
           {/* {list && list.length > 5 && (
@@ -248,7 +288,6 @@ const ServicesListing = () => {
               )}
             </div>
           )} */}
-
         </>
       </div>
     </section>

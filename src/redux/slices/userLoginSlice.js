@@ -7,13 +7,14 @@ import {
   getUserServices,
   updateServiveProgress,
 } from "../actions/dashboard-action";
+import { ratingReview } from "../actions/servicesDetails-actions";
 const initialState = {
   loading: false,
   user: null,
   dataUpdate: [],
   manager: null,
-  totalCount: null,
-  morePage: 0,
+  totalCount: 0,
+  morePage: 1,
   error: null,
   loadingMore: false,
 
@@ -123,13 +124,26 @@ const userSlice = createSlice({
 
       .addCase(updateServiveProgress.fulfilled, (state, action) => {
         state.fetching = false;
+        state.totalCount = action.payload?.total;
         state.error = action.payload.message;
         // console.log(action.payload,"action.payload22");
         console.log(action.payload);
         state.dataUpdate = action.payload;
+        state.morePage=1
         //state.manager=action.payload?.agent_data?.[0]?.manager_data?.[0];
       })
       .addCase(updateServiveProgress.rejected, (state, action) => {
+        state.fetching = false;
+        state.error = action.payload;
+      })
+      .addCase(ratingReview.pending, (state) => {
+
+      })
+      .addCase(ratingReview.fulfilled, (state, action) => {
+        state.fetching = false;
+        console.log(action.payload, "payload data");
+      })
+      .addCase(ratingReview.rejected, (state, action) => {
         state.fetching = false;
         state.error = action.payload;
       })
@@ -140,9 +154,10 @@ const userSlice = createSlice({
       })
 
       .addCase(getMoreServiceUpdate.fulfilled, (state, action) => {
+
         state.totalCount = action.payload?.total;
         state.loadingMore = false;
-        state.totalCount = action.payload?.total;
+        // state.totalCount = action.payload?.total;
         console.log(state.totalCount,"totalCount12345");
         if (state.dataUpdate) {
           console.log("state", JSON.stringify(state.dataUpdate.data));

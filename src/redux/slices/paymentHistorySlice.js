@@ -12,7 +12,9 @@ const paymentHistorySlice = createSlice({
     paymentHistory: [],
     isDeactivate: false,
     totalTransaction : 0,
-    downloadTransactionUrl : ""
+    downloadTransactionUrl : "",
+    downloadingTransactions: {},
+    childLoading: {},
   },
   reducers: {
     clearState: (state) => {
@@ -22,7 +24,23 @@ const paymentHistorySlice = createSlice({
     },
     clearUrl : (state)=>{
       state.downloadTransactionUrl = ""
-    }
+    },
+    childLoading: (state, action) => {
+      const { transactionId, loading } = action.payload;
+      console.log(transactionId , 'from childloading category')
+      state.childLoading = {
+        ...state.childLoading,
+        [transactionId]: loading
+      };
+    
+    },
+    setTransactionLoading(state, action) {
+      const { transactionId, isLoading } = action.payload;
+      state.downloadingTransactions[transactionId] = isLoading; // Set loading state for a transaction
+    },
+    clearTransactionLoading(state, action) {
+      delete state.downloadingTransactions[action.payload]; // Remove transaction from the object
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -66,6 +84,6 @@ const paymentHistorySlice = createSlice({
   },
 });
 
-export const { clearState, clearUrl } = paymentHistorySlice.actions;
+export const { clearState, clearUrl, childLoading,setTransactionLoading, clearTransactionLoading } = paymentHistorySlice.actions;
 export default paymentHistorySlice.reducer;
 

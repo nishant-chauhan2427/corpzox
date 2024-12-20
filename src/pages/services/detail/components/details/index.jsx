@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { talkToAdvisor } from "../../../../../redux/actions/servicesDetails-actions";
 import { useEffect, useState } from "react";
 import { ConfirmationModal } from "../../../../../components/modal/confirmationModal";
+import { Features } from "../features";
 
 export const Details = ({
   pricing = true,
@@ -18,18 +19,20 @@ export const Details = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { subscriptionId } = useParams()
+  const [buttonClicked, setButtonClicked] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(false);
   // const navigateToService = () => {
   //   navigate(`/payment/${serviceId}`);
   // };
 
-  const { success, serviceDetailLoading, quotationDetails, isTalkToAdvisorLoading } = useSelector(
+  const { success, serviceDetailLoading,callBackMessage, quotationDetails, isTalkToAdvisorLoading } = useSelector(
     (state) => state.serviceDetails
   );
 
   // Safely retrieve data
   const subscriptionAmount =
-    quotationDetails?.[0]?.amount || success?.subscription?.[0]?.amount || data?.cost || 0;
+    // quotationDetails?.[0]?.amount || success?.subscription?.[0]?.amount || data?.cost || 0;
+    success?.subscription?.[0]?.amount || data?.cost || 0;
 
   const discountPercent =
     success?.offerservices?.[0]?.offers?.[0]?.discountPercent || offer || 0;
@@ -58,9 +61,10 @@ export const Details = ({
   };
   const onConfirmationModalClose = () => {
     setConfirmationModal(false);
+    setButtonClicked(false);
   };
   const handleTalkTouOurAdvisors = () => {
-    console.log(serviceId, "clicked");
+    setButtonClicked(true);
     const requestData = {
       userId: JSON.parse(localStorage.getItem("userInfo"))?.userId,
       serviceId: serviceId,
@@ -70,10 +74,10 @@ export const Details = ({
     dispatch(talkToAdvisor(requestData));
   };
   useEffect(() => {
-    if (!isTalkToAdvisorLoading) {
-      onConfirmationModalClose();
+    if (!isTalkToAdvisorLoading && buttonClicked) {
+      setConfirmationModal(true);
     }
-  }, [isTalkToAdvisorLoading]);
+  }, [isTalkToAdvisorLoading, buttonClicked]);
   return (
     <section className="flex flex-col gap-2">
       <div className="flex flex-col text-start gap-2">
@@ -106,10 +110,27 @@ export const Details = ({
         )}
         <div
           style={{
-            backgroundImage: `url(/images/services/service-dummy.svg)`,
+            // backgroundImage: `url(/images/services/service-dummy.svg)`,
           }}
           className="w-full min-h-[420px] md:w-3/5 rounded-3xl bg-no-repeat bg-cover"
-        ></div>
+        >
+          {success?.delivrableVideoUrl || success?.documentVideoUrl || success?.stepsVideoUrl ? (
+            <video controls autoPlay>
+              <source
+                src={
+                  success.delivrableVideoUrl ||
+                  success.documentVideoUrl ||
+                  success.stepsVideoUrl
+                }
+                type="video/mp4"
+              />
+            </video>
+          ) : (
+            <Features />
+          )}
+
+
+        </div>
         {pricing && (
           <div className="w-full md:w-2/5 bg-[#EEEFF3] box-sg rounded-lg px-5 py-6 gap-2 flex flex-col">
             <div>
@@ -176,8 +197,9 @@ export const Details = ({
                 Avail services
               </Button>
               <Button
-                // isLoading={isLoading}
-                onClick={() => setConfirmationModal(true)}
+                isLoading={isLoading}
+                onClick={handleTalkTouOurAdvisors}
+                // onClick={() => setConfirmationModal(true)}
                 className={"text-xs px-2 py-1 rounded-sm"}
                 primary={true}
               >
@@ -193,16 +215,16 @@ export const Details = ({
           <div className="flex flex-col gap-2 items-center justify-center ">
             <img src="/public/icons/payment/callback.svg" width={200} alt="" />
             <p className="text-3xl font-bold text-[#0A1C40]">
-              Request Call back?
+              Call Back Requested.
             </p>
             <p className="font-medium text-[16px] text-[#595959]">
-              Your Assistant Manager will get in touch with you soon.
+            {callBackMessage}
             </p>
             <div className="flex justify-center">
               <Button
                 primary={true}
-              isLoading={isTalkToAdvisorLoading}
-              onClick={handleTalkTouOurAdvisors}
+                isLoading={isTalkToAdvisorLoading}
+                onClick={handleTalkTouOurAdvisors}
               >
                 {" "}
                 Continue
