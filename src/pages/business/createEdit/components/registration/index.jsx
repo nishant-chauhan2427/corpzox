@@ -411,11 +411,20 @@ export const RegistrationDetails = ({ isEdit }) => {
               <Input
                 {...field}
                 label="Size of the company"
-                max={100000}
                 type="number"
                 placeholder="Enter size of the company"
                 errorContent={errors.registration?.sizeOfCompany?.message}
                 required
+
+
+                onInput={(e) => {
+                  const value = e.target.value;
+                  // Prevent invalid characters and limit input length to 10
+                  e.target.value = value
+                    .replace(/[^0-9]/g, "") // Allow only digits
+                    .slice(0, 10); // Limit to 10 characters
+                  field.onChange(e); // Trigger React Hook Form's onChange
+                }}
               />
             )}
           />
