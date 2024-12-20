@@ -28,10 +28,10 @@ function Filtertab() {
         } else {
           setActiveTabIndex(0);
           dispatch(setSelectedSubCategory(subCategory.list[0]));
-          setSearchParams({
-            categoryId: searchParams.get("categoryId") || "",
-            subCategoryId: subCategory.list[0]._id,
-          });
+          // setSearchParams({
+          //   categoryId: searchParams.get("categoryId") || "",
+          //   subCategoryId: subCategory.list[0]._id,
+          // });
         }
       } else {
         setActiveTabIndex(0);

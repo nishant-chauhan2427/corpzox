@@ -9,7 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { MdOutlineHorizontalRule } from "react-icons/md";
 import { FaFacebookSquare, FaGoogle, FaInstagramSquare } from "react-icons/fa";
 import { DualHeadingTwo } from "../components/dualHeading/dualHeadingTwo";
-import { useRef,useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ReCAPTCHA from "react-google-recaptcha";
 import { setUser } from "../../../redux/slices/userLoginSlice";
@@ -28,6 +28,7 @@ export const Signup = () => {
     handleSubmit,
     formState: { errors, isValid },
     trigger,
+    reset,
   } = useForm({
     resolver: yupResolver(signUpValidationSchema),
     mode: "onChange",
@@ -40,7 +41,7 @@ export const Signup = () => {
     registerMessage,
     profile
   } = useSelector((state) => state.auth);
-  
+
   // Corrected handleBlur function
   const handleBlur = async (field) => {
     console.log("field", field);
@@ -56,6 +57,7 @@ export const Signup = () => {
         profilePicture: data?.profileObj?.imageUrl,
       })
     );
+    reset();
   };
 
   const [error, setError] = useState("");
@@ -82,23 +84,23 @@ export const Signup = () => {
     //   dispatch(loginUser(data));
     // });
     const token = await recaptchaRef.current.executeAsync().then((res) => {
-    const userData = {
-      ...data,
-      
-      firstName: data.full,
-      recaptchaToken: res
-    };
-    delete userData.full;
-    setEmailSignUp(data.email)
-    dispatch(updateEmail(data.email))
-    dispatch(registerUser(userData));
-    // dispatch(registerUser(data));
+      const userData = {
+        ...data,
+
+        firstName: data.full,
+        recaptchaToken: res
+      };
+      delete userData.full;
+      setEmailSignUp(data.email)
+      dispatch(updateEmail(data.email))
+      dispatch(registerUser(userData));
+      // dispatch(registerUser(data));
 
 
-    dispatch(setRedirectTo("verify"))
-    //navigate("/verify", { state: { emailSign: data.email } })
-    //console.log(data, "user data");
-  })
+      dispatch(setRedirectTo("verify"))
+      //navigate("/verify", { state: { emailSign: data.email } })
+      //console.log(data, "user data");
+    })
   };
 
   useEffect(() => {
@@ -107,6 +109,7 @@ export const Signup = () => {
       if (registeringError) {
         toast.error(registeringError);
       } else {
+       // reset();
         if (profile?.source == "GOOGLE") {
           navigate("/dashboard");
         } else {
@@ -114,9 +117,9 @@ export const Signup = () => {
         }
       }
     }
-  }, [isRegistering,profile]);
+  }, [isRegistering, profile]);
 
-  
+
   return (
     <>
       <MetaTitle title={"Sign Up"} />
@@ -146,7 +149,7 @@ export const Signup = () => {
                       placeholder={"Full Name"}
                       className={"border-[#D9D9D9] border"}
                       errorContent={errors?.full?.message}
-                      onBlur={() => handleBlur("full")}  
+                      onBlur={() => handleBlur("full")}
                     />
                   )}
                 />
@@ -160,7 +163,7 @@ export const Signup = () => {
                       placeholder={"Phone No."}
                       touched={true}
                       errorContent={errors?.phone?.message}
-                      //onBlur={() => handleBlur("phone")} 
+                    //onBlur={() => handleBlur("phone")} 
                     />
                   )}
                 />
@@ -178,7 +181,7 @@ export const Signup = () => {
                       placeholder={"Email Id"}
                       className={"border-[#D9D9D9] border"}
                       errorContent={errors?.email?.message}
-                      onBlur={() => handleBlur("email")} 
+                      onBlur={() => handleBlur("email")}
                       maxLength={50}
                     />
                   )}
@@ -195,19 +198,19 @@ export const Signup = () => {
                       className={"border-[#D9D9D9] border"}
                       placeholder={"Password"}
                       errorContent={errors.password?.message}
-                      onBlur={() => handleBlur("password")} 
+                      onBlur={() => handleBlur("password")}
                       maxLength={20}
                     />
                   )}
                 />
 
-<ReCAPTCHA
-                ref={recaptchaRef}
-                size="invisible"
-                sitekey={RECAPTCHA_SITE_KEY}
-              />
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  size="invisible"
+                  sitekey={RECAPTCHA_SITE_KEY}
+                />
 
-                
+
               </div>
 
               <div className="flex flex-col gap-4 sm:pt-4">
@@ -238,7 +241,7 @@ export const Signup = () => {
                       cookiePolicy={"single_host_origin"}
                       scope="openid profile email"
                       render={(renderProps) => (
-                        
+
                         <button
                           onClick={renderProps.onClick}
                           disabled={renderProps.disabled}
