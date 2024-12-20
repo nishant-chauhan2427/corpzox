@@ -152,8 +152,8 @@ const BusinessDetail = () => {
                 </p> */}
               </div>
             </div>
-            <div className="w-full md:w-1/2 overflow-x-auto">
-              <table className="min-w-full table-auto border-collapse bg-white shadow-md">
+            <div className="w-full  ">
+              <table className="min-w-full table-auto border-collapse bg-white ">
                 <tbody>
                   {businessTableData.map((item, index) => (
                     <tr key={index}>
