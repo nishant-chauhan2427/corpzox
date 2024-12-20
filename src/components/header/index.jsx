@@ -35,6 +35,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const user = useSelector((state) => state.user.user);
+  const { upload } = useSelector((state) => state.profile);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -56,6 +57,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
   const profile = false;
 
   // Handle sidebar collapse
+  console.log(upload,"upload image");
 
   const handleSidebar = () => {
     setCollapse(!collapse);
@@ -83,8 +85,8 @@ export const Header = ({ className, collapse, setCollapse }) => {
         return "Document";
       case pathname.includes("settings"):
         return "Settings";
-      // case pathname.includes("profile"):
-      //   return "Profile";
+      case pathname.includes("profile"):
+        return "Profile";
       case pathname.includes("offersDetails"):
         return "Offers";
       default:
@@ -246,16 +248,26 @@ export const Header = ({ className, collapse, setCollapse }) => {
                   onClick={() => setSignedInMenuPopup(!signedInMenuPopup)}
                   className="flex items-center gap-1 sm:gap-2"
                 >
-                  <img
-                    className="w-8 h-8 inset-0 rounded-full object-cover ltr:absolute ltr:top-1/2 ltr:left-1/2 ltr:-translate-y-1/2 rtl:-translate-y-[31%] ltr:-translate-x-1/2"
-                    // src="/images/insights/insight-user.svg"
-                    src={
-                      user?.profile_picture_url
-                        ? user?.profile_picture_url
-                        : "/images/insights/insight-user.svg"
-                    }
-                    alt="profile-pic"
-                  />
+                 {
+  upload == null ? (
+    <img
+      className="w-8 h-8 inset-0 rounded-full object-cover ltr:absolute ltr:top-1/2 ltr:left-1/2 ltr:-translate-y-1/2 rtl:-translate-y-[31%] ltr:-translate-x-1/2"
+      src={
+        user?.profile_picture_url
+          ? user?.profile_picture_url
+          : "/images/insights/insight-user.svg"
+      }
+      alt="profile-pic"
+    />
+  ) : (
+    <img
+      className="w-8 h-8 inset-0 rounded-full object-cover ltr:absolute ltr:top-1/2 ltr:left-1/2 ltr:-translate-y-1/2 rtl:-translate-y-[31%] ltr:-translate-x-1/2"
+      src={upload ? upload : "/images/insights/insight-user.svg"}
+      alt="profile-pic"
+    />
+  )
+}
+
 
                   <div className="hidden sm:flex flex-col items-start">
                     <h5 className="font-semibold text-sm text-white">

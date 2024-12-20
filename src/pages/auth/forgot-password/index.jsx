@@ -42,7 +42,6 @@ export const ForgotPassword = () => {
     resendingOtp,
     profile,
   } = useSelector((state) => state.auth);
-console.log(profile,123456789);
   const [otpMessage, setOtpMessage] = useState("");
  
   // useEffect(() => {
@@ -55,6 +54,7 @@ console.log(profile,123456789);
   //     }
   //   }
   // }, [profile, setValue]);
+  console.log(profile,"PASSWORD");
   useEffect(() => {
     if (emailOrPhone) {
       setValue("email", emailOrPhone); // Set the email in the form if passed
@@ -169,7 +169,7 @@ console.log(profile,123456789);
     e.preventDefault();
     setIsVerify(true);
     const enteredOtp = otp.join("");
-    console.log("Entered OTP:", enteredOtp);
+    //console.log("Entered OTP:", enteredOtp);
     // Add further OTP validation logic here
     setIsVerify(true);
     dispatch(verifyUser({ otp: enteredOtp, id: profile?.[0]?.id }));
@@ -200,7 +200,7 @@ console.log(profile,123456789);
               <DualHeadingTwo
                 containerClassName={"text-left pt-2"}
                 heading={"Verification Code"}
-                subHeading={`We have sent you an OTP on your registered Email Id forgot-password ${profile?.[0]?.email}`}
+                subHeading={`We have sent you an OTP on your registered Email Id ${profile?.[0]?.email}`}
 
               />
               <form
