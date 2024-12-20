@@ -14,7 +14,7 @@ export const MainTab = () => {
 
   useEffect(() => {
     const categoryIdFromParams = searchParams.get("categoryId");
-    
+    searchParams.delete("subCategoryId");
     if (category?.list?.length) {
       if (categoryIdFromParams) {
         // If categoryId exists in params, find and set the category

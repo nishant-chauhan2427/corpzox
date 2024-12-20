@@ -8,10 +8,45 @@ function Filtertab() {
   const dispatch = useDispatch();
   const [categoryactiveTab, setcategoryActiveTab] = useState(0);
   const [activeTabIndex, setActiveTabIndex] = useState(0);
+  // useEffect(() => {
+  //   const subCategoryIdFromParams = searchParams.get("subCategoryId");
+  //   searchParams.delete("subCategory")
+  //   if (subCategory?.list?.length > 0) {
+  //     if (subCategoryIdFromParams) {
+  //       // If subCategoryId exists in params, find and set the subcategory
+  //       const foundIndex = subCategory.list.findIndex(
+  //         (tab) => tab._id === subCategoryIdFromParams
+  //       );
+  //       if (foundIndex !== -1) {
+  //         setActiveTabIndex(foundIndex);
+  //         dispatch(setSelectedSubCategory(subCategory.list[foundIndex]));
+  //       } else {
+  //         // If the subCategoryId in params is invalid, default to the first subcategory
+  //         setActiveTabIndex(0);
+  //         dispatch(setSelectedSubCategory(subCategory.list[0]));
+          
+  //         setSearchParams({
+  //           categoryId: searchParams.get("categoryId") || "",
+  //           subCategoryId: subCategory.list[0]._id,
+  //         });
+  //       }
+  //     } else {
+  //       // If no subCategoryId in params, default to the first subcategory
+  //       setActiveTabIndex(0);
+  //       dispatch(setSelectedSubCategory(subCategory.list[0]));
+  //       setSearchParams({
+  //         categoryId: searchParams.get("categoryId") || "",
+  //         subCategoryId: subCategory.list[0]._id,
+  //       });
+  //     }
+  //   }
+  // }, [searchParams, subCategory?.list, dispatch]);
   useEffect(() => {
-    const subCategoryIdFromParams = searchParams.get("subCategoryId");
+    // Wait for the subcategory API to complete
+    if (!subCategory?.subCategoryLoading && subCategory?.list?.length > 0) {
+      const subCategoryIdFromParams = searchParams.get("subCategoryId");
+      searchParams.delete("subCategory"); // Remove deprecated key if present
   
-    if (subCategory?.list?.length > 0) {
       if (subCategoryIdFromParams) {
         // If subCategoryId exists in params, find and set the subcategory
         const foundIndex = subCategory.list.findIndex(
@@ -24,10 +59,10 @@ function Filtertab() {
           // If the subCategoryId in params is invalid, default to the first subcategory
           setActiveTabIndex(0);
           dispatch(setSelectedSubCategory(subCategory.list[0]));
-          setSearchParams({
-            categoryId: searchParams.get("categoryId") || "",
-            subCategoryId: subCategory.list[0]._id,
-          });
+          // setSearchParams({
+          //   categoryId: searchParams.get("categoryId") || "",
+          //   subCategoryId: subCategory.list[0]._id,
+          // });
         }
       } else {
         // If no subCategoryId in params, default to the first subcategory
@@ -39,7 +74,24 @@ function Filtertab() {
         });
       }
     }
-  }, [searchParams, subCategory?.list, dispatch]);
+  }, [searchParams, subCategory?.list, subCategory?.subCategoryLoading, dispatch]);
+
+  // useEffect(() => {
+  //   // Wait for the subcategory API to finish
+  //   if (!subCategory?.subCategoryLoading && subCategory?.list?.length > 0) {
+  //     // Clear all existing query parameters
+  //     setSearchParams({});
+  
+  //     // Set the first subcategory in query if data exists
+  //     setSearchParams({
+  //       categoryId: searchParams.get("categoryId") || "",
+  //       subCategoryId: subCategory.list[0]._id,
+  //     });
+  //   }
+  // }, [subCategory?.list, subCategory?.subCategoryLoading, setSearchParams]);
+  
+  
+  
   
   // useEffect(() => {
   //   const subCategoryIdFromParams = searchParams.get("subCategoryId");

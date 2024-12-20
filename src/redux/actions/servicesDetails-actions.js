@@ -202,7 +202,9 @@ export const ratingReview = createAsyncThunk(
         );
   
         if (response?.data?.code === 200 || response?.data?.code === 201) {
-          return response.data;
+          return{responseData : response.data, 
+            ratingData : ratingData
+          } ;
         } else {
           return rejectWithValue(response?.data?.message);
         }
