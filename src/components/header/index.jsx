@@ -199,7 +199,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
           {/* Search */}
           {
             !pathname.includes("settings") &&
-            //!pathname.includes("profile") &&
+            !pathname.includes("profile") &&
             !pathname.includes("wishlist") &&
             !pathname.includes("offersDetails") &&
             !pathname.includes("dashboard") && 
@@ -207,7 +207,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
             (
               <Search
                 clearSerarch={clearSearch}
-                pathnameplaceholder={`Search ${getPageHeading(pathname)}`}
+                placeholder={`Search ${getPageHeading(pathname)}`}
                 containerClassName={
                   "hidden lg:block w-full h-10 lg:!max-w-lg !bg-[#3D485F] !rounded-full overflow-hidden   border-[#8c94a2] border !text-white"
                 }

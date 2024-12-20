@@ -23,6 +23,8 @@ export const IsLoggedInWrapper = () => {
   const location = useLocation();
   const [signedInFlag, setSignedInFlag] = useState(false);
 
+const isSignedIn = localStorage.getItem('signedIn')
+console.log(localStorage.getItem('signedIn'))
   useEffect(() => {
     let userInfo = null;
     try {

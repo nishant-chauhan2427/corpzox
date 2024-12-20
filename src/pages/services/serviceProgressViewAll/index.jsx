@@ -27,9 +27,6 @@ const ServiceprogressViewAll = ({ data }) => {
     dataUpdate?.data?.map(() => false)
   );
   const dispatch = useDispatch();
-  console.log(dataUpdate.data, "dataUpdate32");
-  console.log("totalCount,",totalCount);
-  console.log("data length",dataUpdate?.data?.length);
 
   const handleServiceDropdown = (index) => {
     setDropdownStates((prevState) =>
