@@ -17,12 +17,15 @@ import { GoTriangleDown } from "react-icons/go";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ProgressBar } from "../../../components/progressBar";
 import { ImSpinner2 } from "react-icons/im";
+import { servicesProgress } from "../../../database";
 
 const ServiceprogressViewAll = ({ data }) => {
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [otherValue, setOtherVsalue] = useState("");
 
-  const { dataUpdate,totalCount, loadingMore, page ,morePage} = useSelector((state) => state.user);
+  const { dataUpdate, totalCount, loadingMore, page, morePage } = useSelector(
+    (state) => state.user
+  );
   const [dropdownStates, setDropdownStates] = useState(
     dataUpdate?.data?.map(() => false)
   );
@@ -39,7 +42,10 @@ const ServiceprogressViewAll = ({ data }) => {
   };
 
   useEffect(() => {
-    if (dataUpdate?.data?.length == 0 || dataUpdate?.data?.length == undefined) {
+    if (
+      dataUpdate?.data?.length == 0 ||
+      dataUpdate?.data?.length == undefined
+    ) {
       dispatch(updateServiveProgress({ page: 1 }));
     }
   }, []);
@@ -98,7 +104,7 @@ const ServiceprogressViewAll = ({ data }) => {
         </Heading>
       </div>
 
-      {dataUpdate?.total > 0 ? (
+      {/* {dataUpdate?.total > 0 ? (
         <div className="flex flex-col gap-4">
           {dataUpdate?.data?.map((data, index) => (
             <div key={index} className="bg-[#F8FAFF] px-4 py-2 rounded-md">
@@ -263,6 +269,17 @@ const ServiceprogressViewAll = ({ data }) => {
             
           </InfiniteScroll>
         </div>
+      )
+      
+      : (
+        <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
+          <img src="/images/service-prgress.svg" alt="" />
+          <p className="font-bold text-xl text-[#000000]">No Services</p>
+        </div>
+      )} */}
+
+      {dataUpdate?.total > 0 ? (
+        <ServicesProgress data={servicesProgress} />
       ) : (
         <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
           <img src="/images/service-prgress.svg" alt="" />

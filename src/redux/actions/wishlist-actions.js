@@ -3,7 +3,7 @@ import client from "../axios-baseurl";
 
 export const getWishList = createAsyncThunk(
     "wishlist/getWishList",
-    async (_, { rejectWithValue }) => {
+    async (params, { rejectWithValue }) => {
       try {
         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
         const token = userInfo?.token;
@@ -19,9 +19,38 @@ export const getWishList = createAsyncThunk(
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`,
           },
+          params:params
         });
         //console.log(response.data.data[0]?.service, "wishlist response");
-        return response.data.data;
+        return response.data;
+      } catch (error) {
+        console.log(error, "wishlist error");
+        return rejectWithValue(error.response?.data || "Something went wrong");
+      }
+    }
+  );
+export const getMoreWishList = createAsyncThunk(
+    "wishlist/getMoreWishList",
+    async (params, { rejectWithValue }) => {
+      try {
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        const token = userInfo?.token;
+        console.log(token, "token")
+  
+        if (!token) {
+          return rejectWithValue("No token found");
+        }
+  
+        const response = await client.get("/user/service-wishlist", {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`,
+          },
+          params:params
+        });
+        //console.log(response.data.data[0]?.service, "wishlist response");
+        return response.data;
       } catch (error) {
         console.log(error, "wishlist error");
         return rejectWithValue(error.response?.data || "Something went wrong");

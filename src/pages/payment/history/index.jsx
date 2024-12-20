@@ -48,6 +48,7 @@ const History = () => {
       transaction_id: history?.invoiceNumber,
       status: history?.paymentStatus,
       amount: history?.amount,
+      paymentMode : history?.paymentMode,
       currency: "INR",
       payment_date: formatReadableDate(history?.paymentDate),
     };
@@ -58,7 +59,8 @@ const History = () => {
     { header: "Transaction ID", accessor: "transaction_id" },
     { header: "Status", accessor: "status" },
     { header: "Amount", accessor: "amount" },
-    { header: "P. Method", accessor: "payment_method" },
+    { header: "Payment Method", accessor: "paymentMode" },
+    { header: "Currency", accessor: "currency" },
     { header: "Payment Date", accessor: "payment_date" },
     { header: "Actions", accessor: "actions" },
   ];

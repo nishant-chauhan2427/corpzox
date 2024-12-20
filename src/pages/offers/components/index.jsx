@@ -126,6 +126,7 @@ function OffersDetails() {
         hasMore={(totalCount % offers?.length > 0)}  //true : more data to load, false: No more data to load
         loader={  <div className="flex justify-center items-center p-1"><ImSpinner2 className="animate-spin text-black !text-xl" /></div>  }
         endMessage={
+          offers?.length>6 &&
           <p style={{ textAlign: 'center' }}>
             <b>Yay! You have seen it all</b>
           </p>

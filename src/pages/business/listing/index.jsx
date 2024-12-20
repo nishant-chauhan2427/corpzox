@@ -101,7 +101,7 @@ const BusinessListing = () => {
           </div>
         }
         endMessage={
-          (totalCount && totalCount>0) && <p style={{ textAlign: 'center' }}>
+          (totalCount && totalCount>0 && business?.length>6) && <p style={{ textAlign: 'center' }}>
             <b>Yay! You have seen it all</b>
           </p>
         }
