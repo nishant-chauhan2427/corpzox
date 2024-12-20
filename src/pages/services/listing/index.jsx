@@ -143,7 +143,8 @@ const ServicesListing = () => {
       categoryId &&
       subCategoryId &&
       !subCategory?.subCategoryLoading &&
-      !isServicesFetched
+      !isServicesFetched &&
+      !loading 
     ) {
       const search = searchParams.get("search");
       dispatch(
@@ -261,7 +262,7 @@ const ServicesListing = () => {
               }
               endMessage={
                 totalCount &&
-                totalCount > 0 && (
+                totalCount > 0 && list?.length>6 && (
                   <p className="text-center py-4">
                     <b>Yay! You have seen it all</b>
                   </p>

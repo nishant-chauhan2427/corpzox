@@ -94,7 +94,7 @@ export const ServicesCard = ({
               key={index}
               className="flex flex-col gap-2 bg-[#F3F7FF] px-4 py-4  rounded-lg sm:gap-4 justify-between"
             >
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <div className="flex gap-2">
                   <p className="font-bold text-[#0A1C40]">
                     {url.includes("services")

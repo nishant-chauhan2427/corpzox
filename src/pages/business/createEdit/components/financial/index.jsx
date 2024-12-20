@@ -114,6 +114,15 @@ export const FinancialDetails = ({ isEdit }) => {
                   // onBlur={handleFieldBlur(`financial.capital`)} // Trigger validation on blur
                   onChange={handleFieldChange(`financial.capital`, field, trigger)} // Trigger validation on change
                   onKeyDown={validateNumber}
+
+                  onInput={(e) => {
+                    const value = e.target.value;
+                    // Prevent invalid characters and limit input length to 10
+                    e.target.value = value
+                      .replace(/[^0-9]/g, "") // Allow only digits
+                      .slice(0, 12); // Limit to 12 characters
+                    field.onChange(e); // Trigger React Hook Form's onChange
+                  }}
                 />
               )}
             />
@@ -130,6 +139,15 @@ export const FinancialDetails = ({ isEdit }) => {
                   // onBlur={handleFieldBlur(`financial.revenue`)} // Trigger validation on blur
                   onChange={handleFieldChange(`financial.revenue`, field, trigger)} // Trigger validation on change
                   onKeyDown={validateNumber}
+
+                  onInput={(e) => {
+                    const value = e.target.value;
+                    // Prevent invalid characters and limit input length to 10
+                    e.target.value = value
+                      .replace(/[^0-9]/g, "") // Allow only digits
+                      .slice(0, 12); // Limit to 12 characters
+                    field.onChange(e); // Trigger React Hook Form's onChange
+                  }}
                 />
               )}
             />
@@ -146,6 +164,16 @@ export const FinancialDetails = ({ isEdit }) => {
                   // onBlur={handleFieldBlur(`financial.profit`)} // Trigger validation on blur
                   onChange={handleFieldChange(`financial.profit`, field, trigger)} // Trigger validation on change
                   onKeyDown={validateNumber}
+
+
+                  onInput={(e) => {
+                    const value = e.target.value;
+                    // Prevent invalid characters and limit input length to 10
+                    e.target.value = value
+                      .replace(/[^0-9]/g, "") // Allow only digits
+                      .slice(0, 12); // Limit to 12 characters
+                    field.onChange(e); // Trigger React Hook Form's onChange
+                  }}
                 />
               )}
             />

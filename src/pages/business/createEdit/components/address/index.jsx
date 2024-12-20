@@ -556,6 +556,15 @@ export const AddressDetails = ({ isEdit }) => {
                     field.onChange(e);
                     trigger("address.businessAddressPin");
                   }}
+
+                  onInput={(e) => {
+                    const value = e.target.value;
+                    // Prevent invalid characters and limit input length to 10
+                    e.target.value = value
+                      .replace(/[^0-9]/g, "") // Allow only digits
+                      .slice(0, 6); // Limit to 6 characters
+                    field.onChange(e); // Trigger React Hook Form's onChange
+                  }}
                 />
               )}
             />
@@ -718,6 +727,15 @@ export const AddressDetails = ({ isEdit }) => {
                   onChange={(e) => {
                     field.onChange(e);
                     trigger("address.communicationAddressPin");
+                  }}
+
+                  onInput={(e) => {
+                    const value = e.target.value;
+                    // Prevent invalid characters and limit input length to 10
+                    e.target.value = value
+                      .replace(/[^0-9]/g, "") // Allow only digits
+                      .slice(0, 6); // Limit to 6 characters
+                    field.onChange(e); // Trigger React Hook Form's onChange
                   }}
                 />
               )}
