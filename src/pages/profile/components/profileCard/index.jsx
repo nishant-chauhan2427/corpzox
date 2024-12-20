@@ -48,6 +48,14 @@ const ProfileCard = ({ userData, loading }) => {
                       : "_________"}
                   </span>
                 </p>
+                <p className="text-[#525252] text-base font-medium sm:font-semibold sm:text-base">
+                  Phone No:{" "}
+                  <span className="text-black">
+                    {userData && userData?.phone
+                      ? userData?.phone
+                      : "_________"}
+                  </span>
+                </p>
                 {/* <p className="text-[#525252] text-base font-semibold sm:text-base">
                   Business email Id:{" "}
                   <span className="text-black">
