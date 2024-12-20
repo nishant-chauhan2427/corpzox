@@ -55,8 +55,12 @@ const Edit = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
-  const { loading, isloading ,isUpdatingImage} = useSelector((state) => state.profile);
+  const { loading, isloading, isUpdatingImage } = useSelector(
+    (state) => state.profile
+  );
   const { upload } = useSelector((state) => state.profile);
+
+  
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [image, setImage] = useState(
@@ -67,7 +71,6 @@ const Edit = () => {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [isImageChanged, setIsImageChanged] = useState(false);
   const [imageSelected, setImageSelected] = useState(false);
-
 
   const {
     control,
@@ -80,9 +83,9 @@ const Edit = () => {
   });
 
   const onCropComplete = (croppedArea, croppedAreaPixels) => {
-    setCroppedAreaPixels(croppedAreaPixels); // Save the cropped area
+    setCroppedAreaPixels(croppedAreaPixels); 
   };
-  //console.log(upload, "upload23");
+
   const onSubmit = (data) => {
     const formData = new FormData();
     if (imageFile) {
@@ -94,16 +97,17 @@ const Edit = () => {
     dispatch(submitEditProfile({ formData, navigate }));
     setIsImageChanged(false);
   };
+
+  
   const handleImageChange = (e) => {
     const file = e.target.files[0];
 
-    console.log ("new file1")
     if (file) {
-      const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
-    if (!validImageTypes.includes(file.type)) {
-      toast.error("Only image files (JPG, JPEG, PNG, GIF) are allowed.");
-      return;
-    }
+      const validImageTypes = ["image/jpeg", "image/png", "image/gif", "image/jpg"];
+      if (!validImageTypes.includes(file.type)) {
+        toast.error("Only image files (JPG, JPEG, PNG, GIF) are allowed.");
+        return;
+      }
 
       if (file.size > 2 * 1024 * 1024) {
         toast.error("File size should not exceed 2MB");
@@ -112,63 +116,41 @@ const Edit = () => {
 
       const reader = new FileReader();
       reader.onloadend = () => {
-        { console.log ("new file2")}
         setImage(reader.result);
         setImageFile(file);
-        setImageSelected(true); 
-       
-  
-        // Reset crop and zoom values when a new image is selected
-        setCrop({ x: 0, y: 0 });
-        setZoom(1);
+        setImageSelected(true);
+        setCroppedImage(null); 
+        setCrop({ x: 0, y: 0 }); 
+        setZoom(1); 
       };
       reader.readAsDataURL(file);
     }
   };
 
   const blobToFile = (url, filename) => {
-    // return new File([blob], fileName, { type: blob.type });
     let mimeType = (url.match(/^data:([^;]+);/) || "")[1];
     return fetch(url)
-      .then(function (res) {
-        return res.arrayBuffer();
-      })
-      .then(function (buf) {
-        return new File([buf], filename, { type: mimeType });
-      });
+      .then((res) => res.arrayBuffer())
+      .then((buf) => new File([buf], filename, { type: mimeType }));
   };
+
   const handleSave = async () => {
     if (croppedAreaPixels) {
-      const croppedImgBlob = await getCroppedImg(
-        image,
-        crop,
-        croppedAreaPixels
-      );
-
+      const croppedImgBlob = await getCroppedImg(image, crop, croppedAreaPixels);
       const fileName = imageFile?.name;
-      
       const croppedImgFile = await blobToFile(croppedImgBlob, fileName);
-      console.log("croppedImgFile", croppedImgFile);
 
-      // Set the file URL for preview (optional)
-      setCroppedImage(croppedImgBlob);
-
-      // Create FormData and append the file correctly
+      setCroppedImage(croppedImgBlob); // Set the cropped image for preview
       const formData = new FormData();
-      formData.append("files", croppedImgFile); // 'files' key used for the backend
+      formData.append("files", croppedImgFile); // Use 'files' key for backend
 
-      console.log("FormData before dispatch:", formData);
-
-      // Dispatch the action with formData
-    //  dispatch(submitEditProfile({ formData}));
       const imageUrl = await dispatch(updateProfilePicture({ formData }));
-      
+
       setIsImageChanged(true);
-     
+      setImageSelected(false);
     }
   };
-  
-  
+
   useEffect(() => {
     const str = user?.name || "";
     let data = [];
@@ -181,7 +163,7 @@ const Edit = () => {
     } else {
       data = [str, ""];
     }
-    //console.log(user, "user1234");
+
     setValue("firstName", data[0]);
     setValue("lastName", data[1]);
     setValue("email", user?.email);
@@ -189,17 +171,18 @@ const Edit = () => {
   }, [user]);
 
   useEffect(() => {
-    if (!user?.email) {  
-      dispatch(getUser()); 
+    if (!user?.email) {
+      dispatch(getUser());
     }
-  }, [dispatch, user?.email]);  
+  }, [dispatch, user?.email]);
+
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <Heading title={"Edit Profile"} backButton={true}>
           Edit Profile
         </Heading>
-        <div className="flex sm:flex-row flex-col shadow-md bg-[#F4F9FF] border items-center  rounded-2xl justify-center py-10 gap-4 px-2 border-[#DFEAF2]">
+        <div className="flex sm:flex-row flex-col shadow-md bg-[#F4F9FF] border items-center rounded-2xl justify-center py-10 gap-4 px-2 border-[#DFEAF2]">
           <div className="relative flex w-[30%] flex-col items-center gap-4">
             <div
               className="relative"
@@ -224,13 +207,11 @@ const Edit = () => {
                     borderRadius: "50%",
                     overflow: "hidden",
                     position: "relative",
-
                   }}
                 >
                   <Cropper
                     cropShape="round"
                     image={image}
-                    // objectFit="cover"
                     crop={crop}
                     zoom={zoom}
                     aspect={1}
@@ -242,7 +223,7 @@ const Edit = () => {
               )}
               <label
                 htmlFor="image-upload"
-                className=" absolute bottom-0  right-0 sm:bottom-2 sm:right-2 bg-black px-2 py-2 rounded-full"
+                className=" absolute bottom-0 right-0 sm:bottom-2 sm:right-2 bg-black px-2 py-2 rounded-full"
               >
                 <img
                   src="/icons/profile/profile-camera.svg"
@@ -256,32 +237,18 @@ const Edit = () => {
               {isUpdatingImage ? (
                 <ImSpinner2 size={20} className="animate-spin" />
               ) : (
-                // <LinkButton
-                // disabled={!(setIsImageSaved)}
-                //   onClick={handleSave}
-                //   className="save-button  cursor-pointer text-sm font-semibold text-[#004BBC] underline"
-                // >
-                //   Save Photo
-                // </LinkButton>
-
-                <Button
-                  //disabled={t}
-                  type="button"
-                  disabled={!imageSelected}
-                  onClick={handleSave}
-                  className="save-button cursor-pointer text-sm font-semibold text-[#004BBC] underline"
-                >
-                  Save Photo
-                </Button>
+                <>
+                  {imageSelected && (
+                    <Button
+                      type="button"
+                      onClick={handleSave}
+                      className="save-button cursor-pointer text-sm font-semibold text-[#004BBC] underline"
+                    >
+                      Save Photo
+                    </Button>
+                  )}
+                </>
               )}
-
-
-              {/* <label
-                onClick={handleSave}
-                className="save-button ml-4 cursor-pointer"
-              >
-                Preview
-              </label> */}
 
               <input
                 id="image-upload"
@@ -293,7 +260,7 @@ const Edit = () => {
             </div>
           </div>
 
-          <div className="flex sm:w-[60%]   flex-col gap-4 ">
+          <div className="flex sm:w-[60%] flex-col gap-4 ">
             <p className="text-[#171717] font-medium text-lg">Basic Details</p>
             <div className="sm:w-[100%] pt-4 flex gap-4 flex-col">
               <div className="flex flex-row gap-4">
@@ -384,7 +351,6 @@ const Edit = () => {
           >
             Save
           </Button>
-
         </div>
       </form>
     </>

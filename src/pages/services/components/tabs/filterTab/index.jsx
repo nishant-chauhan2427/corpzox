@@ -72,9 +72,9 @@ function Filtertab() {
   return (
     <div className="relative flex items-center gap-2">
       {/* Left Arrow Button */}
-      <button onClick={scrollLeft} className="z-10">
+     {subCategory?.list?.length > 0 && <button onClick={scrollLeft} className="z-10">
         <FaArrowLeft size={20} />
-      </button>
+      </button>}
 
       <div
         className="flex items-center gap-4 overflow-x-auto scrollbar-hide whitespace-nowrap border-b"
@@ -97,9 +97,9 @@ function Filtertab() {
       </div>
 
       {/* Right Arrow Button */}
-      <button onClick={scrollRight} className="z-10">
+     {subCategory?.list?.length > 0 && <button onClick={scrollRight} className="z-10">
         <FaArrowRight size={20} />
-      </button>
+      </button>}
     </div>
   );
 }
