@@ -4,23 +4,28 @@ import { ServicesCard } from "../services/listing/components/servicesCard";
 import { servicesListing } from "../../database";
 import { Button } from "../../components/buttons";
 import { useDispatch, useSelector } from "react-redux";
-import { getWishList, removeServiceWishlistData1 } from "../../redux/actions/wishlist-actions";
+import { getMoreWishList, getWishList, removeServiceWishlistData1 } from "../../redux/actions/wishlist-actions";
 import { ServiceCardShimmer } from "../../components/loader/ServiceCardShimmer";
 import { removeServiceWishlist} from "../../redux/actions/servicesListing-action";
 import { NoData } from "../../components/errors/noData";
 import { ImSpinner2 } from "react-icons/im";
 import { WishlistCardShimmer } from "../../components/loader/WishlistCardShimmer";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 //removeServiceWishlist
 const Wishlist = () => {
   const dispatch = useDispatch();
-  const {wishList,totalCount } = useSelector(
+  const {wishList,totalCount,page } = useSelector(
     (state) => state.wishlist
   );
   const { isLoading } = useSelector(
     (state) => state.wishlist
   );
-  console.log( wishList?.length,"totalCount12334");
+  console.log("wishList,",wishList);
+  
+  console.log("wishList.length", wishList?.length);
+  console.log("totalCount",totalCount);
+  
   let onClickWishList = (service) => {
  //   console.log(service,"service123");
     //setIsSubmit(true);
@@ -35,29 +40,38 @@ const Wishlist = () => {
 
 
  useEffect(() => {
-  dispatch(getWishList());
-}, [dispatch]);
+  dispatch(getWishList({page:1}));
+}, []);
   return (
     <> 
-    {isLoading ? <WishlistCardShimmer/>: <div>
+    {isLoading ? <WishlistCardShimmer/>: 
+    <div>
         <Heading title={"Wishlist"} backButton={true}>
-          Wishlist {wishList?.length ? `(${wishList.length})` : ""}
+          Wishlist {`(${totalCount})` || ""}
         </Heading>
         {/* Wishlist ({wishList?.length}) */}
         {wishList && wishList?.length === 0 ? (<NoData/>) : (<ServicesCard data={wishList} onClick={(service) => onClickWishList(service)} />)}
-        {/* {wishList && wishList.length > 5 && (
-          <div className="mt-10 flex justify-center">
-            {wishList.length == totalCount ? (
-              <></>
-            ) : (
-              <Button primary={true}>Load More </Button>
-            )}
-          </div>
-        )} */}
-        {/* <div className="flex items-center justify-center pt-20 ">
-          <Button primary={true}>Load More</Button>
-        </div> */}
-        {/* checking service */}
+
+
+
+        <InfiniteScroll
+              dataLength={wishList?.length || 0} // Use the currently loaded data length
+              next={() => dispatch(getMoreWishList({ page: page+1 }))} // Load more data
+              // hasMore={wishList?.length < totalCount} // true if more data exists, false otherwise
+              hasMore={false} // true if more data exists, false otherwise
+              loader={
+                <div className="flex justify-center items-center p-1">
+                  <ImSpinner2 className="animate-spin text-black !text-xl" />
+                </div>
+              }
+              endMessage={
+                (totalCount && totalCount>0 && wishList?.length>5) && <p style={{ textAlign: 'center' }}>
+                  <b>Yay! You have seen it all</b>
+                </p>
+              }
+      ></InfiniteScroll>
+       
+
       </div>}
      
     </>

@@ -83,22 +83,22 @@ export const addressSchema = Yup.object().shape({
 // Financial Details Schema
 export const financialSchema = Yup.object().shape({
   financial: Yup.object().shape({
-      capital: Yup.number()
+      capital: Yup.number("Invalid value")
       
         .required('Capital is required')
         .positive('Capital must be a positive number')
-        .test('len', 'Must be between 6 to 10 characters', val => val.toString().length >= 6 &&  val.toString().length <= 10)
-        .typeError('Capital must be a number'),
+        .test('len', 'Must be between 6 to 10 digits', val => val.toString().length >= 6 &&  val.toString().length <= 10)
+        .typeError('Invalid value'),
       revenue: Yup.number()
         .required('Revenue is required')
         .positive('Revenue must be a positive number')
-        .test('len', 'Must be between 6 to 10 characters', val => val.toString().length >= 6 &&  val.toString().length <= 10)
-        .typeError('Revenue must be a number'),
+        .test('len', 'Must be between 6 to 10 digits', val => val.toString().length >= 6 &&  val.toString().length <= 10)
+        .typeError('Invalid value'),
       profit: Yup.number()
         .required('Profit is required')
         .positive('Profit must be a positive number')
-        .test('len', 'Must be between 6 to 10 characters', val => val.toString().length >= 6 &&  val.toString().length <= 10)
-        .typeError('Profit must be a number'),
+        .test('len', 'Must be between 6 to 10 digits', val => val.toString().length >= 6 &&  val.toString().length <= 10)
+        .typeError('Invalid value'),
   }),
 });
 

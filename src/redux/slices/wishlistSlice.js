@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 // import { getWishList } from "../actions/wishlist-actions";
-import { getWishList, removeServiceWishlistData1 } from "../actions/wishlist-actions";
+import { getMoreWishList, getWishList, removeServiceWishlistData1 } from "../actions/wishlist-actions";
 import toast from "react-hot-toast";
 
 
@@ -13,6 +13,7 @@ const wishlistSlice = createSlice({
     childLoading: {},
     error: null,
     wishList: null,
+    page:1,
     isDeactivate: false,
     isLoading: false,
     totalCount: null,
@@ -34,12 +35,13 @@ const wishlistSlice = createSlice({
         //console.log("pending wishlist");
       })
       .addCase(getWishList.fulfilled, (state, action) => {
-        //console.log("wishList wishlist123", action.payload);
+        console.log("getWishList.fulfilled", action.payload);
        // toast.success(action.payload.message || "Wishlist fetched wishListfully");
         state.loading = false;
         state.isLoading = false;
-        state.totalCount = action.payload.length
-        state.wishList = action.payload;
+        state.totalCount = action.payload?.total
+        state.wishList = action.payload?.data;
+        state.page = 1;
         state.error = null;
       })
       .addCase(getWishList.rejected, (state, action) => {
@@ -50,6 +52,27 @@ const wishlistSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload;
         state.wishList = null;
+      })
+      .addCase(getMoreWishList.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(getMoreWishList.fulfilled, (state, action) => {
+        state.totalCount = action.payload?.total
+        console.log("getMoreWishList.fulfilled",action.payload);
+        
+        // state.wishList = action.payload;
+        if (state.wishList) {
+          if (action.payload?.data?.length > 0) {
+            state.wishList = [...state.wishList, ...action.payload?.data];
+            state.page = state.page + 1;
+          }
+        }
+        state.error = null;
+      })
+      .addCase(getMoreWishList.rejected, (state, action) => {
+      //  console.log("rejected");
+        const errorMessage = action.payload?.message || "Something went wrong";
+        toast.error(errorMessage);
       })
       .addCase(removeServiceWishlistData1.pending, (state, action) => {
         state.heartloading = true;
@@ -66,6 +89,7 @@ const wishlistSlice = createSlice({
             return service
         });
         state.wishList = newList
+        state.totalCount = newList?.length;
         state.error = action.payload?.message;
       })
       .addCase(removeServiceWishlistData1.rejected, (state, action) => {
