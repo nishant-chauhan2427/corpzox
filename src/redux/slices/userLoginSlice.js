@@ -142,6 +142,7 @@ const userSlice = createSlice({
       .addCase(ratingReview.fulfilled, (state, action) => {
         state.fetching = false;
         console.log(action.payload, "payload data");
+        
       })
       .addCase(ratingReview.rejected, (state, action) => {
         state.fetching = false;

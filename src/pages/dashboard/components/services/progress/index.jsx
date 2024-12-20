@@ -210,7 +210,7 @@ export const ServicesProgress = ({ data }) => {
                       </div>
                     </div>
                     <div className="flex gap-3">
-                      {data?.ratingreviewsSize === 0 && (
+                      {data?.ratingreviewsSize === 1 && (
                         <Button
                           onClick={() =>
                             onConfirmationModalOpen(
