@@ -28,6 +28,8 @@ const ServiceprogressViewAll = ({ data }) => {
   );
   const dispatch = useDispatch();
   console.log(dataUpdate.data, "dataUpdate32");
+  console.log("totalCount,",totalCount);
+  console.log("data length",dataUpdate?.data?.length);
 
   const handleServiceDropdown = (index) => {
     setDropdownStates((prevState) =>
@@ -38,10 +40,9 @@ const ServiceprogressViewAll = ({ data }) => {
   const onConfirmationModalClose = () => {
     setConfirmationModal(!confirmationModal);
   };
-  console.log(dataUpdate?.data, "DebugdataUpdate1");
+
   useEffect(() => {
-    //console.log(dataUpdate?.length, "jhbj");
-    if (dataUpdate?.data?.length == 0 ) {
+    if (dataUpdate?.data?.length == 0 || dataUpdate?.data?.length == undefined) {
       dispatch(updateServiveProgress({ page: 1 }));
     }
   }, []);
@@ -85,7 +86,8 @@ const ServiceprogressViewAll = ({ data }) => {
       status: "pending",
     },
   ];
-  
+  // console.log(totalCount,"12DATTE1");
+  // console.log( morePage,"12DATE@");
   return (
     <>
       <div className="flex flex-col md:flex-row justify-between gap-4">
@@ -242,7 +244,7 @@ const ServiceprogressViewAll = ({ data }) => {
               />
             </div>
           ))}
-{console.log(morePage,"page1")}
+
           <InfiniteScroll
             dataLength={dataUpdate?.data?.length || 0}
             next={() => dispatch(getMoreServiceUpdate({page: morePage+1  }))}
@@ -260,15 +262,14 @@ const ServiceprogressViewAll = ({ data }) => {
                 </p>
               )
             }
-          ></InfiniteScroll>
+          >
+            
+          </InfiniteScroll>
         </div>
       ) : (
         <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
           <img src="/images/service-prgress.svg" alt="" />
           <p className="font-bold text-xl text-[#000000]">No Services</p>
-          <p className="font-normal text-[#797979]">
-            Create a Service
-          </p>
         </div>
       )}
     </>

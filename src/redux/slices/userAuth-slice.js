@@ -44,6 +44,7 @@ const initialState = {
   isUpdatingPassword: false,
   isUpdatePasswordSuccessfull: false,
   updatePasswordError: "",
+  email : ""
 };
 
 const authSlice = createSlice({
@@ -86,6 +87,9 @@ const authSlice = createSlice({
     updateProfile(state,action){
       state.profile=action.payload
     },
+    updateEmail : (state, action)=>{
+      state.email = action.payload
+    }
     
   },
   extraReducers: (builder) => {
@@ -215,6 +219,7 @@ export const {
   resetLogoutSuccess,
   resetIsUpdatePasswordSuccessfull,
   removeUpdatePasswordError,
-  updateProfile
+  updateProfile,
+  updateEmail
 } = authSlice.actions;
 export default authSlice.reducer;

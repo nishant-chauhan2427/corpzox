@@ -97,8 +97,14 @@ const Edit = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
 
-    console.log(file, "new file")
+    console.log ("new file1")
     if (file) {
+      const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
+    if (!validImageTypes.includes(file.type)) {
+      toast.error("Only image files (JPG, JPEG, PNG, GIF) are allowed.");
+      return;
+    }
+
       if (file.size > 2 * 1024 * 1024) {
         toast.error("File size should not exceed 2MB");
         return;
@@ -106,6 +112,7 @@ const Edit = () => {
 
       const reader = new FileReader();
       reader.onloadend = () => {
+        { console.log ("new file2")}
         setImage(reader.result);
         setImageFile(file);
         setImageSelected(true); 
@@ -137,7 +144,7 @@ const Edit = () => {
         crop,
         croppedAreaPixels
       );
-      console.log("image", imageFile);
+
       const fileName = imageFile?.name;
       
       const croppedImgFile = await blobToFile(croppedImgBlob, fileName);
@@ -153,12 +160,14 @@ const Edit = () => {
       console.log("FormData before dispatch:", formData);
 
       // Dispatch the action with formData
+    //  dispatch(submitEditProfile({ formData}));
       const imageUrl = await dispatch(updateProfilePicture({ formData }));
       
       setIsImageChanged(true);
      
     }
   };
+  
   
   useEffect(() => {
     const str = user?.name || "";

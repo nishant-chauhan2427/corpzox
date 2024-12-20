@@ -9,7 +9,9 @@ import BusinessListing from "../business/listing";
 //import{BusinessDetail} from "../business/listing/index";
 const Profile = () => {
   const dispatch = useDispatch();
-  const { user, loading } = useSelector((state) => state.user);
+  const { user, loading, business } = useSelector((state) => state.user);
+
+  
 
   useEffect(() => {
     dispatch(getUser());
@@ -18,9 +20,7 @@ const Profile = () => {
     <>
       <div className="flex flex-col gap-1">
         <ProfileCard userData={user} loading={loading} />
-        {/* <Business data={businessListing} /> */}
-        <BusinessListing />
-
+        <Business data={business?.list} total={business?.totalPage} />
         <ServicesProgress data={servicesProgress} />
       </div>
     </>
