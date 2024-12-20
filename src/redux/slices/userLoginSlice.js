@@ -7,6 +7,7 @@ import {
   getUserServices,
   updateServiveProgress,
 } from "../actions/dashboard-action";
+import { ratingReview } from "../actions/servicesDetails-actions";
 const initialState = {
   loading: false,
   user: null,
@@ -132,6 +133,17 @@ const userSlice = createSlice({
         //state.manager=action.payload?.agent_data?.[0]?.manager_data?.[0];
       })
       .addCase(updateServiveProgress.rejected, (state, action) => {
+        state.fetching = false;
+        state.error = action.payload;
+      })
+      .addCase(ratingReview.pending, (state) => {
+
+      })
+      .addCase(ratingReview.fulfilled, (state, action) => {
+        state.fetching = false;
+        console.log(action.payload, "payload data");
+      })
+      .addCase(ratingReview.rejected, (state, action) => {
         state.fetching = false;
         state.error = action.payload;
       })

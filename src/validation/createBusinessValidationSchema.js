@@ -20,10 +20,16 @@ export const registrationSchema = Yup.object().shape({
       .required("Role of the Company is required.")
       // .oneOf([1, 0], "Invalid Role of the Company value.")
       ,
-    yearOfStablish: Yup.date()
+      yearOfStablish: Yup.date()
+      .transform((value, originalValue) => {
+        // Convert empty string to null to avoid "Invalid Date" errors
+        return originalValue === "" ? null : value;
+      })
+      .nullable() // Allow null values after transformation
       .required("Year of Establishment is required.")
       .min(new Date(1900, 0, 1), "Year cannot be before 1900.")
       .max(new Date(), "Year cannot be in the future."),
+    
     headQuarterLocation: Yup.string()
       .required("Headquarter Location is required.")
       .min(3, "Location must be at least 3 characters.")

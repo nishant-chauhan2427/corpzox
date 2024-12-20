@@ -38,14 +38,13 @@ const settingsSlice = createSlice({
       })
       .addCase(changePassword.fulfilled, (state, action) => {
         state.isPasswordChanging = false;
-        console.log(action.payload, "password changed successfully");
         if(action.payload.code === 404){
           toast.error(action.payload?.message || "Something went wrong");  
           state.isPasswordChanging = false;
           state.changePasswordError = true
         }else{
           state.changePasswordError = false
-          toast.success(action.payload.message);
+          // toast.success(action.payload.message);
         }
        
         state.success = action.payload;

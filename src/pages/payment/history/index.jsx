@@ -13,7 +13,7 @@ import {
   getPaymentTransaction,
 } from "../../../redux/actions/payment-history-action";
 import { talkToAdvisor } from "../../../redux/actions/servicesDetails-actions";
-import {  clearUrl } from "../../../redux/slices/paymentHistorySlice";
+import { clearUrl } from "../../../redux/slices/paymentHistorySlice";
 import { formatReadableDate } from "../../../utils";
 
 const History = () => {
@@ -26,7 +26,7 @@ const History = () => {
     isPaymentHistoryLoading,
     downloadTransactionUrl,
     isTransactionDownloading,
-    totalTransaction, 
+    totalTransaction,
     childLoading
   } = useSelector((state) => state.paymentHistory);
   const { isTalkToAdvisorLoading } = useSelector(
@@ -190,8 +190,8 @@ const History = () => {
       >
         <div className="flex flex-col gap-2 items-center justify-center ">
           <img src="/public/icons/payment/callback.svg" width={200} alt="" />
-          <p className="text-3xl font-bold text-[#0A1C40]">
-            Request Call back?
+          <p className="text-3xl font-bold text-[#0A1C40]">  
+            Call Back Requested. 
           </p>
           <p className="font-medium text-[16px] text-[#595959]">
             Your Assistant Manager will get in touch with you soon.
@@ -270,19 +270,15 @@ const History = () => {
                 ₹ {transactionDetails?.serviceDetails?.cost}
               </p>
             </div>
-            {transactionDetails?.serviceappliedcouponandoffers && (
+            {transactionDetails?.serviceappliedcouponandoffers && transactionDetails?.totalCouponDiscount > 0 && (
               <div className="flex justify-between">
                 <p className="font-semibold text-base  text-[#0A1C40] ">
                   Discount Amount
                 </p>
                 <p className="font-semibold text-base text-[#0A1C40]">
-                  {/* {transactionDetails?.serviceappliedcouponandoffers &&
-                transactionDetails?.serviceappliedcouponandoffers[0]?.amount +
-                  (transactionDetails?.serviceappliedcouponandoffers[1]
-                    ?.amount || 0)} */}
                   {transactionDetails?.totalCouponDiscount
                     ? transactionDetails?.totalCouponDiscount
-                    : ""}
+                    : 0}
                 </p>
               </div>
             )}
@@ -310,8 +306,8 @@ const History = () => {
             <Button
               primary={true}
               // onClick={() => downloadTransaction(transactionDetails && transactionDetails._id)}
-              isLoading={childLoading[transactionDetails && transactionDetails._id] }
-              onClick={() => downloadTransaction( transactionDetails._id)}
+              isLoading={childLoading[transactionDetails && transactionDetails._id]}
+              onClick={() => downloadTransaction(transactionDetails._id)}
             >
               {" "}
               <img src="/public/icons/payment/download.svg" alt="" />
