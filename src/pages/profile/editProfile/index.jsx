@@ -53,7 +53,7 @@ const getCroppedImg = async (imageSrc, crop, pixelCrop) => {
 const Edit = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.user);
+  const { user,userLoading } = useSelector((state) => state.user);
   const { loading, isUpdatingImage } = useSelector((state) => state.profile);
   
   const { upload } = useSelector((state) => state.profile);
@@ -99,14 +99,14 @@ const Edit = () => {
     const file = e.target.files[0];
 
     if (file) {
-      const validImageTypes = ["image/jpeg", "image/png", "image/gif", "image/jpg"];
+      const validImageTypes = ["image/jpeg", "image/png", "image/jpg"];
       if (!validImageTypes.includes(file.type)) {
-        toast.error("Only image files (JPG, JPEG, PNG, GIF) are allowed.");
+        toast.error("Only image files (JPG, JPEG, PNG) are allowed.");
         return;
       }
 
-      if (file.size > 2 * 1024 * 1024) {
-        toast.error("File size should not exceed 2MB");
+      if (file.size > 3 * 1024 * 1024) {
+        toast.error("File size should not exceed 3MB");
         return;
       }
 

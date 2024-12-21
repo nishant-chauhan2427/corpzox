@@ -6,11 +6,12 @@ import { servicesProgress, businessListing } from "../../database";
 import { getUser, getUserBusiness, updateServiveProgress } from "../../redux/actions/dashboard-action";
 import { useDispatch, useSelector } from "react-redux";
 import BusinessListing from "../business/listing";
+import { BusinessCardShimmer } from "../../components/loader/BusinessCardShimmer";
+import { ServiceProgressShimmer } from "../../components/loader/ServiceProgressShimmer";
 //import{BusinessDetail} from "../business/listing/index";
 const Profile = () => {
   const dispatch = useDispatch();
-  const { user, loading, business } = useSelector((state) => state.user);
-  const { dataUpdate} = useSelector((state) => state.user);
+  const { user, dataUpdate,loading, business ,businessLoading,fetching } = useSelector((state) => state.user);
   const queryParams = new URLSearchParams(location.search);
   const searchValue = queryParams.get("search");
   console.log(business?.list?.length,"Profile Business");
@@ -47,8 +48,18 @@ const Profile = () => {
     <>
       <div className="flex flex-col gap-1">
         <ProfileCard userData={user} loading={loading} />
-        <Business data={business?.list} total={business?.totalPage}  />
-        <ServicesProgress data={servicesProgress} />
+        {businessLoading ? (<BusinessCardShimmer />) : (<Business data={business?.list} total={business?.totalPage} />)}
+
+        {/* <Business data={business?.list} total={business?.totalPage}  />
+        <ServicesProgress data={servicesProgress} /> */}
+        {fetching ? (
+          <ServiceProgressShimmer />
+
+        ) : (
+          <ServicesProgress
+            data={servicesProgress}
+          />
+        )}
       </div>
     </>
   );
