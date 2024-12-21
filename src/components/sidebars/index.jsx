@@ -159,11 +159,12 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
 
         <div className="py-4 flex justify-center items-center gap-6">
           <Link to={"/dashboard"}>
+            
             <img
               width={0}
               height={0}
-              className="block dark:hidden w-36 h-full"
-              src="/corpzo_logo.svg"
+              className="block dark:hidden w-40 h-full"
+              src="/CorpzoxNew.svg"
               alt="corpzo-logo"
             />
             <img

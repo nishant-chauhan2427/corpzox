@@ -20,10 +20,16 @@ export const registrationSchema = Yup.object().shape({
       .required("Role of the Company is required.")
       // .oneOf([1, 0], "Invalid Role of the Company value.")
       ,
-    yearOfStablish: Yup.date()
+      yearOfStablish: Yup.date()
+      .transform((value, originalValue) => {
+        // Convert empty string to null to avoid "Invalid Date" errors
+        return originalValue === "" ? null : value;
+      })
+      .nullable() // Allow null values after transformation
       .required("Year of Establishment is required.")
       .min(new Date(1900, 0, 1), "Year cannot be before 1900.")
       .max(new Date(), "Year cannot be in the future."),
+    
     headQuarterLocation: Yup.string()
       .required("Headquarter Location is required.")
       .min(3, "Location must be at least 3 characters.")
@@ -83,22 +89,22 @@ export const addressSchema = Yup.object().shape({
 // Financial Details Schema
 export const financialSchema = Yup.object().shape({
   financial: Yup.object().shape({
-      capital: Yup.number()
+      capital: Yup.number("Invalid value")
       
         .required('Capital is required')
         .positive('Capital must be a positive number')
-        .test('len', 'Must be between 6 to 10 characters', val => val.toString().length >= 6 &&  val.toString().length <= 10)
-        .typeError('Capital must be a number'),
+        .test('len', 'Must be between 6 to 10 digits', val => val.toString().length >= 6 &&  val.toString().length <= 10)
+        .typeError('Invalid value'),
       revenue: Yup.number()
         .required('Revenue is required')
         .positive('Revenue must be a positive number')
-        .test('len', 'Must be between 6 to 10 characters', val => val.toString().length >= 6 &&  val.toString().length <= 10)
-        .typeError('Revenue must be a number'),
+        .test('len', 'Must be between 6 to 10 digits', val => val.toString().length >= 6 &&  val.toString().length <= 10)
+        .typeError('Invalid value'),
       profit: Yup.number()
         .required('Profit is required')
         .positive('Profit must be a positive number')
-        .test('len', 'Must be between 6 to 10 characters', val => val.toString().length >= 6 &&  val.toString().length <= 10)
-        .typeError('Profit must be a number'),
+        .test('len', 'Must be between 6 to 10 digits', val => val.toString().length >= 6 &&  val.toString().length <= 10)
+        .typeError('Invalid value'),
   }),
 });
 

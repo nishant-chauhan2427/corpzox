@@ -303,7 +303,7 @@
 //   );
 // };
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Controller, useForm } from "react-hook-form";
 import { Input } from "../../../../../components/inputs";
@@ -320,6 +320,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Checkbox } from "../../../../../components/inputs/checkbox";
 
 export const AddressDetails = ({ isEdit }) => {
+  const [checkedCheckbox, setCheckedCheckbox] = useState(false);
+
+  const handleCheckbox = () => {
+    setCheckedCheckbox((prev) => !prev);
+  };
+
   const { business, businessId, loading } = useSelector(
     (state) => state.business
   );
@@ -416,21 +422,20 @@ export const AddressDetails = ({ isEdit }) => {
       <div className="w-full pt-4 flex flex-col md:flex-row md:justify-between gap-4">
         <div className="w-full">
           <div className="my-4">
-            <p
-              className=" flex invisible items-center gap-2 font-semibold text-sm text-[#4D4D4F]
-            "
-            >
-              {" "}
-              <Checkbox />
-              Same as Communication Address{" "}
-            </p>
-
             <h5 className="font-semibold text-base text-[#4D4D4F] dark:text-gray-200">
               Complete Business Address
             </h5>
             <p className="text-xs">
               Provide the necessary address of your own business.
             </p>
+            <div
+              className=" flex invisible items-center gap-2 font-semibold text-sm text-[#4D4D4F]
+            "
+            >
+              {" "}
+              <Checkbox />
+              Same as Communication Address{" "}
+            </div>
           </div>
           <div className="w-full grid grid-cols-1 gap-4">
             <Controller
@@ -551,6 +556,15 @@ export const AddressDetails = ({ isEdit }) => {
                     field.onChange(e);
                     trigger("address.businessAddressPin");
                   }}
+
+                  onInput={(e) => {
+                    const value = e.target.value;
+                    // Prevent invalid characters and limit input length to 10
+                    e.target.value = value
+                      .replace(/[^0-9]/g, "") // Allow only digits
+                      .slice(0, 6); // Limit to 6 characters
+                    field.onChange(e); // Trigger React Hook Form's onChange
+                  }}
                 />
               )}
             />
@@ -560,20 +574,25 @@ export const AddressDetails = ({ isEdit }) => {
         {/* Communication Address */}
         <div className="w-full">
           <div className="my-4">
-            <p
-              className="flex items-center gap-2 font-semibold text-sm text-[#4D4D4F]
-            "
-            >
-              {" "}
-              <Checkbox />
-              Same as Communication Address{" "}
-            </p>
             <h5 className="font-semibold text-base text-[#4D4D4F] dark:text-gray-200">
               Complete Communication Address
             </h5>
             <p className="text-xs">
               Provide the necessary address of your own business.
             </p>
+            <div
+              onClick={handleCheckbox}
+              className=" flex cursor-pointer items-center gap-2 font-semibold text-sm text-[#4D4D4F]
+            "
+            >
+              {" "}
+              <Checkbox
+                checked={checkedCheckbox}
+                onClick={(e) => e.stopPropagation()}
+                onChange={handleCheckbox}
+              />
+              Same as Communication Address{" "}
+            </div>
           </div>
           <div className="w-full grid grid-cols-1 gap-4">
             <Controller
@@ -708,6 +727,15 @@ export const AddressDetails = ({ isEdit }) => {
                   onChange={(e) => {
                     field.onChange(e);
                     trigger("address.communicationAddressPin");
+                  }}
+
+                  onInput={(e) => {
+                    const value = e.target.value;
+                    // Prevent invalid characters and limit input length to 10
+                    e.target.value = value
+                      .replace(/[^0-9]/g, "") // Allow only digits
+                      .slice(0, 6); // Limit to 6 characters
+                    field.onChange(e); // Trigger React Hook Form's onChange
                   }}
                 />
               )}

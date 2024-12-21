@@ -153,10 +153,10 @@ export const ServicesProgress = ({ data }) => {
                 className={"py-0 "}
                 tourButton={true}
               >
-                Your Services are Completed{" "}
+               Your Service Progress Updates{" "}
                 {dataUpdate?.total ? `(${dataUpdate?.total})` : ""}
               </Heading>
-              {dataUpdate?.data?.length > 9 && (
+              {dataUpdate?.data?.length > 2 && (
                 <Link
                   to={"/services/serviceprogressdetail"}
                   className="font-medium text-sm text-[#797979]"
@@ -188,11 +188,11 @@ export const ServicesProgress = ({ data }) => {
                         >
                           Service: {data?.service[0]?.name}{" "}
                         </NavLink>
-                        <img
+                        {/* <img
                           src="/icons/dashboard/service-error.svg"
                           width={15}
                           alt=""
-                        />
+                        /> */}
                       </div>
                       <div className="flex flex-row gap-2">
                         <h6 className="font-medium text-sm text-[#7C7D80]">
@@ -210,7 +210,7 @@ export const ServicesProgress = ({ data }) => {
                       </div>
                     </div>
                     <div className="flex gap-3">
-                      {data?.ratingreviewsSize === 0 && (
+                      {data?.ratingreviewsSize === 1 && (
                         <Button
                           onClick={() =>
                             onConfirmationModalOpen(

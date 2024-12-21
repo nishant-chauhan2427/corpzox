@@ -16,7 +16,7 @@ export const MainTab = () => {
 
   useEffect(() => {
     const categoryIdFromParams = searchParams.get("categoryId");
-
+    searchParams.delete("subCategoryId");
     if (category?.list?.length) {
       if (categoryIdFromParams) {
         const foundIndex = category.list.findIndex(

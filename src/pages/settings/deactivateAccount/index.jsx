@@ -74,6 +74,7 @@ const DeactivateAccount = () => {
                   placeholder="Enter your password"
                   // errorContent={errors.password?.message}
                   // required={true}
+                  maxLength={20}
                 />
               )}
             />

@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { requestChangeManager, getRatingReviews } from "../actions/dashboard-action";
+import { ratingReview } from "../actions/servicesDetails-actions";
 import toast from "react-hot-toast";
 
 // Slice
@@ -47,9 +48,19 @@ const dashBoardSlice = createSlice({
       .addCase(getRatingReviews.rejected, (state)=>{
         state.isRatingLoading = false
         toast.error(action?.payload)
-      });
+      })
+      // .addCase(ratingReview.pending, (state)=>{
+      //   state.isRatingLoading = true
+      // })
+      // .addCase(ratingReview.fulfilled, (state, action)=>{
+      //   state.isRatingLoading = false
+      // })
+      // .addCase(ratingReview.rejected, (state, action)=>{
+      //   state.isRatingLoading = false
+      //   // toast.error(action?.payload)
+      // });
   },
-});
+})
 
 export const { clearState } = dashBoardSlice.actions;
 export default dashBoardSlice.reducer;

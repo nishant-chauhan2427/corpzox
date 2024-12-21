@@ -58,7 +58,7 @@ const ServicesListing = () => {
   const searchValue = queryParams.get("search");
   const [isSubmit, setIsSubmit] = useState(false);
   const [isServicesFetched, setIsServicesFetched] = useState(false);
-
+  const [isSubCategorySet, setIsSubCategorySet] = useState(false);
   // console.log("list", list);
   // console.log("service totalCount:", totalCount);
   // console.log("service page:", page);
@@ -70,18 +70,81 @@ const ServicesListing = () => {
       dispatch(getUserServicesCatagory({}));
   }, []);
 
+  // useEffect(() => {
+  //   if (categoryId) {
+  //     dispatch(getUserServicesSubCatagory({ categoryId }));
+  //   }
+  // }, [categoryId]);
+  // useEffect(() => {
+  //   if (categoryId) {
+  //     dispatch(getUserServicesSubCatagory({ categoryId }))
+  //     .unwrap()
+  //       .then((response) => {
+  //         if (response) {
+  //          console.log(response, "from suub cat")
+  //           const firstSubCategoryId = response?.data?.[0]?._id; // Adjust key as per your API
+  //           setSearchParams((prev) => {
+  //             const params = new URLSearchParams(prev);
+  //             params.set("subCategoryId", firstSubCategoryId);
+  //             return params;
+  //           });
+  //           setIsSubCategorySet(true);
+  //         }
+  //       })
+  //       .catch(() => {
+  //         setIsSubCategorySet(false);
+  //       });
+  //   }
+  // }, [dispatch, categoryId]);
   useEffect(() => {
     if (categoryId) {
-      dispatch(getUserServicesSubCatagory({ categoryId }));
+      // Clear only subCategoryId when categoryId changes
+      setSearchParams((prev) => {
+        const params = new URLSearchParams(prev);
+        params.delete("subCategoryId"); // Only delete subCategoryId, keep categoryId
+        params.set("categoryId", categoryId); // Always set the new categoryId
+        return params;
+      });
+  
+      dispatch(getUserServicesSubCatagory({ categoryId }))
+        .unwrap()
+        .then((response) => {
+          if (response?.data?.length > 0) {
+            const firstSubCategoryId = response?.data[0]?._id;
+  
+            // Only update subCategoryId if it was not set or changed
+            setSearchParams((prev) => {
+              const params = new URLSearchParams(prev);
+              params.set("subCategoryId", firstSubCategoryId); // Set subCategoryId to the first one
+              return params;
+            });
+  
+            setIsSubCategorySet(true);
+          } else {
+            setSearchParams((prev) => {
+              const params = new URLSearchParams(prev);
+              params.delete("subCategoryId"); // Delete subCategoryId if no sub-categories found
+              return params;
+            });
+  
+            setIsSubCategorySet(false);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching sub-categories:", error);
+          setIsSubCategorySet(false);
+        });
     }
-  }, [categoryId]);
-
+  }, [categoryId, dispatch]);
+  
+  
   useEffect(() => {
     if (
       categoryId &&
       subCategoryId &&
       !subCategory?.subCategoryLoading &&
-      !isServicesFetched
+      !isServicesFetched &&
+      !loading 
     ) {
       const search = searchParams.get("search");
       dispatch(
@@ -199,7 +262,7 @@ const ServicesListing = () => {
               }
               endMessage={
                 totalCount &&
-                totalCount > 0 && (
+                totalCount > 0 && list?.length>6 && (
                   <p className="text-center py-4">
                     <b>Yay! You have seen it all</b>
                   </p>

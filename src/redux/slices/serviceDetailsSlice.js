@@ -43,6 +43,7 @@ const serviceDetailSlice = createSlice({
     appliedOffer: 0,
     priceBeforeCoupanAplled: 0,
     isOfferRemoved: false,
+    callBackMessage : ""
   },
   reducers: {
     clearState: (state) => {
@@ -449,7 +450,13 @@ const serviceDetailSlice = createSlice({
       .addCase(talkToAdvisor.fulfilled, (state, action) => {
         state.isTalkToAdvisorLoading = false;
         console.log(action.payload, "talk to")
-        toast.success(action.payload.message)
+        console.log(action.payload.data, "response test")
+        // toast.success(action.payload.message)
+        if(action.payload?.data?.length === 0 ){
+          state.callBackMessage = "You have already requested, our team will contact you shortly"
+        }else{
+          state.callBackMessage = "Thank you for requesting a call back. Your Assistant Manager will get in touch with you soon."
+        }
 
       })
       .addCase(talkToAdvisor.rejected, (state, action) => {
