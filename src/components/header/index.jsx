@@ -212,6 +212,7 @@ useEffect(() => {
             !pathname.includes("wishlist") &&
             !pathname.includes("offersDetails") &&
             !pathname.includes("dashboard") && 
+            !pathname.includes("payment") && 
  
             (
               <Search
