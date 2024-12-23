@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import Pagination from "../Pagination";
 
 // Table component
-export const Table = ({ data, columns, isExpandable = true, actionMenu, isExpandableData }) => {
+export const Table = ({
+  data,
+  columns,
+  isExpandable = true,
+  actionMenu,
+  isExpandableData,
+}) => {
   const [expandedRow, setExpandedRow] = useState(null);
   console.log(data);
 
@@ -41,7 +47,9 @@ export const Table = ({ data, columns, isExpandable = true, actionMenu, isExpand
                 {Object.entries(row).map(([key, cell], cellIndex) => (
                   <td
                     key={cellIndex}
-                    className={`${(key == "id" || key =="_id") && "hidden"} py-4 px-1 whitespace-nowrap text-xs capitalize`}
+                    className={`${
+                      (key == "id" || key == "_id") && "hidden"
+                    } py-4 px-1 whitespace-nowrap text-xs capitalize`}
                   >
                     {key == "id" || key == "_id" ? (
                       <></>
@@ -81,7 +89,13 @@ export const Table = ({ data, columns, isExpandable = true, actionMenu, isExpand
                     )}
                   </td>
                 ))}
-                {actionMenu && <ActionComponent id={row.id.serviceId} _id={row._id._id} actionMenu={(id, _id) => actionMenu(id, _id)} />}
+                {actionMenu && (
+                  <ActionComponent
+                    id={row.id.serviceId}
+                    _id={row._id._id}
+                    actionMenu={(id, _id) => actionMenu(id, _id)}
+                  />
+                )}
               </tr>
               {/* Expanded Row (only when expandable is true and row is expanded) */}
               {expandedRow === index && isExpandable && (
@@ -94,7 +108,7 @@ export const Table = ({ data, columns, isExpandable = true, actionMenu, isExpand
                         <p>{row.plan + " Plan,"}</p>
                         <p>{row.plan + " Plan"}</p>
                       </div> */}
-                      {isExpandableData &&  <p>{isExpandableData}</p>}
+                      {isExpandableData && <p>{isExpandableData}</p>}
                     </div>
                   </td>
                 </tr>
@@ -103,13 +117,10 @@ export const Table = ({ data, columns, isExpandable = true, actionMenu, isExpand
           ))}
         </tbody>
       </table>
-    
     </div>
   );
 };
 
-
-
-const ActionComponent = ({ id,_id, actionMenu }) => {
+const ActionComponent = ({ id, _id, actionMenu }) => {
   return actionMenu(id, _id);
 };

@@ -218,7 +218,7 @@ export const ServicesProgress = ({ data }) => {
                               data?._id
                             )
                           }
-                          className="font-medium text-[12px] text-[#0068FF] underline underline-offset-4"
+                          className="flex items-center px-4 py-[6px] rounded-full font-medium text-[12px] text-[#0068FF] bg-[#DBE9FE]"
                         >
                           Rate Your Experience
                         </Button>

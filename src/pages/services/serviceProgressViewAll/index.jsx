@@ -18,6 +18,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { ProgressBar } from "../../../components/progressBar";
 import { ImSpinner2 } from "react-icons/im";
 import { servicesProgress } from "../../../database";
+import { div } from "framer-motion/client";
 
 const ServiceprogressViewAll = ({ data }) => {
   const [confirmationModal, setConfirmationModal] = useState(false);
@@ -107,10 +108,13 @@ const ServiceprogressViewAll = ({ data }) => {
         </Heading>
       </div>
 
-      {/* {dataUpdate?.total > 0 ? (
+      {dataUpdate?.total > 0 ? (
         <div className="flex flex-col gap-4">
           {dataUpdate?.data?.map((data, index) => (
-            <div key={index} className="bg-[#F8FAFF] px-4 py-2 rounded-md">
+            <div
+              key={index}
+              className="bg-[#F8FAFF] flex flex-row justify-between items-center px-4 py-2 rounded-md"
+            >
               <div className="flex flex-col sm:flex-row items-start justify-between sm:items-center gap-2">
                 <div className="flex flex-col gap-1">
                   <div className="flex gap-2">
@@ -138,12 +142,14 @@ const ServiceprogressViewAll = ({ data }) => {
 
               <div className="flex gap-2">
                 {data?.ratingreviewsSize === 0 && (
-                  <Button
-                    onClick={() => setConfirmationModal(true)}
-                    className="flex items-center px-4 py-[6px] rounded-full font-medium text-[12px] text-[#0068FF] bg-[#DBE9FE]"
-                  >
-                    Rate Your Experience
-                  </Button>
+                  <div>
+                    <Button
+                      onClick={() => setConfirmationModal(true)}
+                      className="flex items-center px-4 py-[6px] rounded-full font-medium text-[12px] text-[#0068FF] bg-[#DBE9FE]"
+                    >
+                      Rate Your Experience
+                    </Button>
+                  </div>
                 )}
 
                 <ConfirmationModal
@@ -219,9 +225,11 @@ const ServiceprogressViewAll = ({ data }) => {
                   </>
                 </ConfirmationModal>
 
-                <LinkButton to={`/payment/create/${data._id}`} primary={true}>
-                  Avail again
-                </LinkButton>
+                <div>
+                  <LinkButton to={`/payment/create/${data._id}`} primary={true}>
+                    Avail again
+                  </LinkButton>
+                </div>
 
                 <div className="flex items-center justify-center">
                   {data?.status === "Delayed" ? (
@@ -253,7 +261,7 @@ const ServiceprogressViewAll = ({ data }) => {
 
           <InfiniteScroll
             dataLength={dataUpdate?.data?.length || 0}
-            next={() => dispatch(getMoreServiceUpdate({page: morePage+1  }))}
+            next={() => dispatch(getMoreServiceUpdate({ page: morePage + 1 }))}
             hasMore={dataUpdate?.data?.length < totalCount}
             loader={
               <div className="flex justify-center items-center p-1">
@@ -268,27 +276,23 @@ const ServiceprogressViewAll = ({ data }) => {
                 </p>
               )
             }
-          >
-            
-          </InfiniteScroll>
+          ></InfiniteScroll>
         </div>
-      )
-      
-      : (
-        <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
-          <img src="/images/service-prgress.svg" alt="" />
-          <p className="font-bold text-xl text-[#000000]">No Services</p>
-        </div>
-      )} */}
-
-      {dataUpdate?.total > 0 ? (
-        <ServicesProgress data={servicesProgress} />
       ) : (
         <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
           <img src="/images/service-prgress.svg" alt="" />
           <p className="font-bold text-xl text-[#000000]">No Services</p>
         </div>
       )}
+
+      {/* {dataUpdate?.total > 0 ? (
+        <ServicesProgress data={servicesProgress} />
+      ) : (
+        <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
+          <img src="/images/service-prgress.svg" alt="" />
+          <p className="font-bold text-xl text-[#000000]">No Services</p>
+        </div>
+      )} */}
     </>
   );
 };
