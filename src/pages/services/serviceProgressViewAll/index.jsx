@@ -288,14 +288,7 @@ const ServiceprogressViewAll = ({ data }) => {
         </div>
       )}
 
-      {/* {dataUpdate?.total > 0 ? (
-        <ServicesProgress data={servicesProgress} />
-      ) : (
-        <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
-          <img src="/images/service-prgress.svg" alt="" />
-          <p className="font-bold text-xl text-[#000000]">No Services</p>
-        </div>
-      )} */}
+     
     </>
   );
 };
