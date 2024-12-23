@@ -199,6 +199,7 @@ export const ServicesCard = ({
                     <img src="/icons/wishlist/grey-heart.svg" alt="Red Heart" />
                   ) : (
                     <button
+                    data-tooltip-content={ service.wishlistCount === 1 ? "Remove From WishList" : "Add to WishList"} data-tooltip-id="my-tooltip"
                       onClick={() => {
                         onClick(service);
                       }}

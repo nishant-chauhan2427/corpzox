@@ -99,7 +99,6 @@ const History = () => {
     setConfirmationModal(true);
   };
   const handleTalkTouOurAdvisors = (serviceId) => {
-    console.log(serviceId, "clicked");
     const requestData = {
       userId: JSON.parse(localStorage.getItem("userInfo"))?.userId,
       serviceId: serviceId,
@@ -119,7 +118,7 @@ const History = () => {
         <Button primary={false} onClick={() => openViewTransactionDetails(_id)}>
           <img src="/icons/payment/print.svg" alt="" />
         </Button>
-        <Button primary={false} onClick={() => openCallToAdvisor(id)}>
+        <Button isLoading={isTalkToAdvisorLoading} primary={false} onClick={() => handleTalkTouOurAdvisors(id)}>
           <img src="/icons/payment/calling.svg" alt="" />
         </Button>
       </div>

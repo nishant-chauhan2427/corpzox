@@ -28,6 +28,7 @@ import { ConfirmationModal } from "../modal/confirmationModal";
 import { persistor } from "../../redux/store";
 import { clearDocumentList } from "../../redux/slices/documentSlice";
 import { getUser } from "../../redux/actions/dashboard-action";
+import { Tooltip } from "../tooltip";
 
 export const Header = ({ className, collapse, setCollapse }) => {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
@@ -248,8 +249,8 @@ useEffect(() => {
             {/* <FullScreenButton /> */}
             {/* <Notification /> */}
             <Link to={"/wishlist"}>
-              <IconWrapper>
-                <img src="/icons/header/heart.svg" alt="" />
+              <IconWrapper data-tooltip-content={"Wishlist"} data-tooltip-id="my-tooltip">
+                <img  src="/icons/header/heart.svg" alt="" />
               </IconWrapper>
             </Link>
             <div className="flex relative gap-2">

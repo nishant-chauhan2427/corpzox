@@ -130,10 +130,10 @@ const userSlice = createSlice({
         state.fetching = false;
         state.totalCount = action.payload?.total;
         state.error = action.payload.message;
-        // console.log(action.payload,"action.payload22");
+        console.log(action.payload,"action.payload22");
         console.log(action.payload);
         state.dataUpdate = action.payload;
-        state.morePage=1
+        state.morePage = 1
         //state.manager=action.payload?.agent_data?.[0]?.manager_data?.[0];
       })
       .addCase(updateServiveProgress.rejected, (state, action) => {
@@ -143,14 +143,44 @@ const userSlice = createSlice({
       .addCase(ratingReview.pending, (state) => {
 
       })
+      // .addCase(ratingReview.fulfilled, (state, action) => {
+      //   state.fetching = false;
+      //   const applicationId = action.payload.responseData?.data?.applicationId; 
+
+      //   state.dataUpdate = state.dataUpdate.map((item )=>{
+
+      //   })
+      //   console.log(action.payload, "payload data");
+
+      // })
       .addCase(ratingReview.fulfilled, (state, action) => {
         state.fetching = false;
-        console.log(action.payload, "payload data");
-        
-      })
+        const applicationId = action.payload.responseData?.data?.applicationId;
+    
+        // Ensure `dataUpdate` and `data` exist
+        if (state.dataUpdate?.data) {
+            state.dataUpdate.data = state.dataUpdate.data.map((item) => {
+                // Check if applicationId matches the _id of the item
+                if (item._id === applicationId) {
+                    // Update ratingReviewsSize to 1 if it is 0
+                    return {
+                        ...item,
+                        ratingReviewsSize: 1,
+                    };
+                }
+                // Otherwise, return the item unchanged
+                return item;
+            });
+        }
+    
+        console.log(state.dataUpdate?.data, "payload data");
+    })
+    
+
       .addCase(ratingReview.rejected, (state, action) => {
         state.fetching = false;
         state.error = action.payload;
+        console.log(action.dataUpdate.data, "payload data");
       })
 
       .addCase(getMoreServiceUpdate.pending, (state) => {
@@ -163,15 +193,15 @@ const userSlice = createSlice({
         state.totalCount = action.payload?.total;
         state.loadingMore = false;
         // state.totalCount = action.payload?.total;
-        console.log(state.totalCount,"totalCount12345");
+        console.log(state.totalCount, "totalCount12345");
         if (state.dataUpdate) {
           console.log("state", JSON.stringify(state.dataUpdate.data));
-          console.log("data",action.payload?.data);
+          console.log("data", action.payload?.data);
           state.dataUpdate.data = [...state.dataUpdate.data, ...action.payload?.data];
           if (action.payload?.data?.length > 0) {
-              state.morePage = state.morePage + 1;
+            state.morePage = state.morePage + 1;
           }
-      }
+        }
 
         console.log(state.morePage, "getMoreServices5");
         state.error = null;
