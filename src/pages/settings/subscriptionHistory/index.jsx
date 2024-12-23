@@ -4,14 +4,15 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { Table } from "../../../components/table";
 import { Button } from "../../../components/buttons";
 import { useDispatch, useSelector } from "react-redux";
-import { getSubscriptionHistoryCount, getSubscriptions } from "../../../redux/actions/settings-actions";
+import {
+  getSubscriptionHistoryCount,
+  getSubscriptions,
+} from "../../../redux/actions/settings-actions";
 import { ImSpinner2 } from "react-icons/im";
 import { TableShimmer } from "../../../components/loader/TableShimmer";
 import { NoData } from "../../../components/errors/noData";
 import Pagination from "../../../components/Pagination";
 import { formatDate } from "../../../utils";
-
-
 
 const columns = [
   { header: "Subscription", accessor: "subscription" },
@@ -25,45 +26,62 @@ const columns = [
 const SubscriptionHistory = () => {
   const [packageType, setPackageType] = useState("");
   const [packageIndex, setPackageIndex] = useState(0);
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const { activeCount, isActiveLoading, expiredCount, upcomingCount, isExpiredLoading, isUpcommingLoading, subscriptionsData, subscriptionTotal, isSubScriptionLoading } = useSelector((state) => state.settings);
-  console.log(subscriptionsData, "subscriptionsData")
+  const {
+    activeCount,
+    isActiveLoading,
+    expiredCount,
+    upcomingCount,
+    isExpiredLoading,
+    isUpcommingLoading,
+    subscriptionsData,
+    subscriptionTotal,
+    isSubScriptionLoading,
+  } = useSelector((state) => state.settings);
+  console.log(subscriptionsData, "subscriptionsData");
 
   const FormattedSubscriptions = subscriptionsData?.map((subscription) => {
-    const { amount, active, paymentMode, subscriptionExpireyDate, service_data, subscriptionDetails, serviceDetails
-    } = subscription
+    const {
+      amount,
+      active,
+      paymentMode,
+      subscriptionExpireyDate,
+      service_data,
+      subscriptionDetails,
+      serviceDetails,
+    } = subscription;
 
-
-    console.log(subscriptionDetails?.title, "subscriptionDetails")
+    console.log(subscriptionDetails?.title, "subscriptionDetails");
     return {
-      subscription: subscriptionDetails ? subscriptionDetails?.title: "N/A",
+      subscription: subscriptionDetails ? subscriptionDetails?.title : "N/A",
       status: active ? "Active" : "",
       amount: amount,
       paymentMethod: paymentMode,
       renewDate: formatDate(subscriptionExpireyDate),
-      plan: subscriptionDetails?.type ? subscriptionDetails?.type : "N/A"
-    }
-  })
- 
-  useEffect(() => {
-    dispatch(getSubscriptionHistoryCount({ type: "active" }))
-    dispatch(getSubscriptionHistoryCount({ type: "expired" }))
-    dispatch(getSubscriptionHistoryCount({ type: "up-coming" }))
-  }, [])
+      plan: subscriptionDetails?.type ? subscriptionDetails?.type : "N/A",
+    };
+  });
 
+  useEffect(() => {
+    dispatch(getSubscriptionHistoryCount({ type: "active" }));
+    dispatch(getSubscriptionHistoryCount({ type: "expired" }));
+    dispatch(getSubscriptionHistoryCount({ type: "up-coming" }));
+  }, []);
 
   const handleNavigation = (button) => {
     let newIndex;
 
     if (button === "Previous") {
       // Move to previous subscription, wrap around if necessary
-      newIndex = packageIndex > 0 ? packageIndex - 1 : subscriptionPackage.length - 1;
+      newIndex =
+        packageIndex > 0 ? packageIndex - 1 : subscriptionPackage.length - 1;
     } else if (button === "Next") {
       // Move to next subscription, wrap around if necessary
-      newIndex = packageIndex < subscriptionPackage.length - 1 ? packageIndex + 1 : 0;
+      newIndex =
+        packageIndex < subscriptionPackage.length - 1 ? packageIndex + 1 : 0;
     }
 
     // Update packageIndex
@@ -74,15 +92,15 @@ const SubscriptionHistory = () => {
 
     // Determine the type for the API call based on the current label
     const type =
-      currentLabel === "Active Subscription" ? "active" :
-        currentLabel === "Expired Subscription" ? "expired" :
-          "up-coming";
+      currentLabel === "Active Subscription"
+        ? "active"
+        : currentLabel === "Expired Subscription"
+        ? "expired"
+        : "up-coming";
 
     // Dispatch with the correct type
     dispatch(getSubscriptions({ page: 1, type }));
   };
-
-
 
   const subscriptionPackage = [
     {
@@ -90,40 +108,56 @@ const SubscriptionHistory = () => {
       label: "Active Subscription",
       description: "Manage all your active subscriptions efficiently.",
       loading: isActiveLoading,
-      data: FormattedSubscriptions ? FormattedSubscriptions : []
+      data: FormattedSubscriptions ? FormattedSubscriptions : [],
     },
     {
       number: expiredCount ? expiredCount : 0,
       label: "Expired Subscription",
       description: "Manage all your expired subscriptions efficiently.",
       loading: isExpiredLoading,
-      data: FormattedSubscriptions ? FormattedSubscriptions : []
+      data: FormattedSubscriptions ? FormattedSubscriptions : [],
     },
     {
       number: upcomingCount ? upcomingCount : 0,
       label: "Upcoming Renewals",
       description: "Manage all your upcoming renewals efficiently.",
       loading: isUpcommingLoading,
-      data: FormattedSubscriptions ? FormattedSubscriptions : []
+      data: FormattedSubscriptions ? FormattedSubscriptions : [],
     },
   ];
   const currentPackage = subscriptionPackage[packageIndex];
-  
 
   const handleCard = (label, data) => {
-    if(data.number === 0){
-      return
+    if (data.number === 0) {
+      return;
     }
-    setPackageType(label)
-    const index = subscriptionPackage.findIndex(
-      (pkg) => pkg.label === label
-    );
-    console.log(data, "subscriptionPackage")
+    setPackageType(label);
+    const index = subscriptionPackage.findIndex((pkg) => pkg.label === label);
+    console.log(data, "subscriptionPackage");
 
     setPackageIndex(index);
-    setSearchParams({subscriptionType : label == "Active Subscription" ? "active" : label == "Expired Subscription" ? "expired" : "up-coming"})
-    dispatch(dispatch(getSubscriptions({ page: 1, type: label == "Active Subscription" ? "active" : label == "Expired Subscription" ? "expired" : "up-coming" })))
-  }
+    setSearchParams({
+      subscriptionType:
+        label == "Active Subscription"
+          ? "active"
+          : label == "Expired Subscription"
+          ? "expired"
+          : "up-coming",
+    });
+    dispatch(
+      dispatch(
+        getSubscriptions({
+          page: 1,
+          type:
+            label == "Active Subscription"
+              ? "active"
+              : label == "Expired Subscription"
+              ? "expired"
+              : "up-coming",
+        })
+      )
+    );
+  };
 
   // useEffect(()=>{
   //   const subscriptionType = searchParams.get("subscriptionType")
@@ -132,14 +166,13 @@ const SubscriptionHistory = () => {
   // }, [searchParams])
   useEffect(() => {
     const subscriptionType = searchParams.get("subscriptionType");
-    
+
     // Only proceed if subscriptionType is truthy
     if (!subscriptionType) return;
-    
+
     // Dispatch the action with the valid subscriptionType
     dispatch(getSubscriptions({ page: 1, type: subscriptionType }));
   }, [searchParams, dispatch]);
-  
 
   return (
     <div>
@@ -148,10 +181,18 @@ const SubscriptionHistory = () => {
           {currentPackage ? (
             <div className="flex flex-col gap-4">
               <div className="flex items-center gap-2 font-semibold text-xl text-[#0A1C40]">
-                <button onClick={() => navigate("/settings/subscription-history")}>
+                <button
+                  onClick={() => navigate("/settings/subscription-history")}
+                >
                   <GoArrowLeft />
                 </button>
-                <p>{searchParams.get("subscriptionType") == "active" ? "Active Subscription" : searchParams.get("subscriptionType") == "expired" ? "Expired Subscription" : "Up-Coming Subscription"}</p>
+                <p>
+                  {searchParams.get("subscriptionType") == "active"
+                    ? "Active Subscription"
+                    : searchParams.get("subscriptionType") == "expired"
+                    ? "Expired Subscription"
+                    : "Up-Coming Subscription"}
+                </p>
               </div>
               <h4 className="font-semibold text-lg">
                 {currentPackage.description}
@@ -166,9 +207,15 @@ const SubscriptionHistory = () => {
                   <p>
                     <b>{subscriptionTotal}</b> results
                   </p>
-                  <Table columns={columns} data={currentPackage.data} isExpandable={false} isExpandableData={currentPackage?.description}/></>
+                  <Table
+                    columns={columns}
+                    data={currentPackage.data}
+                    isExpandable={false}
+                    isExpandableData={currentPackage?.description}
+                  />
+                </>
               )}
-              <div className="flex justify-between items-center gap-3">
+              <div className="flex justify-end items-center gap-3">
                 {/* <p>
                   <b>{subscriptionTotal}</b> results
                 </p> */}
@@ -185,7 +232,12 @@ const SubscriptionHistory = () => {
                   >
                     Next
                   </Button> */}
-                  {!isSubScriptionLoading && subscriptionTotal > 10 && <Pagination totalItems={subscriptionTotal} itemsPerPage={10} />}
+                  {!isSubScriptionLoading && subscriptionTotal > 10 && (
+                    <Pagination
+                      totalItems={subscriptionTotal}
+                      itemsPerPage={10}
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -223,9 +275,15 @@ const Card = ({ number, label, description, onClick, loading }) => {
   return (
     <div
       onClick={onClick}
-      className={`flex flex-col items-start gap-4 px-5 py-5 border border-[#DFEAF2] hover:bg-[#007AFF] hover:text-white transition-all duration-300 ease-in-out hover:transition-all hover:duration-300 hover:ease-in-out rounded-[20px] ${number > 0 ? "cursor-pointer" : "cursor-default"}`}
+      className={`flex flex-col items-start gap-4 px-5 py-5 border border-[#DFEAF2] hover:bg-[#007AFF] hover:text-white transition-all duration-300 ease-in-out hover:transition-all hover:duration-300 hover:ease-in-out rounded-[20px] ${
+        number > 0 ? "cursor-pointer" : "cursor-default"
+      }`}
     >
-      {loading ? <ImSpinner2 className="animate-spin text-gray hover:text-white !text-xl" /> : <h2 className="font-semibold text-3xl">{number}</h2>}
+      {loading ? (
+        <ImSpinner2 className="animate-spin text-gray hover:text-white !text-xl" />
+      ) : (
+        <h2 className="font-semibold text-3xl">{number}</h2>
+      )}
 
       <div>
         <label className="font-semibold text-base">{label}</label>
