@@ -17,7 +17,10 @@ import { Checkbox } from "../../../components/inputs/checkbox";
 import { ThemeSwitch } from "../../../components/theme/switch";
 import { AuthLayout } from "../../../components/layout/auth";
 import { PhoneNumberInput } from "../../../components/inputs/phoneInput";
-import { registerUser, thirdPartyLogin } from "../../../redux/actions/userAuth-action";
+import {
+  registerUser,
+  thirdPartyLogin,
+} from "../../../redux/actions/userAuth-action";
 import toast from "react-hot-toast";
 import GoogleLogin from "react-google-login";
 import { setRedirectTo } from "../../../redux/slices/appSlice";
@@ -39,7 +42,7 @@ export const Signup = () => {
     isRegistering = false,
     registeringError,
     registerMessage,
-    profile
+    profile,
   } = useSelector((state) => state.auth);
 
   // Corrected handleBlur function
@@ -88,19 +91,18 @@ export const Signup = () => {
         ...data,
 
         firstName: data.full,
-        recaptchaToken: res
+        recaptchaToken: res,
       };
       delete userData.full;
-      setEmailSignUp(data.email)
-      dispatch(updateEmail(data.email))
+      setEmailSignUp(data.email);
+      dispatch(updateEmail(data.email));
       dispatch(registerUser(userData));
       // dispatch(registerUser(data));
 
-
-      dispatch(setRedirectTo("verify"))
+      dispatch(setRedirectTo("verify"));
       //navigate("/verify", { state: { emailSign: data.email } })
       //console.log(data, "user data");
-    })
+    });
   };
 
   useEffect(() => {
@@ -109,7 +111,7 @@ export const Signup = () => {
       if (registeringError) {
         toast.error(registeringError);
       } else {
-       // reset();
+        // reset();
         if (profile?.source == "GOOGLE") {
           navigate("/dashboard");
         } else {
@@ -118,7 +120,6 @@ export const Signup = () => {
       }
     }
   }, [isRegistering, profile]);
-
 
   return (
     <>
@@ -163,7 +164,7 @@ export const Signup = () => {
                       placeholder={"Phone No."}
                       touched={true}
                       errorContent={errors?.phone?.message}
-                    //onBlur={() => handleBlur("phone")} 
+                      //onBlur={() => handleBlur("phone")}
                     />
                   )}
                 />
@@ -209,8 +210,6 @@ export const Signup = () => {
                   size="invisible"
                   sitekey={RECAPTCHA_SITE_KEY}
                 />
-
-
               </div>
 
               <div className="flex flex-col gap-4 sm:pt-4">
@@ -241,7 +240,6 @@ export const Signup = () => {
                       cookiePolicy={"single_host_origin"}
                       scope="openid profile email"
                       render={(renderProps) => (
-
                         <button
                           onClick={renderProps.onClick}
                           disabled={renderProps.disabled}

@@ -153,7 +153,7 @@ export const ServicesProgress = ({ data }) => {
                 className={"py-0 "}
                 tourButton={true}
               >
-               Your Service Progress Updates{" "}
+                Your Service Progress Updates{" "}
                 {dataUpdate?.total ? `(${dataUpdate?.total})` : ""}
               </Heading>
               {dataUpdate?.data?.length > 2 && (
@@ -218,7 +218,7 @@ export const ServicesProgress = ({ data }) => {
                               data?._id
                             )
                           }
-                          className="font-medium text-[12px] text-[#0068FF] underline underline-offset-4"
+                          className="flex items-center px-4 py-[6px] rounded-full font-medium text-[12px] text-[#0068FF] bg-[#DBE9FE]"
                         >
                           Rate Your Experience
                         </Button>
@@ -254,9 +254,8 @@ export const ServicesProgress = ({ data }) => {
                         )}
                       </div>
                       <button
-                        className={`${
-                          dropdownStates === true && "rotate-180 "
-                        } hidden lg:block `}
+                        className={`${dropdownStates === true && "rotate-180 "
+                          } hidden lg:block `}
                         onClick={() => handleServiceDropdown(index)}
                       >
                         <GoTriangleDown size={15} />
@@ -264,7 +263,7 @@ export const ServicesProgress = ({ data }) => {
                     </div>
                   </div>
                   <Dropdown
-                    isOpen={dropdownStates[index]}
+                    isOpen={dropdownStates?.[index]}
                     servicesProgessSteps={servicesProgessSteps}
                   />
                 </div>
@@ -272,14 +271,26 @@ export const ServicesProgress = ({ data }) => {
             })}
           </>
         ) : (
-          <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
-            <img src="/images/service-prgress.svg" alt="" />
-            <p className="font-bold text-xl text-[#000000]">No Services</p>
-            <p className="font-normal text-[#797979]">
+          <div>
+            <Heading
+
+              className={"py-0 "}
+              tourButton={true}
+            >
+              Your Service Progress Updates
+
+            </Heading>
+            <div className="flex justify-center gap-2 items-center flex-col h-[40vh]">
+
+              <img src="/images/service-prgress.svg" alt="" />
+              <p className="font-bold text-xl text-[#000000]">No Services</p>
+              {/* <p className="font-normal text-[#797979]">
               Create a Business to add your Service
-            </p>
+            </p> */}
+            </div>
           </div>
         )}
+
       </div>
       {/* Rating and Review Modal */}
       <ConfirmationModal
