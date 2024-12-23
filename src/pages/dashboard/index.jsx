@@ -30,6 +30,9 @@ import { Business } from "./components/business";
 import { recommendedServiceListing } from "../../redux/actions/servicesListing-action";
 import { RecommendedServiceCardShimmer } from "../../components/loader/RecommendedServiceCardShimmer";
 import { Heading } from "../../components/heading";
+import { ServiceProgressShimmer } from "../../components/loader/ServiceProgressShimmer";
+import { DashboardProfileCardShimmer } from "../../components/loader/DashboardProfileCardShimmer";
+import { BusinessCardShimmer } from "../../components/loader/BusinessCardShimmer";
 
 const Dashboard = () => {
   const [accountShowButton, setAccountShowButton] = useState(false);
@@ -40,7 +43,7 @@ const Dashboard = () => {
   );
   const dispatch = useDispatch();
   const location = useLocation();
-  const {  businessId } = useSelector((state) => state.business);
+  const { businessId } = useSelector((state) => state.business);
   const queryParams = new URLSearchParams(location.search);
   const searchValue = queryParams.get("search");
   const url = window.location.href
@@ -55,6 +58,8 @@ const Dashboard = () => {
     serviceLoading,
     servicesError,
     dataUpdate,
+    loading,
+    fetching
   } = useSelector((state) => state.user);
 
   const { recommendedServiceList, isRecommendedServiceLoading } = useSelector(
@@ -70,9 +75,9 @@ const Dashboard = () => {
     }
   );
   useEffect(() => {
-      dispatch(updateServiveProgress({ page: 1 }));
+    dispatch(updateServiveProgress({ page: 1 }));
   }, [url, dispatch]);
-  
+
   useEffect(() => {
     const storedUserInfo = localStorage.getItem("userInfo");
 
@@ -96,12 +101,14 @@ const Dashboard = () => {
       <section className="py-4 flex flex-col gap-4 ">
         <div className="py-2 flex flex-col md:flex-row justify-between gap-4">
           <div className="flex flex-col sm:flex-row gap-4 w-full">
-            <Profile user={user} />
+            {loading ? (<DashboardProfileCardShimmer />) : (<Profile user={user} />)}
+            {/* <Profile user={user} /> */}
             {/* <AccountManager manager={manager} /> */}
           </div>
           {/* <Advertisement /> */}
         </div>
-        <Business data={business?.list} total={business?.totalPage} />
+        {businessLoading ? (<BusinessCardShimmer />) : (<Business data={business?.list} total={business?.totalPage} />)}
+
         {isRecommendedServiceLoading ? (
           <div className="flex flex-row gap-2">
             {Array.from({ length: 2 }, (_, index) => (
@@ -113,8 +120,16 @@ const Dashboard = () => {
             data={formattedRecommendedServices}
             total={formattedRecommendedServices?.length}
           />
-        )}  
-        <ServicesProgress data={servicesProgress} />
+        )}
+
+        {fetching ? (
+          <ServiceProgressShimmer />
+
+        ) : (
+          <ServicesProgress
+            data={servicesProgress}
+          />
+        )}
       </section>
     </>
   );

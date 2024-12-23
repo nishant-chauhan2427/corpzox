@@ -14,7 +14,6 @@ import { profileValidationSchema } from "./editProfileValidationSchema";
 import Cropper from "react-easy-crop";
 import { ImSpinner11, ImSpinner2 } from "react-icons/im";
 import toast from "react-hot-toast";
-import { LinkButton } from "../../../components/link";
 import { getUser } from "../../../redux/actions/dashboard-action";
 
 // Function to get the cropped image
@@ -54,13 +53,11 @@ const getCroppedImg = async (imageSrc, crop, pixelCrop) => {
 const Edit = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.user);
-  const { loading, isloading, isUpdatingImage } = useSelector(
-    (state) => state.profile
-  );
+  const { user,userLoading } = useSelector((state) => state.user);
+  const { loading, isUpdatingImage } = useSelector((state) => state.profile);
+  
   const { upload } = useSelector((state) => state.profile);
 
-  
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [image, setImage] = useState(
@@ -98,19 +95,18 @@ const Edit = () => {
     setIsImageChanged(false);
   };
 
-  
   const handleImageChange = (e) => {
     const file = e.target.files[0];
 
     if (file) {
-      const validImageTypes = ["image/jpeg", "image/png", "image/gif", "image/jpg"];
+      const validImageTypes = ["image/jpeg", "image/png", "image/jpg"];
       if (!validImageTypes.includes(file.type)) {
-        toast.error("Only image files (JPG, JPEG, PNG, GIF) are allowed.");
+        toast.error("Only image files (JPG, JPEG, PNG) are allowed.");
         return;
       }
 
-      if (file.size > 2 * 1024 * 1024) {
-        toast.error("File size should not exceed 2MB");
+      if (file.size > 3 * 1024 * 1024) {
+        toast.error("File size should not exceed 3MB");
         return;
       }
 
@@ -193,13 +189,14 @@ const Edit = () => {
                 height: "180px",
               }}
             >
+              {/* Only render Cropper if image is selected */}
               {croppedImage ? (
                 <img
                   src={croppedImage}
                   alt="Cropped"
                   className="w-full h-full object-cover rounded-full"
                 />
-              ) : (
+              ) : imageSelected ? (
                 <div
                   style={{
                     width: "180px",
@@ -220,10 +217,21 @@ const Edit = () => {
                     onZoomChange={setZoom}
                   />
                 </div>
+              ) : (
+                <img
+                  src={
+                    user?.profile_picture_url
+                      ? user?.profile_picture_url
+                      : "/images/profile/profile.svg"
+                  }
+                  className="rounded-full w-[180px] h-[180px] sm:w-[170px] sm:h-[170px] object-cover"
+                  alt=""
+                />
               )}
+
               <label
                 htmlFor="image-upload"
-                className=" absolute bottom-0 right-0 sm:bottom-2 sm:right-2 bg-black px-2 py-2 rounded-full"
+                className="absolute bottom-0 right-0 sm:bottom-2 sm:right-2 bg-black px-2 py-2 rounded-full"
               >
                 <img
                   src="/icons/profile/profile-camera.svg"
@@ -260,7 +268,7 @@ const Edit = () => {
             </div>
           </div>
 
-          <div className="flex sm:w-[60%] flex-col gap-4 ">
+          <div className="flex sm:w-[60%] flex-col gap-4">
             <p className="text-[#171717] font-medium text-lg">Basic Details</p>
             <div className="sm:w-[100%] pt-4 flex gap-4 flex-col">
               <div className="flex flex-row gap-4">

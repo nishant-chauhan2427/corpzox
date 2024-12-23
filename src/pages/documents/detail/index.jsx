@@ -1,81 +1,64 @@
 import React, { useEffect } from "react";
 import { Heading } from "../../../components/heading";
-import { Search } from "../../../components/search";
 import { useDispatch, useSelector } from "react-redux";
 import { FolderListShimmer } from "../../../components/loader/FolderDataShimmer";
 import { NoData } from "../../../components/errors/noData";
 import DocumentViewer from "./Components";
-//import { useParams } from "react-router-dom";
 import { getfolderData } from "../../../redux/actions/document-action";
-import { list } from "postcss";
 import { useLocation, useParams, useSearchParams } from "react-router-dom";
+
 const DocumentDetail = () => {
     const { isDocumentLoading, listData = [] } = useSelector((state) => state.document);
     const dispatch = useDispatch();
     const { id } = useParams();
-    const url = listData?.[0]?.value?.[0];
-   
-   const [searchParams] = useSearchParams(); 
+    const [searchParams] = useSearchParams();
     const location = useLocation(); 
     const queryParams = new URLSearchParams(location.search);
     const searchValue = queryParams.get("search") || searchParams.get("search"); 
 
-    console.log(searchValue, "searchValue");
-
     useEffect(() => {
-        
         if (id) {
             dispatch(getfolderData({ id, query: searchValue || "" }));
         }
     }, [dispatch, id, searchValue]); 
 
-    
+    if (isDocumentLoading) {
+        return <FolderListShimmer />;
+    }
 
     return (
-        <>
-        
         <div>
-            {isDocumentLoading ? (
-                <FolderListShimmer />
+            <div className="flex items-center justify-between">
+                <Heading backButton={true}>Document Detail</Heading>
+            </div>
 
+
+            {listData?.length > 0 ? (
+                listData.map((item, index) => {
+                    if (item?.value && Array.isArray(item.value)) {
+                        return item.value.map((docValue, docIndex) => (
+                            <React.Fragment key={`${index}-${docIndex}`}>
+                               
+                                {docValue?.length > 0 ? (
+                                    <DocumentViewer
+                                        key={`${index}-${docIndex}`}
+                                        docUrl={docValue}
+                                        docName={item?.lebel || `Document ${docIndex + 1}`}
+                                    />
+                                ) : (
+                                    <NoData key={`no-data-${docIndex}`} />
+                                )}
+                            </React.Fragment>
+                        ));
+                    } else {
+                        return <NoData key={`no-data-${index}`} />;
+                    }
+                })
             ) : (
-                <>
-                    <div className="flex items-center justify-between">
-                        <Heading backButton={true}>Document Detail</Heading>
-                        {/* <div className="flex items-center gap-2"> 
-                            {url?.length>0  ? (<Search placeholder={"Search Files"} />):<></>}
-                          
-                         </div> */}
-                    </div>
-
-                    {listData?.length > 0 && url ? (
-                        listData.map((item, index) => {
-                            if (item?.value && Array.isArray(item.value)) {
-                                return item.value.map((docValue, docIndex) => (
-                                    <>
-                                    {docValue.length>0 ?  <DocumentViewer
-                                    //{docValue.length>0 ?<>:<></>}
-                                        key={`${index}-${docIndex}`} // Adding a unique key for each item
-                                        docUrl={docValue} // Use the individual value from item.value
-                                        docName={item?.lebel || `Document ${docIndex + 1}`} // Fallback for label if not available
-                                    />: <NoData></NoData>}
-                                    
-                                    
-                                    </>
-                                    
-                                ));
-                            } else {
-                                return <NoData key={index} />;
-                            }
-                        })
-                    ) : (
-                        <NoData /> 
-                    )}
-                </>
+             
+                <NoData />
             )}
         </div>
-        </>
-   
     );
 };
 

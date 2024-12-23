@@ -13,11 +13,12 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { ConfirmationModal } from "../../../components/modal/confirmationModal";
 import { LinkButton } from "../../../components/link";
-import { GoTriangleDown } from "react-icons/go";
+import { GoDotFill, GoTriangleDown } from "react-icons/go";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ProgressBar } from "../../../components/progressBar";
 import { ImSpinner2 } from "react-icons/im";
 import { servicesProgress } from "../../../database";
+import { NavLink } from "react-router-dom";
 
 const ServiceprogressViewAll = ({ data }) => {
   const [confirmationModal, setConfirmationModal] = useState(false);
@@ -30,9 +31,6 @@ const ServiceprogressViewAll = ({ data }) => {
     dataUpdate?.data?.map(() => false)
   );
   const dispatch = useDispatch();
-  console.log(dataUpdate.data, "dataUpdate32");
-  console.log("totalCount,", totalCount);
-  console.log("data length", dataUpdate?.data?.length);
 
   const handleServiceDropdown = (index) => {
     setDropdownStates((prevState) =>
@@ -94,6 +92,22 @@ const ServiceprogressViewAll = ({ data }) => {
   ];
   // console.log(totalCount,"12DATTE1");
   // console.log( morePage,"12DATE@");
+  const calculateCompletionStatus = (expectedCompletionDate) => {
+    const today = new Date();
+    const expectedDate = new Date(expectedCompletionDate);
+    const differenceInMilliseconds = expectedDate - today;
+    const differenceInDays = Math.ceil(
+      differenceInMilliseconds / (1000 * 3600 * 24)
+    );
+
+    if (differenceInDays > 0) {
+      return { status: "On Time", delay: null };
+    } else if (differenceInDays < 0) {
+      return { status: "Delayed", delay: Math.abs(differenceInDays) };
+    } else {
+      return { status: "On Time", delay: null };
+    }
+  };
   return (
     <>
       <div className="flex flex-col md:flex-row justify-between gap-4">
@@ -107,150 +121,113 @@ const ServiceprogressViewAll = ({ data }) => {
         </Heading>
       </div>
 
-      {/* {dataUpdate?.total > 0 ? (
+      {dataUpdate?.total > 0 ? (
         <div className="flex flex-col gap-4">
-          {dataUpdate?.data?.map((data, index) => (
-            <div key={index} className="bg-[#F8FAFF] px-4 py-2 rounded-md">
-              <div className="flex flex-col sm:flex-row items-start justify-between sm:items-center gap-2">
-                <div className="flex flex-col gap-1">
-                  <div className="flex gap-2">
-                    <img src="/images/dashboard/service-progress.svg" alt="" />
-                    <p className="font-bold">
-                      Service: {data?.service[0]?.name}{" "}
-                    </p>
-                    <img
-                      src="/icons/dashboard/service-error.svg"
-                      width={15}
-                      alt=""
-                    />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <h6 className="text-sm text-[#7C7D80]">
-                      <strong>Business:</strong>{" "}
-                      {data?.businessdetails[0]?.businessName || "____"}
-                    </h6>
-                    <p className="text-sm text-[#7C7D80]">
-                      <strong>Step:</strong> {data?.status}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex gap-2">
-                {data?.ratingreviewsSize === 0 && (
-                  <Button
-                    onClick={() => setConfirmationModal(true)}
-                    className="flex items-center px-4 py-[6px] rounded-full font-medium text-[12px] text-[#0068FF] bg-[#DBE9FE]"
-                  >
-                    Rate Your Experience
-                  </Button>
-                )}
-
-                <ConfirmationModal
-                  isOpen={confirmationModal}
-                  onClose={onConfirmationModalClose}
+           {dataUpdate?.data?.map((data, index) => {
+              const { status, delay } = calculateCompletionStatus(
+                data?.expectedCompletionDate
+              );
+              return (
+                <div
+                  key={index}
+                  className="bg-[#f3f7ff] stroke-[#dfeaf2] stroke-1 px-4 py-2 rounded-md "
                 >
-                  <>
-                    <div>
-                      <p className="text-[32px] text-[#232323] font-bold">
-                        Rate Your Experience!
-                      </p>
-                      <form>
-                        <div className="flex flex-col gap-4">
-                          <div className="flex justify-between items-center pb-5">
-                            <label className="text-sm font-semibold text-gray-600">
-                              Service Quality
-                            </label>
-                            <Rating size={40} />
-                          </div>
-                          <div className="flex justify-between items-center pb-5">
-                            <label className="text-sm font-semibold text-gray-600">
-                              Professional Behavior
-                            </label>
-                            <Rating size={40} />
-                          </div>
-                          <div className="flex justify-between items-center pb-5">
-                            <label className="text-sm font-semibold text-gray-600">
-                              On-Time Delivery
-                            </label>
-                            <Rating size={40} />
-                          </div>
-                          {console.log(dataUpdate?.data, "DebugdataUpdate5")}
-                          <div className="flex justify-between items-center pb-5">
-                            <label className="text-sm font-semibold text-gray-600">
-                              Transparent Pricing
-                            </label>
-                            <Rating size={40} />
-                          </div>
-                          <div className="flex justify-between items-center pb-5">
-                            <label className="text-sm font-semibold text-gray-600">
-                              Value for Money
-                            </label>
-                            <Rating size={40} />
-                          </div>
-
-                          <div className="pt-4 pb-5">
-                            <label
-                              htmlFor="Review"
-                              className="text-lg font-bold text-[#0A1C40]"
-                            >
-                              Review
-                            </label>
-                            <TextArea
-                              className="min-h-20 placeholder:text-xl border bg-white border-[#D9D9D9]"
-                              placeholder="Add Review"
-                            />
-                          </div>
-                          <div className="flex justify-end gap-4">
-                            <Button
-                              outline={true}
-                              type="button"
-                              onClick={onConfirmationModalClose}
-                            >
-                              Maybe Later
-                            </Button>
-                            <Button primary={true} type="submit">
-                              Submit
-                            </Button>
-                          </div>
-                        </div>
-                      </form>
+                  <div className="flex flex-col sm:flex-row items-start justify-between sm:items-center gap-2">
+                    <div className="flex flex-col gap-1">
+                      <div className="flex gap-2">
+                        <img
+                          className="w-4"
+                          src="/images/dashboard/service-progress.svg"
+                          alt=""
+                        />
+                        <NavLink
+                          to={`/payment/create/${data._id}`}
+                          className="font-semibold text-sm text-[#0A1C40]"
+                        >
+                          Service: {data?.service[0]?.name}{" "}
+                        </NavLink>
+                        {/* <img
+                          src="/icons/dashboard/service-error.svg"
+                          width={15}
+                          alt=""
+                        /> */}
+                      </div>
+                      <div className="flex flex-row gap-2">
+                        <h6 className="font-medium text-sm text-[#7C7D80]">
+                          <span className="font-medium text-[#0A1C40]">
+                            Business:
+                          </span>{" "}
+                          {data?.businessdetails[0]?.businessName || "------"}
+                        </h6>
+                        <p className="font-medium text-sm text-[#7C7D80]">
+                          <span className="font-medium text-[#0A1C40]">
+                            Step:
+                          </span>{" "}
+                          {data?.status}
+                        </p>
+                      </div>
                     </div>
-                  </>
-                </ConfirmationModal>
+                    <div className="flex gap-3">
+                      {data?.ratingreviewsSize === 1 && (
+                        <Button
+                          onClick={() =>
+                            onConfirmationModalOpen(
+                              data?.service[0]?._id,
+                              data?._id
+                            )
+                          }
+                          className="font-medium text-[12px] text-[#0068FF] underline underline-offset-4"
+                        >
+                          Rate Your Experience
+                        </Button>
+                      )}
 
-                <LinkButton to={`/payment/create/${data._id}`} primary={true}>
-                  Avail again
-                </LinkButton>
-
-                <div className="flex items-center justify-center">
-                  {data?.status === "Delayed" ? (
-                    <LinkButton className="flex gap-2 rounded-2xl bg-[#FFDFDF] px-2 py-1 text-sm font-medium !text-[#FF3B3B] text-center">
-                      &#9679; Delayed by {data?.delay} days
-                    </LinkButton>
-                  ) : (
-                    <LinkButton className="flex gap-2 rounded-2xl bg-[#DFFFE2] px-2 py-1 text-sm font-medium text-[#037847] text-center">
-                      &#9679; On Time
-                    </LinkButton>
-                  )}
+                      <LinkButton
+                        className={
+                          "px-4 py-2 font-medium text-xs text-[#0A1C40]"
+                        }
+                        to={`/payment/create/${data._id}`}
+                        primary={true}
+                      >
+                        Avail again
+                      </LinkButton>
+                      <div className="flex items-center justify-center">
+                        {status === "Delayed" ? (
+                          <div className="flex justify-center items-center gap-1 rounded-2xl bg-[#FFDFDF] px-2 py-1 text-xs font-medium !text-[#FF3B3B] text-center">
+                            <GoDotFill />
+                            <p>Delayed by {delay} days</p>
+                          </div>
+                        ) : status === "On Time" ? (
+                          <div className="flex justify-center items-center gap-1 rounded-2xl bg-[#DFFFE2] px-2 py-1 text-xs font-medium text-[#037847] text-center">
+                            <GoDotFill />
+                            <p>On Time</p>
+                          </div>
+                        ) : (
+                          <>
+                            <div className="flex justify-center items-center gap-1 rounded-2xl bg-[#DFFFE2] px-2 py-1 text-xs font-medium text-[#037847] text-center">
+                              <GoDotFill />
+                              <p>On Time</p>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                      <button
+                        className={`${
+                          dropdownStates === true && "rotate-180 "
+                        } hidden lg:block `}
+                        onClick={() => handleServiceDropdown(index)}
+                      >
+                        <GoTriangleDown size={15} />
+                      </button>
+                    </div>
+                  </div>
+                  <Dropdown
+                    isOpen={dropdownStates[index]}
+                    servicesProgessSteps={servicesProgessSteps}
+                  />
                 </div>
-                <button
-                  className={`${
-                    dropdownStates === true && "rotate-180 "
-                  } hidden lg:block `}
-                  onClick={() => handleServiceDropdown(index)}
-                >
-                  <GoTriangleDown size={15} />
-                </button>
-              </div>
-
-              <Dropdown
-                isOpen={dropdownStates?.[index]}
-                servicesProgessSteps={servicesProgessSteps}
-              />
-            </div>
-          ))}
-
+              );
+            })}
           <InfiniteScroll
             dataLength={dataUpdate?.data?.length || 0}
             next={() => dispatch(getMoreServiceUpdate({page: morePage+1  }))}
@@ -279,16 +256,16 @@ const ServiceprogressViewAll = ({ data }) => {
           <img src="/images/service-prgress.svg" alt="" />
           <p className="font-bold text-xl text-[#000000]">No Services</p>
         </div>
-      )} */}
+      )}
 
-      {dataUpdate?.total > 0 ? (
+      {/* {dataUpdate?.total > 0 ? (
         <ServicesProgress data={servicesProgress} />
       ) : (
         <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
           <img src="/images/service-prgress.svg" alt="" />
           <p className="font-bold text-xl text-[#000000]">No Services</p>
         </div>
-      )}
+      )} */}
     </>
   );
 };

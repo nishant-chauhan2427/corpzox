@@ -23,11 +23,8 @@ const DocumentsListing = () => {
     isDataLoading,
     fetchingDocumentError,
   } = useSelector((state) => state.document);
-  //console.log(folders.length, "services 123");
 
   const [selectedServiceInfo, setSelectedServiceInfo] = useState(null);
-
- // console.log(selectedServiceInfo, "selectedServiceInfo")
   const { id } = useParams();
 
   useEffect(() => {
@@ -36,8 +33,6 @@ const DocumentsListing = () => {
   }, []);
   
   const handleFolderClick = (_id) => {
-    // console.log("Folder ID:", _id);
-    //dispatch(getfolderData(_id));
     navigate(`/documents/detail/${_id}`);
   };
 
@@ -72,17 +67,9 @@ const DocumentsListing = () => {
         <>
           <div className="flex flex-col md:flex-row justify-between gap-4">
             <Heading backButton={true} title={"Documents"} tourButton={true}>
-            Documents  {folders?.length ? `(${folders.length})` : ""}
-           
+              Documents {folders?.length ? `(${folders.length})` : ""}
             </Heading>
           </div>
-
-          {/* {fetchingDocumentError && (
-            <div className="text-red-500 my-2">
-              An error occurred: {fetchingDocumentError}
-            </div>
-          )} */}
-          
           <div>
             <Selector
               className={"!min-w-52 !max-w-fit"}
@@ -90,7 +77,6 @@ const DocumentsListing = () => {
               label={"Folders"}
               placeholder={"Select Services"}
               options={servicesOptions}
-              // onChange={handleServiceSelection}
               onChange={(selectedOption) => {
                 if (selectedOption) {
                   dispatch(
@@ -119,38 +105,35 @@ const DocumentsListing = () => {
           </div>
 
           <div className="py-4">
-  {isDataLoading ? (
-    <div className="flex justify-center items-center py-8">
-      <DocumentListShimmer />
-    </div>
-  ) : (
-    <div className="py-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-      {folders.length > 0 ? (
-        folders.map((data) => (
-          <div
-            key={data._id}
-            onClick={() => handleFolderClick(data._id)}
-            className="relative bg-[#F2F2F2] px-4 py-2 flex cursor-pointer justify-between items-center gap-4 border rounded"
-          >
-            <div className="flex items-center gap-4">
-              <img
-                src="/icons/documents/folder.svg"
-                alt="folder-icon"
-              />
-              <p className="font-semibold text-xs">{data?.caseId}</p>
-            </div>
-            <button></button>
+            {isDataLoading ? (
+              <div className="flex justify-center items-center py-8">
+                <DocumentListShimmer />
+              </div>
+            ) : folders.length > 0 ? (
+              <div className="py-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+                {folders.map((data) => (
+                  <div
+                    key={data._id}
+                    onClick={() => handleFolderClick(data._id)}
+                    className="relative bg-[#F2F2F2] px-4 py-2 flex cursor-pointer justify-between items-center gap-4 border rounded"
+                  >
+                    <div className="flex items-center gap-4">
+                      <img
+                        src="/icons/documents/folder.svg"
+                        alt="folder-icon"
+                      />
+                      <p className="font-semibold text-xs">{data?.caseId}</p>
+                    </div>
+                    <button></button>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="flex justify-center items-center w-full h-[50vh]">
+                <NoData />
+              </div>
+            )}
           </div>
-        ))
-      ) : (
-        <div className="flex justify-center items-center w-full h-[60vh]">
-          <NoData />
-        </div>
-      )}
-    </div>
-  )}
-</div>
-
         </>
       )}
     </div>
