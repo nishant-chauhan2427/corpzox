@@ -23,6 +23,7 @@ import {
   setToggleToCheckedWishlist,
   resetService,
   onChangeSelectAll,
+  resetCheckBox,
 } from "../../../redux/slices/serviceListingSlice";
 import toast from "react-hot-toast";
 import { Offers } from "../../../components/offers";
@@ -62,12 +63,15 @@ const ServicesListing = () => {
   // console.log("list", list);
   // console.log("service totalCount:", totalCount);
   // console.log("service page:", page);
-
+  console.log("searchValue",searchValue);
+  
   useEffect(() => {
     // dispatch(resetService({}));
+    
     category?.list &&
       category?.list?.length === 0 &&
       dispatch(getUserServicesCatagory({}));
+      
   }, []);
 
   // useEffect(() => {
@@ -143,7 +147,6 @@ const ServicesListing = () => {
       categoryId &&
       subCategoryId &&
       !subCategory?.subCategoryLoading &&
-      !isServicesFetched &&
       !loading 
     ) {
       const search = searchParams.get("search");
@@ -157,6 +160,7 @@ const ServicesListing = () => {
         })
       );
       setIsServicesFetched(true);
+      dispatch(resetCheckBox());
     }
   }, [
     categoryId,
