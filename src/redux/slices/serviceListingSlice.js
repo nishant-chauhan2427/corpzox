@@ -60,6 +60,10 @@ const serviceListingSlice = createSlice({
     resetService(state,action){
       state.list=[]
     },
+    resetCheckBox(state,action){
+      console.log("resetCheckBox");
+      state.wishList.list=[]
+    },
     setToggleToCheckedWishlist(state,action){
       // console.log("setToggleToCheckedWishlist");
       
@@ -309,7 +313,7 @@ const serviceListingSlice = createSlice({
 });
 
 // Export actions
-export const { setSelectedCategory, setSelectedSubCategory,setToggleToCheckedWishlist,onChangeSelectAll,resetService,updateServiceWishlistFlag } =
+export const { setSelectedCategory, setSelectedSubCategory,setToggleToCheckedWishlist,onChangeSelectAll,resetService,updateServiceWishlistFlag,resetCheckBox } =
   serviceListingSlice.actions;
 
 // Export the reducer
