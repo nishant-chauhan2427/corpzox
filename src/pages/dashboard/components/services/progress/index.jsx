@@ -264,7 +264,7 @@ export const ServicesProgress = ({ data }) => {
                     </div>
                   </div>
                   <Dropdown
-                    isOpen={dropdownStates[index]}
+                    isOpen={dropdownStates?.[index]}
                     servicesProgessSteps={servicesProgessSteps}
                   />
                 </div>
