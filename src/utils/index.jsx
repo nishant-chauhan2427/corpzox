@@ -1019,16 +1019,26 @@ function applyOfferToPrice(price, data) {
   let discountAmount = 0;
 
   // Apply discount percentage if present
-  if (offer.discountPercent) {
+  // if (offer.discountPercent) {
+  //   const percentDiscount = price * (offer.discountPercent / 100);
+  //   discountAmount += percentDiscount;
+  //   price -= percentDiscount;
+  // }
+
+  // Apply fixed discount if present
+  // if (offer.discountPrice) {
+  //   discountAmount += offer.discountPrice;
+  //   price -= offer.discountPrice;
+  // }
+  if (offer.discountType === "fixed" && offer.discountPercent) {
+    discountAmount += offer.discountPercent;
+    price -= offer.discountPercent;
+  } 
+  // Apply percentage discount if present
+  else {
     const percentDiscount = price * (offer.discountPercent / 100);
     discountAmount += percentDiscount;
     price -= percentDiscount;
-  }
-
-  // Apply fixed discount if present
-  if (offer.discountPrice) {
-    discountAmount += offer.discountPrice;
-    price -= offer.discountPrice;
   }
  const offerDetails = {
     discountPercent: offer.discountPercent,
