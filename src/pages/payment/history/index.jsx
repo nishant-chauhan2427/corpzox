@@ -25,7 +25,6 @@ const History = () => {
     paymentHistory,
     isPaymentHistoryLoading,
     downloadTransactionUrl,
-    isTransactionDownloading,
     totalTransaction,
     childLoading
   } = useSelector((state) => state.paymentHistory);
@@ -54,7 +53,6 @@ const History = () => {
     };
   });
 
-  console.log(paymentHistory, "transformedTransactionHistory");
   const columns = [
     { header: "Transaction ID", accessor: "transaction_id" },
     { header: "Status", accessor: "status" },
@@ -79,7 +77,6 @@ const History = () => {
   };
 
   const openViewTransactionDetails = (id) => {
-    console.log(id, "transactionId");
     setViewTransactionDetails(true);
     const transactionDetails = paymentHistory.filter((payment) => {
       return payment._id === id;
@@ -87,6 +84,7 @@ const History = () => {
 
     setTransactionDetails(transactionDetails ? transactionDetails[0] : {});
   };
+  
   const handleNavigation = (direction) => {
     const totalPages = Math.ceil(totalTransaction / 10); // Calculate total pages
     const newPage = direction === "Next" ? currentPage + 1 : currentPage - 1;
