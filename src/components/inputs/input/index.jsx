@@ -76,6 +76,7 @@ export const Input = ({
               errorContent && touched ? "border-error" : "border-[#D9D9D9]"
             } w-full text-black placeholder:text-[#9A9A9A] placeholder:font-normal placeholder:text-sm p-3 bg-white disabled:bg-gray-200 focus:border- h-12 dark:text-white  shadow-sm block text-sm text-bee-black dark:text-bee-white bg-bee-paleGray dark:bg-bee-ebonyGem border-1  appearance-none dark:border-bee-primary dark:focus:border-bee-primary focus:outline-none focus:border-bee-primary peer border-[#D9D9D9] border rounded-[10px] `}
             type={type === "password" ? passwordType : type}
+            id={label}
             placeholder={""}
             value={value}
             onChange={handleChange}
