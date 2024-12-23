@@ -97,6 +97,7 @@ export const Input = ({
             <span className="mr-2">{labelIcon}</span>
             {label}
           </label>
+
           {type === "password" && (
             <button
               type="button"
