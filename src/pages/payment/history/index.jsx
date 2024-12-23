@@ -25,7 +25,6 @@ const History = () => {
     paymentHistory,
     isPaymentHistoryLoading,
     downloadTransactionUrl,
-    isTransactionDownloading,
     totalTransaction,
     childLoading
   } = useSelector((state) => state.paymentHistory);
