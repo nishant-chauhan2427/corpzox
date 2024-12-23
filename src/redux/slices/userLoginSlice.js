@@ -10,6 +10,7 @@ import {
 import { ratingReview } from "../actions/servicesDetails-actions";
 const initialState = {
   loading: false,
+  userLoading: false,
   user: null,
   dataUpdate: [],
   manager: null,
@@ -60,9 +61,11 @@ const userSlice = createSlice({
     builder
       .addCase(getUser.pending, (state, action) => {
         state.loading = true;
+        state.userLoading = true;
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.loading = false;
+        state.userLoading = false;
 
         // state.isVerificationSuccessfull = true;
 
@@ -81,6 +84,7 @@ const userSlice = createSlice({
       })
       .addCase(getUser.rejected, (state, action) => {
         state.loading = false;
+        state.userLoading = false;
         state.error = action.payload;
       });
     builder
@@ -142,6 +146,7 @@ const userSlice = createSlice({
       .addCase(ratingReview.fulfilled, (state, action) => {
         state.fetching = false;
         console.log(action.payload, "payload data");
+        
       })
       .addCase(ratingReview.rejected, (state, action) => {
         state.fetching = false;

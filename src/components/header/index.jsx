@@ -6,7 +6,7 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FiLogOut } from "react-icons/fi";
 import { headerLinks } from "../../database";
 import { HiOutlineUser } from "react-icons/hi";
@@ -27,6 +27,7 @@ import { clearUser } from "../../redux/slices/userLoginSlice";
 import { ConfirmationModal } from "../modal/confirmationModal";
 import { persistor } from "../../redux/store";
 import { clearDocumentList } from "../../redux/slices/documentSlice";
+import { getUser } from "../../redux/actions/dashboard-action";
 
 export const Header = ({ className, collapse, setCollapse }) => {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
@@ -148,6 +149,14 @@ export const Header = ({ className, collapse, setCollapse }) => {
     console.log("Search parameter removed:", searchParams.toString());
   };
 
+
+useEffect(() => {
+  if (!user?.profile_picture_url || !user?.name || !user?.email) {
+    dispatch(getUser());
+  }
+}, [dispatch, user]);
+
+
   return (
     <header
       className={`${
@@ -199,7 +208,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
           {/* Search */}
           {
             !pathname.includes("settings") &&
-            //!pathname.includes("profile") &&
+            !pathname.includes("profile") &&
             !pathname.includes("wishlist") &&
             !pathname.includes("offersDetails") &&
             !pathname.includes("dashboard") && 
@@ -207,7 +216,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
             (
               <Search
                 clearSerarch={clearSearch}
-                pathnameplaceholder={`Search ${getPageHeading(pathname)}`}
+                placeholder={`Search ${getPageHeading(pathname)}`}
                 containerClassName={
                   "hidden lg:block w-full h-10 lg:!max-w-lg !bg-[#3D485F] !rounded-full overflow-hidden   border-[#8c94a2] border !text-white"
                 }

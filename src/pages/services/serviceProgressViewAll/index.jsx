@@ -13,12 +13,12 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { ConfirmationModal } from "../../../components/modal/confirmationModal";
 import { LinkButton } from "../../../components/link";
-import { GoTriangleDown } from "react-icons/go";
+import { GoDotFill, GoTriangleDown } from "react-icons/go";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ProgressBar } from "../../../components/progressBar";
 import { ImSpinner2 } from "react-icons/im";
 import { servicesProgress } from "../../../database";
-import { div } from "framer-motion/client";
+import { NavLink } from "react-router-dom";
 
 const ServiceprogressViewAll = ({ data }) => {
   const [confirmationModal, setConfirmationModal] = useState(false);
@@ -31,9 +31,6 @@ const ServiceprogressViewAll = ({ data }) => {
     dataUpdate?.data?.map(() => false)
   );
   const dispatch = useDispatch();
-  console.log(dataUpdate.data, "dataUpdate32");
-  console.log("totalCount,", totalCount);
-  console.log("data length", dataUpdate?.data?.length);
 
   const handleServiceDropdown = (index) => {
     setDropdownStates((prevState) =>
@@ -95,6 +92,22 @@ const ServiceprogressViewAll = ({ data }) => {
   ];
   // console.log(totalCount,"12DATTE1");
   // console.log( morePage,"12DATE@");
+  const calculateCompletionStatus = (expectedCompletionDate) => {
+    const today = new Date();
+    const expectedDate = new Date(expectedCompletionDate);
+    const differenceInMilliseconds = expectedDate - today;
+    const differenceInDays = Math.ceil(
+      differenceInMilliseconds / (1000 * 3600 * 24)
+    );
+
+    if (differenceInDays > 0) {
+      return { status: "On Time", delay: null };
+    } else if (differenceInDays < 0) {
+      return { status: "Delayed", delay: Math.abs(differenceInDays) };
+    } else {
+      return { status: "On Time", delay: null };
+    }
+  };
   return (
     <>
       <div className="flex flex-col md:flex-row justify-between gap-4">
@@ -111,10 +124,7 @@ const ServiceprogressViewAll = ({ data }) => {
       {dataUpdate?.total > 0 ? (
         <div className="flex flex-col gap-4">
           {dataUpdate?.data?.map((data, index) => (
-            <div
-              key={index}
-              className="bg-[#F8FAFF] flex flex-row justify-between items-center px-4 py-2 rounded-md"
-            >
+            <div key={index} className="bg-[#F8FAFF] px-4 py-2 rounded-md">
               <div className="flex flex-col sm:flex-row items-start justify-between sm:items-center gap-2">
                 <div className="flex flex-col gap-1">
                   <div className="flex gap-2">
@@ -142,38 +152,33 @@ const ServiceprogressViewAll = ({ data }) => {
 
               <div className="flex gap-2">
                 {data?.ratingreviewsSize === 0 && (
-                  <div>
-                    <Button
-                      onClick={() => setConfirmationModal(true)}
-                      className="flex items-center px-4 py-[6px] rounded-full font-medium text-[12px] text-[#0068FF] bg-[#DBE9FE]"
-                    >
-                      Rate Your Experience
-                    </Button>
-                  </div>
+                  <Button
+                    onClick={() => setConfirmationModal(true)}
+                    className="flex items-center px-4 py-[6px] rounded-full font-medium text-[12px] text-[#0068FF] bg-[#DBE9FE]"
+                  >
+                    Rate Your Experience
+                  </Button>
                 )}
 
-                <ConfirmationModal
-                  isOpen={confirmationModal}
-                  onClose={onConfirmationModalClose}
-                >
-                  <>
-                    <div>
-                      <p className="text-[32px] text-[#232323] font-bold">
-                        Rate Your Experience!
-                      </p>
-                      <form>
-                        <div className="flex flex-col gap-4">
-                          <div className="flex justify-between items-center pb-5">
-                            <label className="text-sm font-semibold text-gray-600">
-                              Service Quality
-                            </label>
-                            <Rating size={40} />
+                      <LinkButton
+                        className={
+                          "px-4 py-2 font-medium text-xs text-[#0A1C40]"
+                        }
+                        to={`/payment/create/${data._id}`}
+                        primary={true}
+                      >
+                        Avail again
+                      </LinkButton>
+                      <div className="flex items-center justify-center">
+                        {status === "Delayed" ? (
+                          <div className="flex justify-center items-center gap-1 rounded-2xl bg-[#FFDFDF] px-2 py-1 text-xs font-medium !text-[#FF3B3B] text-center">
+                            <GoDotFill />
+                            <p>Delayed by {delay} days</p>
                           </div>
-                          <div className="flex justify-between items-center pb-5">
-                            <label className="text-sm font-semibold text-gray-600">
-                              Professional Behavior
-                            </label>
-                            <Rating size={40} />
+                        ) : status === "On Time" ? (
+                          <div className="flex justify-center items-center gap-1 rounded-2xl bg-[#DFFFE2] px-2 py-1 text-xs font-medium text-[#037847] text-center">
+                            <GoDotFill />
+                            <p>On Time</p>
                           </div>
                           <div className="flex justify-between items-center pb-5">
                             <label className="text-sm font-semibold text-gray-600">
@@ -225,11 +230,9 @@ const ServiceprogressViewAll = ({ data }) => {
                   </>
                 </ConfirmationModal>
 
-                <div>
-                  <LinkButton to={`/payment/create/${data._id}`} primary={true}>
-                    Avail again
-                  </LinkButton>
-                </div>
+                <LinkButton to={`/payment/create/${data._id}`} primary={true}>
+                  Avail again
+                </LinkButton>
 
                 <div className="flex items-center justify-center">
                   {data?.status === "Delayed" ? (
