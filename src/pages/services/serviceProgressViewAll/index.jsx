@@ -30,18 +30,18 @@ const ServiceprogressViewAll = ({ data }) => {
 
   const [serviceId, setServiceId] = useState("");
   const [transactionId, setTransactionId] = useState("");
-  const { dataUpdate, totalCount, loadingMore, page, morePage,fetching } = useSelector(
+  const { dataUpdate, serviceProgressDataUpdate,totalCount, loadingMore, page, morePage,fetching } = useSelector(
     (state) => state.user
   );
   const { isRatingAdding } = useSelector((state) => state.serviceDetails);
   const [dropdownStates, setDropdownStates] = useState(
-    dataUpdate?.data.map(() => false)
+    serviceProgressDataUpdate.map(() => false)
   );
   const dispatch = useDispatch();
 
   const handleServiceDropdown = (index) => {
     setDropdownStates((prevState) =>
-      prevState.map((state, i) => (i === index ? !state : state))
+      prevState?.map((state, i) => (i === index ? !state : state))
     );
   };
   const {
@@ -96,8 +96,8 @@ const ServiceprogressViewAll = ({ data }) => {
 
   useEffect(() => {
     if (
-      dataUpdate?.data?.length == 0 ||
-      dataUpdate?.data?.length == undefined
+      serviceProgressDataUpdate?.length == 0 ||
+      serviceProgressDataUpdate?.length == undefined
     ) {
       dispatch(updateServiveProgress({ page: 1 }));
     }
@@ -187,7 +187,7 @@ const ServiceprogressViewAll = ({ data }) => {
      :<>
      {dataUpdate?.total > 0 ? (
         <div className="flex flex-col gap-4">
-           {dataUpdate?.data?.map((data, index) => {
+           {serviceProgressDataUpdate?.map((data, index) => {
               const { status, delay } = calculateCompletionStatus(
                 data?.expectedCompletionDate
               );
@@ -293,17 +293,17 @@ const ServiceprogressViewAll = ({ data }) => {
               );
             })}
           <InfiniteScroll
-            dataLength={dataUpdate?.data?.length || 0}
+            dataLength={serviceProgressDataUpdate?.length || 0}
             next={() => dispatch(getMoreServiceUpdate({page: morePage+1  }))}
-            hasMore={dataUpdate?.data?.length < totalCount}
+            hasMore={serviceProgressDataUpdate?.length < totalCount}
             loader={
               <div className="flex justify-center items-center p-1">
                 <ImSpinner2 className="animate-spin text-black !text-xl" />
               </div>
             }
             endMessage={
-              dataUpdate?.data?.length &&
-              dataUpdate?.data?.length > 0 && (
+              serviceProgressDataUpdate?.length &&
+              serviceProgressDataUpdate?.length > 0 && (
                 <p style={{ textAlign: "center" }}>
                   <b>Yay! You have seen it all</b>
                 </p>

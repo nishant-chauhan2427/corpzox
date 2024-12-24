@@ -133,6 +133,7 @@ const userSlice = createSlice({
         console.log(action.payload,"action.payload22");
         console.log(action.payload);
         state.dataUpdate = action.payload;
+        state.serviceProgressDataUpdate = action.payload?.data;
         state.morePage = 1
         //state.manager=action.payload?.agent_data?.[0]?.manager_data?.[0];
       })
