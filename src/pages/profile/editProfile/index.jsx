@@ -141,6 +141,11 @@ const Edit = () => {
       formData.append("files", croppedImgFile); // Use 'files' key for backend
 
       const imageUrl = await dispatch(updateProfilePicture({ formData }));
+     // console.log(imageUrl?.payload?.data?.url,"IMAGE URL");
+    //  if (imageUrl?.payload?.data?.url) {
+      
+    //   await dispatch(submitEditProfile({ formData, navigate }));
+    // }
 
       setIsImageChanged(true);
       setImageSelected(false);

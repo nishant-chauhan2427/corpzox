@@ -69,7 +69,7 @@ const userSlice = createSlice({
 
         // state.isVerificationSuccessfull = true;
 
-        state.error = action.payload.message;
+        state.error = action.payload?.message;
         state.user = action.payload;
 
         state.manager = action.payload?.agent_data?.[0]?.manager_data?.[0];
