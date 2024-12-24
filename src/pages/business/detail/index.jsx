@@ -1,21 +1,19 @@
-import { Button } from "../../../components/buttons/button";
-import { IoIosArrowRoundBack, IoMdAddCircle } from "react-icons/io";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ServicesProgress } from "../../dashboard/components/services/progress";
-import { servicesProgress } from "../../../database";
 import { useEffect } from "react";
-import { getBusiness } from "../../../redux/actions/business-action";
+import { IoMdAddCircle } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Button } from "../../../components/buttons/button";
 import { Heading } from "../../../components/heading";
-import { BusinessCardShimmer } from "../../../components/loader/BusinessCardShimmer";
-import {
-  getUser,
-  updateServiveProgress,
-} from "../../../redux/actions/dashboard-action";
 import { LinkButton } from "../../../components/link";
-import { resetBusiness } from "../../../redux/slices/businessSlice";
 import { TableShimmer } from "../../../components/loader/TableShimmer";
+import { servicesProgress } from "../../../database";
+import { getBusiness } from "../../../redux/actions/business-action";
+import {
+  updateServiveProgress
+} from "../../../redux/actions/dashboard-action";
+import { resetBusiness } from "../../../redux/slices/businessSlice";
 import { calculateAge } from "../../../utils";
+import { ServicesProgress } from "../../dashboard/components/services/progress";
 const BusinessDetail = () => {
   const location = useLocation();
   const dispatch = useDispatch();
