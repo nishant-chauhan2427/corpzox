@@ -42,6 +42,8 @@ import { FinancialDetails } from "../pages/business/createEdit/components/financ
 import { KYCDetails } from "../pages/business/createEdit/components/kyc";
 import { FundingDetails } from "../pages/business/createEdit/components/funding";
 import { ServicesProgress } from "../pages/dashboard/components/services/progress";
+import { RecommendedServices } from "../pages/dashboard/components/services/recommended";
+import  RecommendedServicesViewALl  from "../pages/services/recommendServicesViewAll";
 
 const router = createBrowserRouter([
   {
@@ -128,21 +130,36 @@ const router = createBrowserRouter([
                   { path: "address", element: <AddressDetails /> },
                   { path: "financial", element: <FinancialDetails /> },
                   { path: "kyc", element: <KYCDetails /> },
-                  { path: "funding", element: <FundingDetails /> }
-                ]
-              },   
+                  { path: "funding", element: <FundingDetails /> },
+                ],
+              },
               {
                 path: "edit",
-                element: <CreateBusiness isEdit={true}/>,
+                element: <CreateBusiness isEdit={true} />,
                 children: [
-                  { index: true, element: <RegistrationDetails isEdit={true}/> }, // Default child for /edit
-                  { path: "registration", element: <RegistrationDetails isEdit={true} /> },
-                  { path: "address", element: <AddressDetails isEdit={true} /> },
-                  { path: "financial", element: <FinancialDetails isEdit={true} /> },
+                  {
+                    index: true,
+                    element: <RegistrationDetails isEdit={true} />,
+                  }, // Default child for /edit
+                  {
+                    path: "registration",
+                    element: <RegistrationDetails isEdit={true} />,
+                  },
+                  {
+                    path: "address",
+                    element: <AddressDetails isEdit={true} />,
+                  },
+                  {
+                    path: "financial",
+                    element: <FinancialDetails isEdit={true} />,
+                  },
                   { path: "kyc", element: <KYCDetails isEdit={true} /> },
-                  { path: "funding", element: <FundingDetails isEdit={true} /> }
-                ]
-              },           
+                  {
+                    path: "funding",
+                    element: <FundingDetails isEdit={true} />,
+                  },
+                ],
+              },
               // {
               //   path: "edit",
               //   element: <CreateBusiness isEdit={true} />,
@@ -184,6 +201,10 @@ const router = createBrowserRouter([
               {
                 path: "serviceprogressdetail",
                 element: <ServiceprogressViewAll />,
+              },
+              {
+                path: "recommended-services-view-all",
+                element: <RecommendedServicesViewALl />,
               },
             ],
           },

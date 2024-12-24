@@ -12,7 +12,7 @@ import {
 } from "../../../redux/actions/profile-actions";
 import { profileValidationSchema } from "./editProfileValidationSchema";
 import Cropper from "react-easy-crop";
-import { ImSpinner11, ImSpinner2 } from "react-icons/im";
+import { ImSpinner2 } from "react-icons/im";
 import toast from "react-hot-toast";
 import { getUser } from "../../../redux/actions/dashboard-action";
 
@@ -53,21 +53,17 @@ const getCroppedImg = async (imageSrc, crop, pixelCrop) => {
 const Edit = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user,userLoading } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   const { loading, isUpdatingImage } = useSelector((state) => state.profile);
-  
-  const { upload } = useSelector((state) => state.profile);
 
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
-  const [image, setImage] = useState(
-    user?.profile_picture_url || "/images/profile/profile.svg"
-  );
+  const [image, setImage] = useState(user?.profile_picture_url || "/images/profile/profile.svg");
   const [imageFile, setImageFile] = useState(null);
   const [croppedImage, setCroppedImage] = useState(null);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-  const [isImageChanged, setIsImageChanged] = useState(false);
   const [imageSelected, setImageSelected] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);  // Managing the saving state
 
   const {
     control,
@@ -83,21 +79,21 @@ const Edit = () => {
     setCroppedAreaPixels(croppedAreaPixels); 
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const formData = new FormData();
     if (imageFile) {
-      formData.append("profilePicture", upload);
+      formData.append("profilePicture", imageFile);
     }
-    formData.append("firstName", data.firstName);
-    formData.append("lastName", data.lastName);
+    formData.append("firstName", data.fullName);
     formData.append("businessEmail", data.businessEmail);
-    dispatch(submitEditProfile({ formData, navigate }));
-    setIsImageChanged(false);
+
+    setIsSaving(true);
+    await dispatch(submitEditProfile({ formData, navigate }));
+    setIsSaving(false);
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-
     if (file) {
       const validImageTypes = ["image/jpeg", "image/png", "image/jpg"];
       if (!validImageTypes.includes(file.type)) {
@@ -115,9 +111,9 @@ const Edit = () => {
         setImage(reader.result);
         setImageFile(file);
         setImageSelected(true);
-        setCroppedImage(null); 
-        setCrop({ x: 0, y: 0 }); 
-        setZoom(1); 
+        setCroppedImage(null);
+        setCrop({ x: 0, y: 0 });
+        setZoom(1);
       };
       reader.readAsDataURL(file);
     }
@@ -135,33 +131,28 @@ const Edit = () => {
       const croppedImgBlob = await getCroppedImg(image, crop, croppedAreaPixels);
       const fileName = imageFile?.name;
       const croppedImgFile = await blobToFile(croppedImgBlob, fileName);
+      
+      setCroppedImage(croppedImgBlob);
 
-      setCroppedImage(croppedImgBlob); // Set the cropped image for preview
-      const formData = new FormData();
-      formData.append("files", croppedImgFile); // Use 'files' key for backend
+      const imageFormData = new FormData();
+      imageFormData.append("files", croppedImgFile);
 
-      const imageUrl = await dispatch(updateProfilePicture({ formData }));
+      const imageUrl = await dispatch(updateProfilePicture({ formData: imageFormData }));
+      if (imageUrl?.payload?.data?.url) {
+        const profileFormData = new FormData();
+        profileFormData.append("profilePicture", imageUrl?.payload?.data?.url);
+        profileFormData.append("firstName", user.name);
 
-      setIsImageChanged(true);
+        setIsSaving(false);
+        await dispatch(submitEditProfile({ formData: profileFormData, navigate }));
+        //setIsSaving(false);
+      }
       setImageSelected(false);
     }
   };
 
   useEffect(() => {
-    const str = user?.name || "";
-    let data = [];
-    const spaceIndex = str.indexOf(" ");
-
-    if (spaceIndex !== -1) {
-      const firstName = str.substring(0, spaceIndex);
-      const lastName = str.substring(spaceIndex + 1);
-      data = [firstName, lastName];
-    } else {
-      data = [str, ""];
-    }
-
-    setValue("firstName", data[0]);
-    setValue("lastName", data[1]);
+    setValue("fullName", user?.name);
     setValue("email", user?.email);
     setValue("businessEmail", user?.busniessEmail || "");
   }, [user]);
@@ -219,16 +210,11 @@ const Edit = () => {
                 </div>
               ) : (
                 <img
-                  src={
-                    user?.profile_picture_url
-                      ? user?.profile_picture_url
-                      : "/images/profile/profile.svg"
-                  }
+                  src={user?.profile_picture_url || "/images/profile/profile.svg"}
                   className="rounded-full w-[180px] h-[180px] sm:w-[170px] sm:h-[170px] object-cover"
                   alt=""
                 />
               )}
-
               <label
                 htmlFor="image-upload"
                 className="absolute bottom-0 right-0 sm:bottom-2 sm:right-2 bg-black px-2 py-2 rounded-full"
@@ -240,24 +226,21 @@ const Edit = () => {
                 />
               </label>
             </div>
-
             <div className="text-center mt-2">
               {isUpdatingImage ? (
                 <ImSpinner2 size={20} className="animate-spin" />
               ) : (
-                <>
-                  {imageSelected && (
-                    <Button
-                      type="button"
-                      onClick={handleSave}
-                      className="save-button cursor-pointer text-sm font-semibold text-[#004BBC] underline"
-                    >
-                      Save Photo
-                    </Button>
-                  )}
-                </>
+                imageSelected && (
+                  <Button
+                    type="button"
+                    onClick={handleSave}
+                    className="save-button cursor-pointer text-sm font-semibold text-[#004BBC] underline"
+                    disabled={isSaving}
+                  >
+                    {isSaving ? "Saving..." : "Update"}
+                  </Button>
+                )
               )}
-
               <input
                 id="image-upload"
                 type="file"
@@ -267,42 +250,24 @@ const Edit = () => {
               />
             </div>
           </div>
-
+          {/* Form Fields */}
           <div className="flex sm:w-[60%] flex-col gap-4">
             <p className="text-[#171717] font-medium text-lg">Basic Details</p>
             <div className="sm:w-[100%] pt-4 flex gap-4 flex-col">
               <div className="flex flex-row gap-4">
                 <div className="w-full">
                   <Controller
-                    name="firstName"
+                    name="fullName"
                     control={control}
                     defaultValue=""
                     render={({ field }) => (
                       <Input
                         {...field}
-                        label={"First Name"}
+                        label={"Full Name"}
                         type={"text"}
-                        placeholder={"First Name"}
+                        placeholder={"Full Name"}
                         className={"border-[#D9D9D9] border"}
-                        errorContent={errors?.firstName?.message}
-                        maxLength={30}
-                      />
-                    )}
-                  />
-                </div>
-                <div className="w-full">
-                  <Controller
-                    name="lastName"
-                    control={control}
-                    defaultValue=""
-                    render={({ field }) => (
-                      <Input
-                        {...field}
-                        label={"Last Name"}
-                        type={"text"}
-                        placeholder={"Last Name"}
-                        className={"border-[#D9D9D9] border"}
-                        errorContent={errors?.lastName?.message}
+                        errorContent={errors?.fullName?.message}
                         maxLength={30}
                       />
                     )}
@@ -352,10 +317,10 @@ const Edit = () => {
 
         <div className="inline-block">
           <Button
-            disabled={!(isValid || isImageChanged)}
+            disabled={!isValid }
             className={"px-10 py-1"}
             primary={true}
-            isLoading={loading}
+            isLoading={(isSaving && loading)}
           >
             Save
           </Button>

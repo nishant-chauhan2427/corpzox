@@ -471,6 +471,7 @@ const serviceDetailSlice = createSlice({
         state.isServiceAvailing = true;
         console.log(action.payload, "talk to")
         toast.success(action.payload.message)
+        state.appliedOfferArray = []
 
       })
       .addCase(availService.rejected, (state, action) => {

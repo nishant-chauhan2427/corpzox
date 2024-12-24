@@ -19,16 +19,23 @@ import { ProgressBar } from "../../../components/progressBar";
 import { ImSpinner2 } from "react-icons/im";
 import { servicesProgress } from "../../../database";
 import { NavLink } from "react-router-dom";
+import { ServiceProgressShimmer } from "../../../components/loader/ServiceProgressShimmer";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { ratingReviewSchema } from "../../../validation/ratingReviewValidationSchema";
+import { ratingReview } from "../../../redux/actions/servicesDetails-actions";
 
 const ServiceprogressViewAll = ({ data }) => {
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [otherValue, setOtherVsalue] = useState("");
 
-  const { dataUpdate, totalCount, loadingMore, page, morePage } = useSelector(
+  const [serviceId, setServiceId] = useState("");
+  const [transactionId, setTransactionId] = useState("");
+  const { dataUpdate, totalCount, loadingMore, page, morePage,fetching } = useSelector(
     (state) => state.user
   );
+  const { isRatingAdding } = useSelector((state) => state.serviceDetails);
   const [dropdownStates, setDropdownStates] = useState(
-    dataUpdate?.data?.map(() => false)
+    dataUpdate?.data.map(() => false)
   );
   const dispatch = useDispatch();
 
@@ -37,9 +44,54 @@ const ServiceprogressViewAll = ({ data }) => {
       prevState.map((state, i) => (i === index ? !state : state))
     );
   };
-
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors, isValid },
+  } = useForm({
+    defaultValues: {
+      serviceQualityRating: 0,
+      professionalBehaviourRating: 0,
+      onTimeDeliveryRating: 0,
+      transparentPricingRating: 0,
+      valueForMoneyRating: 0,
+      review: "",
+    },
+    resolver: yupResolver(ratingReviewSchema),
+  });
   const onConfirmationModalClose = () => {
-    setConfirmationModal(!confirmationModal);
+    setConfirmationModal(false);
+    setServiceId("");
+    reset();
+  };
+  useEffect(() => {
+    if (!isRatingAdding) setConfirmationModal(false);
+  }, [isRatingAdding]);
+
+  const onConfirmationModalOpen = (data, transactionId) => {
+    setServiceId(data);
+    setTransactionId(transactionId);
+    setConfirmationModal(true);
+  };
+  const onSubmit = (formData) => {
+    // Handle form submission logic
+    const payload = {
+      serviceQualityRating: formData.serviceQualityRating,
+      professionalBehaviourRating: formData.professionalBehaviourRating,
+      onTimeDeliveryRating: formData.onTimeDeliveryRating,
+      transparentPricingRating: formData.transparentPricingRating,
+      valueForMoneyRating: formData.valueForMoneyRating,
+      review: formData.review,
+    };
+    if (formData.review === "") {
+      delete payload.review;
+    }
+
+    dispatch(
+      ratingReview({ ...payload, serviceId, applicationId: transactionId })
+    );
+    reset(); // Reset the form after submission
   };
 
   useEffect(() => {
@@ -120,8 +172,20 @@ const ServiceprogressViewAll = ({ data }) => {
           {dataUpdate?.total ? `(${dataUpdate?.total})` : ""}
         </Heading>
       </div>
+     {fetching? 
 
-      {dataUpdate?.total > 0 ? (
+     <>
+     {/* {Array.from({ length: 8 }).map((item)=>{
+      return(
+        <ServiceProgressShimmer count={8}/>
+
+      )
+     })} */}
+             <ServiceProgressShimmer count={8}/>
+
+     </>
+     :<>
+     {dataUpdate?.total > 0 ? (
         <div className="flex flex-col gap-4">
            {dataUpdate?.data?.map((data, index) => {
               const { status, delay } = calculateCompletionStatus(
@@ -176,7 +240,7 @@ const ServiceprogressViewAll = ({ data }) => {
                               data?._id
                             )
                           }
-                          className="font-medium text-[12px] text-[#0068FF] underline underline-offset-4"
+                          className="flex items-center px-4 py-[6px] rounded-full font-medium text-[12px] text-[#0068FF] bg-[#DBE9FE]"
                         >
                           Rate Your Experience
                         </Button>
@@ -257,15 +321,189 @@ const ServiceprogressViewAll = ({ data }) => {
           <p className="font-bold text-xl text-[#000000]">No Services</p>
         </div>
       )}
+     </>}
+      {/* Rating and Review Modal */}
+      <ConfirmationModal
+        isOpen={confirmationModal}
+        onClose={onConfirmationModalClose}
+        modalClassName={"sm:max-w-xl lg:min-w-[32rem]"}
+      >
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col justify-between"
+        >
+          <p className="p-2 text-xl text-[#232323] font-semibold">
+            Rate Your Experience!
+          </p>
 
-      {/* {dataUpdate?.total > 0 ? (
-        <ServicesProgress data={servicesProgress} />
-      ) : (
-        <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
-          <img src="/images/service-prgress.svg" alt="" />
-          <p className="font-bold text-xl text-[#000000]">No Services</p>
-        </div>
-      )} */}
+          <div className="p-2 max-h-[75vh] overflow-y-auto">
+            <div className="flex justify-between items-center pb-5">
+              <label className="text-sm font-semibold text-gray-600">
+                Service Quality
+              </label>
+              <Controller
+                name="serviceQualityRating"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <div className="flex flex-col gap-4">
+                    <Rating
+                      {...field}
+                      rating={field.value}
+                      setRating={field.onChange}
+                      size={30}
+                    />
+                    {fieldState.error && (
+                      <p className="text-red-500 text-sm">
+                        {fieldState.error.message}
+                      </p>
+                    )}
+                  </div>
+                )}
+              />
+            </div>
+            <div className="flex justify-between items-center pb-5">
+              <label className="text-sm font-semibold text-gray-600">
+                Professional Behavior
+              </label>
+              <Controller
+                name="professionalBehaviourRating"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <div className="flex flex-col gap-4">
+                    <Rating
+                      {...field}
+                      rating={field.value}
+                      setRating={field.onChange}
+                      size={30}
+                    />
+                    {fieldState.error && (
+                      <p className="text-red-500 text-sm">
+                        {fieldState.error.message}
+                      </p>
+                    )}
+                  </div>
+                )}
+              />
+            </div>
+            <div className="flex justify-between items-center pb-5">
+              <label className="text-sm font-semibold text-gray-600">
+                On-Time Delivery
+              </label>
+              <Controller
+                name="onTimeDeliveryRating"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <div className="flex flex-col gap-4">
+                    <Rating
+                      {...field}
+                      rating={field.value}
+                      setRating={field.onChange}
+                      size={30}
+                    />
+                    {fieldState.error && (
+                      <p className="text-red-500 text-sm">
+                        {fieldState.error.message}
+                      </p>
+                    )}
+                  </div>
+                )}
+              />
+            </div>
+            <div className="flex justify-between items-center pb-5">
+              <label className="text-sm font-semibold text-gray-600">
+                Transparent pricing
+              </label>
+              <Controller
+                name="transparentPricingRating"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <div className="flex flex-col gap-4">
+                    <Rating
+                      {...field}
+                      rating={field.value}
+                      setRating={field.onChange}
+                      size={30}
+                    />
+                    {fieldState.error && (
+                      <p className="text-red-500 text-sm">
+                        {fieldState.error.message}
+                      </p>
+                    )}
+                  </div>
+                )}
+              />
+            </div>
+            <div className="flex justify-between items-center pb-5">
+              <label className="text-sm font-semibold text-gray-600">
+                Value for Money
+              </label>
+              <Controller
+                name="valueForMoneyRating"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <div className="flex flex-col gap-4">
+                    <Rating
+                      {...field}
+                      rating={field.value}
+                      setRating={field.onChange}
+                      size={30}
+                    />
+                    {fieldState.error && (
+                      <p className="text-red-500 text-sm">
+                        {fieldState.error.message}
+                      </p>
+                    )}
+                  </div>
+                )}
+              />
+            </div>
+            <div className="pt-4 pb-5">
+              <label
+                htmlFor="Review"
+                className="flex text-lg font-bold text-[#0A1C40]"
+              >
+                Review
+              </label>
+              <Controller
+                name="review"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <>
+                    <TextArea
+                      {...field}
+                      className="min-h-20 placeholder:text-xl border bg-white border-[#D9D9D9]"
+                      placeholder="Add Review"
+                    />
+                    {fieldState.error && (
+                      <p className="text-red-500 text-sm">
+                        {fieldState.error.message}
+                      </p>
+                    )}
+                  </>
+                )}
+              />
+            </div>
+          </div>
+
+          <div className="p-2 flex justify-end gap-4">
+            <Button
+              outline={true}
+              type="button"
+              onClick={onConfirmationModalClose}
+            >
+              Maybe Later
+            </Button>
+            <Button
+              disabled={!isValid}
+              isLoading={isRatingAdding}
+              primary={true}
+              type="submit"
+            >
+              Submit
+            </Button>
+          </div>
+        </form>
+      </ConfirmationModal>
     </>
   );
 };

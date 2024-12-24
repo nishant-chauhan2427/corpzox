@@ -210,7 +210,7 @@ export const ServicesProgress = ({ data }) => {
                       </div>
                     </div>
                     <div className="flex gap-3">
-                      {data?.ratingreviewsSize === 1 && (
+                      {data?.ratingreviewsSize === 0 && (
                         <Button
                           onClick={() =>
                             onConfirmationModalOpen(
@@ -254,6 +254,7 @@ export const ServicesProgress = ({ data }) => {
                         )}
                       </div>
                       <button
+                      data-tooltip-content={"Service Progress"} data-tooltip-id="my-tooltip"
                         className={`${dropdownStates === true && "rotate-180 "
                           } hidden lg:block `}
                         onClick={() => handleServiceDropdown(index)}
@@ -478,100 +479,6 @@ export const ServicesProgress = ({ data }) => {
   );
 };
 
-// const ServiceProgressCard = (
-//   data,
-//   index,
-//   dropdownStates,
-//   servicesProgessSteps
-// ) => {
-//   return (
-//     <div
-//       key={index}
-//       className="bg-[#f3f7ff] stroke-[#dfeaf2] stroke-1 px-4 py-2 rounded-md "
-//     >
-//       <div className="flex flex-col sm:flex-row items-start justify-between sm:items-center gap-2">
-//         <div className="flex flex-col gap-1">
-//           <div className="flex gap-2">
-//             <img
-//               className="w-4"
-//               src="/images/dashboard/service-progress.svg"
-//               alt=""
-//             />
-//             <NavLink
-//               to={`/payment/create/${data._id}`}
-//               className="font-semibold text-sm text-[#0A1C40]"
-//             >
-//               Service: {data?.service[0]?.name}{" "}
-//             </NavLink>
-//             <img src="/icons/dashboard/service-error.svg" width={15} alt="" />
-//           </div>
-//           <div className="flex flex-row gap-2">
-//             <h6 className="font-medium text-sm text-[#7C7D80]">
-//               <span className="font-medium text-[#0A1C40]">Business:</span>{" "}
-//               {data?.businessdetails[0]?.businessName || "------"}
-//             </h6>
-//             <p className="font-medium text-sm text-[#7C7D80]">
-//               <span className="font-medium text-[#0A1C40]">Step:</span>{" "}
-//               {data?.status}
-//             </p>
-//           </div>
-//         </div>
-//         <div className="flex gap-3">
-//           {data?.ratingreviewsSize === 0 && (
-//             <Button
-//               onClick={() =>
-//                 onConfirmationModalOpen(data?.service[0]?._id, data?._id)
-//               }
-//               className="font-medium text-[12px] text-[#0068FF] underline underline-offset-4"
-//             >
-//               Rate Your Experience
-//             </Button>
-//           )}
-
-//           <LinkButton
-//             className={"px-4 py-2 font-medium text-xs text-[#0A1C40]"}
-//             to={`/payment/create/${data._id}`}
-//             primary={true}
-//           >
-//             Avail again
-//           </LinkButton>
-//           <div className="flex items-center justify-center">
-//             {status === "Delayed" ? (
-//               <div className="flex justify-center items-center gap-1 rounded-2xl bg-[#FFDFDF] px-2 py-1 text-xs font-medium !text-[#FF3B3B] text-center">
-//                 <GoDotFill />
-//                 <p>Delayed by {delay} days</p>
-//               </div>
-//             ) : status === "On Time" ? (
-//               <div className="flex justify-center items-center gap-1 rounded-2xl bg-[#DFFFE2] px-2 py-1 text-xs font-medium text-[#037847] text-center">
-//                 <GoDotFill />
-//                 <p>On Time</p>
-//               </div>
-//             ) : (
-//               <>
-//                 <div className="flex justify-center items-center gap-1 rounded-2xl bg-[#DFFFE2] px-2 py-1 text-xs font-medium text-[#037847] text-center">
-//                   <GoDotFill />
-//                   <p>On Time</p>
-//                 </div>
-//               </>
-//             )}
-//           </div>
-//           <button
-//             className={`${
-//               dropdownStates === true && "rotate-180 "
-//             } hidden lg:block `}
-//             onClick={() => handleServiceDropdown(index)}
-//           >
-//             <GoTriangleDown size={15} />
-//           </button>
-//         </div>
-//       </div>
-//       <Dropdown
-//         isOpen={dropdownStates[index]}
-//         servicesProgessSteps={servicesProgessSteps}
-//       />
-//     </div>
-//   );
-// };
 
 const Dropdown = ({ isOpen, servicesProgessSteps }) => {
   return (
