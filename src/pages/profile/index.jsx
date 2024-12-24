@@ -15,11 +15,12 @@ const Profile = () => {
   const queryParams = new URLSearchParams(location.search);
   const searchValue = queryParams.get("search");
   console.log(business?.list?.length,"Profile Business");
-
   
 
   useEffect(() => {
-    dispatch(getUser());
+    if(!user?.email){
+      dispatch(getUser());
+    }
   }, [dispatch]);
 
   // useEffect(() => {

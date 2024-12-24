@@ -84,7 +84,10 @@ const Dashboard = () => {
     // if (storedUserInfo !== userInfo) {
     //   setUserInfo(storedUserInfo); // Update the state with new userInfo
     // }
-    dispatch(getUser()); // Dispatch the action
+    // if(!user?.email){
+
+    //   dispatch(getUser()); // Dispatch the action
+    // }
   }, [dispatch, userInfo]);
   useEffect(() => {
     dispatch(getUserBusiness({ query: searchValue ? searchValue : "" }));
