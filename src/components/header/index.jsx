@@ -155,7 +155,7 @@ useEffect(() => {
   if (!user?.profile_picture_url || !user?.name || !user?.email) {
     dispatch(getUser());
   }
-}, [dispatch, user]);
+}, []);
 
 
   return (
