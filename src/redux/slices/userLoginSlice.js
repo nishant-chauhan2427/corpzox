@@ -182,7 +182,7 @@ const userSlice = createSlice({
       .addCase(ratingReview.rejected, (state, action) => {
         state.fetching = false;
         state.error = action.payload;
-        console.log(action.dataUpdate.data, "payload data");
+        //console.log(action.dataUpdate.data, "payload data");
       })
 
       .addCase(getMoreServiceUpdate.pending, (state) => {
