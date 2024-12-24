@@ -47,7 +47,7 @@ export const Signup = () => {
 
   // Corrected handleBlur function
   const handleBlur = async (field) => {
-    console.log("field", field);
+    //console.log("field", field);
     await trigger(field); // This will trigger validation for the field that is blurred
   };
 
@@ -71,11 +71,14 @@ export const Signup = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
+    
     setIsSubmit(true);
-    if (data?.phone) {
-      data.countryCode = `+${data.phone.toString().slice(0, 2)}`;
-      data.phone = data.phone.toString().slice(2);
-    }
+    // if (data?.phone) {
+    //  // console.log(data?.phone,"data?.phone");
+    //   console.log(data?.phone,"data?.phone");
+    //   data.countryCode = `+${data.phone.toString().slice(0, 2)}`;
+    //   data.phone = +data.phone.toString().slice(2);
+    // }
     console.log(data);
     // Reset error message
     setError("");
@@ -89,10 +92,13 @@ export const Signup = () => {
     const token = await recaptchaRef.current.executeAsync().then((res) => {
       const userData = {
         ...data,
-
+        countryCode:`+${data.phone.toString().slice(0, 2)}`,
+        phone:+data.phone.toString().slice(2),
         firstName: data.full,
         recaptchaToken: res,
       };
+      // console.log("data?.phone",data?.phone);
+      // console.log(userData,"userData");
       delete userData.full;
       setEmailSignUp(data.email);
       dispatch(updateEmail(data.email));
@@ -164,7 +170,7 @@ export const Signup = () => {
                       placeholder={"Phone No."}
                       touched={true}
                       errorContent={errors?.phone?.message}
-                      //onBlur={() => handleBlur("phone")}
+                      onBlur={() => handleBlur("phone")}
                     />
                   )}
                 />
