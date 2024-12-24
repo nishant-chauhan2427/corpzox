@@ -18,7 +18,7 @@ const Profile = () => {
   
 
   useEffect(() => {
-    if(!user.email){
+    if(!user?.email){
       dispatch(getUser());
     }
   }, [dispatch]);
