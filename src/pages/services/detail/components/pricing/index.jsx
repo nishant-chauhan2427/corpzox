@@ -25,6 +25,7 @@ export const Pricing = ({ pricing = true, data, serviceId, offer }) => {
 
     return {
       label: name,
+      value: name,
       id: _id,
     };
   });
@@ -102,6 +103,7 @@ export const Pricing = ({ pricing = true, data, serviceId, offer }) => {
               options={formattedStates}
               onChange={handleStateChange}
             />
+            
           </div>
         )}
         {pricing ? (

@@ -210,7 +210,7 @@ export const ServicesProgress = ({ data }) => {
                       </div>
                     </div>
                     <div className="flex gap-3">
-                      {data?.ratingreviewsSize === 1 && (
+                      {data?.ratingreviewsSize === 0 && (
                         <Button
                           onClick={() =>
                             onConfirmationModalOpen(
@@ -254,6 +254,7 @@ export const ServicesProgress = ({ data }) => {
                         )}
                       </div>
                       <button
+                      data-tooltip-content={"Service Progress"} data-tooltip-id="my-tooltip"
                         className={`${dropdownStates === true && "rotate-180 "
                           } hidden lg:block `}
                         onClick={() => handleServiceDropdown(index)}
