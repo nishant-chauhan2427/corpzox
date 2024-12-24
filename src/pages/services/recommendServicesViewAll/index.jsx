@@ -1,7 +1,72 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Heading } from "../../../components/heading";
+import { recommendedServiceListing, removeServiceWishlist, updateServiceWishlist } from "../../../redux/actions/servicesListing-action";
+import { useDispatch, useSelector } from "react-redux";
+import { ServicesCard } from "../listing/components/servicesCard";
+import {
+  getUserServicesCatagory,
+  getUserServicesSubCatagory,
+  getUserServices,
+ 
+  updateServiceQuickWishlist,
+  getMoreUserServices,
+} from "../../../redux/actions/servicesListing-action";
+import toast from "react-hot-toast";
+import { setToggleToCheckedWishlist } from "../../../redux/slices/serviceListingSlice";
+import { ServiceCardShimmer } from "../../../components/loader/ServiceCardShimmer";
+const RecommendedServicesViewAll = ({ title = "", totalCount = 0, data = [], }) => {
+  const {
+    category,
+    subCategory,
+    loading,
+    loadingMore,
+    page,
+    limit,
+    // totalCount,
+    totalPage,
+    list,
+    wishList,
+  } = useSelector((state) => state.service);
 
-const RecommendedServicesViewAll = ({ title = "Re", totalCount = 0, data=[],  }) => {
+const [isSubmit, setIsSubmit] = useState(false);
+  const dispatch = useDispatch();
+  const { recommendedServiceList, isRecommendedServiceLoading } = useSelector(
+    (state) => state.service
+  );
+  let onClickWishList = (service) => {
+    console.log(service, "service")
+    setIsSubmit(true);
+    if (service?.wishlistCount) {
+      dispatch(removeServiceWishlist({ serviceId: service?._id }));
+    } else {
+      dispatch(updateServiceWishlist({ serviceId: service?._id }));
+    }
+  };
+  let onCheckHandler = (service) => {
+    dispatch(setToggleToCheckedWishlist(service));
+  };
+  console.log(recommendedServiceList, "recommended")
+  const formattedRecommendedServices = recommendedServiceList?.map(
+    (service) => {
+      return {
+        _id : service._id,
+        name: service.service[0]?.name ? service.service[0]?.name : "N/A",
+        details: service.service[0]?.details,
+        duration: service.service[0]?.duration,
+        cost: service.service[0]?.cost
+      };
+    }
+  );
+  useEffect(() => {
+    formattedRecommendedServices &&
+      formattedRecommendedServices.length === 0 &&
+      dispatch(recommendedServiceListing());
+  }, []);
+  useEffect(() => {
+    if (isSubmit && !wishList?.loading) {
+      toast.success(wishList?.error);
+    }
+  }, [wishList?.loading]);
   return (
     <>
       <div className="flex flex-col overflow-y-auto pb-4">
@@ -11,11 +76,11 @@ const RecommendedServicesViewAll = ({ title = "Re", totalCount = 0, data=[],  })
           </Heading>
         </div>
         <div>
-          <div
+          {/* <div
             className="grid grid-cols-1 sm:grid-cols-2 rounded-lg 
      lg:grid-cols-2 gap-4 bg-white"
           >
-            {data?.slice(0, 2).map((data, index) => (
+            {formattedRecommendedServices?.map((data, index) => (
               <button
                 key={index}
                 className="flex justify-between items-center bg-[#f3f7ff] stroke-[#dfeaf2] stroke-1 gap-2 w-full p-2 rounded-lg"
@@ -42,7 +107,21 @@ const RecommendedServicesViewAll = ({ title = "Re", totalCount = 0, data=[],  })
                 </div>
               </button>
             ))}
-          </div>
+          </div> */}
+          {
+            isRecommendedServiceLoading ? (<ServiceCardShimmer/>) : (
+              <ServicesCard
+              data={formattedRecommendedServices ? formattedRecommendedServices : []}
+              onClick={(service) => onClickWishList(service)}
+              onCheckedChange={(val) => onCheckHandler(val)}
+            />
+            )
+          }
+          <ServicesCard
+            data={formattedRecommendedServices ? formattedRecommendedServices : []}
+            onClick={(service) => onClickWishList(service)}
+            onCheckedChange={(val) => onCheckHandler(val)}
+          />
         </div>
       </div>
     </>
