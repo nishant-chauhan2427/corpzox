@@ -41,7 +41,7 @@ function FileField({ index, field, className, onChange }) {
 
 
       // Axios POST request to upload the file
-      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      const userInfo = (localStorage.getItem('userInfo'));
       const token = userInfo?.token;
       if (!token) {
         return rejectWithValue("No token found");

@@ -157,6 +157,8 @@ const userSlice = createSlice({
         state.fetching = false;
         const applicationId = action.payload.responseData?.data?.applicationId;
     
+        console.log(action.payload, "data from api")
+        console.log(JSON.parse(JSON.stringify(state.dataUpdate)), "data from state")
         // Ensure `dataUpdate` and `data` exist
         if (state.dataUpdate?.data) {
             state.dataUpdate.data = state.dataUpdate.data.map((item) => {
@@ -165,7 +167,7 @@ const userSlice = createSlice({
                     // Update ratingReviewsSize to 1 if it is 0
                     return {
                         ...item,
-                        ratingReviewsSize: 1,
+                        ratingreviewsSize: 1,
                     };
                 }
                 // Otherwise, return the item unchanged
@@ -173,7 +175,7 @@ const userSlice = createSlice({
             });
         }
     
-        console.log(state.dataUpdate?.data, "payload data");
+      
     })
     
 
