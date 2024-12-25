@@ -214,7 +214,8 @@ useEffect(() => {
             !pathname.includes("offersDetails") &&
             !pathname.includes("dashboard") && 
             !pathname.includes("payment") && 
- 
+            !pathname.includes("detail") && 
+            
             (
               <Search
                 clearSerarch={clearSearch}
