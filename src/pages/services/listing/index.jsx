@@ -18,12 +18,15 @@ import {
   removeServiceWishlist,
   updateServiceQuickWishlist,
   getMoreUserServices,
+  getInitialServicesCatagory,
+  getInitialServicesSubCatagory,
 } from "../../../redux/actions/servicesListing-action";
 import {
   setToggleToCheckedWishlist,
   resetService,
   onChangeSelectAll,
   resetCheckBox,
+
 } from "../../../redux/slices/serviceListingSlice";
 import toast from "react-hot-toast";
 import { Offers } from "../../../components/offers";
@@ -63,17 +66,33 @@ const ServicesListing = () => {
   // console.log("list", list);
   // console.log("service totalCount:", totalCount);
   // console.log("service page:", page);
-  console.log("searchValue",searchValue);
-  
+  console.log("searchValue", searchValue);
+
   useEffect(() => {
     // dispatch(resetService({}));
-    
-    category?.list &&
-      category?.list?.length === 0 &&
-      dispatch(getUserServicesCatagory({}));
-      
-  }, []);
 
+    const categoryId = searchParams.get("categoryId")
+    const subCategoryId = searchParams.get("subCategoryId");
+
+    dispatch(getInitialServicesCatagory({})).unwrap().then((res) => {
+      const data = res?.data
+      const firstCategory = data[0]._id
+      console.log(firstCategory, "data")
+
+      dispatch(getInitialServicesSubCatagory({ categoryId: firstCategory })).unwrap().then((res) => {
+        const data = res?.data;
+        const firstSubCat = data?.[0]._id
+        if (categoryId || subCategoryId) {
+          return
+        }
+        setSearchParams({ categoryId: firstCategory, subCategoryId: firstSubCat })
+      })
+    });
+
+  }, []);
+  useEffect(() => {
+    //  dispatch(clearUser())
+  }, [])
   // useEffect(() => {
   //   if (categoryId) {
   //     dispatch(getUserServicesSubCatagory({ categoryId }));
@@ -100,54 +119,54 @@ const ServicesListing = () => {
   //       });
   //   }
   // }, [dispatch, categoryId]);
-  useEffect(() => {
-    if (categoryId) {
-      // Clear only subCategoryId when categoryId changes
-      setSearchParams((prev) => {
-        const params = new URLSearchParams(prev);
-        params.delete("subCategoryId"); // Only delete subCategoryId, keep categoryId
-        params.set("categoryId", categoryId); // Always set the new categoryId
-        return params;
-      });
-  
-      dispatch(getUserServicesSubCatagory({ categoryId }))
-        .unwrap()
-        .then((response) => {
-          if (response?.data?.length > 0) {
-            const firstSubCategoryId = response?.data[0]?._id;
-  
-            // Only update subCategoryId if it was not set or changed
-            setSearchParams((prev) => {
-              const params = new URLSearchParams(prev);
-              params.set("subCategoryId", firstSubCategoryId); // Set subCategoryId to the first one
-              return params;
-            });
-  
-            setIsSubCategorySet(true);
-          } else {
-            setSearchParams((prev) => {
-              const params = new URLSearchParams(prev);
-              params.delete("subCategoryId"); // Delete subCategoryId if no sub-categories found
-              return params;
-            });
-  
-            setIsSubCategorySet(false);
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching sub-categories:", error);
-          setIsSubCategorySet(false);
-        });
-    }
-  }, [categoryId, dispatch]);
-  
-  
+  // useEffect(() => {
+  //   if (categoryId) {
+  //     // Clear only subCategoryId when categoryId changes
+  //     setSearchParams((prev) => {
+  //       const params = new URLSearchParams(prev);
+  //       params.delete("subCategoryId"); // Only delete subCategoryId, keep categoryId
+  //       params.set("categoryId", categoryId); // Always set the new categoryId
+  //       return params;
+  //     });
+
+  // dispatch(getUserServicesSubCatagory({ categoryId }))
+  //   .unwrap()
+  //   .then((response) => {
+  //     if (response?.data?.length > 0) {
+  //       const firstSubCategoryId = response?.data[0]?._id;
+
+  //       // Only update subCategoryId if it was not set or changed
+  //       setSearchParams((prev) => {
+  //         const params = new URLSearchParams(prev);
+  //         params.set("subCategoryId", firstSubCategoryId); // Set subCategoryId to the first one
+  //         return params;
+  //       });
+
+  //       setIsSubCategorySet(true);
+  //     } else {
+  //       setSearchParams((prev) => {
+  //         const params = new URLSearchParams(prev);
+  //         params.delete("subCategoryId"); // Delete subCategoryId if no sub-categories found
+  //         return params;
+  //       });
+
+  //       setIsSubCategorySet(false);
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     console.error("Error fetching sub-categories:", error);
+  //     setIsSubCategorySet(false);
+  //   });
+  // }
+  // }, [categoryId, dispatch]);
+
+
   useEffect(() => {
     if (
       categoryId &&
       subCategoryId &&
       !subCategory?.subCategoryLoading &&
-      !loading 
+      !loading
     ) {
       const search = searchParams.get("search");
       dispatch(
@@ -237,7 +256,7 @@ const ServicesListing = () => {
           ) : (
             <MainTab />
           )}
-          {subCategory?.subCategoryLoading ? (
+          {category.categoryLoading || subCategory?.subCategoryLoading ? (
             <div className="pt-4">
               <CategorySubCategoryTabLoader />
             </div>
@@ -246,7 +265,7 @@ const ServicesListing = () => {
           )}
         </div>
         <>
-          {loading ? (
+          {category.categoryLoading || subCategory?.subCategoryLoading || loading ? (
             <div className="py-4 grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-4">
               {Array.from({ length: 9 }).map((_, index) => (
                 <div key={index}>
@@ -266,7 +285,7 @@ const ServicesListing = () => {
               }
               endMessage={
                 totalCount &&
-                totalCount > 0 && list?.length>6 && (
+                totalCount > 0 && list?.length > 6 && (
                   <p className="text-center py-4">
                     <b>Yay! You have seen it all</b>
                   </p>
