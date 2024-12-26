@@ -53,6 +53,7 @@ export const Signup = () => {
 
   const googleLogin = (data) => {
     setIsSubmit(true);
+    console.log(data,"GOOGLE");
     dispatch(
       thirdPartyLogin({
         email: data?.profileObj?.email,
@@ -60,6 +61,7 @@ export const Signup = () => {
         profilePicture: data?.profileObj?.imageUrl,
       })
     );
+   // setIsSubmit(false);
     reset();
   };
 
