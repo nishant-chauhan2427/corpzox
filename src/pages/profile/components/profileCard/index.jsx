@@ -6,7 +6,7 @@ import { Heading } from "../../../../components/heading";
 import { BusinessCardShimmer } from "../../../../components/loader/BusinessCardShimmer";
 import { useSelector } from "react-redux";
 const ProfileCard = ({ userData, loading }) => {
-  // console.log(userData, "userData123")
+   console.log(userData, "userData123")
   const { user } = useSelector((state) => state.user);
   return (
     <>

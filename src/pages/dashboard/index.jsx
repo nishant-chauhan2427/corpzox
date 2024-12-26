@@ -74,9 +74,11 @@ const Dashboard = () => {
       };
     }
   );
+
+ 
   useEffect(() => {
     dispatch(updateServiveProgress({ page: 1 }));
-  }, [url, dispatch]);
+  }, [dispatch]);
 
   useEffect(() => {
     const storedUserInfo = localStorage.getItem("userInfo");
