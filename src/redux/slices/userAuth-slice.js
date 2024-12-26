@@ -116,6 +116,7 @@ const authSlice = createSlice({
       state.loginMessage=initialState.loginMessage;
     }).addCase(thirdPartyLogin.fulfilled, (state, action) => {
       state.isLoggingIn = false;
+      //console.log(action.payload.data,"GOGGLE PAYLOAD");
       state.profile = action.payload.data?.[0];
       state.error = "";
       state.loginMessage = action.payload.message;
