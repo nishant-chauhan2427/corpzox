@@ -151,6 +151,7 @@ const Edit = () => {
 
         setIsSaving(false);
         await dispatch(submitEditProfile({ formData: profileFormData, navigate }));
+        dispatch(getUser())
         //setIsSaving(false);
       }
       setImageSelected(false);
