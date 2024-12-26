@@ -159,12 +159,12 @@ export const getRatingReviews = createAsyncThunk(
 
 
 
-export const updateServiveProgress = createAsyncThunk("updateServiveProgress", async ({ page ,businessId}, { rejectWithValue }) => {
+export const updateServiveProgress = createAsyncThunk("updateServiveProgress", async ({ page ,businessId,query}, { rejectWithValue }) => {
   try {
     let params = new URLSearchParams();
     if (page) params.append('page', page);
     if(businessId) params.append('businessId',businessId);
-    // if(query) params.append('query',query);
+    if(query) params.append('query',query);
     // if(categoryId) params.append('categoryId',categoryId);
     // if(subCategoryId) params.append('subCategoryId',subCategoryId);
     const response = await client.get(`/user/service-progress-update${(params) && `?${params}`}`, {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios'; // Import Axios
 import client from '../../redux/axios-baseurl';
+import toast from 'react-hot-toast';
 
 function FileField({ index, field, className, onChange }) {
   const { lebel, isRequired } = field;
@@ -43,8 +44,12 @@ function FileField({ index, field, className, onChange }) {
       // Axios POST request to upload the file
       const userInfo = (localStorage.getItem('userInfo'));
       const token = userInfo?.token;
+      console.log("token",token);
+      
       if (!token) {
-        return rejectWithValue("No token found");
+        // return rejectWithValue("No token found");
+        toast.error("Token not found");
+        return ;
       }
 
       const response = await client.put('/user/auth/upload-file', formData, {

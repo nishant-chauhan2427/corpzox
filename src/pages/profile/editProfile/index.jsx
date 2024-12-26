@@ -84,11 +84,17 @@ const Edit = () => {
     if (imageFile) {
       formData.append("profilePicture", imageFile);
     }
+    console.log(data.fullName,"fullName");
     formData.append("firstName", data.fullName);
+   
     formData.append("businessEmail", data.businessEmail);
+    console.log(data,"full1");
+    console.log(formData,"full2");
 
     setIsSaving(true);
     await dispatch(submitEditProfile({ formData, navigate }));
+    dispatch(getUser())
+    console.log(data,"full3");
     setIsSaving(false);
   };
 
@@ -145,6 +151,7 @@ const Edit = () => {
 
         setIsSaving(false);
         await dispatch(submitEditProfile({ formData: profileFormData, navigate }));
+        dispatch(getUser())
         //setIsSaving(false);
       }
       setImageSelected(false);
