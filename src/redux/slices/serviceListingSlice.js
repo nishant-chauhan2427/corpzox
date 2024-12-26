@@ -102,9 +102,24 @@ const serviceListingSlice = createSlice({
       state.wishList.list=[];
 
     },
-    // clearUser(state) {
-    //     state.user = null;
-    // },
+    clearUser(state) {
+      state.list =  [],
+      state.totalCount= 0,
+      state.category= {
+        list: [], 
+        total: 0,
+        categoryLoading: false,
+        categoryError: null,
+        selectedCategory: null,
+      },
+      state.subCategory= {
+        list: [],
+        total: 0,
+        subCategoryLoading: false,
+        subCategoryError: null,
+        selectedSubCategory: null,
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -313,7 +328,7 @@ const serviceListingSlice = createSlice({
 });
 
 // Export actions
-export const { setSelectedCategory, setSelectedSubCategory,setToggleToCheckedWishlist,onChangeSelectAll,resetService,updateServiceWishlistFlag,resetCheckBox } =
+export const { setSelectedCategory,clearUser, setSelectedSubCategory,setToggleToCheckedWishlist,onChangeSelectAll,resetService,updateServiceWishlistFlag,resetCheckBox } =
   serviceListingSlice.actions;
 
 // Export the reducer

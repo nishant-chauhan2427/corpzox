@@ -202,3 +202,49 @@ export const recommendedServiceListing = createAsyncThunk("recommendedServiceLis
         return rejectWithValue(error?.response?.data?.message || error?.message);
     }
 });
+
+
+export const getInitialServicesCatagory = createAsyncThunk("getUserServicesCatagory", async ({page,sort_by,query,categoryId,subCategoryId}, { rejectWithValue }) => {
+    try {
+        const response = await client.get(`/user/service-category`,{
+            params: { active: true }, 
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+            },
+          });
+        //   console.log("API CALLLLLIIIINNNGGGG")
+      //  console.log(response,'service-category..');
+        if(response?.data?.code==200||response?.data?.code==201){
+            return response.data;
+        }else{
+            return rejectWithValue(response?.data?.message);            
+        }
+    } catch (error) {
+        return rejectWithValue(error?.response?.data?.message || error?.message);
+    }
+});
+
+
+  
+export const getInitialServicesSubCatagory = createAsyncThunk("getUserSubServicesCatagory", async ({categoryId}, { rejectWithValue }) => {
+    try {
+        const response = await client.get(`/user/service-sub-category?sectionId=${categoryId}`,{
+            params: { active: true }, 
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+            },
+          });
+     //   console.log(response,'service-subcategory..');
+        if(response?.data?.code==200||response?.data?.code==201){
+            return response.data;
+        }else{
+            return rejectWithValue(response?.data?.message);            
+        }
+    } catch (error) {
+        return rejectWithValue(error?.response?.data?.message || error?.message);
+    }
+});

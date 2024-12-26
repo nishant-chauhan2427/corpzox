@@ -44,6 +44,7 @@ export const updateProfilePicture = createAsyncThunk(
         });
 
         console.log(response, "edit response");
+       
         return response.data;  // Return the response data
     } catch (error) {
         console.log("Error", error.response);

@@ -99,7 +99,6 @@ const History = () => {
     setConfirmationModal(true);
   };
   const handleTalkTouOurAdvisors = (serviceId) => {
-    console.log(serviceId, "clicked");
     const requestData = {
       userId: JSON.parse(localStorage.getItem("userInfo"))?.userId,
       serviceId: serviceId,
@@ -119,7 +118,7 @@ const History = () => {
         <Button primary={false} onClick={() => openViewTransactionDetails(_id)}>
           <img src="/icons/payment/print.svg" alt="" />
         </Button>
-        <Button primary={false} onClick={() => openCallToAdvisor(id)}>
+        <Button isLoading={isTalkToAdvisorLoading} primary={false} onClick={() => handleTalkTouOurAdvisors(id)}>
           <img src="/icons/payment/calling.svg" alt="" />
         </Button>
       </div>
@@ -213,108 +212,108 @@ const History = () => {
         onClose={onViewTransactionClose}
         modalClassName={" d"}
       >
-        <div ref={contentRef} className="py-4 flex flex-col justify-between">
-          <div className="pb-4 border-b flex justify-center">
-            <img src="/public/Corpzo-logo-Modal.svg" width={150} alt="" />
-          </div>
-          <div className="max-h-[60vh] overflow-y-auto p-4 flex flex-col gap-2">
-            <div className="flex flex-row justify-between gap-2 pb-8 pt-4">
-              <p className="font-semibold text-base  text-[#525252] ">
-                Invoice Number -{" "}
-                <span className="font-semibold text-base text-[#0A1C40]">
-                  {transactionDetails?.invoiceNumber}
-                </span>
-              </p>
-              <p className="font-semibold text-base  text-[#525252] flex gap-2 ">
-                Date of issue:
-                <span className="font-semibold text-base text-[#0A1C40]">
-                  {formatReadableDate(transactionDetails?.paymentDate)}
-                </span>
-              </p>
+          <div ref={contentRef} className="py-4 flex flex-col justify-between">
+            <div className="pb-4 border-b flex justify-center">
+              <img src="/public/Corpzo-logo-Modal.svg" width={150} alt="" />
             </div>
-            <div className="pt-1">
-              <div className="flex justify-between gap-2">
-                <p className="font-semibold text-base  text-[#525252] flex  gap-4 ">
-                  Your order id
+            <div className="max-h-[60vh] overflow-y-auto p-4 flex flex-col gap-2">
+              <div className="flex flex-row justify-between gap-2 pb-8 pt-4">
+                <p className="font-semibold text-base  text-[#525252] ">
+                  Invoice Number -{" "}
                   <span className="font-semibold text-base text-[#0A1C40]">
-                    {transactionDetails?.transactionId}
+                    {transactionDetails?.invoiceNumber}
                   </span>
                 </p>
-                <p className="font-semibold text-base  text-[#525252]  text-start ">
-                  Billed To: <br />
+                <p className="font-semibold text-base  text-[#525252] flex gap-2 ">
+                  Date of issue:
                   <span className="font-semibold text-base text-[#0A1C40]">
-                    CorpZo Pvt. Ltd.
+                    {formatReadableDate(transactionDetails?.paymentDate)}
                   </span>
                 </p>
               </div>
-              <div className="flex justify-between ">
-                <p className="font-semibold text-base  text-[#525252] flex gap-4">
-                  Payment method
-                  <span className="font-semibold text-base text-[#0A1C40]">
-                    {transactionDetails?.paymentMode}
-                  </span>
-                </p>
-                <p></p>
+              <div className="pt-1">
+                <div className="flex justify-between gap-2">
+                  <p className="font-semibold text-base  text-[#525252] flex  gap-4 ">
+                    Your order id
+                    <span className="font-semibold text-base text-[#0A1C40]">
+                      {transactionDetails?.transactionId}
+                    </span>
+                  </p>
+                  <p className="font-semibold text-base  text-[#525252]  text-start ">
+                    Billed To: <br />
+                    <span className="font-semibold text-base text-[#0A1C40]">
+                      CorpZo Pvt. Ltd.
+                    </span>
+                  </p>
+                </div>
+                <div className="flex justify-between ">
+                  <p className="font-semibold text-base  text-[#525252] flex gap-4">
+                    Payment method
+                    <span className="font-semibold text-base text-[#0A1C40]">
+                      {transactionDetails?.paymentMode}
+                    </span>
+                  </p>
+                  <p></p>
+                </div>
               </div>
-            </div>
-            <div className="flex justify-between pt-8">
-              <p className="font-semibold text-base  text-[#525252] ">
-                Description
-              </p>
-              <p className="font-semibold text-base  text-[#525252] ">Amount</p>
-            </div>
-            <hr />
-            <div className="flex justify-between">
-              <p className="font-semibold text-base  text-[#0A1C40] ">Amount</p>
-              <p className="font-semibold text-base  text-[#0A1C40] ">
-                ₹ {transactionDetails?.serviceDetails?.cost}
-              </p>
-            </div>
-            {transactionDetails?.serviceappliedcouponandoffers && transactionDetails?.totalCouponDiscount > 0 && (
+              <div className="flex justify-between pt-8">
+                <p className="font-semibold text-base  text-[#525252] ">
+                  Description
+                </p>
+                <p className="font-semibold text-base  text-[#525252] ">Amount</p>
+              </div>
+              <hr />
               <div className="flex justify-between">
+                <p className="font-semibold text-base  text-[#0A1C40] ">Amount</p>
                 <p className="font-semibold text-base  text-[#0A1C40] ">
-                  Discount Amount
+                  ₹ {transactionDetails?.serviceDetails?.cost}
+                </p>
+              </div>
+              {transactionDetails?.serviceappliedcouponandoffers && transactionDetails?.totalCouponDiscount > 0 && (
+                <div className="flex justify-between">
+                  <p className="font-semibold text-base  text-[#0A1C40] ">
+                    Discount Amount
+                  </p>
+                  <p className="font-semibold text-base text-[#0A1C40]">
+                    {transactionDetails?.totalCouponDiscount
+                      ? transactionDetails?.totalCouponDiscount
+                      : 0}
+                  </p>
+                </div>
+              )}
+              <div className="flex justify-between bg-[#FFF4BA]  px-2 py-1">
+                <p className="font-semibold text-base  text-[#0A1C40] ">
+                  Total amount paid
                 </p>
                 <p className="font-semibold text-base text-[#0A1C40]">
-                  {transactionDetails?.totalCouponDiscount
-                    ? transactionDetails?.totalCouponDiscount
-                    : 0}
+                  {/* ₹{
+                  Array.isArray(transactionDetails?.serviceappliedcouponandoffers) &&
+                    transactionDetails?.serviceappliedcouponandoffers.length > 0
+                    ? transactionDetails?.serviceappliedcouponandoffers[0]?.amount
+                    : transactionDetails?.amount
+                } */}
+                  ₹ {transactionDetails?.amount}
                 </p>
               </div>
-            )}
-            <div className="flex justify-between bg-[#FFF4BA]  px-2 py-1">
-              <p className="font-semibold text-base  text-[#0A1C40] ">
-                Total amount paid
-              </p>
-              <p className="font-semibold text-base text-[#0A1C40]">
-                {/* ₹{
-                Array.isArray(transactionDetails?.serviceappliedcouponandoffers) &&
-                  transactionDetails?.serviceappliedcouponandoffers.length > 0
-                  ? transactionDetails?.serviceappliedcouponandoffers[0]?.amount
-                  : transactionDetails?.amount
-              } */}
-                ₹ {transactionDetails?.amount}
-              </p>
+            </div>
+            <div className="print:hidden pt-4 border-t flex justify-center gap-2">
+              <Button outline={true} onClick={reactToPrintFn}>
+                {" "}
+                <img src="/public/icons/payment/print.svg" alt="" />
+                Print
+              </Button>
+              <Button
+                primary={true}
+                // onClick={() => downloadTransaction(transactionDetails && transactionDetails._id)}
+                isLoading={childLoading[transactionDetails && transactionDetails._id]}
+                onClick={() => downloadTransaction(transactionDetails._id)}
+              >
+                {" "}
+                <img src="/public/icons/payment/download.svg" alt="" />
+                Download
+              </Button>
             </div>
           </div>
-          <div className="print:hidden pt-4 border-t flex justify-center gap-2">
-            <Button outline={true} onClick={reactToPrintFn}>
-              {" "}
-              <img src="/public/icons/payment/print.svg" alt="" />
-              Print
-            </Button>
-            <Button
-              primary={true}
-              // onClick={() => downloadTransaction(transactionDetails && transactionDetails._id)}
-              isLoading={childLoading[transactionDetails && transactionDetails._id]}
-              onClick={() => downloadTransaction(transactionDetails._id)}
-            >
-              {" "}
-              <img src="/public/icons/payment/download.svg" alt="" />
-              Download
-            </Button>
-          </div>
-        </div>
       </ConfirmationModal>
     </>
   );

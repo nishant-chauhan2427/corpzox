@@ -28,6 +28,7 @@ import { ConfirmationModal } from "../modal/confirmationModal";
 import { persistor } from "../../redux/store";
 import { clearDocumentList } from "../../redux/slices/documentSlice";
 import { getUser } from "../../redux/actions/dashboard-action";
+import { Tooltip } from "../tooltip";
 
 export const Header = ({ className, collapse, setCollapse }) => {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
@@ -154,7 +155,7 @@ useEffect(() => {
   if (!user?.profile_picture_url || !user?.name || !user?.email) {
     dispatch(getUser());
   }
-}, [dispatch, user]);
+}, []);
 
 
   return (
@@ -213,7 +214,8 @@ useEffect(() => {
             !pathname.includes("offersDetails") &&
             !pathname.includes("dashboard") && 
             !pathname.includes("payment") && 
- 
+            !pathname.includes("detail") && 
+            
             (
               <Search
                 clearSerarch={clearSearch}
@@ -248,8 +250,8 @@ useEffect(() => {
             {/* <FullScreenButton /> */}
             {/* <Notification /> */}
             <Link to={"/wishlist"}>
-              <IconWrapper>
-                <img src="/icons/header/heart.svg" alt="" />
+              <IconWrapper data-tooltip-content={"Wishlist"} data-tooltip-id="my-tooltip">
+                <img  src="/icons/header/heart.svg" alt="" />
               </IconWrapper>
             </Link>
             <div className="flex relative gap-2">

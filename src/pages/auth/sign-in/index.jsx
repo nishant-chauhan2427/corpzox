@@ -76,7 +76,7 @@ export const SignIn = () => {
     const token = await recaptchaRef.current.executeAsync().then((res) => {
       console.log("check response ", res);
       data = { ...data, recaptchaToken: res, userType: "end_user" };
-      console.log(data, "data from form");
+      //console.log(data, "data from form");
       dispatch(loginUser(data));
     });
     dispatch(setRedirectTo("verify"))
@@ -209,7 +209,9 @@ export const SignIn = () => {
                 className={
                   "mt-2 py-3 w-full rounded-lg text-[#0A1C40] font-semibold !border-none "
                 }
+                disabled={!isValid}
                 isLoading={isSubmit}
+
               >
                 {phoneRegex.test(emailOrPhone)
                   ? "Get an OTP on your Phone No."
