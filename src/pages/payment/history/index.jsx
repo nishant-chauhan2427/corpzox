@@ -118,9 +118,9 @@ const History = () => {
         <Button primary={false} onClick={() => openViewTransactionDetails(_id)}>
           <img src="/icons/payment/print.svg" alt="" />
         </Button>
-        <Button isLoading={isTalkToAdvisorLoading} primary={false} onClick={() => handleTalkTouOurAdvisors(id)}>
+        {/* <Button isLoading={isTalkToAdvisorLoading} primary={false} onClick={() => handleTalkTouOurAdvisors(id)}>
           <img src="/icons/payment/calling.svg" alt="" />
-        </Button>
+        </Button> */}
       </div>
     );
   };
