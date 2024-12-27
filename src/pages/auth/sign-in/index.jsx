@@ -30,7 +30,7 @@ export const SignIn = () => {
     watch,
   } = useForm({
     resolver: yupResolver(signinValidationSchema),
-    mode: "onSubmit",
+    mode: "onChange",
   });
   const recaptchaRef = useRef(null);
   const RECAPTCHA_SITE_KEY = "6LemSE0qAAAAADhn4nN770nVLBJxAGRz_LoFXP6h";
@@ -149,7 +149,8 @@ export const SignIn = () => {
                     placeholder="Email Id / Phone No."
                     className="border-[#D9D9D9] border"
                     errorContent={errors?.email?.message}
-                    maxLength={50}
+                   // maxLength={50}
+                    maxLength={phoneRegex.test(emailOrPhone) ? 10 : 50}
                   />
                 )}
               />
@@ -209,7 +210,7 @@ export const SignIn = () => {
                 className={
                   "mt-2 py-3 w-full rounded-lg text-[#0A1C40] font-semibold !border-none "
                 }
-                //disabled={!isValid}
+                disabled={!isValid}
                 isLoading={isSubmit}
 
               >

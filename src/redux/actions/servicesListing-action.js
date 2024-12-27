@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import client from "../axios-baseurl";
+import toast from "react-hot-toast";
 
 export const getUserServicesCatagory = createAsyncThunk("getUserServicesCatagory", async ({page,sort_by,query,categoryId,subCategoryId}, { rejectWithValue }) => {
     try {
@@ -173,6 +174,7 @@ export const updateServiceQuickWishlist = createAsyncThunk("updateServiceQuickWi
           });
         // console.log(response,'services12..');
         if(response?.data?.code==200||response?.data?.code==201){
+            toast.success(response?.data?.message)
             return response.data;
         }else{
             return rejectWithValue(response?.data?.message);            

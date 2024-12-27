@@ -44,7 +44,8 @@ export const signinValidationSchema = Yup.object().shape({
   email: Yup.string()
       .test('email-or-phone', 'Invalid email or phone number', (value) => {
           const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-          const phoneRegex = /^\d{10}$/;  
+          const phoneRegex = /^[6-9]\d{9}$/;  
+          
           return emailRegex.test(value) || phoneRegex.test(value);
       })
       .required('Email or Phone number is required'),  
