@@ -27,8 +27,10 @@ export const ServicesCard = ({
   );
   const { isAdding } = useSelector((state) => state.service);
   const { wishList } = useSelector((state) => state.service);
+  
 
   const { list } = useSelector((state) => state.service);
+  console.log(data,"Wishlist STATE");
   const [selectAllChecked, setSelectAllChecked] = useState(false);
 
   // console.log("selectAllChecked",selectAllChecked);
@@ -52,12 +54,13 @@ export const ServicesCard = ({
     }
     //after succes, update service.wishlistCount = 1, in service store/state to avoid refresh
 
-    console.log(wishlistSelectedData?.length, "wishlistSelectedData");
-    if (wishlistSelectedData?.length > 0) {
-      toast.success("Wishlist Created");
-    } else {
-      toast.error("Please select at least one service");
-    }
+    // console.log(wishlistSelectedData?.length, "wishlistSelectedData");
+    // if (wishlistSelectedData?.length > 0) {
+    //   //toast.success("Wishlist Created");
+    //   //toast.success(wishList?.error);
+    // } else {
+    //   toast.error("Please select at least one service");
+    // }
   };
 
   const onChangeSelectAllHandler = () => {
@@ -199,7 +202,7 @@ export const ServicesCard = ({
                     <img src="/icons/wishlist/grey-heart.svg" alt="Red Heart" />
                   ) : (
                     <button
-                    data-tooltip-content={ service.wishlistCount === 1 ? "Remove From WishList" : "Add to WishList"} data-tooltip-id="my-tooltip"
+                    data-tooltip-content={ service.wishlistCount === 1 || service.servicewishlistsSize ===1? "Remove From WishList" : "Add to WishList"} data-tooltip-id="my-tooltip"
                       onClick={() => {
                         onClick(service);
                       }}
@@ -209,8 +212,8 @@ export const ServicesCard = ({
                           src="/icons/wishlist/red-heart.svg"
                           alt="Red Heart"
                         />
-                      ) : service?.wishlistCount &&
-                        service.wishlistCount === 1 ? (
+                      ) : (service?.wishlistCount || service?.servicewishlistsSize)&&
+                        (service.wishlistCount === 1 || service.servicewishlistsSize ===1)? (
                         <img
                           src="/icons/wishlist/red-heart.svg"
                           alt="Red Heart"

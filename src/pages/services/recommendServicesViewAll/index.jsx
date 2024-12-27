@@ -33,27 +33,39 @@ const [isSubmit, setIsSubmit] = useState(false);
   const { recommendedServiceList, isRecommendedServiceLoading } = useSelector(
     (state) => state.service
   );
+  
+  useEffect(() => {
+    if (isSubmit && !wishList?.loading) {
+      toast.success(wishList?.error);
+    }
+  }, [wishList?.loading]);
+
   let onClickWishList = (service) => {
-    console.log(service, "service")
     setIsSubmit(true);
-    if (service?.wishlistCount) {
+    console.log(service?.servicewishlistsSize,"service?.servicewishlistsSize");
+    if (service?.servicewishlistsSize) {
       dispatch(removeServiceWishlist({ serviceId: service?._id }));
     } else {
       dispatch(updateServiceWishlist({ serviceId: service?._id }));
     }
   };
+
+
   let onCheckHandler = (service) => {
     dispatch(setToggleToCheckedWishlist(service));
   };
+  
+  
   console.log(recommendedServiceList, "recommended")
   const formattedRecommendedServices = recommendedServiceList?.map(
     (service) => {
       return {
         _id : service._id,
         name: service.service[0]?.name ? service.service[0]?.name : "N/A",
-        details: service.service[0]?.details,
-        duration: service.service[0]?.duration,
-        cost: service.service[0]?.cost
+        details: service?.service[0]?.details,
+        duration: service?.service[0]?.duration,
+        cost: service?.service[0]?.cost,
+        servicewishlistsSize : service?.service[0]?.servicewishlistsSize
       };
     }
   );
@@ -62,11 +74,7 @@ const [isSubmit, setIsSubmit] = useState(false);
       formattedRecommendedServices.length === 0 &&
       dispatch(recommendedServiceListing());
   }, []);
-  useEffect(() => {
-    if (isSubmit && !wishList?.loading) {
-      toast.success(wishList?.error);
-    }
-  }, [wishList?.loading]);
+ 
   return (
     <>
       <div className="flex flex-col overflow-y-auto pb-4">
@@ -117,11 +125,11 @@ const [isSubmit, setIsSubmit] = useState(false);
             />
             )
           }
-          <ServicesCard
+          {/* <ServicesCard
             data={formattedRecommendedServices ? formattedRecommendedServices : []}
             onClick={(service) => onClickWishList(service)}
             onCheckedChange={(val) => onCheckHandler(val)}
-          />
+          /> */}
         </div>
       </div>
     </>

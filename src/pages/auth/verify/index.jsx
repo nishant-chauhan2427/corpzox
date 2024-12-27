@@ -74,44 +74,56 @@ const subHeading = isEmail
     const enteredOtp = otp.join("");
     setIsVerify(true);
     dispatch(verifyUser({ otp: enteredOtp, id: profile?.[0]?.id }));
-  };useEffect(() => {
-    if (isVerify && !isVerifying) {
-      setIsVerify(false);
+  };
   
-      // Handle verification error or success
-      if (verifyingError) {
-        setOtpMessage(verifyingError);
-      } else {
-        if (profileEmail || profilePhone) {
-          // User is signing in (email or phone exists)
-          toast.success("Successfully signed in!");
-        } else {
-          // User is signing up (no email or phone exists)
-          toast.success("Welcome to CorpZo!");
-        }
-        navigate("/dashboard");
-      }
-    }
-  }, [isVerifying, verifyingError, profileEmail, profilePhone, navigate]);
-  
-  
-
   // useEffect(() => {
   //   if (isVerify && !isVerifying) {
   //     setIsVerify(false);
+  
+  //     // Handle verification error or success
   //     if (verifyingError) {
   //       setOtpMessage(verifyingError);
   //     } else {
-  //       if(profileEmail)
-  //       {
-  //       toast.success(verifyMessage);}
-  //       else{
-  //       toast.success("Welcome to CorpZo !");}
+  //       if (email) {
+  //         // User is signing in (email or phone exists)
+  //         toast.success("Welcome to CorpZo!");
+  //       } else {
+  //         // User is signing up (no email or phone exists)
+  //         toast.success("Welcome to CorpZo!");
+  //       }
   //       navigate("/dashboard");
   //     }
   //   }
-  // }, [isVerifying]);
+  // }, [isVerifying, verifyingError, profileEmail, profilePhone, navigate]);
+  
+  
+console.log(email, "Signup Email");  
+console.log(profile?.[0], "Signup Email1");  
 
+useEffect(() => {
+ 
+  if (isVerify && !isVerifying) {
+    setIsVerify(false);  
+
+    
+    if (verifyingError) {
+      setOtpMessage(verifyingError); 
+    } else {
+      
+      if (profileEmail) {
+        toast.success(verifyMessage); 
+      } else {
+        
+        toast.success("Welcome to CorpZo !"); 
+      }
+
+      
+      navigate("/dashboard");
+    }
+  }
+}, [isVerifying, isVerify, verifyingError, email, verifyMessage]);  // Ensure all relevant variables are included as dependencies
+
+console.log("SignUp Email Over");
   useEffect(() => {
     setTimeout(() => {
       setOtpMessage("");
