@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import client from "../axios-baseurl";
+import toast from "react-hot-toast";
 
 export const loginUser = createAsyncThunk("loginUser", async (authInfo, { rejectWithValue }) => {
     try {

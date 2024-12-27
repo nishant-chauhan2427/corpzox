@@ -33,6 +33,7 @@ import { Heading } from "../../components/heading";
 import { ServiceProgressShimmer } from "../../components/loader/ServiceProgressShimmer";
 import { DashboardProfileCardShimmer } from "../../components/loader/DashboardProfileCardShimmer";
 import { BusinessCardShimmer } from "../../components/loader/BusinessCardShimmer";
+import toast from "react-hot-toast";
 
 const Dashboard = () => {
   const [accountShowButton, setAccountShowButton] = useState(false);
@@ -74,7 +75,7 @@ const Dashboard = () => {
       };
     }
   );
-
+  //toast.success("Welcome to CorpZo !");
  
   useEffect(() => {
     dispatch(updateServiveProgress({ page: 1 }));

@@ -74,19 +74,43 @@ const subHeading = isEmail
     const enteredOtp = otp.join("");
     setIsVerify(true);
     dispatch(verifyUser({ otp: enteredOtp, id: profile?.[0]?.id }));
-  };
-
-  useEffect(() => {
+  };useEffect(() => {
     if (isVerify && !isVerifying) {
       setIsVerify(false);
+  
+      // Handle verification error or success
       if (verifyingError) {
         setOtpMessage(verifyingError);
       } else {
-        toast.success(verifyMessage);
+        if (profileEmail || profilePhone) {
+          // User is signing in (email or phone exists)
+          toast.success("Successfully signed in!");
+        } else {
+          // User is signing up (no email or phone exists)
+          toast.success("Welcome to CorpZo!");
+        }
         navigate("/dashboard");
       }
     }
-  }, [isVerifying]);
+  }, [isVerifying, verifyingError, profileEmail, profilePhone, navigate]);
+  
+  
+
+  // useEffect(() => {
+  //   if (isVerify && !isVerifying) {
+  //     setIsVerify(false);
+  //     if (verifyingError) {
+  //       setOtpMessage(verifyingError);
+  //     } else {
+  //       if(profileEmail)
+  //       {
+  //       toast.success(verifyMessage);}
+  //       else{
+  //       toast.success("Welcome to CorpZo !");}
+  //       navigate("/dashboard");
+  //     }
+  //   }
+  // }, [isVerifying]);
 
   useEffect(() => {
     setTimeout(() => {
