@@ -68,7 +68,7 @@ export const forgotPasswordSchema = Yup.object().shape({
         /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,  // Replace 'example.com' with your domain
         'Invalid email address'
     )
-    .max(25)
+    .max(50, 'Email cannot exceed 50 characters')
     .required('Email is required'),  // Ensure email is not empty
 });
 export const createNewPasswordSchema = Yup.object().shape({
