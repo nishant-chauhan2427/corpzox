@@ -86,7 +86,7 @@ export const Details = ({
         <p className="font-semibold text-3xl uppercase text-[#0A1C40]">
           {data?.name}
         </p>
-        <p className="font-medium text-sm text-[#0A1C40]">{data?.details}</p>
+        <p className="font-medium text-sm text-[#0A1C40]" dangerouslySetInnerHTML={{__html : data?.about}}></p>
       </div>
       <div className="pt-4 flex flex-col md:flex-row items-center gap-4">
         {!pricing && (
@@ -226,7 +226,7 @@ export const Details = ({
         {pricing && (
           <div className="w-full md:w-2/5 bg-[#EEEFF3] box-sg rounded-lg px-5 py-6 gap-2 flex flex-col">
             {serviceDetailLoading ? (
-              <ServiceDetailPricingShimmer/>
+              <ServiceDetailPricingShimmer />
             ) : (
               <>
                 <div>
@@ -244,13 +244,13 @@ export const Details = ({
                     </p>
                   )}
                 </div>
-                <div className="py-2">
+                {/* <div className="py-2">
                   <p className="font-bold text-base text-[#0A1C40]">What’s Included</p>
-                  <p className="text-[11px] text-[#0A1C40]">{data?.about}</p>
-                </div>
+                  <p className="text-[11px] text-[#0A1C40]" dangerouslySetInnerHTML={{__html : data?.about}}></p>
+                </div> */}
                 <div className="py-2">
                   <p className="font-bold text-xs text-[#0A1C40]">Service Details</p>
-                  <p className="text-[11px] text-[#0A1C40]">{data?.details}</p>
+                  <p className="text-[11px] text-[#0A1C40]" dangerouslySetInnerHTML={{__html : data?.details}}></p>
                 </div>
                 <div className="py-4 flex justify-between items-center">
                   {ratingDetails && (
