@@ -117,6 +117,7 @@ export const Signup = () => {
     if (!isRegistering && isSubmit) {
       setIsSubmit(false);
       if (registeringError) {
+        toast.dismiss();
         toast.error(registeringError);
       } else {
         // reset();
@@ -258,7 +259,7 @@ export const Signup = () => {
                             alt="Google Logo"
                             className="w-5 h-5"
                           />
-                          Sign in with Google
+                          Sign Up with Google
                         </button>
                       )}
                     />

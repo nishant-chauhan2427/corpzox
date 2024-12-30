@@ -62,7 +62,7 @@ export const SignIn = () => {
 
   const onSubmit = async (data) => {
     setIsSubmit(true);
-
+console.log(data,"Data SIGNIN");
     // Check if the input is a phone number or email
     const isPhoneNumber = phoneRegex.test(emailOrPhone);
     if (isPhoneNumber) {
@@ -215,7 +215,7 @@ export const SignIn = () => {
 
               >
                 {phoneRegex.test(emailOrPhone)
-                  ? "Get an OTP on your Phone No."
+                  ? "Sign in"
                   : "Sign in"}
               </Button>
 
@@ -250,7 +250,7 @@ export const SignIn = () => {
               </div>
               <div className="text-center flex justify-center gap-2 font-normal text-[#6C6C6C]">
                 <p>
-                  Need an account?
+                Don’t have an account yet?
                   <Link
                     to={"/sign-up"}
                     className="p-2 text-[#F1359C] font-semibold "

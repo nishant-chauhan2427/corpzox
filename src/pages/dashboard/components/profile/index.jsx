@@ -8,6 +8,7 @@ import "react-circular-progressbar/dist/styles.css";
 
 export const Profile = ({ user = {} }) => {
   const [percentage, setPercentage] = useState(0);
+  const [missingData, setMissingData] = useState([]); 
   // const calculatePercentage = (data) => {
   //   try {
   //     const totalProperties = Object.keys(data[0])?.length; // Total number of properties
@@ -56,6 +57,7 @@ export const Profile = ({ user = {} }) => {
   
   let calculatePercentageHandler = () => {
     let count = 0;  
+    let missingFields = [];
     console.log(user, "Percentage");
   
     Object.keys(user).forEach((data) => {
@@ -63,12 +65,19 @@ export const Profile = ({ user = {} }) => {
         count++;  
       }
     });
+
+    fieldsKey.forEach((field) => {
+      if (!user[field]) {
+        missingFields.push(field);
+      }
+    });
     let percentage = Math.floor((count / fieldsKey.length) * 100);
     
     setPercentage(percentage);  
+    setMissingData(missingFields);
   };
   
-  //data-tooltip-content={ service.wishlistCount === 1  "Remove From WishList" : "Add to WishList"} data-tooltip-id="my-tooltip"
+ 
   useEffect(() => {
     if (user) {
       calculatePercentageHandler()
@@ -105,9 +114,14 @@ export const Profile = ({ user = {} }) => {
           Complete Your Profile
         </Link> */}
         {percentage !== 100 ? (
-          <Link to="/profile" className="font-semibold text-[11px] text-[#FF4141]">
-            Complete Your Profile
-          </Link>
+          // <Link to="/profile" className="font-semibold text-[11px] text-[#FF4141]"data-tooltip-content={`Missing fields: ${missingData.join(', ')}`} data-tooltip-id="my-tooltip">
+          //   Complete Your Profile
+            
+          // </Link>
+           <Link to="/profile" className="font-semi bold text-[11px] text-[#FF4141]">
+           Complete Your Profile
+           
+         </Link>
         ) : (
           <Link to="/profile" className="font-semibold text-[11px] text-[#FF4141]">
             Edit Your Profile
