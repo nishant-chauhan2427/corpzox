@@ -15,6 +15,7 @@ import { resetBusiness } from "../../../redux/slices/businessSlice";
 import { calculateAge } from "../../../utils";
 import { ServicesProgress } from "../../dashboard/components/services/progress";
 import { businessType } from "../createEdit/components/registration";
+import { ServiceProgressShimmer } from "../../../components/loader/ServiceProgressShimmer";
 const BusinessDetail = () => {
   const location = useLocation();
   const dispatch = useDispatch();
