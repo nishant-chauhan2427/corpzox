@@ -211,7 +211,7 @@ useEffect(() => {
             !pathname.includes("settings") &&
             !pathname.includes("profile") &&
             !pathname.includes("wishlist") &&
-            !pathname.includes("offersDetails") &&
+            // !pathname.includes("offersDetails") &&
             !pathname.includes("dashboard") && 
             !pathname.includes("payment") && 
             !pathname.includes("detail") && 
