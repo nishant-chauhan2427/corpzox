@@ -36,33 +36,31 @@ export const IconBox = ({
 
   const isPathnameInArrayResult = isPathnameInArray(pathname, child);
 
-  // 
+  //
 
   return (
     <>
       {to ? (
         <Link
           to={to}
-          className={`px-2 py-3 ${
-            pathname.includes(to) && "bg-[#FFD700] shadow-lg"
-          } hover:bg-[#FFEF9A] hover:shadow-lg rounded-md flex items-center gap-3 text-black group transition-all duration-300 ease-in-out hover:transition-all hover:duration-300 hover:ease-in-out`}
+          className={`px-2 py-3 ${pathname.includes(to) && "bg-[#FFD700] shadow-lg"
+            } hover:bg-[#FFEF9A] hover:shadow-lg rounded-md flex items-center gap-3 text-black group transition-all duration-300 ease-in-out hover:transition-all hover:duration-300 hover:ease-in-out`}
           onClick={onClick}
         >
           {/* <img className={`w-5`} src="/icons/home.svg" alt="" /> */}
           {/* <SVG className="stroke-icon" iconId={icon} /> */}
           <span
-            className={`${
-              pathname.includes(to) ? "text-black" : "dark:text-white"
-            } `}
+            className={`${pathname.includes(to) ? "text-black" : "dark:text-white"
+              } `}
           >
             {icon && icon}
           </span>
           {title && (
             <span
-              className={`${
-                pathname.includes(to)
-                ? "font-semibold text-black" : "dark:text-white"
-              } text-sm group-hover:font-semibold transition-all duration-300 ease-in-out group-hover:transition-all group-hover:duration-300 group-hover:ease-in-out whitespace-nowrap`}
+              className={`${pathname.includes(to)
+                  ? "font-semibold text-black"
+                  : "dark:text-white"
+                } text-sm group-hover:font-semibold transition-all duration-300 ease-in-out group-hover:transition-all group-hover:duration-300 group-hover:ease-in-out whitespace-nowrap`}
             >
               {title}
             </span>
@@ -71,29 +69,26 @@ export const IconBox = ({
       ) : (
         <button
           onClick={handleDropdown}
-          className={`${
-            dropdown && "bg-[#FFD700] dark:bg-[#FFD700]"
-          } w-full px-2 py-2.5 flex items-center justify-between gap-2 `}
+          className={`${dropdown && "bg-[#FFD700] dark:bg-[#FFD700]"
+            } w-full px-2 py-2.5 flex items-center justify-between gap-2 `}
         >
           <p className="flex gap-4 dark:text-white">
             {/* <img className="w-5" src={icon} alt="" /> */}
             {/* <SVG className="stroke-icon" iconId={icon} /> */}
             <span
-              className={`${
-                isPathnameInArrayResult
+              className={`${isPathnameInArrayResult
                   ? "text-primaryBg dark:text-white"
                   : "text-black dark:text-white"
-              }`}
+                }`}
             >
               {icon && icon}
             </span>
             {title && (
               <span
-                className={`${
-                  isPathnameInArrayResult
+                className={`${isPathnameInArrayResult
                     ? "text-primaryText dark:text-white"
                     : "dark:text-white"
-                } text-base`}
+                  } text-base`}
               >
                 {title}
               </span>
@@ -102,11 +97,10 @@ export const IconBox = ({
           {!collapse && (
             <span className="flex items-center gap-2">
               <IoIosArrowForward
-                className={`${dropdown && "rotate-90"} ${
-                  isPathnameInArrayResult
+                className={`${dropdown && "rotate-90"} ${isPathnameInArrayResult
                     ? "text-primaryText"
                     : "dark:text-white"
-                }`}
+                  }`}
               />
               {/* <button onClick={setPin}>
                 <SVG className="stroke-icon dark:text-white" iconId="Pin" />
@@ -132,22 +126,20 @@ export const IconBox = ({
                         >
                           <span className="flex items-center gap-2 ">
                             <IoIosArrowRoundForward
-                              className={`${
-                                pathname == data.to
+                              className={`${pathname == data.to
                                   ? "fill-primaryText"
                                   : "fill-black dark:fill-white "
-                              }`}
+                                }`}
                               size={iconSize}
                             />
                             {/* <SVG className="svg-menu" iconId="right-3" /> */}
                             {/* {data.icon && data.icon} */}
                             {data.title && (
                               <span
-                                className={`${
-                                  pathname == data.to
+                                className={`${pathname == data.to
                                     ? "text-primaryText "
                                     : "text-black dark:text-white"
-                                } text-sm  `}
+                                  } text-sm  `}
                               >
                                 {data.title}
                               </span>
