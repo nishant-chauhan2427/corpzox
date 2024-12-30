@@ -353,90 +353,95 @@ const serviceDetailSlice = createSlice({
 
 
 
-
-        if (!couponData) {
-          console.error("Invalid coupon data:", couponData);
+        if(!action.payload.isCouponValid){
+          toast.error("This coupon is not applicable to the selected service.")
           return;
+        }else{
+          if (!couponData) {
+            console.error("Invalid coupon data:", couponData);
+            return;
+          }
+  
+          if (!Array.isArray(state.appliedCoupons)) {
+            console.error("appliedCoupons is not an array:", state.appliedCoupons);
+            state.appliedCoupons = [];
+          }
+  
+          const isAlreadyAdded = state.appliedCoupons.some(coupon => coupon.couponId === couponData.couponId);
+          if (isAlreadyAdded) {
+            console.warn(`Coupon with id ${couponData.couponId} is already applied.`);
+            toast.error("Coupon already applied!");
+            return;
+          }
+          state.isOfferRemoved = false
+          state.appliedCoupons.unshift(couponData);
+  
+          // Track the original price for reference
+          if (!state.originalPrice) {
+            state.originalPrice = state.finalPrice;
+          }
+  
+          state.priceBeforeCoupanAplled = state.finalPrice;
+  
+          // Calculate the discount after considering any existing offers
+          state.tempCost = state.finalPrice; // This already includes the offer's discount
+          let discount = 0;
+          let costToSend = 0
+          if (couponData.cost && state.tempCost) {
+            discount = (state.tempCost * couponData.cost) / 100;
+            state.finalPrice = state.tempCost - discount;
+            costToSend = state.tempCost - discount
+            state.couponDiscount = discount;
+            console.log(`Discount of ${discount} applied. New cost: ${state.cost}`);
+          }
+  
+          state.totalSavings = (state.totalSavings || 0) + discount;
+          state.coupons = state.coupons.filter(coupon => coupon._id !== couponData.couponId);
+          console.log(state.coupons, "applied coupon");
+          const coupanDetails = {
+            couponId: couponData.couponId,
+            amount: discount,
+            discountType: "percentage",
+            usage: "Multi Use",
+            couponDiscount: couponData.cost,
+          }
+  
+  
+          // if id dont push 
+          const foundCoupon = state?.appliedOfferArray?.find(
+            (coupon) => coupon.couponId === coupanDetails.couponId
+          );
+  
+          console.log(foundCoupon, "foundCoupon");
+  
+          if (foundCoupon) {
+            console.log("Offer already exists. Do not add.");
+            return;
+          } else {
+            console.log("Offer not found. Adding new offer.");
+            // Add logic to add the offer here
+            state.appliedOfferArray.push(coupanDetails); // Example logic
+          }
+          console.log("finalDaa2", JSON.parse(JSON.stringify(state.appliedOfferArray)));
+  
+          console.log(JSON.parse(JSON.stringify(state.appliedOfferArray)), "appliedOfferArray")
+          state.availServiceData = {
+            ...state.availServiceData,
+            appliedCoupan: JSON.parse(JSON.stringify(state.appliedOfferArray)),
+          };
+          state.availServiceData = {
+            ...state.availServiceData,
+            amount: state.cost,
+            totalCouponDiscount: discount + (state.totalCouponDiscount), // Safeguard against undefined
+          };
+  
+          // state.totalCouponDiscount += discount
+          console.log(
+            "Updated availServiceData with coupon ID and cost:",
+            state.availServiceData
+          );
         }
-
-        if (!Array.isArray(state.appliedCoupons)) {
-          console.error("appliedCoupons is not an array:", state.appliedCoupons);
-          state.appliedCoupons = [];
-        }
-
-        const isAlreadyAdded = state.appliedCoupons.some(coupon => coupon.couponId === couponData.couponId);
-        if (isAlreadyAdded) {
-          console.warn(`Coupon with id ${couponData.couponId} is already applied.`);
-          toast.error("Coupon already applied!");
-          return;
-        }
-        state.isOfferRemoved = false
-        state.appliedCoupons.unshift(couponData);
-
-        // Track the original price for reference
-        if (!state.originalPrice) {
-          state.originalPrice = state.finalPrice;
-        }
-
-        state.priceBeforeCoupanAplled = state.finalPrice;
-
-        // Calculate the discount after considering any existing offers
-        state.tempCost = state.finalPrice; // This already includes the offer's discount
-        let discount = 0;
-        let costToSend = 0
-        if (couponData.cost && state.tempCost) {
-          discount = (state.tempCost * couponData.cost) / 100;
-          state.finalPrice = state.tempCost - discount;
-          costToSend = state.tempCost - discount
-          state.couponDiscount = discount;
-          console.log(`Discount of ${discount} applied. New cost: ${state.cost}`);
-        }
-
-        state.totalSavings = (state.totalSavings || 0) + discount;
-        state.coupons = state.coupons.filter(coupon => coupon._id !== couponData.couponId);
-        console.log(state.coupons, "applied coupon");
-        const coupanDetails = {
-          couponId: couponData.couponId,
-          amount: discount,
-          discountType: "percentage",
-          usage: "Multi Use",
-          couponDiscount: couponData.cost,
-        }
-
-
-        // if id dont push 
-        const foundCoupon = state?.appliedOfferArray?.find(
-          (coupon) => coupon.couponId === coupanDetails.couponId
-        );
-
-        console.log(foundCoupon, "foundCoupon");
-
-        if (foundCoupon) {
-          console.log("Offer already exists. Do not add.");
-          return;
-        } else {
-          console.log("Offer not found. Adding new offer.");
-          // Add logic to add the offer here
-          state.appliedOfferArray.push(coupanDetails); // Example logic
-        }
-        console.log("finalDaa2", JSON.parse(JSON.stringify(state.appliedOfferArray)));
-
-        console.log(JSON.parse(JSON.stringify(state.appliedOfferArray)), "appliedOfferArray")
-        state.availServiceData = {
-          ...state.availServiceData,
-          appliedCoupan: JSON.parse(JSON.stringify(state.appliedOfferArray)),
-        };
-        state.availServiceData = {
-          ...state.availServiceData,
-          amount: state.cost,
-          totalCouponDiscount: discount + (state.totalCouponDiscount), // Safeguard against undefined
-        };
-
-        // state.totalCouponDiscount += discount
-        console.log(
-          "Updated availServiceData with coupon ID and cost:",
-          state.availServiceData
-        );
+       
       })
 
       .addCase(verifyCoupon.rejected, (state, action) => {
