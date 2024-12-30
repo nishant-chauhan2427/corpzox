@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import client from "../axios-baseurl";
+import toast from "react-hot-toast";
 
 export const loginUser = createAsyncThunk("loginUser", async (authInfo, { rejectWithValue }) => {
     try {
@@ -21,6 +22,7 @@ export const thirdPartyLogin = createAsyncThunk("thirdPartyLogin", async (authIn
         const response = await client.post("/user/auth/third-party-login", authInfo, {
             withCredentials: true
         });
+        //console.log(response,"response google");
         if(response?.data?.code==200||response?.data?.code==201){
             return response.data;
         }else{
@@ -31,7 +33,7 @@ export const thirdPartyLogin = createAsyncThunk("thirdPartyLogin", async (authIn
     }
 });
 
-export const registerUser = createAsyncThunk("registerUser", async (authInfo, { rejectWithValue }) => {
+export const registerUser = createAsyncThunk("", async (authInfo, { rejectWithValue }) => {
     try {
         const response = await client.post("/user/auth/signUp", authInfo, {
             withCredentials: true

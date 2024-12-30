@@ -17,33 +17,35 @@ import { GoDotFill, GoTriangleDown } from "react-icons/go";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ProgressBar } from "../../../components/progressBar";
 import { ImSpinner2 } from "react-icons/im";
-import { servicesProgress } from "../../../database";
+
 import { NavLink } from "react-router-dom";
 import { ServiceProgressShimmer } from "../../../components/loader/ServiceProgressShimmer";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ratingReviewSchema } from "../../../validation/ratingReviewValidationSchema";
 import { ratingReview } from "../../../redux/actions/servicesDetails-actions";
 
-const ServiceprogressViewAll = ({ data }) => {
+import { servicesProgress } from "../../../database";
+const ServiceprogressViewAll = () => {
+  
   const [confirmationModal, setConfirmationModal] = useState(false);
-  const [otherValue, setOtherVsalue] = useState("");
-
-  const [serviceId, setServiceId] = useState("");
   const [transactionId, setTransactionId] = useState("");
-  const { dataUpdate, serviceProgressDataUpdate,totalCount, loadingMore, page, morePage,fetching } = useSelector(
+  const { dataUpdate, totalCount, loadingMore, page, morePage } = useSelector(
     (state) => state.user
   );
-  const { isRatingAdding } = useSelector((state) => state.serviceDetails);
+console.log(dataUpdate?.data,"dataUpdate?.data");
   const [dropdownStates, setDropdownStates] = useState(
-    serviceProgressDataUpdate.map(() => false)
+    dataUpdate?.data?.map(() => false)
   );
+  const [serviceId, setServiceId] = useState("");
+  const { isRatingAdding } = useSelector((state) => state.serviceDetails);
   const dispatch = useDispatch();
 
   const handleServiceDropdown = (index) => {
     setDropdownStates((prevState) =>
-      prevState?.map((state, i) => (i === index ? !state : state))
+      prevState.map((state, i) => (i === index ? !state : state))
     );
   };
+
   const {
     control,
     handleSubmit,
@@ -94,10 +96,11 @@ const ServiceprogressViewAll = ({ data }) => {
     reset(); // Reset the form after submission
   };
 
+
   useEffect(() => {
     if (
-      serviceProgressDataUpdate?.length == 0 ||
-      serviceProgressDataUpdate?.length == undefined
+      dataUpdate?.data?.length == 0 ||
+      dataUpdate?.data?.length == undefined
     ) {
       dispatch(updateServiveProgress({ page: 1 }));
     }
@@ -172,22 +175,10 @@ const ServiceprogressViewAll = ({ data }) => {
           {dataUpdate?.total ? `(${dataUpdate?.total})` : ""}
         </Heading>
       </div>
-     {fetching? 
 
-     <>
-     {/* {Array.from({ length: 8 }).map((item)=>{
-      return(
-        <ServiceProgressShimmer count={8}/>
-
-      )
-     })} */}
-             <ServiceProgressShimmer count={8}/>
-
-     </>
-     :<>
-     {dataUpdate?.total > 0 ? (
+      {dataUpdate?.total > 0 ? (
         <div className="flex flex-col gap-4">
-           {serviceProgressDataUpdate?.map((data, index) => {
+           {dataUpdate?.data?.map((data, index) => {
               const { status, delay } = calculateCompletionStatus(
                 data?.expectedCompletionDate
               );
@@ -232,7 +223,7 @@ const ServiceprogressViewAll = ({ data }) => {
                       </div>
                     </div>
                     <div className="flex gap-3">
-                      {data?.ratingreviewsSize === 1 && (
+                      {data?.ratingreviewsSize === 0 && (
                         <Button
                           onClick={() =>
                             onConfirmationModalOpen(
@@ -240,7 +231,7 @@ const ServiceprogressViewAll = ({ data }) => {
                               data?._id
                             )
                           }
-                          className="flex items-center px-4 py-[6px] rounded-full font-medium text-[12px] text-[#0068FF] bg-[#DBE9FE]"
+                          className="font-medium text-[12px] text-[#0068FF] underline underline-offset-4"
                         >
                           Rate Your Experience
                         </Button>
@@ -293,17 +284,17 @@ const ServiceprogressViewAll = ({ data }) => {
               );
             })}
           <InfiniteScroll
-            dataLength={serviceProgressDataUpdate?.length || 0}
+            dataLength={dataUpdate?.data?.length || 0}
             next={() => dispatch(getMoreServiceUpdate({page: morePage+1  }))}
-            hasMore={serviceProgressDataUpdate?.length < totalCount}
+            hasMore={dataUpdate?.data?.length < totalCount}
             loader={
               <div className="flex justify-center items-center p-1">
                 <ImSpinner2 className="animate-spin text-black !text-xl" />
               </div>
             }
             endMessage={
-              serviceProgressDataUpdate?.length &&
-              serviceProgressDataUpdate?.length > 0 && (
+              dataUpdate?.data?.length &&
+              dataUpdate?.data?.length > 0 && (
                 <p style={{ textAlign: "center" }}>
                   <b>Yay! You have seen it all</b>
                 </p>
@@ -321,8 +312,7 @@ const ServiceprogressViewAll = ({ data }) => {
           <p className="font-bold text-xl text-[#000000]">No Services</p>
         </div>
       )}
-     </>}
-      {/* Rating and Review Modal */}
+
       <ConfirmationModal
         isOpen={confirmationModal}
         onClose={onConfirmationModalClose}
@@ -503,7 +493,15 @@ const ServiceprogressViewAll = ({ data }) => {
             </Button>
           </div>
         </form>
-      </ConfirmationModal>
+      </ConfirmationModal> 
+      {/* {dataUpdate?.total > 0 ? (
+        <ServicesProgress data={servicesProgress} />
+      ) : (
+        <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
+          <img src="/images/service-prgress.svg" alt="" />
+          <p className="font-bold text-xl text-[#000000]">No Services</p>
+        </div>
+      )} */}
     </>
   );
 };

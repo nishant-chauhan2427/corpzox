@@ -130,8 +130,8 @@ const userSlice = createSlice({
         state.fetching = false;
         state.totalCount = action.payload?.total;
         state.error = action.payload.message;
-        console.log(action.payload,"action.payload22");
-        console.log(action.payload);
+        // console.log(action.payload,"action.payload22");
+        // console.log(action.payload);
         state.dataUpdate = action.payload;
         state.serviceProgressDataUpdate = action.payload?.data;
         state.morePage = 1
@@ -158,8 +158,8 @@ const userSlice = createSlice({
         state.fetching = false;
         const applicationId = action.payload.responseData?.data?.applicationId;
     
-        console.log(action.payload, "data from api")
-        console.log(JSON.parse(JSON.stringify(state.dataUpdate)), "data from state")
+       // console.log(action.payload, "data from api")
+       // console.log(JSON.parse(JSON.stringify(state.dataUpdate)), "data from state")
         // Ensure `dataUpdate` and `data` exist
         if (state.dataUpdate?.data) {
             state.dataUpdate.data = state.dataUpdate.data.map((item) => {
@@ -198,8 +198,8 @@ const userSlice = createSlice({
         // state.totalCount = action.payload?.total;
         console.log(state.totalCount, "totalCount12345");
         if (state.dataUpdate) {
-          console.log("state", JSON.stringify(state.dataUpdate.data));
-          console.log("data", action.payload?.data);
+          //console.log("state", JSON.stringify(state.dataUpdate.data));
+          //console.log("data", action.payload?.data);
           state.dataUpdate.data = [...state.dataUpdate.data, ...action.payload?.data];
           if (action.payload?.data?.length > 0) {
             state.morePage = state.morePage + 1;
@@ -210,99 +210,13 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(getMoreServiceUpdate.rejected, (state, action) => {
-        console.log("businessPageSlice :getMoreService.rejected");
+        //console.log("businessPageSlice :getMoreService.rejected");
         state.loadingMore = false;
         // state.error = action.payload;
       });
   },
 });
 
-// import { createSlice } from "@reduxjs/toolkit";
-// import toast from "react-hot-toast";
-// import { getAllBusiness, getMoreBusiness } from "../actions/businessPage-action";
-
-// // Slice
-// const businessPageSlice = createSlice({
-//     name: "business-page",
-//     initialState: {
-//         business: null,
-//         isLoading: false,
-//         totalCount: null,
-//         page: 0,
-//         error: null,
-//         loadingMore: false,
-//     },
-//     reducers: {
-//         clearState: (state) => {
-//             state.isLoading = false;
-//             state.error = null;
-//             state.business = null;
-//         },
-//         // loadMoreBusiness(state,action){
-//         //     state.page=action.payload;
-//         // }
-//     },
-//     extraReducers: (builder) => {
-//         builder
-//             .addCase(getAllBusiness.pending, (state) => {
-//                 state.isLoading = true;
-//                 state.error = null;
-//                 state.business = null;
-//                 state.totalCount = null;
-//                 console.log("businessPageSlice : getAllBusiness.pending");
-//             })
-//             .addCase(getAllBusiness.fulfilled, (state, action) => {
-//                 console.log("businessPageSlice : getAllBusiness.fulfilled");
-//                 console.log("getAllBusiness.fulfilled", action.payload);
-
-//                 state.loading = false;
-//                 state.isLoading = false;
-//                 state.totalCount = action.payload?.total;
-//                 state.business = action.payload?.data;
-//                 state.page =1;
-//                 state.error = null;
-//             })
-//             .addCase(getAllBusiness.rejected, (state, action) => {
-//                 console.log("businessPageSlice :getAllBusiness.rejected");
-//                 state.loading = false;
-//                 state.isLoading = false;
-//                 state.error = action.payload;
-//                 state.business = null;
-//                 state.totalCount = null;
-//             });
-
-//         //For pagination
-//         builder
-//             .addCase(getMoreBusiness.pending, (state) => {
-//                 state.loadingMore = true;
-//                 console.log("businessPageSlice : getAllBusiness.pending");
-//             })
-//             .addCase(getMoreBusiness.fulfilled, (state, action) => {
-//                 console.log("businessPageSlice : getMoreBusiness.fulfilled");
-//                 console.log("getMoreBusiness.fulfilled", action.payload);
-//                 state.loadingMore=false;
-//                 state.totalCount = action.payload?.total;
-//                 if (state.business) {
-//                     state.business = [...state.business, ...action.payload?.data];
-//                     if (action.payload?.data?.length > 0) {
-//                         state.page = state.page + 1;
-//                     }
-//                 }
-//                 state.error = null;
-//             })
-//             .addCase(getMoreBusiness.rejected, (state, action) => {
-//                 console.log("businessPageSlice :getMoreBusiness.rejected");
-//                 state.loadingMore = false;
-//                 // state.error = action.payload;
-//             });
-
-//     },
-// });
-
-// export const { clearState } = businessPageSlice.actions;
-// export default businessPageSlice.reducer;
-
-// Export actions
 export const { setUser, clearUser, setBusinessPage } = userSlice.actions;
 
 // Export the reducer

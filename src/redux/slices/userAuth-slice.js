@@ -89,8 +89,11 @@ const authSlice = createSlice({
     },
     updateEmail : (state, action)=>{
       state.email = action.payload
-    }
+    },
     
+    clearEmail: (state) => {
+      state.email = ""; // Reset email to the initial empty string
+    }
   },
   extraReducers: (builder) => {
     //login
@@ -116,6 +119,7 @@ const authSlice = createSlice({
       state.loginMessage=initialState.loginMessage;
     }).addCase(thirdPartyLogin.fulfilled, (state, action) => {
       state.isLoggingIn = false;
+      //console.log(action.payload.data,"GOGGLE PAYLOAD");
       state.profile = action.payload.data?.[0];
       state.error = "";
       state.loginMessage = action.payload.message;
@@ -220,6 +224,7 @@ export const {
   resetIsUpdatePasswordSuccessfull,
   removeUpdatePasswordError,
   updateProfile,
-  updateEmail
+  updateEmail,
+  clearEmail
 } = authSlice.actions;
 export default authSlice.reducer;

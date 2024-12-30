@@ -75,6 +75,7 @@ const settingsSlice = createSlice({
         }
         state.isDeactivate = false;
         console.log(action.payload, "account deactivated successfully");
+        localStorage.removeItem("userInfo")
         state.success = action.payload;
         state.error = null;
       })

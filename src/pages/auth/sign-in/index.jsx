@@ -30,7 +30,7 @@ export const SignIn = () => {
     watch,
   } = useForm({
     resolver: yupResolver(signinValidationSchema),
-    mode: "onSubmit",
+    mode: "onChange",
   });
   const recaptchaRef = useRef(null);
   const RECAPTCHA_SITE_KEY = "6LemSE0qAAAAADhn4nN770nVLBJxAGRz_LoFXP6h";
@@ -149,7 +149,8 @@ export const SignIn = () => {
                     placeholder="Email Id / Phone No."
                     className="border-[#D9D9D9] border"
                     errorContent={errors?.email?.message}
-                    maxLength={50}
+                   // maxLength={50}
+                    maxLength={phoneRegex.test(emailOrPhone) ? 10 : 50}
                   />
                 )}
               />
@@ -186,12 +187,12 @@ export const SignIn = () => {
                 onClick={handleCheckbox}
                 className="flex items-center font-normal text-[14px] text-[#a5a3a3] -mt-2 gap-2"
               >
-                <Checkbox
+                {/* <Checkbox
                   checked={checkedCheckbox}
                   onClick={(e) => e.stopPropagation()}
                   onChange={handleCheckbox}
-                />
-                <div>
+                /> */}
+                {/* <div>
                   <span
                     className={`${
                       checkedCheckbox
@@ -201,7 +202,7 @@ export const SignIn = () => {
                   >
                     Keep me Signed in
                   </span>
-                </div>
+                </div> */}
               </div>
               <Button
                 type={"submit"}
