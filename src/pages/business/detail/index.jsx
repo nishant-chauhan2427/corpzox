@@ -14,12 +14,13 @@ import {
 import { resetBusiness } from "../../../redux/slices/businessSlice";
 import { calculateAge } from "../../../utils";
 import { ServicesProgress } from "../../dashboard/components/services/progress";
+import { ServiceProgressShimmer } from "../../../components/loader/ServiceProgressShimmer";
 const BusinessDetail = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { business, loading, error } = useSelector((state) => state.business);
-  const { user } = useSelector((state) => state.user);
+  const { user,fetching } = useSelector((state) => state.user);
   const queryParams = new URLSearchParams(location.search);
   const businessId = queryParams.get("id");
   // console.log("BUSINESS ID12", business)
@@ -171,8 +172,14 @@ const BusinessDetail = () => {
               </table>
             </div>
 
-            {/* Service Progress */}
-            <ServicesProgress data={servicesProgress} />
+            {fetching ? (
+          <ServiceProgressShimmer />
+
+        ) : (
+          <ServicesProgress
+            data={servicesProgress}
+          />
+        )}
           </div>
         </section>
       )}
