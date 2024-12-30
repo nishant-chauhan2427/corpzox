@@ -10,7 +10,7 @@ export const getOffers = createAsyncThunk(
 
         let params = new URLSearchParams();
         if (page) params.append('page', page);
-        if (query) params.append('query', query);
+        if (query) params.append('search', query);
 
         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
         const token = userInfo?.token;
@@ -48,7 +48,7 @@ export const loadMoreOffers = createAsyncThunk(
         
       let params = new URLSearchParams();
       if (page) params.append('page', page);
-      if (query) params.append('query', query);
+      if (query) params.append('search', query);
       try {
         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
         const token = userInfo?.token;

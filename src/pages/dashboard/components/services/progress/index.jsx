@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { ProgressBar } from "../../../../../components/progressBar";
 import { Heading } from "../../../../../components/heading";
 import { ConfirmationModal } from "../../../../../components/modal/confirmationModal";
@@ -24,6 +24,8 @@ export const ServicesProgress = ({ data }) => {
   const [serviceId, setServiceId] = useState("");
   const [transactionId, setTransactionId] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
 
   const { isRatingAdding } = useSelector((state) => state.serviceDetails);
 
@@ -256,7 +258,7 @@ export const ServicesProgress = ({ data }) => {
                         )}
                       </div>
                       <button
-                      data-tooltip-content={"Service Progress"} data-tooltip-id="my-tooltip"
+                        data-tooltip-content={"Service Progress"} data-tooltip-id="my-tooltip"
                         className={`${dropdownStates === true && "rotate-180 "
                           } hidden lg:block `}
                         onClick={() => handleServiceDropdown(index)}
@@ -286,11 +288,22 @@ export const ServicesProgress = ({ data }) => {
             <div className="flex justify-center gap-2 items-center flex-col h-[40vh]">
 
               <img src="/images/service-prgress.svg" alt="" />
-              <p className="font-bold text-xl text-[#000000]">No Services</p>
+              <p className="font-bold text-xl text-[#000000]">No Services Availed</p>
               {/* <p className="font-normal text-[#797979]">
               Create a Business to add your Service
             </p> */}
+              <LinkButton
+                className={"px-4 py-1"}
+                onClick={() => {
+                  navigate("/services");
+                }}
+                primary={true}
+              // leftIcon={<IoMdAddCircle />}
+              >
+                Avail Service
+              </LinkButton>
             </div>
+
           </div>
         )}
 

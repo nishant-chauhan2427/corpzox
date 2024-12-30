@@ -14,7 +14,7 @@ import {
 import { resetBusiness } from "../../../redux/slices/businessSlice";
 import { calculateAge } from "../../../utils";
 import { ServicesProgress } from "../../dashboard/components/services/progress";
-import { ServiceProgressShimmer } from "../../../components/loader/ServiceProgressShimmer";
+import { businessType } from "../createEdit/components/registration";
 const BusinessDetail = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -42,10 +42,15 @@ const BusinessDetail = () => {
     dispatch(updateServiveProgress({ page: 1, businessId: businessId }));
   }, [businessId]);
 
+  
+  // console.log("businessType",businessType?.filter((el)=>el.value===business?.registration?.typeOfBusiness)[0]?.label);
+  
+  
+
   const businessTableData = [
     {
       label: "Type",
-      value: business?.registration?.typeOfBusiness || "-------",
+      value: businessType?.filter((el)=>el.value===business?.registration?.typeOfBusiness)[0]?.label || "-------",
     },
     {
       label: "Registered Office",
