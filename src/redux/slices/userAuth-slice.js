@@ -89,8 +89,11 @@ const authSlice = createSlice({
     },
     updateEmail : (state, action)=>{
       state.email = action.payload
-    }
+    },
     
+    clearEmail: (state) => {
+      state.email = ""; // Reset email to the initial empty string
+    }
   },
   extraReducers: (builder) => {
     //login
@@ -221,6 +224,7 @@ export const {
   resetIsUpdatePasswordSuccessfull,
   removeUpdatePasswordError,
   updateProfile,
-  updateEmail
+  updateEmail,
+  clearEmail
 } = authSlice.actions;
 export default authSlice.reducer;

@@ -25,25 +25,24 @@ export const ServicesCard = ({
   const { isLoading, heartloading, childLoading } = useSelector(
     (state) => state.wishlist
   );
-  const { isAdding } = useSelector((state) => state.service);
-  const { wishList } = useSelector((state) => state.service);
-  
 
-  const { list } = useSelector((state) => state.service);
+
+  const { wishList,list ,recommendedServiceList} = useSelector((state) => state.service);
   console.log(data,"Wishlist STATE");
   const [selectAllChecked, setSelectAllChecked] = useState(false);
 
   // console.log("selectAllChecked",selectAllChecked);
-  // console.log("checkList:",wishList?.list);
+  console.log("checkList1:",wishList?.list);
   let checkListSet = new Set(wishList?.list?.map((service) => service._id)); //checkListSet :["serviceId1","serviceId2",....]
 
   useEffect(() => {
-    setSelectAllChecked(wishList?.list?.length == list?.length);
+    setSelectAllChecked(wishList?.list?.length == (list?.length || recommendedServiceList?.length));
     // console.log("Checked:",wishList?.list?.length == list?.length);
   }, [wishList]);
 
   let onClickAddWishlistHandler = () => {
     const wishlistSelectedData = wishList?.list?.map((item) => item._id);
+    console.log(wishlistSelectedData,"wishlistSelectedData");
     if (wishlistSelectedData?.length) {
       dispatch(
         updateServiceQuickWishlist({ serviceIdArray: wishlistSelectedData })
@@ -62,7 +61,7 @@ export const ServicesCard = ({
     //   toast.error("Please select at least one service");
     // }
   };
-
+  console.log("checkList2:",wishList?.list);
   const onChangeSelectAllHandler = () => {
     // const newSelectAllChecked = !selectAllChecked;
     // if(wishList?.list?.length == list?.length)
@@ -81,7 +80,7 @@ export const ServicesCard = ({
 
   return (
     <>
-      {list.length !== 0 && url.includes("services") && (
+      {(list.length !== 0 || recommendedServiceList.length !==0)&& url.includes("services") && (
         <SelectAllTabs
           hideBtn={wishList?.list?.length <= 0}
           checked={selectAllChecked}

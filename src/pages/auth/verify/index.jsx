@@ -1,15 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { Input } from "../../../components/inputs";
 import { Button } from "../../../components/buttons";
 import { CustomAuthLayout } from "../components/layout";
 import { MetaTitle } from "../../../components/metaTitle";
 import { DualHeadingTwo } from "../components/dualHeading/dualHeadingTwo";
-import { CrossButton } from "../../../components/buttons/crossButton";
 import { useDispatch, useSelector } from "react-redux";
 import { AuthLayout } from "../../../components/layout/auth";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { resendOtp, verifyUser } from "../../../redux/actions/userAuth-action";
 import toast from "react-hot-toast";
+
 
 export const Verify = () => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -40,7 +39,7 @@ export const Verify = () => {
     if (inputRefs.current && inputRefs.current[0]) {
       inputRefs.current[0].focus();
     }
-    if(redirectedTo !== "verify"){
+    if (redirectedTo !== "verify") {
       navigate('/sign-in')
     }
     setTimer(30);
@@ -56,11 +55,12 @@ export const Verify = () => {
   const isEmail = emailRegex.test(profileEmail);
   const isPhone = phoneRegex.test(profilePhone);
 
-const subHeading = isEmail
-? `We have sent you an OTP on your registered email id ${profileEmail}`
-: profilePhone
-? `We have sent you an OTP on your registered phone number ${profilePhone}`
-: `We have sent you an OTP on your registered email id ${email} `;
+  const subHeading = isEmail
+    ? `We have sent you an OTP on your registered email id ${profileEmail}`
+    : profilePhone
+      ? `We have sent you an OTP on your registered phone number ${profilePhone}`
+      : `We have sent you an OTP on your registered email id ${email} `;
+
 
   const validateOtp = (enteredOtp) => {
     if (enteredOtp.trim().length !== 4) {
@@ -75,55 +75,27 @@ const subHeading = isEmail
     setIsVerify(true);
     dispatch(verifyUser({ otp: enteredOtp, id: profile?.[0]?.id }));
   };
-  
-  // useEffect(() => {
-  //   if (isVerify && !isVerifying) {
-  //     setIsVerify(false);
-  
-  //     // Handle verification error or success
-  //     if (verifyingError) {
-  //       setOtpMessage(verifyingError);
-  //     } else {
-  //       if (email) {
-  //         // User is signing in (email or phone exists)
-  //         toast.success("Welcome to CorpZo!");
-  //       } else {
-  //         // User is signing up (no email or phone exists)
-  //         toast.success("Welcome to CorpZo!");
-  //       }
-  //       navigate("/dashboard");
-  //     }
-  //   }
-  // }, [isVerifying, verifyingError, profileEmail, profilePhone, navigate]);
-  
-  
-console.log(email, "Signup Email");  
-console.log(profile?.[0], "Signup Email1");  
 
-useEffect(() => {
- 
-  if (isVerify && !isVerifying) {
-    setIsVerify(false);  
-
-    
-    if (verifyingError) {
-      setOtpMessage(verifyingError); 
-    } else {
-      
-      if (profileEmail) {
-        toast.success(verifyMessage); 
+  useEffect(() => {
+    if (isVerify && !isVerifying) {
+      setIsVerify(false);
+      if (verifyingError) {
+        setOtpMessage(verifyingError);
       } else {
-        
-        toast.success("Welcome to CorpZo !"); 
+        if (email) {
+          toast.success("Welcome to CorpZo!");
+        } else {
+          toast.success(verifyMessage);
+        }
+        navigate("/dashboard");
       }
 
-      
-      navigate("/dashboard");
     }
-  }
-}, [isVerifying, isVerify, verifyingError, email, verifyMessage]);  // Ensure all relevant variables are included as dependencies
 
-console.log("SignUp Email Over");
+  }, [isVerifying, verifyingError, profileEmail, profilePhone, email, navigate]);
+
+
+
   useEffect(() => {
     setTimeout(() => {
       setOtpMessage("");
@@ -200,6 +172,7 @@ console.log("SignUp Email Over");
     }
   }, [timer]);
 
+
   return (
     <>
       <MetaTitle title={"Verify"} />
@@ -222,9 +195,8 @@ console.log("SignUp Email Over");
                     <div className="w-full flex justify-between items-start gap-2">
                       {otp.map((digit, index) => (
                         <input
-                          className={`${
-                            otpMessage ? "border-error" : "border-[#DFEAF2]"
-                          } w-[15%] h-14 font-bold border rounded-lg text-center`}
+                          className={`${otpMessage ? "border-error" : "border-[#DFEAF2]"
+                            } w-[15%] h-14 font-bold border rounded-lg text-center`}
                           key={index}
                           type="text"
                           maxLength="1"

@@ -81,7 +81,7 @@ export const Signup = () => {
     //   data.countryCode = `+${data.phone.toString().slice(0, 2)}`;
     //   data.phone = +data.phone.toString().slice(2);
     // }
-    console.log(data);
+    //console.log(data);
     // Reset error message
     setError("");
 
