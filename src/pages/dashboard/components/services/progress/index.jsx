@@ -14,10 +14,11 @@ import { LinkButton } from "../../../../../components/link";
 import { TextArea } from "../../../../../components/inputs/textarea";
 import { GoTriangleDown } from "react-icons/go";
 import { GoDotFill } from "react-icons/go";
+import { ServiceCard } from "../serviceCard";
 
 export const ServicesProgress = ({ data }) => {
   //console.log(data,"datadashboard");
-    const { dataUpdate } = useSelector((state) => state.user);
+  const { dataUpdate } = useSelector((state) => state.user);
   const [dropdownStates, setDropdownStates] = useState(data?.map(() => false));
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [otherValue, setOtherVsalue] = useState("");
@@ -26,7 +27,6 @@ export const ServicesProgress = ({ data }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-
   const { isRatingAdding } = useSelector((state) => state.serviceDetails);
 
   const handleServiceDropdown = (index) => {
@@ -34,7 +34,6 @@ export const ServicesProgress = ({ data }) => {
       prevState.map((state, i) => (i === index ? !state : state))
     );
   };
-
 
   const {
     control,
@@ -169,7 +168,7 @@ export const ServicesProgress = ({ data }) => {
                 </Link>
               )}
             </div>
-            {dataUpdate?.data?.slice(0, 3)?.map((data, index) => {
+            {/* {dataUpdate?.data?.slice(0, 3)?.map((data, index) => {
               const { status, delay } = calculateCompletionStatus(
                 data?.expectedCompletionDate
               );
@@ -197,7 +196,7 @@ export const ServicesProgress = ({ data }) => {
                           width={15}
                           alt=""
                         /> */}
-                      </div>
+            {/* </div>
                       <div className="flex flex-row gap-2">
                         <h6 className="font-medium text-sm text-[#7C7D80]">
                           <span className="font-medium text-[#0A1C40]">
@@ -216,16 +215,17 @@ export const ServicesProgress = ({ data }) => {
                     <div className="flex gap-3">
                       {data?.ratingreviewsSize === 0 && (
                         <Button
-                        onClick={() =>
-                          onConfirmationModalOpen(
-                            data?.service[0]?._id,
-                            data?._id
-                          )
-                        }
-                        className="font-medium text-[12px] text-[#0068FF] underline underline-offset-4"
-                      >
-                        Rate Your Experience
-                      </Button>
+                          primary={true}
+                          onClick={() =>
+                            onConfirmationModalOpen(
+                              data?.service[0]?._id,
+                              data?._id
+                            )
+                          }
+                          // className="font-medium text-[12px] text-[#0068FF] underline underline-offset-4"
+                        >
+                          Rate Your Experience
+                        </Button>
                       )}
 
                       <LinkButton
@@ -258,9 +258,11 @@ export const ServicesProgress = ({ data }) => {
                         )}
                       </div>
                       <button
-                        data-tooltip-content={"Service Progress"} data-tooltip-id="my-tooltip"
-                        className={`${dropdownStates === true && "rotate-180 "
-                          } hidden lg:block `}
+                        data-tooltip-content={"Service Progress"}
+                        data-tooltip-id="my-tooltip"
+                        className={`${
+                          dropdownStates === true && "rotate-180 "
+                        } hidden lg:block `}
                         onClick={() => handleServiceDropdown(index)}
                       >
                         <GoTriangleDown size={15} />
@@ -271,24 +273,21 @@ export const ServicesProgress = ({ data }) => {
                     isOpen={dropdownStates?.[index]}
                     servicesProgessSteps={servicesProgessSteps}
                   />
-                </div>
-              );
-            })}
+                </div> */}
+            {/* );
+            })} */}
+            <ServiceCard data={dataUpdate?.data?.slice(0, 3)} />
           </>
         ) : (
           <div>
-            <Heading
-
-              className={"py-0 "}
-              tourButton={true}
-            >
+            <Heading className={"py-0 "} tourButton={true}>
               Your Service Progress Updates
-
             </Heading>
             <div className="flex justify-center gap-2 items-center flex-col h-[40vh]">
-
               <img src="/images/service-prgress.svg" alt="" />
-              <p className="font-bold text-xl text-[#000000]">No Services Availed</p>
+              <p className="font-bold text-xl text-[#000000]">
+                No Services Availed
+              </p>
               {/* <p className="font-normal text-[#797979]">
               Create a Business to add your Service
             </p> */}
@@ -298,15 +297,13 @@ export const ServicesProgress = ({ data }) => {
                   navigate("/services");
                 }}
                 primary={true}
-              // leftIcon={<IoMdAddCircle />}
+                // leftIcon={<IoMdAddCircle />}
               >
                 Avail Service
               </LinkButton>
             </div>
-
           </div>
         )}
-
       </div>
       {/* Rating and Review Modal */}
       <ConfirmationModal
@@ -493,7 +490,6 @@ export const ServicesProgress = ({ data }) => {
     </>
   );
 };
-
 
 const Dropdown = ({ isOpen, servicesProgessSteps }) => {
   return (
