@@ -44,19 +44,20 @@ export const signinValidationSchema = Yup.object().shape({
   email: Yup.string()
       .test('email-or-phone', 'Invalid email or phone number', (value) => {
           const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-          const phoneRegex = /^\d{10}$/;  
+          const phoneRegex = /^[6-9]\d{9}$/;  
+          
           return emailRegex.test(value) || phoneRegex.test(value);
       })
       .required('Email or Phone number is required'),  
 
-  // password: Yup.string()
-  //     .min(8, 'Password must be at least 8 characters')
-  //     .max(20, 'Password cannot be longer than 20 characters')
-  //     .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
-  //     .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
-  //     .matches(/[0-9]/, 'Password must contain at least one number')
-  //     .matches(/[\W_]/, 'Password must contain at least one special character')
-  //     .required('Password is required'),
+  password: Yup.string()
+      //.min(8, 'Password must be at least 8 characters')
+      .max(20, 'Password cannot be longer than 20 characters')
+      // .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
+      // .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
+      // .matches(/[0-9]/, 'Password must contain at least one number')
+      // .matches(/[\W_]/, 'Password must contain at least one special character')
+      .required('Password is required'),
 });
 
 
@@ -68,7 +69,7 @@ export const forgotPasswordSchema = Yup.object().shape({
         /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,  // Replace 'example.com' with your domain
         'Invalid email address'
     )
-    .max(25)
+    .max(50, 'Email cannot exceed 50 characters')
     .required('Email is required'),  // Ensure email is not empty
 });
 export const createNewPasswordSchema = Yup.object().shape({

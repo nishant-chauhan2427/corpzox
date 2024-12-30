@@ -14,12 +14,13 @@ const Profile = () => {
   const { user, dataUpdate,loading, business ,businessLoading,fetching } = useSelector((state) => state.user);
   const queryParams = new URLSearchParams(location.search);
   const searchValue = queryParams.get("search");
-  console.log(business?.list?.length,"Profile Business");
-
+  //console.log(business?.list?.length,"Profile Business");
   
 
   useEffect(() => {
-    dispatch(getUser());
+    if(!user?.email){
+      dispatch(getUser());
+    }
   }, [dispatch]);
 
   // useEffect(() => {

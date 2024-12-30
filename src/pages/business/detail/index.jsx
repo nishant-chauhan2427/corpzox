@@ -1,27 +1,27 @@
-import { Button } from "../../../components/buttons/button";
-import { IoIosArrowRoundBack, IoMdAddCircle } from "react-icons/io";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ServicesProgress } from "../../dashboard/components/services/progress";
-import { servicesProgress } from "../../../database";
 import { useEffect } from "react";
-import { getBusiness } from "../../../redux/actions/business-action";
+import { IoMdAddCircle } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Button } from "../../../components/buttons/button";
 import { Heading } from "../../../components/heading";
-import { BusinessCardShimmer } from "../../../components/loader/BusinessCardShimmer";
-import {
-  getUser,
-  updateServiveProgress,
-} from "../../../redux/actions/dashboard-action";
 import { LinkButton } from "../../../components/link";
-import { resetBusiness } from "../../../redux/slices/businessSlice";
 import { TableShimmer } from "../../../components/loader/TableShimmer";
+import { servicesProgress } from "../../../database";
+import { getBusiness } from "../../../redux/actions/business-action";
+import {
+  updateServiveProgress
+} from "../../../redux/actions/dashboard-action";
+import { resetBusiness } from "../../../redux/slices/businessSlice";
 import { calculateAge } from "../../../utils";
+import { ServicesProgress } from "../../dashboard/components/services/progress";
+import { businessType } from "../createEdit/components/registration";
+import { ServiceProgressShimmer } from "../../../components/loader/ServiceProgressShimmer";
 const BusinessDetail = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { business, loading, error } = useSelector((state) => state.business);
-  const { user } = useSelector((state) => state.user);
+  const { user,fetching } = useSelector((state) => state.user);
   const queryParams = new URLSearchParams(location.search);
   const businessId = queryParams.get("id");
   // console.log("BUSINESS ID12", business)
@@ -43,10 +43,15 @@ const BusinessDetail = () => {
     dispatch(updateServiveProgress({ page: 1, businessId: businessId }));
   }, [businessId]);
 
+  
+  // console.log("businessType",businessType?.filter((el)=>el.value===business?.registration?.typeOfBusiness)[0]?.label);
+  
+  
+
   const businessTableData = [
     {
       label: "Type",
-      value: business?.registration?.typeOfBusiness || "-------",
+      value: businessType?.filter((el)=>el.value===business?.registration?.typeOfBusiness)[0]?.label || "-------",
     },
     {
       label: "Registered Office",
@@ -173,8 +178,14 @@ const BusinessDetail = () => {
               </table>
             </div>
 
-            {/* Service Progress */}
-            <ServicesProgress data={servicesProgress} />
+            {fetching ? (
+          <ServiceProgressShimmer />
+
+        ) : (
+          <ServicesProgress
+            data={servicesProgress}
+          />
+        )}
           </div>
         </section>
       )}

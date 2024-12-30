@@ -21,12 +21,13 @@ const DocumentsListing = () => {
     isLoading,
     isdocumentLoading,
     isDataLoading,
+    listData,
     fetchingDocumentError,
   } = useSelector((state) => state.document);
 
   const [selectedServiceInfo, setSelectedServiceInfo] = useState(null);
   const { id } = useParams();
-
+//console.log(listData,"Document DATA");
   useEffect(() => {
       dispatch(getService());   
       dispatch(getServiceData({formId:"",serviceId:""}));

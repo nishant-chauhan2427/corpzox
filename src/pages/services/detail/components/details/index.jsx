@@ -6,6 +6,8 @@ import { talkToAdvisor } from "../../../../../redux/actions/servicesDetails-acti
 import { useEffect, useState } from "react";
 import { ConfirmationModal } from "../../../../../components/modal/confirmationModal";
 import { Features } from "../features";
+import { ServiceDetailVideoShimmer } from "../../../../../components/loader/ServiceDetailVideoShimmer";
+import { ServiceDetailPricingShimmer } from "../../../../../components/loader/ServiceDetailPricingShimmer";
 
 export const Details = ({
   pricing = true,
@@ -25,7 +27,7 @@ export const Details = ({
   //   navigate(`/payment/${serviceId}`);
   // };
 
-  const { success, serviceDetailLoading,callBackMessage, quotationDetails, isTalkToAdvisorLoading } = useSelector(
+  const { success, serviceDetailLoading, callBackMessage, quotationDetails, isTalkToAdvisorLoading } = useSelector(
     (state) => state.serviceDetails
   );
 
@@ -84,7 +86,7 @@ export const Details = ({
         <p className="font-semibold text-3xl uppercase text-[#0A1C40]">
           {data?.name}
         </p>
-        <p className="font-medium text-sm text-[#0A1C40]">{data?.details}</p>
+        <p className="font-medium text-sm text-[#0A1C40]" dangerouslySetInnerHTML={{__html : data?.about}}></p>
       </div>
       <div className="pt-4 flex flex-col md:flex-row items-center gap-4">
         {!pricing && (
@@ -114,7 +116,23 @@ export const Details = ({
           }}
           className="w-full min-h-[420px] md:w-3/5 rounded-3xl bg-no-repeat bg-cover"
         >
-          {success?.delivrableVideoUrl || success?.documentVideoUrl || success?.stepsVideoUrl ? (
+          {/* {success?.delivrableVideoUrl || success?.documentVideoUrl || success?.stepsVideoUrl ? (
+            <video controls autoPlay>
+              <source
+                src={
+                  success.delivrableVideoUrl ||
+                  success.documentVideoUrl ||
+                  success.stepsVideoUrl
+                }
+                type="video/mp4"
+              />
+            </video>
+          ) : (
+            <Features />
+          )} */}
+          {serviceDetailLoading ? (
+            <ServiceDetailVideoShimmer />
+          ) : success?.delivrableVideoUrl || success?.documentVideoUrl || success?.stepsVideoUrl ? (
             <video controls autoPlay>
               <source
                 src={
@@ -131,7 +149,7 @@ export const Details = ({
 
 
         </div>
-        {pricing && (
+        {/* {pricing && (
           <div className="w-full md:w-2/5 bg-[#EEEFF3] box-sg rounded-lg px-5 py-6 gap-2 flex flex-col">
             <div>
               {serviceDetailLoading ? (
@@ -162,10 +180,6 @@ export const Details = ({
               <p className="font-bold text-xs text-[#0A1C40]">
                 Service Details{" "}
               </p>
-              {/* <p className="text-[10px]">
-                Guaranteed submission in 3 working days or your money back. T&C
-                Apply
-              </p> */}
               {
                 <p className="text-[11px] text-[#0A1C40]">{data?.details}</p>
               }
@@ -207,7 +221,75 @@ export const Details = ({
               </Button>
             </div>
           </div>
+        )} */}
+
+        {pricing && (
+          <div className="w-full md:w-2/5 bg-[#EEEFF3] box-sg rounded-lg px-5 py-6 gap-2 flex flex-col">
+            {serviceDetailLoading ? (
+              <ServiceDetailPricingShimmer />
+            ) : (
+              <>
+                <div>
+                  <div className="font-extrabold text-2xl text-[#0A1C40] flex gap-2">
+                    ₹ {subscriptionAmount}
+                    {discountPercent > 0 && (
+                      <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2">
+                        {discountPercent} %
+                      </p>
+                    )}
+                  </div>
+                  {stateWiseServiceCharge && (
+                    <p className="text-xs text-[#0A1C40]">
+                      {stateWiseServiceCharge} + Applicable govt. fees
+                    </p>
+                  )}
+                </div>
+                {/* <div className="py-2">
+                  <p className="font-bold text-base text-[#0A1C40]">What’s Included</p>
+                  <p className="text-[11px] text-[#0A1C40]" dangerouslySetInnerHTML={{__html : data?.about}}></p>
+                </div> */}
+                <div className="py-2">
+                  <p className="font-bold text-xs text-[#0A1C40]">Service Details</p>
+                  <p className="text-[11px] text-[#0A1C40]" dangerouslySetInnerHTML={{__html : data?.details}}></p>
+                </div>
+                <div className="py-4 flex justify-between items-center">
+                  {ratingDetails && (
+                    <div className="flex flex-col gap-1">
+                      <p className="font-extrabold text-xl text-[#0A1C40]">{ratingDetails?.average}/5</p>
+                      <Rating rating={ratingDetails?.average} />
+                      <p className="text-[11px]">{`Based on ${ratingDetails?.count ? ratingDetails?.count : 0} reviews`}</p>
+                    </div>
+                  )}
+                  <div className="flex flex-col">
+                    <div className="flex items-end font-medium text-[13px] text-[#0A1C40]">
+                      <strong className="text-lg leading-6">{data?.duration}</strong>
+                      <span>Months</span>
+                    </div>
+                    <p className="text-xs text-[#0A1C40]">Estimated Time</p>
+                  </div>
+                </div>
+                <div className="pt-2 flex justify-between items-center gap-2">
+                  <Button
+                    onClick={navigateToService}
+                    className={"text-xs px-2 py-1 rounded-sm"}
+                    outline={true}
+                  >
+                    Avail services
+                  </Button>
+                  <Button
+                    isLoading={isLoading}
+                    onClick={handleTalkTouOurAdvisors}
+                    className={"text-xs px-2 py-1 rounded-sm"}
+                    primary={true}
+                  >
+                    Talk to our Advisors
+                  </Button>
+                </div>
+              </>
+            )}
+          </div>
         )}
+
         <ConfirmationModal
           isOpen={confirmationModal}
           onClose={onConfirmationModalClose}
@@ -218,7 +300,7 @@ export const Details = ({
               Call Back Requested.
             </p>
             <p className="font-medium text-[16px] text-[#595959]">
-            {callBackMessage}
+              {callBackMessage}
             </p>
             <div className="flex justify-center">
               <Button

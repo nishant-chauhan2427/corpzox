@@ -13,6 +13,20 @@ import {
 } from "../../../../../redux/actions/business-action";
 import { setBusinessId } from "../../../../../redux/slices/businessSlice";
 
+
+export const businessType = [
+  { label: "Private Limited", value: "private_limited" },
+  { label: "Public Limited", value: "public_limited" },
+  { label: "Sole Proprietorship", value: "sole_proprietorship" },
+  { label: "LLP", value: "llp" },
+  { label: "OPC", value: "opc" },
+  { label: "Section 8", value: "section_8" },
+  { label: "Partnership", value: "partnership" },
+  { label: "Cooperative", value: "cooperative" },
+  { label: "Producer Company", value: "producer_company" },
+  { label: "Foreign Corporation", value: "foreign_corporation" },
+];
+
 export const RegistrationDetails = ({ isEdit }) => {
   const [subIndustryOptions, setSubIndustryOptions] = useState([]);
   const { business, businessId, loading } = useSelector(
@@ -63,18 +77,18 @@ export const RegistrationDetails = ({ isEdit }) => {
     }
   }, [selectedIndustry, setValue]);
 
-  const businessType = [
-    { label: "Private Limited", value: "private_limited" },
-    { label: "Public Limited", value: "public_limited" },
-    { label: "Sole Proprietorship", value: "sole_proprietorship" },
-    { label: "LLP", value: "llp" },
-    { label: "OPC", value: "opc" },
-    { label: "Section 8", value: "section_8" },
-    { label: "Partnership", value: "partnership" },
-    { label: "Cooperative", value: "cooperative" },
-    { label: "Producer Company", value: "producer_company" },
-    { label: "Foreign Corporation", value: "foreign_corporation" },
-  ];
+  // const businessType = [
+  //   { label: "Private Limited", value: "private_limited" },
+  //   { label: "Public Limited", value: "public_limited" },
+  //   { label: "Sole Proprietorship", value: "sole_proprietorship" },
+  //   { label: "LLP", value: "llp" },
+  //   { label: "OPC", value: "opc" },
+  //   { label: "Section 8", value: "section_8" },
+  //   { label: "Partnership", value: "partnership" },
+  //   { label: "Cooperative", value: "cooperative" },
+  //   { label: "Producer Company", value: "producer_company" },
+  //   { label: "Foreign Corporation", value: "foreign_corporation" },
+  // ];
 
   const roleOption = [
     { label: "Director/Founder/Owner", value: "director" },
@@ -258,7 +272,7 @@ export const RegistrationDetails = ({ isEdit }) => {
             render={({ field }) => (
               <Input
                 {...field}
-                label="CIN No."
+                label="CIN No.(eg:L01631KA2010PTC096843)"
                 maxLength={21}
                 placeholder="Enter your CIN number"
                 errorContent={errors.registration?.cinNumber?.message}

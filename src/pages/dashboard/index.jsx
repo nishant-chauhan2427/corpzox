@@ -33,6 +33,8 @@ import { Heading } from "../../components/heading";
 import { ServiceProgressShimmer } from "../../components/loader/ServiceProgressShimmer";
 import { DashboardProfileCardShimmer } from "../../components/loader/DashboardProfileCardShimmer";
 import { BusinessCardShimmer } from "../../components/loader/BusinessCardShimmer";
+import toast from "react-hot-toast";
+import { clearEmail } from "../../redux/slices/userAuth-slice";
 
 const Dashboard = () => {
   const [accountShowButton, setAccountShowButton] = useState(false);
@@ -61,6 +63,9 @@ const Dashboard = () => {
     loading,
     fetching
   } = useSelector((state) => state.user);
+  const {
+    email,
+  } = useSelector((state) => state.auth);
 
   const { recommendedServiceList, isRecommendedServiceLoading } = useSelector(
     (state) => state.service
@@ -69,14 +74,39 @@ const Dashboard = () => {
   const formattedRecommendedServices = recommendedServiceList?.map(
     (service) => {
       return {
+        _id : service?._id,
         name: service.service[0]?.name,
         details: service.service[0]?.details,
       };
     }
   );
+
+  
+  // const isSignedIn = localStorage.getItem('signedIn');
+  
+  // useEffect(() => {
+  //   if (!isSignedIn) {
+  //     let userInfo = null;
+  //     try {
+  //       userInfo = JSON.parse(localStorage.getItem('userInfo'))?.token;
+  //       localStorage.removeItem('userInfo');
+  //     } catch (error) {
+  //       userInfo = null;
+  //     }
+  //   }
+  // }, [isSignedIn]);
+
+  
+  
+
+  useEffect(()=>{
+    if (email) {
+      dispatch(clearEmail()); 
+    }
+  })
   useEffect(() => {
     dispatch(updateServiveProgress({ page: 1 }));
-  }, [url, dispatch]);
+  }, [dispatch]);
 
   useEffect(() => {
     const storedUserInfo = localStorage.getItem("userInfo");
@@ -84,7 +114,10 @@ const Dashboard = () => {
     // if (storedUserInfo !== userInfo) {
     //   setUserInfo(storedUserInfo); // Update the state with new userInfo
     // }
-    dispatch(getUser()); // Dispatch the action
+    // if(!user?.email){
+
+    //   dispatch(getUser()); // Dispatch the action
+    // }
   }, [dispatch, userInfo]);
   useEffect(() => {
     dispatch(getUserBusiness({ query: searchValue ? searchValue : "" }));

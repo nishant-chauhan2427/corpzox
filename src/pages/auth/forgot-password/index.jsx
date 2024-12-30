@@ -291,6 +291,7 @@ export const ForgotPassword = () => {
                       placeholder={"Email Id"}
                       className={"border-[#D9D9D9] border"}
                       errorContent={errors?.email?.message}
+                      maxLength={50}
                     />
                   )}
                 />
@@ -303,14 +304,15 @@ export const ForgotPassword = () => {
                   }
                   //disabled={!isValid}
                   isLoading={resendingOtp}
+
                 >
                   Continue
                 </Button>
-                <div className="flex gap-2 items-center  ">
+                {/* <div className="flex gap-2 items-center  ">
                   <div className="border-t w-full border-[#D9D9D9] "></div>
                   <p className="text-base text-[#6E6E6E] font-medium">or</p>
                   <div className="border-t w-full border-[#D9D9D9]"></div>
-                </div>
+                </div> */}
                 {/* <div className="flex items-center justify-center rounded p-2 gap-2 text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
                   <GoogleLogin
                     clientId="1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com"
@@ -349,7 +351,7 @@ export const ForgotPassword = () => {
               </form>
             </div>
           )}
-          <div className="text-center  flex justify-center gap-2 pt-4 font-normal text-[#6C6C6C]">
+          {/* <div className="text-center  flex justify-center gap-2 pt-4 font-normal text-[#6C6C6C]">
             <p>
               Need an account?
               <Link
@@ -359,7 +361,7 @@ export const ForgotPassword = () => {
                 Create one
               </Link>
             </p>
-          </div>
+          </div> */}
         </div>
       </AuthLayout>
     </>

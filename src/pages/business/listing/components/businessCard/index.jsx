@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { calculateAge } from "../../../../../utils/index";
 import { Button } from "../../../../../components/buttons";
 import { BusinessCardShimmer } from "../../../../../components/loader/BusinessCardShimmer";
+import { businessType } from "../../../createEdit/components/registration";
 
 export const BusinessCard = ({ data }) => {
 
@@ -38,7 +39,8 @@ export const BusinessCard = ({ data }) => {
               </div>
             </div>
             <div className="flex flex-col px-2 pt-2 gap-1 w-[100%]">
-              {labelValue("Type:", data.typeOfBusiness)}
+              {/* {labelValue("Type:", data.typeOfBusiness)} */}
+              {labelValue("Type:",businessType?.filter((el)=>el.value===data?.typeOfBusiness)[0]?.label )}
               {labelValue(
                 "Registered Office:",
                 (data?.businessAddressCity && data?.businessAddressState

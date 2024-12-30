@@ -1,20 +1,25 @@
 import { Link } from "react-router-dom";
 // import { offers } from "../../database/index";
 import { Button } from "../buttons/button";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getOffers } from "../../redux/actions/offer-action";
 import { OfferShimmer } from "../loader/OfferShimmer";
 import { NoData } from "../errors/noData";
 import { LinkButton } from "../link";
+import client from "../../redux/axios-baseurl";
 
 export const Offers = () => {
   const dispatch = useDispatch();
 
   //get offers from store.offer
-  const { offers, totalCount, isLoading, error } = useSelector(
+  const { totalCount, error } = useSelector(
     (state) => state.offers
   );
+
+  const [offers, setOffers] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   // console.log("offers:::", offers, isLoading);
 
@@ -22,7 +27,40 @@ export const Offers = () => {
   useEffect(() => {
     // console.log("Offer page render");
 
-    dispatch(getOffers({}));
+    // dispatch(getOffers({}));
+
+    const fetchOffers = async()=>{
+      try {
+        setIsLoading(true);
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        const token = userInfo?.token;
+        // console.log(token, "token")
+  
+        // if (!token) {
+        //   return rejectWithValue("No token found");
+        // }
+  
+        const response = await client.get("/admin/offer", {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`,
+          },
+          params:{page:1}
+        });
+        console.log("fetchOffer",response.data?.data?.offers);
+        setOffers(response.data?.data?.offers);
+      } catch (error) {
+        console.log(error, "get offer list error");
+        // return rejectWithValue(error.response?.data || "Something went wrong");
+      }finally{
+        // console.log("Finally block");
+        setIsLoading(false);
+      }
+    }
+    fetchOffers();
+
+
   }, []);
 
   if (isLoading) return <OfferShimmer count={2} />;
@@ -49,9 +87,7 @@ export const Offers = () => {
                 className="flex rounded-lg px-2 py-2 bg-[#EEEFF3] hover:shadow-lg"
               >
                 <div
-                  style={{
-                    backgroundImage: `url(${offer?.imageUrl})`,
-                  }}
+                  style={{ backgroundImage: `url(${offer?.imageUrl?offer?.imageUrl:"https://img.freepik.com/free-vector/sale-banner-badge-your-business_1017-17476.jpg"})` }}
                   className={`min-w-[40%] rounded-lg bg-cover bg-center overflow-hidden`}
                 ></div>
                 <div className="flex flex-col  justify-between gap-1 bg-[#EEEFF3] pl-3 ">

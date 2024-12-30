@@ -5,7 +5,7 @@ export const RightSidebar = ({ className }) => {
   return (
     <div className={`${className} py-4`}>
       <Offers />
-      <Insight />
+      {/* <Insight /> */}
     </div>
   );
 };

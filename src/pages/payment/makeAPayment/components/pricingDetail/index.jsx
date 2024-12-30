@@ -37,7 +37,7 @@ const PricingDetail = ({totalCost, offer,serviceCost,totalSavings,data,originalP
           </p>
           <div className="flex justify-between">
             <p className="text-base font-semibold text-[#525252]">Service Price</p>
-            <p className="text-base font-semibold  text-[#525252]">₹{originalPrice}</p>
+            <p className="text-base font-semibold  text-[#525252]">₹{originalPrice?.toFixed(2)}</p>
           </div>
           
           {/* {<div className="flex justify-between">
