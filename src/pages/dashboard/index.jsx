@@ -69,6 +69,7 @@ const Dashboard = () => {
   const formattedRecommendedServices = recommendedServiceList?.map(
     (service) => {
       return {
+        _id : service?._id,
         name: service.service[0]?.name,
         details: service.service[0]?.details,
       };

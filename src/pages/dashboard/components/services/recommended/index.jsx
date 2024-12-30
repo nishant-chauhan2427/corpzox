@@ -11,6 +11,9 @@ export const RecommendedServices = ({ data, total }) => {
     dispatch(resetService({}));
     navigate("/services");
   };
+  const navigateToDetail =(serviceId)=>{
+    navigate(`/services/detail/${serviceId}`)
+  }
   // test dev branch
   console.log(total,"ˇTotal Service");
   return (
@@ -30,6 +33,7 @@ export const RecommendedServices = ({ data, total }) => {
       >
         {data?.slice(0, 2).map((data, index) => (
           <button
+          onClick={()=>navigateToDetail(data._id)}
             key={index}
             className="flex justify-between items-center bg-[#f3f7ff] stroke-[#dfeaf2] stroke-1 gap-2 w-full p-2 rounded-lg"
           >
