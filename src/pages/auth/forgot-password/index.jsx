@@ -291,6 +291,7 @@ export const ForgotPassword = () => {
                       placeholder={"Email Id"}
                       className={"border-[#D9D9D9] border"}
                       errorContent={errors?.email?.message}
+                      maxLength={50}
                     />
                   )}
                 />
