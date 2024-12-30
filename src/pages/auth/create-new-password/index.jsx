@@ -174,7 +174,7 @@ export const CreateNewPassword = () => {
             >
               Continue
             </Button>
-            <div className="flex gap-2 items-center  ">
+            {/* <div className="flex gap-2 items-center  ">
               <div className="border-t w-full border-[#D9D9D9] "></div>
               <p className="text-base text-[#6E6E6E] font-medium">or</p>
               <div className="border-t w-full border-[#D9D9D9]"></div>
@@ -182,18 +182,18 @@ export const CreateNewPassword = () => {
             <div className="flex items-center justify-center rounded p-2 gap-2 text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
               Sign in with Google <img src="google.svg" alt="" />
               <img src="" alt="" />
-            </div>
+            </div> */}
           </form>
         </div>
 
-        <div className="text-center flex justify-center gap-2 pt-20 font-normal text-[#6C6C6C]">
+        {/* <div className="text-center flex justify-center gap-2 pt-20 font-normal text-[#6C6C6C]">
           <p>
             Need an account?
             <Link to={"/sign-up"} className="p-2 text-[#F1359C] font-semibold ">
               Create one
             </Link>
           </p>
-        </div>
+        </div> */}
       </AuthLayout>
     </>
   );

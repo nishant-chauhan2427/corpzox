@@ -33,6 +33,8 @@ import { Heading } from "../../components/heading";
 import { ServiceProgressShimmer } from "../../components/loader/ServiceProgressShimmer";
 import { DashboardProfileCardShimmer } from "../../components/loader/DashboardProfileCardShimmer";
 import { BusinessCardShimmer } from "../../components/loader/BusinessCardShimmer";
+import toast from "react-hot-toast";
+import { clearEmail } from "../../redux/slices/userAuth-slice";
 
 const Dashboard = () => {
   const [accountShowButton, setAccountShowButton] = useState(false);
@@ -61,6 +63,9 @@ const Dashboard = () => {
     loading,
     fetching
   } = useSelector((state) => state.user);
+  const {
+    email,
+  } = useSelector((state) => state.auth);
 
   const { recommendedServiceList, isRecommendedServiceLoading } = useSelector(
     (state) => state.service
@@ -74,8 +79,12 @@ const Dashboard = () => {
       };
     }
   );
-
- 
+  //toast.success("Welcome to CorpZo !");
+  useEffect(()=>{
+    if (email) {
+      dispatch(clearEmail()); // Clear email from Redux store
+    }
+  })
   useEffect(() => {
     dispatch(updateServiveProgress({ page: 1 }));
   }, [dispatch]);

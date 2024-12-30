@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import client from "../axios-baseurl";
+import toast from "react-hot-toast";
 
 export const getUserServicesCatagory = createAsyncThunk("getUserServicesCatagory", async ({page,sort_by,query,categoryId,subCategoryId}, { rejectWithValue }) => {
     try {
@@ -136,6 +137,47 @@ export const removeServiceWishlist = createAsyncThunk("removeServiceWishlist", a
 });
 
 
+export const removeRecommendServiceWishlist = createAsyncThunk("removeRecommendServiceWishlist", async (wishListData, { rejectWithValue }) => {
+    try {
+        const response = await client.delete(`/user/service-wishlist`,{
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+            },
+            data:wishListData
+          });
+        if(response?.data?.code==200||response?.data?.code==201){
+            wishListData.message=response?.data?.message;
+            return wishListData;
+        }else{
+            return rejectWithValue(response?.data?.message);            
+        }
+    } catch (error) {
+        return rejectWithValue(error?.response?.data?.message || error?.message);
+    }
+});
+
+
+export const updateRecommendServiceWishlist = createAsyncThunk("updateRecommendServiceWishlist", async (wishListData, { rejectWithValue }) => {
+    try {
+        const response = await client.put(`/user/service-wishlist`,wishListData,{
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+            },
+          });
+       //console.log(response,'updateServiceWishlist..');
+        if(response?.data?.code==200||response?.data?.code==201){
+            return response.data;
+        }else{
+            return rejectWithValue(response?.data?.message);            
+        }
+    } catch (error) {
+        return rejectWithValue(error?.response?.data?.message || error?.message);
+    }
+});
 // Remove Data from Wishlist
 // export const removeServiceWishlistData = createAsyncThunk("removeServiceWishlistData", async (wishListData, { rejectWithValue }) => {
 //     try {
@@ -173,6 +215,7 @@ export const updateServiceQuickWishlist = createAsyncThunk("updateServiceQuickWi
           });
         // console.log(response,'services12..');
         if(response?.data?.code==200||response?.data?.code==201){
+            toast.success(response?.data?.message)
             return response.data;
         }else{
             return rejectWithValue(response?.data?.message);            
