@@ -16,9 +16,9 @@ import { GoTriangleDown } from "react-icons/go";
 import { GoDotFill } from "react-icons/go";
 
 export const ServicesProgress = ({ data }) => {
-  console.log(data,"datadashboard");
-  const { dataUpdate } = useSelector((state) => state.user);
-  const [dropdownStates, setDropdownStates] = useState(dataUpdate?.data?.map(() => false));
+  //console.log(data,"datadashboard");
+    const { dataUpdate } = useSelector((state) => state.user);
+  const [dropdownStates, setDropdownStates] = useState(data?.map(() => false));
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [otherValue, setOtherVsalue] = useState("");
   const [serviceId, setServiceId] = useState("");
@@ -216,16 +216,16 @@ export const ServicesProgress = ({ data }) => {
                     <div className="flex gap-3">
                       {data?.ratingreviewsSize === 0 && (
                         <Button
-                          onClick={() =>
-                            onConfirmationModalOpen(
-                              data?.service[0]?._id,
-                              data?._id
-                            )
-                          }
-                          className="flex items-center px-4 py-[6px] rounded-full font-medium text-[12px] text-[#0068FF] bg-[#DBE9FE]"
-                        >
-                          Rate Your Experience
-                        </Button>
+                        onClick={() =>
+                          onConfirmationModalOpen(
+                            data?.service[0]?._id,
+                            data?._id
+                          )
+                        }
+                        className="font-medium text-[12px] text-[#0068FF] underline underline-offset-4"
+                      >
+                        Rate Your Experience
+                      </Button>
                       )}
 
                       <LinkButton

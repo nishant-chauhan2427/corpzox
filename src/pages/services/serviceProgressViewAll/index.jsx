@@ -29,9 +29,11 @@ const ServiceprogressViewAll = () => {
   
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [transactionId, setTransactionId] = useState("");
-  const { dataUpdate, totalCount, loadingMore, page, morePage } = useSelector(
+  const { dataUpdate, totalCount, loadingMore, fetching, page, morePage } = useSelector(
     (state) => state.user
   );
+
+  
 console.log(dataUpdate?.data,"dataUpdate?.data");
   const [dropdownStates, setDropdownStates] = useState(
     dataUpdate?.data?.map(() => false)
@@ -176,6 +178,12 @@ console.log(dataUpdate?.data,"dataUpdate?.data");
         </Heading>
       </div>
 
+      {fetching ? (
+          <ServiceProgressShimmer />
+
+        ) : (
+          ""
+        )}
       {dataUpdate?.total > 0 ? (
         <div className="flex flex-col gap-4">
            {dataUpdate?.data?.map((data, index) => {

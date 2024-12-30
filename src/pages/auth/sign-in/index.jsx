@@ -187,12 +187,12 @@ export const SignIn = () => {
                 onClick={handleCheckbox}
                 className="flex items-center font-normal text-[14px] text-[#a5a3a3] -mt-2 gap-2"
               >
-                {/* <Checkbox
+                <Checkbox
                   checked={checkedCheckbox}
                   onClick={(e) => e.stopPropagation()}
                   onChange={handleCheckbox}
-                /> */}
-                {/* <div>
+                />
+                <div>
                   <span
                     className={`${
                       checkedCheckbox
@@ -202,7 +202,7 @@ export const SignIn = () => {
                   >
                     Keep me Signed in
                   </span>
-                </div> */}
+                </div>
               </div>
               <Button
                 type={"submit"}

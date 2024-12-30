@@ -68,7 +68,7 @@ export const Profile = ({ user = {} }) => {
     setPercentage(percentage);  
   };
   
-  
+  //data-tooltip-content={ service.wishlistCount === 1  "Remove From WishList" : "Add to WishList"} data-tooltip-id="my-tooltip"
   useEffect(() => {
     if (user) {
       calculatePercentageHandler()
