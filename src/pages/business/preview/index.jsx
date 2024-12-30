@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import { ConfirmationModal } from "../../../components/modal/confirmationModal";
 import { updateAddressDetails, updateFinancialDetails, updateFundingDetails, updateKYCDetails } from "../../../redux/actions/business-action";
+import { businessType } from "../createEdit/components/registration";
 
 const BusinessPreview = ({isEdit}) => {
   const navigate = useNavigate();
@@ -55,7 +56,7 @@ const BusinessPreview = ({isEdit}) => {
         toast.success("Business details updated")
         navigate(-8);  //this will delete last 6 from browser history stack
       }else{
-         toast.success("Business created successfully!");
+        //  toast.success("Business created successfully!");
           setConfirmationModal(true);
       }
     } else {
@@ -69,8 +70,9 @@ const BusinessPreview = ({isEdit}) => {
   };
   const onConfirmationModalClose = () => {
     setConfirmationModal(false);
-    // navigate("/business");
-    navigate(-6);
+    window.history.pushState(null, null, '/business'); 
+    navigate("/business", { replace: true });
+    //  navigate(-8);
   };
   
 // Recheck the formattedDate
@@ -92,7 +94,8 @@ const BusinessPreview = ({isEdit}) => {
                     Business Type
                   </h3>
                   <p className="text-gray-600">
-                    {registration?.typeOfBusiness || "N/A"}
+                  {/* {registration?.typeOfBusiness  || "N/A"} */}
+                  {businessType?.filter((el)=>el.value===registration?.typeOfBusiness)[0]?.label  || "N/A"}
                   </p>
                 </div>
 

@@ -120,7 +120,7 @@ export const FinancialDetails = ({ isEdit }) => {
                     // Prevent invalid characters and limit input length to 10
                     e.target.value = value
                       .replace(/[^0-9]/g, "") // Allow only digits
-                      .slice(0, 12); // Limit to 12 characters
+                      .slice(0, 10); // Limit to 10 characters
                     field.onChange(e); // Trigger React Hook Form's onChange
                   }}
                 />
@@ -145,7 +145,7 @@ export const FinancialDetails = ({ isEdit }) => {
                     // Prevent invalid characters and limit input length to 10
                     e.target.value = value
                       .replace(/[^0-9]/g, "") // Allow only digits
-                      .slice(0, 12); // Limit to 12 characters
+                      .slice(0, 10); // Limit to 10 characters
                     field.onChange(e); // Trigger React Hook Form's onChange
                   }}
                 />
@@ -171,7 +171,7 @@ export const FinancialDetails = ({ isEdit }) => {
                     // Prevent invalid characters and limit input length to 10
                     e.target.value = value
                       .replace(/[^0-9]/g, "") // Allow only digits
-                      .slice(0, 12); // Limit to 12 characters
+                      .slice(0, 10); // Limit to 10 characters
                     field.onChange(e); // Trigger React Hook Form's onChange
                   }}
                 />
