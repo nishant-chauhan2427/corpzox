@@ -17,21 +17,22 @@ import { GoDotFill, GoTriangleDown } from "react-icons/go";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ProgressBar } from "../../../components/progressBar";
 import { ImSpinner2 } from "react-icons/im";
-import { servicesProgress } from "../../../database";
+
 import { NavLink } from "react-router-dom";
 import { ServiceProgressShimmer } from "../../../components/loader/ServiceProgressShimmer";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ratingReviewSchema } from "../../../validation/ratingReviewValidationSchema";
 import { ratingReview } from "../../../redux/actions/servicesDetails-actions";
 
-
-const ServiceprogressViewAll = ({ data }) => {
+import { servicesProgress } from "../../../database";
+const ServiceprogressViewAll = () => {
+  
   const [confirmationModal, setConfirmationModal] = useState(false);
-  const [otherValue, setOtherVsalue] = useState("");
   const [transactionId, setTransactionId] = useState("");
   const { dataUpdate, totalCount, loadingMore, page, morePage } = useSelector(
     (state) => state.user
   );
+console.log(dataUpdate?.data,"dataUpdate?.data");
   const [dropdownStates, setDropdownStates] = useState(
     dataUpdate?.data?.map(() => false)
   );
@@ -222,7 +223,7 @@ const ServiceprogressViewAll = ({ data }) => {
                       </div>
                     </div>
                     <div className="flex gap-3">
-                      {data?.ratingreviewsSize === 1 && (
+                      {data?.ratingreviewsSize === 0 && (
                         <Button
                           onClick={() =>
                             onConfirmationModalOpen(

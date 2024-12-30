@@ -16,8 +16,9 @@ import { GoTriangleDown } from "react-icons/go";
 import { GoDotFill } from "react-icons/go";
 
 export const ServicesProgress = ({ data }) => {
-  //console.log(data,"datadashboard");
-  const [dropdownStates, setDropdownStates] = useState(data?.map(() => false));
+  console.log(data,"datadashboard");
+  const { dataUpdate } = useSelector((state) => state.user);
+  const [dropdownStates, setDropdownStates] = useState(dataUpdate?.data?.map(() => false));
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [otherValue, setOtherVsalue] = useState("");
   const [serviceId, setServiceId] = useState("");
@@ -32,7 +33,7 @@ export const ServicesProgress = ({ data }) => {
     );
   };
 
-  const { dataUpdate } = useSelector((state) => state.user);
+
   const {
     control,
     handleSubmit,
