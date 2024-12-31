@@ -26,7 +26,7 @@ const ServiceprogressViewAll = () => {
   const { dataUpdate, totalCount, loadingMore,fetching , page, morePage } =
     useSelector((state) => state.user);
 
-  console.log(dataUpdate?.data, "dataUpdate?.data");
+  console.log(dataUpdate?.data, "dataUpdate Inside ServiceCard");
   const [dropdownStates, setDropdownStates] = useState(
     dataUpdate?.data?.map(() => false)
   );

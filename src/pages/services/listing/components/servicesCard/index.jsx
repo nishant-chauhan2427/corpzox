@@ -232,9 +232,12 @@ export const ServicesCard = ({
                   <div className="flex items-center  justify-center gap-2">
                     {addLoading[service._id] ||
                       removeLoading[service._id] ||
-                      childLoading[service.serviceId] ? (
-                      <img src="/icons/wishlist/grey-heart.svg" alt="Red Heart" />
-                    ) : (
+                      childLoading[service.serviceId] ?
+                      (<CiHeart size={30} color="#777777" />)
+                    //    (
+                    //   <img src="/icons/wishlist/grey-heart.svg" alt="Red Heart" />
+                    // ) 
+                    : (
                       <button
                         data-tooltip-content={(service.wishlistCount === 1 || recommendedServiceList?.service?.servicewishlistsSize ===1) ? "Remove From WishList" : "Add to WishList"} data-tooltip-id="my-tooltip"
                         onClick={() => {

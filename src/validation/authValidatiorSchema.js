@@ -18,7 +18,7 @@ export const signUpValidationSchema = Yup.object().shape({
   //   .min(10, 'Phone number must be at least 10 characters')
   //   .max(20, 'Phone number cannot exceed 20 characters'),
     phone: Yup.string()
-    .matches(/^[0-9]{12}$/, 'Phone number is not valid').required('Phone no is required'),
+    .matches().required('Phone no is required'),
 
   email: Yup.string()
     .email('Invalid email address') // Check if the email is valid
@@ -44,7 +44,7 @@ export const signinValidationSchema = Yup.object().shape({
   email: Yup.string()
       .test('email-or-phone', 'Invalid email or phone number', (value) => {
           const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-          const phoneRegex = /^[6-9]\d{9}$/;  
+          const phoneRegex = /^[1-9]\d{9}$/;;  
           
           return emailRegex.test(value) || phoneRegex.test(value);
       })

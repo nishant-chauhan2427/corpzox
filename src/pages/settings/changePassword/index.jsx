@@ -227,7 +227,7 @@ const ChangePassword = () => {
               {otp.map((digit, index) => (
                 <input
                   className={`${
-                    error ? "border-error" : "border-[#DFEAF2]"
+                    error ? "border-black"  : "border-[#DFEAF2]"
                   } w-[15%] h-14 font-bold border rounded-lg text-center`}
                   key={index}
                   type="text"
