@@ -18,7 +18,7 @@ export const signUpValidationSchema = Yup.object().shape({
   //   .min(10, 'Phone number must be at least 10 characters')
   //   .max(20, 'Phone number cannot exceed 20 characters'),
     phone: Yup.string()
-    .matches(/^[0-9]{12}$/, 'Phone number is not valid').required('Phone no is required'),
+    .matches().required('Phone no is required'),
 
   email: Yup.string()
     .email('Invalid email address') // Check if the email is valid

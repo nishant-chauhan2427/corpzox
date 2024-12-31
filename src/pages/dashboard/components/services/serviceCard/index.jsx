@@ -16,11 +16,10 @@ import { GoTriangleDown } from "react-icons/go";
 import { GoDotFill } from "react-icons/go";
 
 export const ServiceCard = ({ data }) => {
-  //console.log(data,"datadashboard");
+
   const { dataUpdate } = useSelector((state) => state.user);
   const [dropdownStates, setDropdownStates] = useState(dataUpdate?.data?.map(() => false));
   const [confirmationModal, setConfirmationModal] = useState(false);
-  const [otherValue, setOtherVsalue] = useState("");
   const [serviceId, setServiceId] = useState("");
   const [transactionId, setTransactionId] = useState("");
   const dispatch = useDispatch();
@@ -28,7 +27,15 @@ export const ServiceCard = ({ data }) => {
 
   const { isRatingAdding } = useSelector((state) => state.serviceDetails);
 
+useEffect(()=>{
+  setDropdownStates(dataUpdate?.data?.map((_,i)=>{
+    if(dropdownStates[i]==true) return true;
+    else return false;
+  }))
+},[dataUpdate?.data])
+
   const handleServiceDropdown = (index) => {
+    console.log(index,"Dropdown Index");
     setDropdownStates((prevState) =>
       prevState.map((state, i) => (i === index ? !state : state))
     );
@@ -240,7 +247,8 @@ export const ServiceCard = ({ data }) => {
               </div>
             </div>
             <Dropdown
-              isOpen={dropdownStates?.[index]}
+            
+              isOpen={dropdownStates[index]}
               servicesProgessSteps={servicesProgessSteps}
             />
           </div>
