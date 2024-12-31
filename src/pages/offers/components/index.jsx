@@ -18,17 +18,17 @@ function OffersDetails() {
 
   const { offers, page, totalCount, isLoading, loadingMore, error } = useSelector((state) => state.offers);
 
-  const urlParams = new URLSearchParams( useLocation().search);
+  const urlParams = new URLSearchParams(useLocation().search);
   // const navigate = useNavigate();
   // const url = new URL(window.location);
   // let page =urlParams.get("page") ||1 ;
   const searchValue = urlParams.get("search");
-  
+
 
   useEffect(() => {
     // console.log("Offer page render");
 
-    dispatch(getOffers({ query: searchValue}));
+    dispatch(getOffers({ query: searchValue }));
   }, [searchValue]);
 
   const [expandedIndex, setExpandedIndex] = useState(null); // To track which offer is expanded
@@ -70,16 +70,16 @@ function OffersDetails() {
   return (
     <>
       <Heading title={"Offers"} backButton={true}>
-        {`Offers(${totalCount||0})`}
+        {`Offers(${totalCount || 0})`}
       </Heading>
-    
+
       <InfiniteScroll
         dataLength={totalCount} //This is important field to render the next data
         next={() => dispatch(loadMoreOffers({ query: searchValue, page: (page + 1) }))}   //function call to load more
         hasMore={(!error && totalCount % offers?.length > 0)}  //true : more data to load, false: No more data to load
-        loader={  <div className="flex justify-center items-center p-1"><ImSpinner2 className="animate-spin text-black !text-xl" /></div>  }
+        loader={<div className="flex justify-center items-center p-1"><ImSpinner2 className="animate-spin text-black !text-xl" /></div>}
         endMessage={
-          offers?.length>6 &&
+          offers?.length > 6 &&
           <p style={{ textAlign: 'center' }}>
             <b>Yay! You have seen it all</b>
           </p>
@@ -94,16 +94,20 @@ function OffersDetails() {
               className="flex sm:flex-row flex-col gap-3 px-4 py-4 mb-6 bg-[#F3F7FF] border border-[#DFEAF2] rounded-lg    "
             >
               <div
-                style={{ backgroundImage: `url(${offer?.imageUrl?offer?.imageUrl:"https://img.freepik.com/free-vector/sale-banner-badge-your-business_1017-17476.jpg"})` }}
-                className={`sm:w-[30%] rounded-lg bg-cover bg-no-repeat bg-center overflow-hidden`}
-              ></div>
+                // style={{ backgroundImage: `url(${offer?.imageUrl ? offer?.imageUrl : "https://img.freepik.com/free-vector/sale-banner-badge-your-business_1017-17476.jpg"})` }}
+                className={`sm:w-[30%] max-w-[274px] h-[219px] flex justify-center items-center rounded-lg bg-cover bg-no-repeat bg-center overflow-hidden`}
+              >
+              
+                <img className="w-full h-full object-cover object-center" src={offer?.imageUrl?offer?.imageUrl:"https://img.freepik.com/free-vector/sale-banner-badge-your-business_1017-17476.jpg"} alt="" />
+
+              </div>
               <div className="flex sm:w-[70%] flex-col gap-2">
                 <p className="font-bold text-[20px]  text-[#0A1C40]">
                   {offer.offerTitle}
                 </p>
                 <div className="flex items-center gap-4 ">
                   <p className="font-bold rounded-full text-[14px] text-white bg-[#4CAF50] px-2 py-1 ">
-                    {`${offer.discountPercent}% OFF`}
+                    {`${offer?.discountType === "fixed" ? "₹ " : ""}${offer.discountPercent}${offer?.discountType === "percentage" ? "%" : ""} OFF`}
                   </p>
                   <p className="font-normal  text-[12px] text-[#737373] ">
                     {`Valid till : ${formatDate(offer.validity)}`}
@@ -118,7 +122,7 @@ function OffersDetails() {
 
                     {offer.offerDetail?.length > 200 && (expandedIndex == index ? "Read Less" : "Read More")}
                   </span>
-                </p>  
+                </p>
                 <div className="flex justify-end pt-5">
                   <LinkButton to={"/services"} primary={true}> Avail Now</LinkButton>
                 </div>

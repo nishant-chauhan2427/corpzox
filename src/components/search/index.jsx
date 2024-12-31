@@ -12,12 +12,14 @@ import { useOutsideClick } from "../../utils";
 
 export const Search = (props) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(searchParams.get("search")  || "");
   const [filterMenu, setFilterMenu] = useState(false);
   //console.log(filterMenu, "fsda");
 
   const navigate = useNavigate();
   const location = useLocation();
+  
+  
 
   const handleInputChange = (e) => {
     const value = e.target.value;
