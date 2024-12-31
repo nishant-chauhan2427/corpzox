@@ -233,7 +233,7 @@ export const ServicesCard = ({
                     {addLoading[service._id] ||
                       removeLoading[service._id] ||
                       childLoading[service.serviceId] ?
-                      (<></>)
+                      (<CiHeart size={30} color="#777777" />)
                     //    (
                     //   <img src="/icons/wishlist/grey-heart.svg" alt="Red Heart" />
                     // ) 
