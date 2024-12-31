@@ -10,6 +10,7 @@ import client from "../../../redux/axios-baseurl";
 import { FormShimmer } from "../../../components/loader/FormShimmer";
 import { FaRupeeSign } from "react-icons/fa";
 import { RouteProgressBar } from "../../../components/progressBar/routeBased";
+import { businessType } from "../../business/createEdit/components/registration";
 
 const PreviewPayment = () => {
   const [paymentDetails, setPaymentDetails] = useState(null);
@@ -266,7 +267,9 @@ const PreviewPayment = () => {
                 Business type :
               </p>
               <p className="font-semibold text-[#0A1C40] text-base">
-                {businessDetails?.typeOfBusiness ||". . ."}
+                {/* {businessDetails?.typeOfBusiness ||". . ."} */}
+                {businessType?.filter((el)=>el.value===businessDetails?.typeOfBusiness)[0]?.label || "N/A"}
+
               </p>
             </div>
 
