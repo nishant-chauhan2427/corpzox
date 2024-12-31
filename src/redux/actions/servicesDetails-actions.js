@@ -64,7 +64,7 @@ export const getStateWiseServiceCharge = createAsyncThunk("getStateWiseServiceCh
 
 export const verifyCoupon = createAsyncThunk(
     "settings/verifyCoupon",
-    async ({ couponId, cost, title }, { rejectWithValue }) => {
+    async ({ couponId, cost, title,discountType, usageType }, { rejectWithValue }) => {
 
         try {
             const response = await client.put(`/application/is-valid-coupon`, { couponId }, {
@@ -79,7 +79,36 @@ export const verifyCoupon = createAsyncThunk(
                 isCouponValid: response?.data?.data[0].isCouponValid,
                 cost: cost,
                 couponId: couponId,
-                title: title
+                title: title,
+                discountType :discountType,
+                usageType : usageType
+            }
+        } catch (error) {
+            console.log(error, "netwroek error")
+            if (error.code == 'ERR_NETWORK') {
+                return rejectWithValue(error.message)
+            } else {
+                console.log(error, "netwroek error")
+                return rejectWithValue(error.response?.data || "Something went wrong");
+            }
+        }
+    }
+);
+export const verifyOffer = createAsyncThunk(
+    "verifyOffer",
+    async ({ offerId }, { rejectWithValue }) => {
+
+        try {
+            const response = await client.put(`/application/is-valid-coupon`, { offerId }, {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+                },
+            });
+            console.log(response?.data.data[0], "verifyCoupon data")
+            return {
+                isCouponValid: response?.data?.data[0].isCouponValid,
             }
         } catch (error) {
             console.log(error, "netwroek error")

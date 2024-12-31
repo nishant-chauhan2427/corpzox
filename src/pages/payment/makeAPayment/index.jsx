@@ -15,7 +15,7 @@ import { UPI } from "../makeAPayment/components/upi";
 import { NetBanking } from "./components/netBanking";
 import { useDispatch, useSelector } from "react-redux";
 import { availService, getServiceDetails, talkToAdvisor, verifyCoupon } from "../../../redux/actions/servicesDetails-actions";
-import { addCoupons, removeCoupon, setAppliedOffer, updateOfferDetails } from "../../../redux/slices/serviceDetailsSlice";
+import { addCoupons, removeCoupon, setAppliedOffer, updateOfferDetails, updateOriginalPrice } from "../../../redux/slices/serviceDetailsSlice";
 import { ConfirmationModal } from "../../../components/modal/confirmationModal";
 import { PricingDetailShimmer } from "../../../components/loader/PricingDetailShimmer";
 import { RouteProgressBar } from "../../../components/progressBar/routeBased";
@@ -44,15 +44,16 @@ const MakeAPayment = () => {
   }, [dispatch])
 
   const transformedCouponArray = coupons[0]?.map((item) => {
-    const { couponTitle, discount, _id } = item;
+    const { couponTitle, discount, _id, discountType, usageType } = item;
     return {
       id: _id,
       title: couponTitle,
-      // description : offerDetail, 
-      off: discount
+      discountType : discountType, 
+      off: discount,
+      usageType : usageType
     };
   });
-  console.log(quotationId, subscriptionId, "transformedCouponArray")
+  console.log(coupons?.[0], "transformedCouponArray")
   const {
     control,
     handleSubmit,
@@ -62,10 +63,10 @@ const MakeAPayment = () => {
     mode: "onChange",
   });
 
-  const handleApplyCoupon = ({ id, offerCost, title }) => {
+  const handleApplyCoupon = ({ id, offerCost, title, discountType, usageType }) => {
     console.log(id, offerCost, "data id")
     // setCouponsApplied([...couponsApplied, { id, offerCost }]);
-    dispatch(verifyCoupon({ couponId: id, cost: offerCost, title }))
+    dispatch(verifyCoupon({ couponId: id, cost: offerCost, title, discountType, usageType }))
 
     setCouponApplied(true);
     setShowAddIcon(false);
@@ -152,6 +153,7 @@ const MakeAPayment = () => {
     if (type === 'subscription' && success && success.subscription && success.subscription.length > 0) {
       const pricingData = calculateFinalPriceByType(success, type, subscriptionId);
       console.log(pricingData, "subscription data");
+      dispatch(updateOriginalPrice("subscription"))
       setSubscriptionData(pricingData.subscription)
       dispatch(setAppliedOffer({ offerPrice: pricingData.discountAmount, finalPrice: pricingData.finalPrice }))
       if (success.offerservices[0]?.offers) {
@@ -163,12 +165,14 @@ const MakeAPayment = () => {
       console.log("isnide quotation block")
       const pricingData = calculateFinalPriceByType(success, type, subscriptionId);
       dispatch(setAppliedOffer({ offerPrice: pricingData.discountAmount, finalPrice: pricingData.finalPrice }))
+      dispatch(updateOriginalPrice("quotation"))
       console.log(pricingData, "quotation data");
     }
     else if (type === 'regular' && success && Object.keys(success).length > 0) {
       console.log("Inside regular part");
       const pricingData = calculateFinalPriceByType(success, type, null);
       console.log(pricingData, "pricingData for cost regular");
+      dispatch(updateOriginalPrice("regular"))
       dispatch(setAppliedOffer({ offerPrice: pricingData.discountAmount, finalPrice: pricingData.finalPrice }));
       if (success.offerservices[0]?.offers) {
         dispatch(updateOfferDetails(pricingData.offerDetails))
@@ -310,7 +314,7 @@ const MakeAPayment = () => {
                             className="flex flex-row  sm:flex-row gap-4 bg-white m-4 rounded-sm"
                           >
                             <p className="text-xl text-center flex justify-cener items-center px-3 py-2 font-semibold bg-[#007AFF26] text-[#272727]">
-                              {data.off} %
+                              {data.off} {data.discountType === "fixed" || data.discountType === "amount" ? "₹" : "%"} 
                             </p>
                             <div className="py-3 flex flex-col gap-1">
                               <p className="font-medium text-[#080808] text-lg">
@@ -327,7 +331,7 @@ const MakeAPayment = () => {
                               {isCouponVerifiedLoading ? (<ImSpinner2 className="animate-spin text-gray hover:text-white !text-xl" />) : (<Button
                                 primary={true}
                                 isLoading={isServiceAvailing}
-                                onClick={() => handleApplyCoupon({ id: data.id, offerCost: data.off, title: data.title })}
+                                onClick={() => handleApplyCoupon({ id: data.id, offerCost: data.off, title: data.title, discountType:data.discountType, usageType : data.usageType })}
                               >
                                 Apply
                               </Button>)}
