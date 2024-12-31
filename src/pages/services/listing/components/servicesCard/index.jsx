@@ -175,13 +175,13 @@ export const ServicesCard = ({
                 <div className="flex justify-end pt-5 items-end">
                   <div className="flex items-center  justify-center gap-2">
                     {addLoading[service._id] ||
-                    removeLoading[service._id] ||
-                    childLoading[service.serviceId] ? (
-                      <img
-                        src="/icons/wishlist/grey-heart.svg"
-                        alt="Red Heart"
-                      />
-                    ) : (
+                      removeLoading[service._id] ||
+                      childLoading[service.serviceId] ?
+                      (<CiHeart size={30} color="#777777" />)
+                    //    (
+                    //   <img src="/icons/wishlist/grey-heart.svg" alt="Red Heart" />
+                    // ) 
+                    : (
                       <button
                         data-tooltip-content={
                           service.wishlistCount === 1

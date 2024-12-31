@@ -195,7 +195,7 @@ export const Verify = () => {
                     <div className="w-full flex justify-between items-start gap-2">
                       {otp.map((digit, index) => (
                         <input
-                          className={`${otpMessage ? "border-error" : "border-[#DFEAF2]"
+                          className={`${otpMessage ? "border-black" : "border-[#DFEAF2]"
                             } w-[15%] h-14 font-bold border rounded-lg text-center`}
                           key={index}
                           type="text"

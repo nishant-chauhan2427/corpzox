@@ -31,6 +31,7 @@ export const Signup = () => {
     handleSubmit,
     formState: { errors, isValid },
     trigger,
+    setFieldValue,
     reset,
   } = useForm({
     resolver: yupResolver(signUpValidationSchema),
@@ -117,6 +118,7 @@ export const Signup = () => {
     if (!isRegistering && isSubmit) {
       setIsSubmit(false);
       if (registeringError) {
+        toast.dismiss();
         toast.error(registeringError);
       } else {
         // reset();
@@ -173,7 +175,20 @@ export const Signup = () => {
                       touched={true}
                       errorContent={errors?.phone?.message}
                       onBlur={() => handleBlur("phone")}
+                      // onChange={(value, country) => {
+                      //   // console.log("check country value", country?.dialCode,value);
+                      //   if (country?.dialCode === value) {
+                      //     setFieldError(
+                      //       "phone",
+                      //       "Please input Phone number"
+                      //     );
+                      //   }else{
+                      //     setFieldValue("phone", value);
+                      //   }
+                       
+                      // }}
                     />
+                   
                   )}
                 />
               </div>
@@ -258,7 +273,7 @@ export const Signup = () => {
                             alt="Google Logo"
                             className="w-5 h-5"
                           />
-                          Sign in with Google
+                          Sign Up with Google
                         </button>
                       )}
                     />

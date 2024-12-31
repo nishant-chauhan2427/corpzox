@@ -59,7 +59,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
   const profile = false;
 
   // Handle sidebar collapse
-  console.log(upload,"upload image");
+  console.log(upload, "upload image");
 
   const handleSidebar = () => {
     setCollapse(!collapse);
@@ -95,6 +95,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
         return "";
     }
   }
+
   // import { persistor } from './reduxStore'; // Import persistor from your Redux store configuration
 
   // export const handleSignOut = () => {
@@ -139,7 +140,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
   // };
   const clearSearch = () => {
     // Log the current 'search' query parameter
-    console.log(searchParams.get("search"));
+    //console.log(searchParams.get("search"));
 
     // Remove the 'search' query parameter by deleting it
     searchParams.delete("search");
@@ -151,18 +152,16 @@ export const Header = ({ className, collapse, setCollapse }) => {
   };
 
 
-useEffect(() => {
-  if (!user?.profile_picture_url || !user?.name || !user?.email) {
-    dispatch(getUser());
-  }
-}, []);
-
+  useEffect(() => {
+    if (!user?.profile_picture_url || !user?.name || !user?.email) {
+      dispatch(getUser());
+    }
+  }, []);
 
   return (
     <header
-      className={`${
-        className && className
-      } bg-[#0A1C40] dark:bg-slate-900 lg:ps-[14rem] px-2 lg:px-4 py-4 z-[1000]`}
+      className={`${className && className
+        } bg-[#0A1C40] dark:bg-slate-900 lg:ps-[14rem] px-2 lg:px-4 py-4 z-[1000]`}
     >
       <div className="relative flex justify-between items-center">
         {/* Left Side Menu */}
@@ -211,11 +210,15 @@ useEffect(() => {
             !pathname.includes("settings") &&
             !pathname.includes("profile") &&
             !pathname.includes("wishlist") &&
-            // !pathname.includes("offersDetails") &&
-            !pathname.includes("dashboard") && 
-            !pathname.includes("payment") && 
-            !pathname.includes("detail") && 
-            
+            !pathname.includes("offersDetails") &&
+            !pathname.includes("dashboard") &&
+            !pathname.includes("payment") &&
+            !pathname.includes("services/detail") &&
+            !pathname.includes("services/serviceprogressdetail") &&
+             pathname !== "/documents" &&
+
+
+
             (
               <Search
                 clearSerarch={clearSearch}
@@ -231,9 +234,8 @@ useEffect(() => {
           <div className="hidden lg:flex items-center gap-4">
             {headerLinks?.map((data, index) => (
               <Link
-                className={`${
-                  window.location.pathname.includes(data.url) && "text-primary"
-                } hover:text-primary`}
+                className={`${window.location.pathname.includes(data.url) && "text-primary"
+                  } hover:text-primary`}
                 to={data.url}
                 key={index}
               >
@@ -251,7 +253,7 @@ useEffect(() => {
             {/* <Notification /> */}
             <Link to={"/wishlist"}>
               <IconWrapper data-tooltip-content={"Wishlist"} data-tooltip-id="my-tooltip">
-                <img  src="/icons/header/heart.svg" alt="" />
+                <img src="/icons/header/heart.svg" alt="" />
               </IconWrapper>
             </Link>
             <div className="flex relative gap-2">
@@ -260,25 +262,25 @@ useEffect(() => {
                   onClick={() => setSignedInMenuPopup(!signedInMenuPopup)}
                   className="flex items-center gap-1 sm:gap-2"
                 >
-                 {
-  upload == null ? (
-    <img
-      className="w-8 h-8 inset-0 rounded-full object-cover ltr:absolute ltr:top-1/2 ltr:left-1/2 ltr:-translate-y-1/2 rtl:-translate-y-[31%] ltr:-translate-x-1/2"
-      src={
-        user?.profile_picture_url
-          ? user?.profile_picture_url
-          : "/images/insights/insight-user.svg"
-      }
-      alt="profile-pic"
-    />
-  ) : (
-    <img
-      className="w-8 h-8 inset-0 rounded-full object-cover ltr:absolute ltr:top-1/2 ltr:left-1/2 ltr:-translate-y-1/2 rtl:-translate-y-[31%] ltr:-translate-x-1/2"
-      src={upload ? upload : "/images/insights/insight-user.svg"}
-      alt="profile-pic"
-    />
-  )
-}
+                  {
+                    upload == null ? (
+                      <img
+                        className="w-8 h-8 inset-0 rounded-full object-cover ltr:absolute ltr:top-1/2 ltr:left-1/2 ltr:-translate-y-1/2 rtl:-translate-y-[31%] ltr:-translate-x-1/2"
+                        src={
+                          user?.profile_picture_url
+                            ? user?.profile_picture_url
+                            : "/images/insights/insight-user.svg"
+                        }
+                        alt="profile-pic"
+                      />
+                    ) : (
+                      <img
+                        className="w-8 h-8 inset-0 rounded-full object-cover ltr:absolute ltr:top-1/2 ltr:left-1/2 ltr:-translate-y-1/2 rtl:-translate-y-[31%] ltr:-translate-x-1/2"
+                        src={upload ? upload : "/images/insights/insight-user.svg"}
+                        alt="profile-pic"
+                      />
+                    )
+                  }
 
 
                   <div className="hidden sm:flex flex-col items-start">

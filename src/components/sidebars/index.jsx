@@ -208,7 +208,7 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
               <IconBox
                 containerClassName="px-4 py-2"
                 titleClassName={
-                  item.to == null && "font-semibold text-primary uppercase"
+                  item.to == null && "bg-[#FFD700] shadow-lg"
                 }
                 key={index}
                 to={item.to}

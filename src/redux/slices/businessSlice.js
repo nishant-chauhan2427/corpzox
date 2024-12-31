@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { updateKYCDetails, updateFundingDetails, fetchUserBusinessCard, getBusiness, registrationDetails, updateRegistrationDetails, updateAddressDetails, updateFinancialDetails } from "../actions/business-action";
 import toast from "react-hot-toast";
+import { s } from "framer-motion/client";
 
 // Define initial state with a structure similar to the API data you want
 const initialState = {
@@ -71,6 +72,9 @@ const businessSlice = createSlice({
     },
     resetBusiness(state) {
       return initialState;
+    },
+    setLoaderOff(state){
+      state.loading = false;
     }
   },
   extraReducers: (builder) => {
@@ -248,6 +252,6 @@ const businessSlice = createSlice({
   }
 });
 
-export const { setBusinessId, createBusiness, resetBusiness } = businessSlice.actions;
+export const { setBusinessId, createBusiness, resetBusiness,setLoaderOff } = businessSlice.actions;
 
 export default businessSlice.reducer;

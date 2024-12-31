@@ -98,7 +98,8 @@ export const Offers = () => {
                       </p>
                     </div>
                     <p className="font-extrabold  text-[#EB9527] text-[14.05px]">
-                      {offer.discountPercent}% OFF
+                      {/* {offer.discountPercent}{offer?.discountType==="percentage"?"%":"₹"} */}
+                      {`${offer?.discountType === "fixed" ? "₹ " : ""}${offer.discountPercent}${offer?.discountType === "percentage" ? "%" : ""} OFF`}
                     </p>
                     <p className="font-normal pr-2 text-[12px] text-[#737373]">
                       {offer.offerDetail?.substring(0, 30)}

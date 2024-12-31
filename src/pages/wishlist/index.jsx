@@ -57,8 +57,8 @@ const Wishlist = () => {
         <InfiniteScroll
               dataLength={wishList?.length || 0} // Use the currently loaded data length
               next={() => dispatch(getMoreWishList({ page: page+1 }))} // Load more data
-              // hasMore={wishList?.length < totalCount} // true if more data exists, false otherwise
-              hasMore={false} // true if more data exists, false otherwise
+              hasMore={wishList?.length < totalCount} // true if more data exists, false otherwise
+              // hasMore={false} // true if more data exists, false otherwise
               loader={
                 <div className="flex justify-center items-center p-1">
                   <ImSpinner2 className="animate-spin text-black !text-xl" />

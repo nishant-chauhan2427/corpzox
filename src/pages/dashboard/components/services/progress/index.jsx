@@ -14,11 +14,12 @@ import { LinkButton } from "../../../../../components/link";
 import { TextArea } from "../../../../../components/inputs/textarea";
 import { GoTriangleDown } from "react-icons/go";
 import { GoDotFill } from "react-icons/go";
+import { ServiceCard } from "../serviceCard";
 
 export const ServicesProgress = ({ data }) => {
-  console.log(data,"datadashboard");
+  //console.log(data,"datadashboard");
   const { dataUpdate } = useSelector((state) => state.user);
-  const [dropdownStates, setDropdownStates] = useState(dataUpdate?.data?.map(() => false));
+  const [dropdownStates, setDropdownStates] = useState(data?.map(() => false));
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [otherValue, setOtherVsalue] = useState("");
   const [serviceId, setServiceId] = useState("");
@@ -26,125 +27,123 @@ export const ServicesProgress = ({ data }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // const { isRatingAdding } = useSelector((state) => state.serviceDetails);
 
-  const { isRatingAdding } = useSelector((state) => state.serviceDetails);
+  // const handleServiceDropdown = (index) => {
+  //   setDropdownStates((prevState) =>
+  //     prevState.map((state, i) => (i === index ? !state : state))
+  //   );
+  // };
 
-  const handleServiceDropdown = (index) => {
-    setDropdownStates((prevState) =>
-      prevState.map((state, i) => (i === index ? !state : state))
-    );
-  };
+  // const {
+  //   control,
+  //   handleSubmit,
+  //   reset,
+  //   formState: { errors, isValid },
+  // } = useForm({
+  //   defaultValues: {
+  //     serviceQualityRating: 0,
+  //     professionalBehaviourRating: 0,
+  //     onTimeDeliveryRating: 0,
+  //     transparentPricingRating: 0,
+  //     valueForMoneyRating: 0,
+  //     review: "",
+  //   },
+  //   resolver: yupResolver(ratingReviewSchema),
+  // });
 
+  // const onConfirmationModalClose = () => {
+  //   setConfirmationModal(false);
+  //   setServiceId("");
+  //   reset();
+  // };
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors, isValid },
-  } = useForm({
-    defaultValues: {
-      serviceQualityRating: 0,
-      professionalBehaviourRating: 0,
-      onTimeDeliveryRating: 0,
-      transparentPricingRating: 0,
-      valueForMoneyRating: 0,
-      review: "",
-    },
-    resolver: yupResolver(ratingReviewSchema),
-  });
+  // useEffect(() => {
+  //   if (!isRatingAdding) setConfirmationModal(false);
+  // }, [isRatingAdding]);
 
-  const onConfirmationModalClose = () => {
-    setConfirmationModal(false);
-    setServiceId("");
-    reset();
-  };
+  // const onConfirmationModalOpen = (data, transactionId) => {
+  //   setServiceId(data);
+  //   setTransactionId(transactionId);
+  //   setConfirmationModal(true);
+  // };
 
-  useEffect(() => {
-    if (!isRatingAdding) setConfirmationModal(false);
-  }, [isRatingAdding]);
+  // const onSubmit = (formData) => {
+  //   // Handle form submission logic
+  //   const payload = {
+  //     serviceQualityRating: formData.serviceQualityRating,
+  //     professionalBehaviourRating: formData.professionalBehaviourRating,
+  //     onTimeDeliveryRating: formData.onTimeDeliveryRating,
+  //     transparentPricingRating: formData.transparentPricingRating,
+  //     valueForMoneyRating: formData.valueForMoneyRating,
+  //     review: formData.review,
+  //   };
+  //   if (formData.review === "") {
+  //     delete payload.review;
+  //   }
 
-  const onConfirmationModalOpen = (data, transactionId) => {
-    setServiceId(data);
-    setTransactionId(transactionId);
-    setConfirmationModal(true);
-  };
+  //   dispatch(
+  //     ratingReview({ ...payload, serviceId, applicationId: transactionId })
+  //   );
+  //   reset(); // Reset the form after submission
+  // };
 
-  const onSubmit = (formData) => {
-    // Handle form submission logic
-    const payload = {
-      serviceQualityRating: formData.serviceQualityRating,
-      professionalBehaviourRating: formData.professionalBehaviourRating,
-      onTimeDeliveryRating: formData.onTimeDeliveryRating,
-      transparentPricingRating: formData.transparentPricingRating,
-      valueForMoneyRating: formData.valueForMoneyRating,
-      review: formData.review,
-    };
-    if (formData.review === "") {
-      delete payload.review;
-    }
+  // const servicesProgessSteps = [
+  //   {
+  //     step: 1,
+  //     topLabel: "Under Review",
+  //     bottomLabel: "Mar 12, 2024",
+  //     status: "completed",
+  //   },
+  //   {
+  //     step: 2,
+  //     topLabel: "Service Started",
+  //     bottomLabel: "Mar 15, 2024",
+  //     status: "completed",
+  //   },
+  //   {
+  //     step: 3,
+  //     topLabel: "Payment Received",
+  //     bottomLabel: "Mar 16, 2024",
+  //     status: "completed",
+  //   },
+  //   {
+  //     step: 4,
+  //     topLabel: "Documents Uploaded",
+  //     bottomLabel: "Mar 17, 2024",
+  //     status: "completed",
+  //   },
+  //   { step: 5, topLabel: "App. Submitted", status: "in-progress" },
+  //   {
+  //     step: 6,
+  //     topLabel: "App. In Progress",
+  //     estimated: "Est: 5-6 Days",
+  //     status: "pending",
+  //   },
+  //   {
+  //     step: 7,
+  //     topLabel: "Service Completed",
+  //     estimated: "Est: 1-2 Days",
+  //     status: "pending",
+  //   },
+  // ];
 
-    dispatch(
-      ratingReview({ ...payload, serviceId, applicationId: transactionId })
-    );
-    reset(); // Reset the form after submission
-  };
+  // const calculateCompletionStatus = (expectedCompletionDate) => {
+  //   const today = new Date();
+  //   const expectedDate = new Date(expectedCompletionDate);
+  //   const differenceInMilliseconds = expectedDate - today;
+  //   const differenceInDays = Math.ceil(
+  //     differenceInMilliseconds / (1000 * 3600 * 24)
+  //   );
 
-  const servicesProgessSteps = [
-    {
-      step: 1,
-      topLabel: "Under Review",
-      bottomLabel: "Mar 12, 2024",
-      status: "completed",
-    },
-    {
-      step: 2,
-      topLabel: "Service Started",
-      bottomLabel: "Mar 15, 2024",
-      status: "completed",
-    },
-    {
-      step: 3,
-      topLabel: "Payment Received",
-      bottomLabel: "Mar 16, 2024",
-      status: "completed",
-    },
-    {
-      step: 4,
-      topLabel: "Documents Uploaded",
-      bottomLabel: "Mar 17, 2024",
-      status: "completed",
-    },
-    { step: 5, topLabel: "App. Submitted", status: "in-progress" },
-    {
-      step: 6,
-      topLabel: "App. In Progress",
-      estimated: "Est: 5-6 Days",
-      status: "pending",
-    },
-    {
-      step: 7,
-      topLabel: "Service Completed",
-      estimated: "Est: 1-2 Days",
-      status: "pending",
-    },
-  ];
-
-  const calculateCompletionStatus = (expectedCompletionDate) => {
-    const today = new Date();
-    const expectedDate = new Date(expectedCompletionDate);
-    const differenceInMilliseconds = expectedDate - today;
-    const differenceInDays = Math.ceil(
-      differenceInMilliseconds / (1000 * 3600 * 24)
-    );
-
-    if (differenceInDays > 0) {
-      return { status: "On Time", delay: null };
-    } else if (differenceInDays < 0) {
-      return { status: "Delayed", delay: Math.abs(differenceInDays) };
-    } else {
-      return { status: "On Time", delay: null };
-    }
-  };
+  //   if (differenceInDays > 0) {
+  //     return { status: "On Time", delay: null };
+  //   } else if (differenceInDays < 0) {
+  //     return { status: "Delayed", delay: Math.abs(differenceInDays) };
+  //   } else {
+  //     return { status: "On Time", delay: null };
+  //   }
+  // };
 
   return (
     <>
@@ -169,7 +168,7 @@ export const ServicesProgress = ({ data }) => {
                 </Link>
               )}
             </div>
-            {dataUpdate?.data?.slice(0, 3)?.map((data, index) => {
+            {/* {dataUpdate?.data?.slice(0, 3)?.map((data, index) => {
               const { status, delay } = calculateCompletionStatus(
                 data?.expectedCompletionDate
               );
@@ -197,7 +196,7 @@ export const ServicesProgress = ({ data }) => {
                           width={15}
                           alt=""
                         /> */}
-                      </div>
+            {/* </div>
                       <div className="flex flex-row gap-2">
                         <h6 className="font-medium text-sm text-[#7C7D80]">
                           <span className="font-medium text-[#0A1C40]">
@@ -216,13 +215,14 @@ export const ServicesProgress = ({ data }) => {
                     <div className="flex gap-3">
                       {data?.ratingreviewsSize === 0 && (
                         <Button
+                          primary={true}
                           onClick={() =>
                             onConfirmationModalOpen(
                               data?.service[0]?._id,
                               data?._id
                             )
                           }
-                          className="flex items-center px-4 py-[6px] rounded-full font-medium text-[12px] text-[#0068FF] bg-[#DBE9FE]"
+                          // className="font-medium text-[12px] text-[#0068FF] underline underline-offset-4"
                         >
                           Rate Your Experience
                         </Button>
@@ -258,9 +258,11 @@ export const ServicesProgress = ({ data }) => {
                         )}
                       </div>
                       <button
-                        data-tooltip-content={"Service Progress"} data-tooltip-id="my-tooltip"
-                        className={`${dropdownStates === true && "rotate-180 "
-                          } hidden lg:block `}
+                        data-tooltip-content={"Service Progress"}
+                        data-tooltip-id="my-tooltip"
+                        className={`${
+                          dropdownStates === true && "rotate-180 "
+                        } hidden lg:block `}
                         onClick={() => handleServiceDropdown(index)}
                       >
                         <GoTriangleDown size={15} />
@@ -271,24 +273,21 @@ export const ServicesProgress = ({ data }) => {
                     isOpen={dropdownStates?.[index]}
                     servicesProgessSteps={servicesProgessSteps}
                   />
-                </div>
-              );
-            })}
+                </div> */}
+            {/* );
+            })} */}
+            <ServiceCard data={dataUpdate?.data?.slice(0, 3)} />
           </>
         ) : (
           <div>
-            <Heading
-
-              className={"py-0 "}
-              tourButton={true}
-            >
+            <Heading className={"py-0 "} tourButton={true}>
               Your Service Progress Updates
-
             </Heading>
             <div className="flex justify-center gap-2 items-center flex-col h-[40vh]">
-
               <img src="/images/service-prgress.svg" alt="" />
-              <p className="font-bold text-xl text-[#000000]">No Services Availed</p>
+              <p className="font-bold text-xl text-[#000000]">
+                No Services Availed
+              </p>
               {/* <p className="font-normal text-[#797979]">
               Create a Business to add your Service
             </p> */}
@@ -298,18 +297,16 @@ export const ServicesProgress = ({ data }) => {
                   navigate("/services");
                 }}
                 primary={true}
-              // leftIcon={<IoMdAddCircle />}
+                // leftIcon={<IoMdAddCircle />}
               >
                 Avail Service
               </LinkButton>
             </div>
-
           </div>
         )}
-
       </div>
       {/* Rating and Review Modal */}
-      <ConfirmationModal
+      {/* <ConfirmationModal
         isOpen={confirmationModal}
         onClose={onConfirmationModalClose}
         modalClassName={"sm:max-w-xl lg:min-w-[32rem]"}
@@ -489,22 +486,21 @@ export const ServicesProgress = ({ data }) => {
             </Button>
           </div>
         </form>
-      </ConfirmationModal>
+      </ConfirmationModal> */}
     </>
   );
 };
 
-
-const Dropdown = ({ isOpen, servicesProgessSteps }) => {
-  return (
-    <>
-      {isOpen && (
-        <div className="p-6">
-          <div className="flex justify-between items-center">
-            <ProgressBar steps={servicesProgessSteps} />
-          </div>
-        </div>
-      )}
-    </>
-  );
-};
+// const Dropdown = ({ isOpen, servicesProgessSteps }) => {
+//   return (
+//     <>
+//       {isOpen && (
+//         <div className="p-6">
+//           <div className="flex justify-between items-center">
+//             <ProgressBar steps={servicesProgessSteps} />
+//           </div>
+//         </div>
+//       )}
+//     </>
+//   );
+// };

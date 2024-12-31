@@ -1,7 +1,29 @@
 import { ModalWrapper } from "../../../components/wrappers/modal";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, replace, useNavigate } from "react-router-dom";
 import BusinessListing from "../listing";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setLoaderOff } from "../../../redux/slices/businessSlice";
 const CreateBusiness = ({ isEdit=false }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  // console.log("Create Business");
+  useEffect(() => {
+    // navigate("/business/edit/registration",{replace:true});
+    dispatch(setLoaderOff());
+    
+  },[])
+
+  useEffect(() => {
+    const unloadCallback = (event) => {
+      event.preventDefault();
+      event.returnValue = "";
+      return "";
+    };
+
+    window.addEventListener("beforeunload", unloadCallback);
+    return () => window.removeEventListener("beforeunload", unloadCallback);
+  }, []);
   
   return (
     <div>

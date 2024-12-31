@@ -80,10 +80,28 @@ const Dashboard = () => {
       };
     }
   );
-  //toast.success("Welcome to CorpZo !");
+
+  
+  // const isSignedIn = localStorage.getItem('signedIn');
+  
+  // useEffect(() => {
+  //   if (!isSignedIn) {
+  //     let userInfo = null;
+  //     try {
+  //       userInfo = JSON.parse(localStorage.getItem('userInfo'))?.token;
+  //       localStorage.removeItem('userInfo');
+  //     } catch (error) {
+  //       userInfo = null;
+  //     }
+  //   }
+  // }, [isSignedIn]);
+
+  
+  
+
   useEffect(()=>{
     if (email) {
-      dispatch(clearEmail()); // Clear email from Redux store
+      dispatch(clearEmail()); 
     }
   })
   useEffect(() => {
@@ -123,7 +141,6 @@ const Dashboard = () => {
           {/* <Advertisement /> */}
         </div>
         {businessLoading ? (<BusinessCardShimmer />) : (<Business data={business?.list} total={business?.totalPage} />)}
-
         {isRecommendedServiceLoading ? (
           <div className="flex flex-row gap-2">
             {Array.from({ length: 2 }, (_, index) => (
@@ -138,7 +155,7 @@ const Dashboard = () => {
         )}
 
         {fetching ? (
-          <ServiceProgressShimmer />
+          <ServiceProgressShimmer count={3} className={"p-2"} />
 
         ) : (
           <ServicesProgress
