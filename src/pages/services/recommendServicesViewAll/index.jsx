@@ -58,7 +58,9 @@ const [isSubmit, setIsSubmit] = useState(false);
     dispatch(setToggleToCheckedWishlist(service));
   };
   
-  
+  useEffect(()=>{
+    dispatch(recommendedServiceListing())
+  }, [])
   //console.log(recommendedServiceList, "recommended")
   const formattedRecommendedServices = recommendedServiceList?.map(
     (service) => {

@@ -37,6 +37,7 @@ import { MetaTitle } from "../../../components/metaTitle";
 import { CategorySubCategoryTabLoader } from "../../../components/loader/CategorySubCategoryTabLoader";
 import { BusinessCardShimmer } from "../../../components/loader/ProfileShimmer";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { LinkButton } from "../../../components/link";
 const ServicesListing = () => {
   const dispatch = useDispatch();
   const { servicesMainTab } = useSelector((state) => state.app);
@@ -292,11 +293,13 @@ const ServicesListing = () => {
                 )
               }
             >
+              
               <ServicesCard
                 data={list}
                 onClick={(service) => onClickWishList(service)}
                 onCheckedChange={(val) => onCheckHandler(val)}
               />
+       
             </InfiniteScroll>
           ) : (
             <NoData />
