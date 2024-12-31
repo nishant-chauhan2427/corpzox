@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const Steps = ({data}) => {
+export const Steps = ({ data }) => {
   const [expandedIndex, setExpandedIndex] = useState(null);
 
   const toggleFAQ = (index) => {
@@ -53,13 +53,20 @@ export const Steps = ({data}) => {
               key={index}
               index={index + 1}
               label={data.label}
-              description={data.description}
+              description={
+                data.description
+                  ? data.description.length > 50
+                    ? `${data.description.slice(0, 50)}...` // Limit to 50 characters
+                    : data.description
+                  : ""
+              }
             />
             {index == 2 ? (
               <></>
             ) : (
-              <img src="/icons/services/arrow-step.svg" alt="" />
+              <img src="/icons/services/arrow-step.svg" alt="arrow step" />
             )}
+
           </>
         ))}
       </div>

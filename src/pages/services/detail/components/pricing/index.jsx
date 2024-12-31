@@ -22,9 +22,11 @@ export const Pricing = ({ pricing = true, data, serviceId, offer }) => {
   const { statesList } = useSelector((state) => state.serviceDetails);
   const formattedStates = statesList?.map((state) => {
     const { _id, name } = state;
-
+    const capitalizeLabel = name?.split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
     return {
-      label: name,
+      label: capitalizeLabel,
       value: name,
       id: _id,
     };

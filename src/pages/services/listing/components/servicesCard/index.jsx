@@ -15,7 +15,6 @@ import {
 
 export const ServicesCard = ({
   data,
-
   onClick = (service) => console.log("Heart icon clicked"),
   onCheckedChange = () => console.log("checked clicked"),
 }) => {
@@ -26,23 +25,23 @@ export const ServicesCard = ({
     (state) => state.wishlist
   );
 
+  const { wishList, list, recommendedServiceList } = useSelector(
+    (state) => state.service
+  );
 
-  const { wishList,list ,recommendedServiceList} = useSelector((state) => state.service);
-  console.log(data,"Wishlist STATE");
   const [selectAllChecked, setSelectAllChecked] = useState(false);
   const [expandedServices, setExpandedServices] = useState({});
-  // console.log("selectAllChecked",selectAllChecked);
-  console.log("checkList1:",wishList?.list);
   let checkListSet = new Set(wishList?.list?.map((service) => service._id)); //checkListSet :["serviceId1","serviceId2",....]
 
   useEffect(() => {
-    setSelectAllChecked(wishList?.list?.length == (list?.length || recommendedServiceList?.length));
-    // console.log("Checked:",wishList?.list?.length == list?.length);
+    setSelectAllChecked(
+      wishList?.list?.length == (list?.length || recommendedServiceList?.length)
+    );
   }, [wishList]);
 
   let onClickAddWishlistHandler = () => {
     const wishlistSelectedData = wishList?.list?.map((item) => item._id);
-    console.log(wishlistSelectedData,"wishlistSelectedData");
+    console.log(wishlistSelectedData, "wishlistSelectedData");
     if (wishlistSelectedData?.length) {
       dispatch(
         updateServiceQuickWishlist({ serviceIdArray: wishlistSelectedData })
@@ -51,49 +50,31 @@ export const ServicesCard = ({
         dispatch(updateServiceWishlistFlag(Array.from(checkListSet))); //ie: mark there service as wishlist:true
       });
     }
-    //after succes, update service.wishlistCount = 1, in service store/state to avoid refresh
-
-    // console.log(wishlistSelectedData?.length, "wishlistSelectedData");
-    // if (wishlistSelectedData?.length > 0) {
-    //   //toast.success("Wishlist Created");
-    //   //toast.success(wishList?.error);
-    // } else {
-    //   toast.error("Please select at least one service");
-    // }
   };
-  console.log("checkList2:",wishList?.list);
+
   const onChangeSelectAllHandler = () => {
-    // const newSelectAllChecked = !selectAllChecked;
-    // if(wishList?.list?.length == list?.length)
-    // setSelectAllChecked(newSelectAllChecked);
     dispatch(onChangeSelectAll());
   };
 
-  const heartAccordingToRoute = ["/wishlist", "/services"];
   const navigate = useNavigate();
   const url = window.location.href;
 
-  const handleNavigate = () => {
-    navigate("/services/detail");
+  const navigateToServiceDetail = (serviceId) => {
+    navigate(`/services/detail/${serviceId}`);
   };
-  // console.log(data, "DATA WISH");
-  const handleReadMore = (id) => {
-    setExpandedServices((prevState) => ({
-      ...prevState,
-      [id]: !prevState[id],
-    }));
-  };
+
   return (
     <>
-      {(list.length !== 0 || recommendedServiceList.length !==0)&& url.includes("services") && (
-        <SelectAllTabs
-          hideBtn={wishList?.list?.length <= 0}
-          checked={selectAllChecked}
-          checkListCount={wishList?.list?.length}
-          onChangeSelectAllHandler={onChangeSelectAllHandler}
-          onClickAddWishlistHandler={onClickAddWishlistHandler}
-        />
-      )}
+      {(list.length !== 0 || recommendedServiceList.length !== 0) &&
+        url.includes("services") && (
+          <SelectAllTabs
+            hideBtn={wishList?.list?.length <= 0}
+            checked={selectAllChecked}
+            checkListCount={wishList?.list?.length}
+            onChangeSelectAllHandler={onChangeSelectAllHandler}
+            onClickAddWishlistHandler={onClickAddWishlistHandler}
+          />
+        )}
       <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-4">
         {data &&
           data.map((service, index) => {
@@ -103,15 +84,17 @@ export const ServicesCard = ({
                   ? service?.details
                   : "___"
                 : service?.service[0]?.details
-                  ? service?.service[0]?.details
-                  : "___";
+                ? service?.service[0]?.details
+                : "___";
 
-            const truncatedText = text.length > 100 ? text.slice(0, 100) + "..." : text;
+            const truncatedText =
+              text.length > 100 ? text.slice(0, 100) + "..Read more" : text;
 
             return (
               <div
                 key={index}
-                className="flex flex-col gap-2 bg-[#F3F7FF] px-4 py-4  rounded-lg sm:gap-4 justify-between"
+                className="flex flex-col gap-2 bg-[#F3F7FF] px-4 py-4  rounded-lg sm:gap-4 justify-between cursor-pointer"
+                onClick={() => navigateToServiceDetail(service?._id)}
               >
                 <div className="flex justify-between items-center">
                   <div className="flex gap-2">
@@ -121,8 +104,8 @@ export const ServicesCard = ({
                           ? service?.name
                           : "___"
                         : service?.service?.[0]?.name
-                          ? service?.service?.[0]?.name
-                          : "___"}
+                        ? service?.service[0]?.name
+                        : "___"}
                     </p>
 
                     {url.includes("services") &&
@@ -145,17 +128,9 @@ export const ServicesCard = ({
                       )}
                   </div>
 
-                  {/* {url.includes("services") ?
-                 <Checkbox
-                  className="service-checkbox"
-                  {...(selectAllChecked ? { checked: true } : {})}
-                  onChange={() => onCheckedChange(service)}
-                /> : <></>} */}
                   {url.includes("services") ? (
                     <Checkbox
                       className="service-checkbox"
-                      // {...(selectAllChecked ? { checked: true } : {})}
-                      // checked={wishList?.list?.some((el) => el?._id === service?._id)}   //O(n^2)
                       checked={checkListSet.has(service?._id)} //O(n)
                       onChange={() => onCheckedChange(service)}
                     />
@@ -163,32 +138,8 @@ export const ServicesCard = ({
                     <></>
                   )}
                 </div>
-                {/* <p className="text-base leading-[22px] font-normal text-[#7C7C7C]">
-                {url.includes("services")
-                  ? service?.details
-                    ? service?.details
-                    : "___"
-                  : service?.service[0]?.details
-                  ? service?.service[0]?.details
-                  : "___"}
-              </p> */}
-                {/* Truncated text with Read More */}
-                <p
-                  className="text-base leading-[22px] font-normal text-[#7C7C7C]"
-                  dangerouslySetInnerHTML={{
-                    __html: expandedServices[service._id] ? text : truncatedText,
-                  }}
-                />
-
-                {/* Read more / Read less button */}
-                {text.length > 100 && (
-                  <button
-                    className="text-gray-500"
-                    onClick={() => handleReadMore(service._id)}
-                  >
-                    {expandedServices[service._id] ? "Read less" : "Read more"}
-                  </button>
-                )}
+                <p className="text-base leading-[22px] font-normal text-[#7C7C7C]" dangerouslySetInnerHTML={{__html : truncatedText}}>
+                </p>
 
                 <div className="flex flex-col gap-1 pt-1">
                   <div className="flex justify-between sm:w-4/5">
@@ -201,18 +152,11 @@ export const ServicesCard = ({
                           ? service?.duration
                           : "___"
                         : service?.service[0]?.duration
-                          ? service?.service[0]?.duration
-                          : "___"}
+                        ? service?.service[0]?.duration
+                        : "___"}
                     </p>
                   </div>
-                  {/* <div className="flex justify-between sm:w-4/5">
-                  <p className="font-semibold text-sm text-[#7E7E7E]">
-                    Min Requirement
-                  </p>
-                  <p className="font-bold text-[12px] text-[#000000]">
-                    {service?.minRequirement || "_ _"}
-                  </p>
-                </div> */}
+
                   <div className="flex justify-between sm:w-4/5">
                     <p className="font-semibold text-sm text-[#7E7E7E] flex items-center">
                       Price (<FaRupeeSign className="ml-1" />)
@@ -223,21 +167,30 @@ export const ServicesCard = ({
                           ? service?.cost
                           : "___"
                         : service?.service[0]?.cost
-                          ? service?.service[0]?.cost
-                          : "___"}
+                        ? service?.service[0]?.cost
+                        : "___"}
                     </p>
                   </div>
                 </div>
                 <div className="flex justify-end pt-5 items-end">
                   <div className="flex items-center  justify-center gap-2">
                     {addLoading[service._id] ||
-                      removeLoading[service._id] ||
-                      childLoading[service.serviceId] ? (
-                      <img src="/icons/wishlist/grey-heart.svg" alt="Red Heart" />
+                    removeLoading[service._id] ||
+                    childLoading[service.serviceId] ? (
+                      <img
+                        src="/icons/wishlist/grey-heart.svg"
+                        alt="Red Heart"
+                      />
                     ) : (
                       <button
-                        data-tooltip-content={service.wishlistCount === 1 ? "Remove From WishList" : "Add to WishList"} data-tooltip-id="my-tooltip"
-                        onClick={() => {
+                        data-tooltip-content={
+                          service.wishlistCount === 1
+                            ? "Remove From WishList"
+                            : "Add to WishList"
+                        }
+                        data-tooltip-id="my-tooltip"
+                        onClick={(event) => {
+                          event.stopPropagation();
                           onClick(service);
                         }}
                       >
@@ -246,8 +199,7 @@ export const ServicesCard = ({
                             src="/icons/wishlist/red-heart.svg"
                             alt="Red Heart"
                           />
-                        ) : service?.wishlistCount &&
-                          service.wishlistCount === 1 ? (
+                        ) : service?.wishlistCount && service.wishlistCount === 1 ? (
                           <img
                             src="/icons/wishlist/red-heart.svg"
                             alt="Red Heart"
@@ -268,7 +220,7 @@ export const ServicesCard = ({
                   </div>
                 </div>
               </div>
-            )
+            );
           })}
       </div>
     </>

@@ -261,8 +261,8 @@ export const Details = ({
                     </div>
                   )}
                   <div className="flex flex-col">
-                    <div className="flex items-end font-medium text-[13px] text-[#0A1C40]">
-                      <strong className="text-lg leading-6">{data?.duration}</strong>
+                    <div className="flex items-end gap-2 font-medium text-[13px] text-[#0A1C40]">
+                      <strong className="text-lg leading-6">{data?.duration} </strong>
                       <span>Months</span>
                     </div>
                     <p className="text-xs text-[#0A1C40]">Estimated Time</p>
@@ -306,7 +306,7 @@ export const Details = ({
               <Button
                 primary={true}
                 isLoading={isTalkToAdvisorLoading}
-                onClick={handleTalkTouOurAdvisors}
+                onClick={onConfirmationModalClose}
               >
                 {" "}
                 Continue
