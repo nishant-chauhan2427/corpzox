@@ -210,9 +210,9 @@ export const ForgotPassword = () => {
                 <div className="w-full flex flex-col sm:pt-5 sm:pb-16 sm:gap-4">
                   <div className="w-full flex justify-between items-start gap-2  ">
                     {otp.map((digit, index) => (
-                      <inputc
+                      <input
                         className={`${
-                          !isValid ? "border-black" : "border-[#DFEAF2] "
+                          !isValid ? "border-error" : "border-[#DFEAF2] "
                         } w-[15%] h-14 font-bold border rounded-lg text-center `}
                         key={index}
                         type="text"
