@@ -582,7 +582,7 @@ export const AddressDetails = ({ isEdit }) => {
             </p>
             <div
               onClick={handleCheckbox}
-              className=" flex cursor-pointer items-center gap-2 font-semibold text-sm text-[#4D4D4F]
+              className=" flex invisible cursor-pointer items-center gap-2 font-semibold text-sm text-[#4D4D4F]
             "
             >
               {" "}
