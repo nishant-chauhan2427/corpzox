@@ -98,6 +98,17 @@ const Edit = () => {
     setIsSaving(false);
   };
 
+  useEffect(() => {
+    const unloadCallback = (event) => {
+      event.preventDefault();
+      event.returnValue = "";
+      return "";
+    };
+
+    window.addEventListener("beforeunload", unloadCallback);
+    return () => window.removeEventListener("beforeunload", unloadCallback);
+  }, []);
+  
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
