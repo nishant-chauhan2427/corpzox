@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Heading, PageHeading } from "../../../components/heading";
-import { ServicesProgress } from "../../dashboard/components/services/progress";
 import { TextArea } from "../../../components/inputs/textarea";
 import { Rating } from "../../../components/rating";
 import { Button } from "../../../components/buttons";
@@ -12,24 +11,19 @@ import {
 } from "../../../redux/actions/dashboard-action";
 import { Controller, useForm } from "react-hook-form";
 import { ConfirmationModal } from "../../../components/modal/confirmationModal";
-import { LinkButton } from "../../../components/link";
-import { GoDotFill, GoTriangleDown } from "react-icons/go";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ProgressBar } from "../../../components/progressBar";
 import { ImSpinner2 } from "react-icons/im";
-
-import { NavLink } from "react-router-dom";
 import { ServiceProgressShimmer } from "../../../components/loader/ServiceProgressShimmer";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ratingReviewSchema } from "../../../validation/ratingReviewValidationSchema";
 import { ratingReview } from "../../../redux/actions/servicesDetails-actions";
 
-import { servicesProgress } from "../../../database";
 import { ServiceCard } from "../../dashboard/components/services/serviceCard";
 const ServiceprogressViewAll = () => {
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [transactionId, setTransactionId] = useState("");
-  const { dataUpdate, totalCount, loadingMore, fetching, page, morePage } =
+  const { dataUpdate, totalCount, loadingMore,fetching , page, morePage } =
     useSelector((state) => state.user);
 
   console.log(dataUpdate?.data, "dataUpdate?.data");
@@ -175,8 +169,9 @@ const ServiceprogressViewAll = () => {
         </Heading>
       </div>
 
-      {fetching ? <ServiceProgressShimmer /> : ""}
-      {dataUpdate?.total > 0 ? (
+{/*    
+      {dataUpdate?.total> 0 ? (
+
         // <div className="flex flex-col gap-4">
         //   {dataUpdate?.data?.map((data, index) => {
         //     const { status, delay } = calculateCompletionStatus(
@@ -205,7 +200,7 @@ const ServiceprogressViewAll = () => {
         //                   src="/icons/dashboard/service-error.svg"
         //                   width={15}
         //                   alt=""
-        //                 /> */}
+        //                 /> 
         //             </div>
         //             <div className="flex flex-row gap-2">
         //               <h6 className="font-medium text-sm text-[#7C7D80]">
@@ -300,9 +295,11 @@ const ServiceprogressViewAll = () => {
         //       )
         //     }
         //   ></InfiniteScroll>
-        // </div>
+        // </div> */}
         <div className="flex flex-col gap-4">
-          <ServiceCard data={dataUpdate?.data} />
+         
+             {fetching ? <ServiceProgressShimmer count={8} className={"p-2"}/> :    <ServiceCard data={dataUpdate?.data} />}
+       
           <InfiniteScroll
             dataLength={dataUpdate?.data?.length || 0}
             next={() => dispatch(getMoreServiceUpdate({ page: morePage + 1 }))}
@@ -322,12 +319,12 @@ const ServiceprogressViewAll = () => {
             }
           ></InfiniteScroll>
         </div>
-      ) : (
-        <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
-          <img src="/images/service-prgress.svg" alt="" />
-          <p className="font-bold text-xl text-[#000000]">No Services</p>
-        </div>
-      )}
+      {/* // ) : (
+      //   <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
+      //     <img src="/images/service-prgress.svg" alt="" />
+      //     <p className="font-bold text-xl text-[#000000]">No Services</p>
+      //   </div>
+      // )} */}
 
       <ConfirmationModal
         isOpen={confirmationModal}

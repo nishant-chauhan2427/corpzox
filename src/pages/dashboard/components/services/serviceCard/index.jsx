@@ -18,7 +18,7 @@ import { GoDotFill } from "react-icons/go";
 export const ServiceCard = ({ data }) => {
   //console.log(data,"datadashboard");
   const { dataUpdate } = useSelector((state) => state.user);
-  const [dropdownStates, setDropdownStates] = useState(data?.map(() => false));
+  const [dropdownStates, setDropdownStates] = useState(dataUpdate?.data?.map(() => false));
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [otherValue, setOtherVsalue] = useState("");
   const [serviceId, setServiceId] = useState("");

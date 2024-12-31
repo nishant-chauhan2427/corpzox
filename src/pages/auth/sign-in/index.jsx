@@ -58,8 +58,9 @@ export const SignIn = () => {
   };
 
   const phoneRegex = /^[6-9]\d{9}$/; // Regex for a valid 10-digit mobile number
-  const emailOrPhone = watch("email"); // Watch the 'email' field
 
+  const emailOrPhone = watch("email"); // Watch the 'email' field
+  console.log(emailOrPhone ,'adfadf');
   const onSubmit = async (data) => {
     setIsSubmit(true);
 console.log(data,"Data SIGNIN");
@@ -210,7 +211,7 @@ console.log(data,"Data SIGNIN");
                 className={
                   "mt-2 py-3 w-full rounded-lg text-[#0A1C40] font-semibold !border-none "
                 }
-                disabled={!isValid}
+                // disabled={!isValid}
                 isLoading={isSubmit}
 
               >
