@@ -34,61 +34,61 @@ const ServiceprogressViewAll = () => {
   const { isRatingAdding } = useSelector((state) => state.serviceDetails);
   const dispatch = useDispatch();
 
-  const handleServiceDropdown = (index) => {
-    setDropdownStates((prevState) =>
-      prevState.map((state, i) => (i === index ? !state : state))
-    );
-  };
+  // const handleServiceDropdown = (index) => {
+  //   setDropdownStates((prevState) =>
+  //     prevState.map((state, i) => (i === index ? !state : state))
+  //   );
+  // };
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors, isValid },
-  } = useForm({
-    defaultValues: {
-      serviceQualityRating: 0,
-      professionalBehaviourRating: 0,
-      onTimeDeliveryRating: 0,
-      transparentPricingRating: 0,
-      valueForMoneyRating: 0,
-      review: "",
-    },
-    resolver: yupResolver(ratingReviewSchema),
-  });
-  const onConfirmationModalClose = () => {
-    setConfirmationModal(false);
-    setServiceId("");
-    reset();
-  };
-  useEffect(() => {
-    if (!isRatingAdding) setConfirmationModal(false);
-  }, [isRatingAdding]);
+  // const {
+  //   control,
+  //   handleSubmit,
+  //   reset,
+  //   formState: { errors, isValid },
+  // } = useForm({
+  //   defaultValues: {
+  //     serviceQualityRating: 0,
+  //     professionalBehaviourRating: 0,
+  //     onTimeDeliveryRating: 0,
+  //     transparentPricingRating: 0,
+  //     valueForMoneyRating: 0,
+  //     review: "",
+  //   },
+  //   resolver: yupResolver(ratingReviewSchema),
+  // });
+  // const onConfirmationModalClose = () => {
+  //   setConfirmationModal(false);
+  //   setServiceId("");
+  //   reset();
+  // };
+  // useEffect(() => {
+  //   if (!isRatingAdding) setConfirmationModal(false);
+  // }, [isRatingAdding]);
 
-  const onConfirmationModalOpen = (data, transactionId) => {
-    setServiceId(data);
-    setTransactionId(transactionId);
-    setConfirmationModal(true);
-  };
-  const onSubmit = (formData) => {
-    // Handle form submission logic
-    const payload = {
-      serviceQualityRating: formData.serviceQualityRating,
-      professionalBehaviourRating: formData.professionalBehaviourRating,
-      onTimeDeliveryRating: formData.onTimeDeliveryRating,
-      transparentPricingRating: formData.transparentPricingRating,
-      valueForMoneyRating: formData.valueForMoneyRating,
-      review: formData.review,
-    };
-    if (formData.review === "") {
-      delete payload.review;
-    }
+  // const onConfirmationModalOpen = (data, transactionId) => {
+  //   setServiceId(data);
+  //   setTransactionId(transactionId);
+  //   setConfirmationModal(true);
+  // };
+  // const onSubmit = (formData) => {
+  //   // Handle form submission logic
+  //   const payload = {
+  //     serviceQualityRating: formData.serviceQualityRating,
+  //     professionalBehaviourRating: formData.professionalBehaviourRating,
+  //     onTimeDeliveryRating: formData.onTimeDeliveryRating,
+  //     transparentPricingRating: formData.transparentPricingRating,
+  //     valueForMoneyRating: formData.valueForMoneyRating,
+  //     review: formData.review,
+  //   };
+  //   if (formData.review === "") {
+  //     delete payload.review;
+  //   }
 
-    dispatch(
-      ratingReview({ ...payload, serviceId, applicationId: transactionId })
-    );
-    reset(); // Reset the form after submission
-  };
+  //   dispatch(
+  //     ratingReview({ ...payload, serviceId, applicationId: transactionId })
+  //   );
+  //   reset(); // Reset the form after submission
+  // };
 
   useEffect(() => {
     if (
@@ -99,63 +99,63 @@ const ServiceprogressViewAll = () => {
     }
   }, []);
 
-  const servicesProgessSteps = [
-    {
-      step: 1,
-      topLabel: "Under Review",
-      bottomLabel: "Mar 12, 2024",
-      status: "completed",
-    },
-    {
-      step: 2,
-      topLabel: "Service Started",
-      bottomLabel: "Mar 15, 2024",
-      status: "completed",
-    },
-    {
-      step: 3,
-      topLabel: "Payment Received",
-      bottomLabel: "Mar 16, 2024",
-      status: "completed",
-    },
-    {
-      step: 4,
-      topLabel: "Documents Uploaded",
-      bottomLabel: "Mar 17, 2024",
-      status: "completed",
-    },
-    { step: 5, topLabel: "App. Submitted", status: "in-progress" },
-    {
-      step: 6,
-      topLabel: "App. In Progress",
-      estimated: "Est: 5-6 Days",
-      status: "pending",
-    },
-    {
-      step: 7,
-      topLabel: "Service Completed",
-      estimated: "Est: 1-2 Days",
-      status: "pending",
-    },
-  ];
+  // const servicesProgessSteps = [
+  //   {
+  //     step: 1,
+  //     topLabel: "Under Review",
+  //     bottomLabel: "Mar 12, 2024",
+  //     status: "completed",
+  //   },
+  //   {
+  //     step: 2,
+  //     topLabel: "Service Started",
+  //     bottomLabel: "Mar 15, 2024",
+  //     status: "completed",
+  //   },
+  //   {
+  //     step: 3,
+  //     topLabel: "Payment Received",
+  //     bottomLabel: "Mar 16, 2024",
+  //     status: "completed",
+  //   },
+  //   {
+  //     step: 4,
+  //     topLabel: "Documents Uploaded",
+  //     bottomLabel: "Mar 17, 2024",
+  //     status: "completed",
+  //   },
+  //   { step: 5, topLabel: "App. Submitted", status: "in-progress" },
+  //   {
+  //     step: 6,
+  //     topLabel: "App. In Progress",
+  //     estimated: "Est: 5-6 Days",
+  //     status: "pending",
+  //   },
+  //   {
+  //     step: 7,
+  //     topLabel: "Service Completed",
+  //     estimated: "Est: 1-2 Days",
+  //     status: "pending",
+  //   },
+  // ];
   // console.log(totalCount,"12DATTE1");
   // console.log( morePage,"12DATE@");
-  const calculateCompletionStatus = (expectedCompletionDate) => {
-    const today = new Date();
-    const expectedDate = new Date(expectedCompletionDate);
-    const differenceInMilliseconds = expectedDate - today;
-    const differenceInDays = Math.ceil(
-      differenceInMilliseconds / (1000 * 3600 * 24)
-    );
+  // const calculateCompletionStatus = (expectedCompletionDate) => {
+  //   const today = new Date();
+  //   const expectedDate = new Date(expectedCompletionDate);
+  //   const differenceInMilliseconds = expectedDate - today;
+  //   const differenceInDays = Math.ceil(
+  //     differenceInMilliseconds / (1000 * 3600 * 24)
+  //   );
 
-    if (differenceInDays > 0) {
-      return { status: "On Time", delay: null };
-    } else if (differenceInDays < 0) {
-      return { status: "Delayed", delay: Math.abs(differenceInDays) };
-    } else {
-      return { status: "On Time", delay: null };
-    }
-  };
+  //   if (differenceInDays > 0) {
+  //     return { status: "On Time", delay: null };
+  //   } else if (differenceInDays < 0) {
+  //     return { status: "Delayed", delay: Math.abs(differenceInDays) };
+  //   } else {
+  //     return { status: "On Time", delay: null };
+  //   }
+  // };
   return (
     <>
       <div className="flex flex-col md:flex-row justify-between gap-4">
@@ -326,7 +326,7 @@ const ServiceprogressViewAll = () => {
       //   </div>
       // )} */}
 
-      <ConfirmationModal
+      {/* <ConfirmationModal
         isOpen={confirmationModal}
         onClose={onConfirmationModalClose}
         modalClassName={"sm:max-w-xl lg:min-w-[32rem]"}
@@ -506,7 +506,7 @@ const ServiceprogressViewAll = () => {
             </Button>
           </div>
         </form>
-      </ConfirmationModal>
+      </ConfirmationModal> */}
       {/* {dataUpdate?.total > 0 ? (
         <ServicesProgress data={servicesProgress} />
       ) : (
