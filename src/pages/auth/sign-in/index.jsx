@@ -58,11 +58,12 @@ export const SignIn = () => {
   };
 
   const phoneRegex = /^[6-9]\d{9}$/; // Regex for a valid 10-digit mobile number
-  const emailOrPhone = watch("email"); // Watch the 'email' field
 
+  const emailOrPhone = watch("email"); // Watch the 'email' field
+  console.log(emailOrPhone ,'adfadf');
   const onSubmit = async (data) => {
     setIsSubmit(true);
-
+console.log(data,"Data SIGNIN");
     // Check if the input is a phone number or email
     const isPhoneNumber = phoneRegex.test(emailOrPhone);
     if (isPhoneNumber) {
@@ -210,12 +211,12 @@ export const SignIn = () => {
                 className={
                   "mt-2 py-3 w-full rounded-lg text-[#0A1C40] font-semibold !border-none "
                 }
-                disabled={!isValid}
+                // disabled={!isValid}
                 isLoading={isSubmit}
 
               >
                 {phoneRegex.test(emailOrPhone)
-                  ? "Get an OTP on your Phone No."
+                  ? "Sign in"
                   : "Sign in"}
               </Button>
 
@@ -250,7 +251,7 @@ export const SignIn = () => {
               </div>
               <div className="text-center flex justify-center gap-2 font-normal text-[#6C6C6C]">
                 <p>
-                  Need an account?
+                Don’t have an account yet?
                   <Link
                     to={"/sign-up"}
                     className="p-2 text-[#F1359C] font-semibold "

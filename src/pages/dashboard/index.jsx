@@ -141,7 +141,6 @@ const Dashboard = () => {
           {/* <Advertisement /> */}
         </div>
         {businessLoading ? (<BusinessCardShimmer />) : (<Business data={business?.list} total={business?.totalPage} />)}
-
         {isRecommendedServiceLoading ? (
           <div className="flex flex-row gap-2">
             {Array.from({ length: 2 }, (_, index) => (
@@ -156,7 +155,7 @@ const Dashboard = () => {
         )}
 
         {fetching ? (
-          <ServiceProgressShimmer />
+          <ServiceProgressShimmer count={3} className={"p-2"} />
 
         ) : (
           <ServicesProgress
