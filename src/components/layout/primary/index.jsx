@@ -12,6 +12,8 @@ export const PrimaryLayout = () => {
   // const sidebarClassName = useSelector((state) => state.theme.sidebarClassName);
   const sidebarClassName = "";
   // profile = //useSelector((state) => state.auth);
+
+  
   // const isSignedIn = localStorage.getItem('signedIn')
   // if (!isSignedIn){
   //   window.addEventListener('beforeunload', function (e) {
