@@ -14,33 +14,17 @@ export const MainTab = () => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [isOverflowing, setIsOverflowing] = useState(false);
   const scrollContainerRef = useRef(null); // Ref for the container of the buttons
   const tabRefs = useRef([]); // Ref to hold the individual tab buttons
  const {list} = useSelector((state)=> state.service)
-  // useEffect(() => {
-  //   const categoryIdFromParams = searchParams.get("categoryId");
-  //   searchParams.delete("subCategoryId");
-  //   if (category?.list?.length) {
-  //     if (categoryIdFromParams) {
-  //       const foundIndex = category.list.findIndex(
-  //         (tab) => tab._id === categoryIdFromParams
-  //       );
-  //       if (foundIndex !== -1) {
-  //         setActiveTabIndex(foundIndex);
-  //         dispatch(setSelectedCategory(category.list[foundIndex]));
-  //       } else {
-  //         setActiveTabIndex(0);
-  //         dispatch(setSelectedCategory(category.list[0]));
-  //         setSearchParams({ categoryId: category.list[0]._id });
-  //       }
-  //     } else {
-  //       setActiveTabIndex(0);
-  //       dispatch(setSelectedCategory(category.list[0]));
-  //       setSearchParams({ categoryId: category.list[0]._id });
-  //     }
-  //   }
-  // }, [searchParams, category?.list, dispatch]);
 
+ const checkOverflow = () => {
+  if (scrollContainerRef.current) {
+    const isOverflow = scrollContainerRef.current.scrollWidth > scrollContainerRef.current.clientWidth;
+    setIsOverflowing(isOverflow);
+  }
+};
   useEffect(() => {
     if (tabRefs.current[activeTabIndex]) {
       // Scroll the active tab into view smoothly
@@ -63,6 +47,7 @@ export const MainTab = () => {
         setSearchParams({ categoryId: category.list[0]._id });
       }
     }
+    checkOverflow();
   }, [searchParams, category?.list, dispatch, setSearchParams]);
   
   const handleMainTab = (index) => {
@@ -83,16 +68,12 @@ export const MainTab = () => {
         if (response?.data?.length > 0) {
           const firstSubCategoryId = response?.data[0]?._id;
 
-          console.log("foumd")
-          // Only update subCategoryId if it was not set or changed
           setSearchParams((prev) => {
             const params = new URLSearchParams(prev);
-            params.set("categoryId", category?.list[index]?._id) // Set subCategoryId to the first one
+            params.set("categoryId", category?.list[index]?._id) 
             params.set("subCategoryId", firstSubCategoryId);
             return params;
           });
-
-          // setIsSubCategorySet(true);
         } else {
           setSearchParams((prev) => {
             const params = new URLSearchParams(prev);
@@ -103,12 +84,11 @@ export const MainTab = () => {
           dispatch(getMoreUserServices({
             categoryId,
           }))
-          // setIsSubCategorySet(false);
         }
       })
       .catch((error) => {
         console.error("Error fetching sub-categories:", error);
-        // setIsSubCategorySet(false);
+    
       })
   }
   // Scroll left handler with smooth animation
@@ -134,7 +114,7 @@ export const MainTab = () => {
   return (
     <div className="relative flex items-center gap-2">
       {/* Left Arrow Button */}
-      {category?.list.length > 0 && activeTabIndex !== 0 && <button onClick={scrollLeft} className="z-10">
+      {isOverflowing && category?.list.length > 0 && activeTabIndex !==0 &&<button onClick={scrollLeft} className="z-10">
         <IoIosArrowBack  size={20} />
       </button>}
 
@@ -158,7 +138,7 @@ export const MainTab = () => {
       </div>
 
       {/* Right Arrow Button */}
-      {category?.list.length > 0 && activeTabIndex !== category?.list.length -1 && <button onClick={scrollRight} className="z-10">
+      {isOverflowing &&  category?.list.length > 0 && activeTabIndex !== category?.list.length -1 && <button onClick={scrollRight} className="z-10">
         <IoIosArrowForward  size={20} />
       </button>}
     </div>
