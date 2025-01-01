@@ -284,21 +284,18 @@ const ServicesListing = () => {
   };
 
   return (
-    <section className="flex sm:flex-row flex-col gap-4 sm:pt-4 pt-2 bg-white">
+    <section className="sm:pt-4 pt-2 flex sm:flex-row flex-col gap-4 bg-white">
       <div className="w-full flex justify-center flex-col overflow-hidden">
         <MetaTitle title={"Service"} />
         <div className="w-full space-y-4">
-          {category.categoryLoading ? (
-            <div className="pt-4">
+          {category.categoryLoading || subCategory?.subCategoryLoading ? (
               <CategorySubCategoryTabLoader />
-            </div>
+           
           ) : (
             <MainTab />
           )}
           {category.categoryLoading || subCategory?.subCategoryLoading ? (
-            <div className="pt-4">
               <CategorySubCategoryTabLoader />
-            </div>
           ) : (
             <Filtertab />
           )}
