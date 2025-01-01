@@ -83,7 +83,7 @@ export const Details = ({
   return (
     <section className="flex flex-col gap-2">
       <div className="flex flex-col text-start gap-2">
-        <p className="font-semibold text-3xl uppercase text-[#0A1C40]">
+        <p className="font-normal text-3xl uppercase text-[#0A1C40]">
           {data?.name}
         </p>
         <p className="font-medium text-sm text-[#0A1C40]" dangerouslySetInnerHTML={{__html : data?.about}}></p>
@@ -294,23 +294,23 @@ export const Details = ({
           isOpen={confirmationModal}
           onClose={onConfirmationModalClose}
         >
-          <div className="flex flex-col gap-2 items-center justify-center ">
+          <div className="flex flex-col gap-2 px-4 py-5 items-center justify-center ">
             <img src="/public/icons/payment/callback.svg" width={200} alt="" />
             <p className="text-3xl font-bold text-[#0A1C40]">
               Call Back Requested.
             </p>
-            <p className="font-medium text-[16px] text-[#595959]">
+            <p className="font-medium text-sm text-[#595959]">
               {callBackMessage}
             </p>
             <div className="flex justify-center">
-              <Button
+              {/* <Button
                 primary={true}
                 isLoading={isTalkToAdvisorLoading}
                 onClick={onConfirmationModalClose}
               >
                 {" "}
                 Continue
-              </Button>
+              </Button> */}
             </div>
           </div>
         </ConfirmationModal>
