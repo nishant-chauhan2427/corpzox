@@ -1,19 +1,24 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { setSelectedSubCategory } from "../../../../../redux/slices/serviceListingSlice";
-import { useSearchParams } from "react-router-dom";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa"; // Importing arrow icons
+import React, { useEffect, useRef, useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
+import { setSelectedSubCategory } from "../../../../../redux/slices/serviceListingSlice";
 
 function Filtertab() {
   const { subCategory, category } = useSelector((state) => state.service);
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
   const [activeTabIndex, setActiveTabIndex] = useState(0);
-
+  const [isOverflowing, setIsOverflowing] = useState(false);
   const scrollContainerRef = useRef(null); // Ref for the scroll container
   const tabRefs = useRef([]); // Ref for individual tab buttons
 
+  const checkOverflow = () => {
+    if (scrollContainerRef.current) {
+      const isOverflow = scrollContainerRef.current.scrollWidth > scrollContainerRef.current.clientWidth;
+      setIsOverflowing(isOverflow);
+    }
+  };
 
   useEffect(() => {
     const subCategoryIdFromParams = searchParams.get("subCategoryId");
@@ -30,6 +35,7 @@ function Filtertab() {
         dispatch(setSelectedSubCategory(subCategory.list[foundIndex]));
       }
     }
+    checkOverflow();
   }, [searchParams, subCategory?.list, dispatch]);
 
   const handleTab = (tab) => {
@@ -60,7 +66,7 @@ function Filtertab() {
   return (
     <div className="relative flex items-center gap-2">
       {/* Left Arrow Button */}
-      {subCategory?.list?.length > 0 && activeTabIndex !== 0 && <button onClick={scrollLeft} className="z-10">
+      {isOverflowing && subCategory?.list?.length > 0  && activeTabIndex !== 0 && <button onClick={scrollLeft} className="z-10">
         <IoIosArrowBack size={20} />
       </button>}
 
@@ -84,7 +90,7 @@ function Filtertab() {
       </div>
 
       {/* Right Arrow Button */}
-      {subCategory?.list?.length > 0 && activeTabIndex !== subCategory?.list?.length - 1 && <button onClick={scrollRight} className="z-10">
+      {isOverflowing && subCategory?.list?.length > 0 && activeTabIndex !== subCategory?.list.length -1 && <button onClick={scrollRight} className="z-10">
         <IoIosArrowForward size={20} />
       </button>}
     </div>
