@@ -37,11 +37,11 @@ const ServiceDetail = () => {
   }
   return (
     <>
-      <section className="pb-10">
+      <section className="pt-4 pb-10">
         <div className="flex flex-col gap-5">
           <div className="flex items-center justify-between gap-4">
             <Heading className="!text-2xl" backButton={true}>Service Detail</Heading>
-            {/* <LinkButton primary={true}>Contact</LinkButton> */}
+            <LinkButton leftIcon="/icons/services/call.svg" primary={true}>Contact</LinkButton>
           </div>
           <Details data={success} stateWiseServiceCharge={stateWiseServiceCharge?.estimatedTotal}  pricing={true} serviceId={serviceId} offer={success?.offerservices?.[0]?.offers?.[0]?.discountPercent} handleRequest={handleTalkTouOurAdvisors} isLoading={isTalkToAdvisorLoading} />
           {/* <Features /> */}

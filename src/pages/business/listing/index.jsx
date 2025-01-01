@@ -79,7 +79,7 @@ const BusinessListing = () => {
 
   const title = location.pathname.includes("profile") ? "Profile" : "Business";
   return (
-    <div className="flex flex-col overflow-y-auto pb-4" >
+    <div className="flex flex-col overflow-y-auto pb-4">
       <div className="flex flex-col md:flex-row justify-between gap-4">
 
         <Heading title={title} backButton={true} tourButton={true}>
@@ -136,10 +136,6 @@ const BusinessListing = () => {
           </div>
         )}
       </InfiniteScroll>
-
-
-
-
     </div>
   );
 };
