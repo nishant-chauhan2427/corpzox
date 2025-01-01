@@ -93,7 +93,7 @@ export const ServicesCard = ({
             return (
               <div
                 key={index}
-                className="flex flex-col gap-2 bg-[#F3F7FF] px-4 py-4  rounded-lg sm:gap-4 justify-between cursor-pointer"
+                className="flex flex-col gap-2 bg-[#F3F7FF] px-4 py-4 pb-6 rounded-lg sm:gap-4 justify-between cursor-pointer"
                 onClick={() => navigateToServiceDetail(service?._id)}
               >
                 <div className="flex justify-between items-center">

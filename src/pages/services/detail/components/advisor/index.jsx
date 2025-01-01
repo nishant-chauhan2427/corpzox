@@ -45,19 +45,19 @@ export const Advisor = ({
         {buttonText}
       </Button>
       <ConfirmationModal isOpen={confirmationModal} onClose={onConfirmationModalClose}>
-        <div className="flex flex-col gap-2 items-center justify-center">
+        <div className="flex flex-col gap-2 px-4 py-5 items-center justify-center">
           <img src="/public/icons/payment/callback.svg" width={200} alt="" />
           <p className="text-3xl font-bold text-[#0A1C40]">
             Call Back Requested.
           </p>
-          <p className="font-medium text-[16px] text-[#595959]">
+          <p className="font-medium text-[14px] text-[#595959]">
             {/* Thank you for requesting a call back. Your Assistant Manager will get in touch with you soon. */}
             {message? message : "Thank you for requesting a call back. Your Assistant Manager will get in touch with you soon."}
           </p>
           <div className="flex justify-center">
-            <Button primary={true} onClick={onConfirmationModalClose}>
+            {/* <Button primary={true} onClick={onConfirmationModalClose}>
               Continue
-            </Button>
+            </Button> */}
           </div>
         </div>
       </ConfirmationModal>

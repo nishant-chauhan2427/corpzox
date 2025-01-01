@@ -26,7 +26,6 @@ import {
   resetService,
   onChangeSelectAll,
   resetCheckBox,
-
 } from "../../../redux/slices/serviceListingSlice";
 import toast from "react-hot-toast";
 import { Offers } from "../../../components/offers";
@@ -72,28 +71,33 @@ const ServicesListing = () => {
   useEffect(() => {
     // dispatch(resetService({}));
 
-    const categoryId = searchParams.get("categoryId")
+    const categoryId = searchParams.get("categoryId");
     const subCategoryId = searchParams.get("subCategoryId");
 
-    dispatch(getInitialServicesCatagory({})).unwrap().then((res) => {
-      const data = res?.data
-      const firstCategory = data[0]._id
-      console.log(firstCategory, "data")
-
-      dispatch(getInitialServicesSubCatagory({ categoryId: firstCategory })).unwrap().then((res) => {
+    dispatch(getInitialServicesCatagory({}))
+      .unwrap()
+      .then((res) => {
         const data = res?.data;
-        const firstSubCat = data?.[0]._id
-        if (categoryId || subCategoryId) {
-          return
-        }
-        setSearchParams({ categoryId: firstCategory, subCategoryId: firstSubCat })
-      })
-    });
-
+        const firstCategory = data[0]._id;
+        console.log(firstCategory, "data");
+        dispatch(getInitialServicesSubCatagory({ categoryId: firstCategory }))
+          .unwrap()
+          .then((res) => {
+            const data = res?.data;
+            const firstSubCat = data?.[0]._id;
+            if (categoryId || subCategoryId) {
+              return;
+            }
+            setSearchParams({
+              categoryId: firstCategory,
+              subCategoryId: firstSubCat,
+            });
+          });
+      });
   }, []);
   useEffect(() => {
     //  dispatch(clearUser())
-  }, [])
+  }, []);
   // useEffect(() => {
   //   if (categoryId) {
   //     dispatch(getUserServicesSubCatagory({ categoryId }));
@@ -160,7 +164,6 @@ const ServicesListing = () => {
   //   });
   // }
   // }, [categoryId, dispatch]);
-
 
   useEffect(() => {
     if (
@@ -266,7 +269,9 @@ const ServicesListing = () => {
           )}
         </div>
         <>
-          {category.categoryLoading || subCategory?.subCategoryLoading || loading ? (
+          {category.categoryLoading ||
+          subCategory?.subCategoryLoading ||
+          loading ? (
             <div className="py-4 grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-4">
               {Array.from({ length: 9 }).map((_, index) => (
                 <div key={index}>
@@ -286,25 +291,23 @@ const ServicesListing = () => {
               }
               endMessage={
                 totalCount &&
-                totalCount > 0 && list?.length > 6 && (
+                totalCount > 0 &&
+                list?.length > 6 && (
                   <p className="text-center py-4">
                     <b>Yay! You have seen it all</b>
                   </p>
                 )
               }
             >
-              
               <ServicesCard
                 data={list}
                 onClick={(service) => onClickWishList(service)}
                 onCheckedChange={(val) => onCheckHandler(val)}
               />
-       
             </InfiniteScroll>
           ) : (
             <NoData />
           )}
-
           {/* {list && list.length > 5 && (
             <div className="mt-10 flex justify-center">
               {list.length == totalCount ? (

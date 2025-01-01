@@ -5,7 +5,7 @@ import { Button } from "../../buttons";
 export const NoData = ({className}) => {
   return (
     <>
-      <div className={`${className ||" h-screen"} flex flex-col gap-4 text-center justify-center items-center`}>
+      <div className={`${className ||" h-[75vh]"} flex flex-col gap-4 text-center justify-center items-center`}>
         <img
           src="/images/errors/no-data.svg"
           width={350}
