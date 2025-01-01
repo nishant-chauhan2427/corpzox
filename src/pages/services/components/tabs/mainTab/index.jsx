@@ -17,29 +17,6 @@ export const MainTab = () => {
   const scrollContainerRef = useRef(null); // Ref for the container of the buttons
   const tabRefs = useRef([]); // Ref to hold the individual tab buttons
  const {list} = useSelector((state)=> state.service)
-  // useEffect(() => {
-  //   const categoryIdFromParams = searchParams.get("categoryId");
-  //   searchParams.delete("subCategoryId");
-  //   if (category?.list?.length) {
-  //     if (categoryIdFromParams) {
-  //       const foundIndex = category.list.findIndex(
-  //         (tab) => tab._id === categoryIdFromParams
-  //       );
-  //       if (foundIndex !== -1) {
-  //         setActiveTabIndex(foundIndex);
-  //         dispatch(setSelectedCategory(category.list[foundIndex]));
-  //       } else {
-  //         setActiveTabIndex(0);
-  //         dispatch(setSelectedCategory(category.list[0]));
-  //         setSearchParams({ categoryId: category.list[0]._id });
-  //       }
-  //     } else {
-  //       setActiveTabIndex(0);
-  //       dispatch(setSelectedCategory(category.list[0]));
-  //       setSearchParams({ categoryId: category.list[0]._id });
-  //     }
-  //   }
-  // }, [searchParams, category?.list, dispatch]);
 
   useEffect(() => {
     if (tabRefs.current[activeTabIndex]) {
@@ -83,16 +60,12 @@ export const MainTab = () => {
         if (response?.data?.length > 0) {
           const firstSubCategoryId = response?.data[0]?._id;
 
-          console.log("foumd")
-          // Only update subCategoryId if it was not set or changed
           setSearchParams((prev) => {
             const params = new URLSearchParams(prev);
-            params.set("categoryId", category?.list[index]?._id) // Set subCategoryId to the first one
+            params.set("categoryId", category?.list[index]?._id) 
             params.set("subCategoryId", firstSubCategoryId);
             return params;
           });
-
-          // setIsSubCategorySet(true);
         } else {
           setSearchParams((prev) => {
             const params = new URLSearchParams(prev);
@@ -103,12 +76,11 @@ export const MainTab = () => {
           dispatch(getMoreUserServices({
             categoryId,
           }))
-          // setIsSubCategorySet(false);
         }
       })
       .catch((error) => {
         console.error("Error fetching sub-categories:", error);
-        // setIsSubCategorySet(false);
+    
       })
   }
   // Scroll left handler with smooth animation

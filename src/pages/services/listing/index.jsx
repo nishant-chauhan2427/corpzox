@@ -63,34 +63,74 @@ const ServicesListing = () => {
   const searchValue = queryParams.get("search");
   const [isSubmit, setIsSubmit] = useState(false);
   const [isServicesFetched, setIsServicesFetched] = useState(false);
-  const [isSubCategorySet, setIsSubCategorySet] = useState(false);
+  const [initialized, setInitialized] = useState(false); 
+  
   // console.log("list", list);
   // console.log("service totalCount:", totalCount);
   // console.log("service page:", page);
   console.log("searchValue", searchValue);
 
+  // useEffect(() => {
+  //   // dispatch(resetService({}));
+
+  //   const categoryId = searchParams.get("categoryId")
+  //   const subCategoryId = searchParams.get("subCategoryId");
+
+  //   if (categoryId && subCategoryId) {
+  //     return; 
+  //   }
+  //   dispatch(getInitialServicesCatagory({})).unwrap().then((res) => {
+  //     const data = res?.data
+  //     const firstCategory = data[0]._id
+  //     console.log(firstCategory, "data")
+
+  //     dispatch(getInitialServicesSubCatagory({ categoryId: firstCategory })).unwrap().then((res) => {
+  //       const data = res?.data;
+  //       const firstSubCat = data?.[0]._id
+  //       if (categoryId || subCategoryId) {
+  //         return
+  //       }
+  //       setSearchParams({ categoryId: firstCategory, subCategoryId: firstSubCat })
+  //     })
+  //   });
+
+  // }, []);
+
   useEffect(() => {
-    // dispatch(resetService({}));
-
-    const categoryId = searchParams.get("categoryId")
+    const categoryId = searchParams.get("categoryId");
     const subCategoryId = searchParams.get("subCategoryId");
-
-    dispatch(getInitialServicesCatagory({})).unwrap().then((res) => {
-      const data = res?.data
-      const firstCategory = data[0]._id
-      console.log(firstCategory, "data")
-
-      dispatch(getInitialServicesSubCatagory({ categoryId: firstCategory })).unwrap().then((res) => {
+  
+    if (categoryId) {
+      // If categoryId exists in searchParams, fetch subcategories for it
+      category?.list == 0 && dispatch(getInitialServicesCatagory({}))
+      dispatch(getInitialServicesSubCatagory({ categoryId })).unwrap().then((res) => {
         const data = res?.data;
-        const firstSubCat = data?.[0]._id
-        if (categoryId || subCategoryId) {
-          return
+        if (!subCategoryId) {
+          // If subCategoryId is missing, set the first subcategory from the fetched data
+          const firstSubCat = data?.[0]?._id;
+          if (firstSubCat) {
+            setSearchParams({ categoryId, subCategoryId: firstSubCat });
+          }
         }
-        setSearchParams({ categoryId: firstCategory, subCategoryId: firstSubCat })
-      })
-    });
+      });
+    } else {
+      // If categoryId is missing, fetch the initial categories and subcategories
+      dispatch(getInitialServicesCatagory({})).unwrap().then((res) => {
+        const data = res?.data;
+        const firstCategory = data?.[0]?._id;
+        if (firstCategory) {
+          dispatch(getInitialServicesSubCatagory({ categoryId: firstCategory })).unwrap().then((res) => {
+            const subCategoryData = res?.data;
+            const firstSubCat = subCategoryData?.[0]?._id;
+            setSearchParams({ categoryId: firstCategory, subCategoryId: firstSubCat });
+            setInitialized(true); // Mark initialization as complete
+          });
+        }
+      });
+    }
+  }, [dispatch]);
 
-  }, []);
+  
   useEffect(() => {
     //  dispatch(clearUser())
   }, [])
