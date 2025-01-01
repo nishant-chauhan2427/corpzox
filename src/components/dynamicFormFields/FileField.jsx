@@ -43,8 +43,7 @@ function FileField({ index, field, className, onChange }) {
 
       // Axios POST request to upload the file
       const userInfo = (localStorage.getItem('userInfo'));
-      const token = userInfo?.token;
-      console.log("token",token);
+      const token = JSON.parse(localStorage.getItem('userInfo'))?.token;
       
       if (!token) {
         // return rejectWithValue("No token found");
@@ -56,7 +55,7 @@ function FileField({ index, field, className, onChange }) {
         headers: {
           // Accept: "application/json",
           // "Content-Type": "application/json",
-          'Authorization': `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`
         }
       });
 

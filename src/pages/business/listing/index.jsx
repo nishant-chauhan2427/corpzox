@@ -64,11 +64,24 @@ const BusinessListing = () => {
 
   // return<div>Business page</div>
 
-  if (isLoading) return <BusinessCardShimmer count={8} className={"p-2"} />;
+  // if (isLoading) return <BusinessCardShimmer count={8} className={"p-2"} />;
+  if (isLoading) return (<div>
+    <BusinessCardShimmer className={"py-4 h-20"} />
+    <div className="py-4 grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-2 gap-4">
+      {Array.from({ length: 9 }).map((_, index) => (
+        <div key={index}>
+          <BusinessCardShimmer />
+        </div>
+      ))}
+    </div>
+  </div>
+  )
+
   const title = location.pathname.includes("profile") ? "Profile" : "Business";
   return (
     <div className="flex flex-col overflow-y-auto pb-4">
       <div className="flex flex-col md:flex-row justify-between gap-4">
+
         <Heading title={title} backButton={true} tourButton={true}>
           Your Business {totalCount ? `(${totalCount})` : ""}
         </Heading>
@@ -100,13 +113,9 @@ const BusinessListing = () => {
           </div>
         }
         endMessage={
-          totalCount &&
-          totalCount > 0 &&
-          business?.length > 6 && (
-            <p style={{ textAlign: "center" }}>
-              <b>Yay! You have seen it all</b>
-            </p>
-          )
+          (totalCount && totalCount > 0 && business?.length > 6) && <p style={{ textAlign: 'center' }}>
+            <b>Yay! You have seen it all</b>
+          </p>
         }
       >
         {business?.length > 0 ? (

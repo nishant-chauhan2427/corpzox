@@ -212,7 +212,7 @@ export const ForgotPassword = () => {
                     {otp.map((digit, index) => (
                       <input
                         className={`${
-                          !isValid ? "border-error" : "border-[#DFEAF2] "
+                          !isValid ? "border-black" : "border-[#DFEAF2] "
                         } w-[15%] h-14 font-bold border rounded-lg text-center `}
                         key={index}
                         type="text"
@@ -223,6 +223,7 @@ export const ForgotPassword = () => {
                         onKeyDown={(e) => handleBackspace(index, e)}
                         onPaste={index === 0 ? handlePaste : null}
                       />
+                      
                     ))}
                   </div>
 

@@ -10,6 +10,16 @@ import { ScrollToTopButton } from "./components/scrollToTop";
 import { PersistGate } from 'redux-persist/integration/react';
 
 function App() {
+  const isSignedIn = localStorage.getItem('signedIn')
+  if (!isSignedIn){
+    window.addEventListener('beforeunload', function (e) {
+      e.preventDefault();
+      e.returnValue = '';
+    });
+    let userInfo = null;
+    userInfo = JSON.parse(localStorage.getItem('userInfo'))?.token;
+    localStorage.removeItem('userInfo');
+    }
   return (
     <Provider store={store}>
       <PersistGate loading={<div>Loading...</div>} persistor={persistor}>

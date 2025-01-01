@@ -155,7 +155,7 @@ const Dashboard = () => {
         )}
 
         {fetching ? (
-          <ServiceProgressShimmer />
+          <ServiceProgressShimmer count={3} className={"p-2"} />
 
         ) : (
           <ServicesProgress

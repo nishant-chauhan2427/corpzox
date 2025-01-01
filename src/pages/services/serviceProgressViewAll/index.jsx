@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Heading, PageHeading } from "../../../components/heading";
-import { ServicesProgress } from "../../dashboard/components/services/progress";
 import { TextArea } from "../../../components/inputs/textarea";
 import { Rating } from "../../../components/rating";
 import { Button } from "../../../components/buttons";
@@ -12,27 +11,22 @@ import {
 } from "../../../redux/actions/dashboard-action";
 import { Controller, useForm } from "react-hook-form";
 import { ConfirmationModal } from "../../../components/modal/confirmationModal";
-import { LinkButton } from "../../../components/link";
-import { GoDotFill, GoTriangleDown } from "react-icons/go";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ProgressBar } from "../../../components/progressBar";
 import { ImSpinner2 } from "react-icons/im";
-
-import { NavLink } from "react-router-dom";
 import { ServiceProgressShimmer } from "../../../components/loader/ServiceProgressShimmer";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ratingReviewSchema } from "../../../validation/ratingReviewValidationSchema";
 import { ratingReview } from "../../../redux/actions/servicesDetails-actions";
 
-import { servicesProgress } from "../../../database";
 import { ServiceCard } from "../../dashboard/components/services/serviceCard";
 const ServiceprogressViewAll = () => {
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [transactionId, setTransactionId] = useState("");
-  const { dataUpdate, totalCount, loadingMore, fetching, page, morePage } =
+  const { dataUpdate, totalCount, loadingMore,fetching , page, morePage } =
     useSelector((state) => state.user);
 
-  console.log(dataUpdate?.data, "dataUpdate?.data");
+  console.log(dataUpdate?.data, "dataUpdate Inside ServiceCard");
   const [dropdownStates, setDropdownStates] = useState(
     dataUpdate?.data?.map(() => false)
   );
@@ -40,61 +34,61 @@ const ServiceprogressViewAll = () => {
   const { isRatingAdding } = useSelector((state) => state.serviceDetails);
   const dispatch = useDispatch();
 
-  const handleServiceDropdown = (index) => {
-    setDropdownStates((prevState) =>
-      prevState.map((state, i) => (i === index ? !state : state))
-    );
-  };
+  // const handleServiceDropdown = (index) => {
+  //   setDropdownStates((prevState) =>
+  //     prevState.map((state, i) => (i === index ? !state : state))
+  //   );
+  // };
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors, isValid },
-  } = useForm({
-    defaultValues: {
-      serviceQualityRating: 0,
-      professionalBehaviourRating: 0,
-      onTimeDeliveryRating: 0,
-      transparentPricingRating: 0,
-      valueForMoneyRating: 0,
-      review: "",
-    },
-    resolver: yupResolver(ratingReviewSchema),
-  });
-  const onConfirmationModalClose = () => {
-    setConfirmationModal(false);
-    setServiceId("");
-    reset();
-  };
-  useEffect(() => {
-    if (!isRatingAdding) setConfirmationModal(false);
-  }, [isRatingAdding]);
+  // const {
+  //   control,
+  //   handleSubmit,
+  //   reset,
+  //   formState: { errors, isValid },
+  // } = useForm({
+  //   defaultValues: {
+  //     serviceQualityRating: 0,
+  //     professionalBehaviourRating: 0,
+  //     onTimeDeliveryRating: 0,
+  //     transparentPricingRating: 0,
+  //     valueForMoneyRating: 0,
+  //     review: "",
+  //   },
+  //   resolver: yupResolver(ratingReviewSchema),
+  // });
+  // const onConfirmationModalClose = () => {
+  //   setConfirmationModal(false);
+  //   setServiceId("");
+  //   reset();
+  // };
+  // useEffect(() => {
+  //   if (!isRatingAdding) setConfirmationModal(false);
+  // }, [isRatingAdding]);
 
-  const onConfirmationModalOpen = (data, transactionId) => {
-    setServiceId(data);
-    setTransactionId(transactionId);
-    setConfirmationModal(true);
-  };
-  const onSubmit = (formData) => {
-    // Handle form submission logic
-    const payload = {
-      serviceQualityRating: formData.serviceQualityRating,
-      professionalBehaviourRating: formData.professionalBehaviourRating,
-      onTimeDeliveryRating: formData.onTimeDeliveryRating,
-      transparentPricingRating: formData.transparentPricingRating,
-      valueForMoneyRating: formData.valueForMoneyRating,
-      review: formData.review,
-    };
-    if (formData.review === "") {
-      delete payload.review;
-    }
+  // const onConfirmationModalOpen = (data, transactionId) => {
+  //   setServiceId(data);
+  //   setTransactionId(transactionId);
+  //   setConfirmationModal(true);
+  // };
+  // const onSubmit = (formData) => {
+  //   // Handle form submission logic
+  //   const payload = {
+  //     serviceQualityRating: formData.serviceQualityRating,
+  //     professionalBehaviourRating: formData.professionalBehaviourRating,
+  //     onTimeDeliveryRating: formData.onTimeDeliveryRating,
+  //     transparentPricingRating: formData.transparentPricingRating,
+  //     valueForMoneyRating: formData.valueForMoneyRating,
+  //     review: formData.review,
+  //   };
+  //   if (formData.review === "") {
+  //     delete payload.review;
+  //   }
 
-    dispatch(
-      ratingReview({ ...payload, serviceId, applicationId: transactionId })
-    );
-    reset(); // Reset the form after submission
-  };
+  //   dispatch(
+  //     ratingReview({ ...payload, serviceId, applicationId: transactionId })
+  //   );
+  //   reset(); // Reset the form after submission
+  // };
 
   useEffect(() => {
     if (
@@ -105,63 +99,63 @@ const ServiceprogressViewAll = () => {
     }
   }, []);
 
-  const servicesProgessSteps = [
-    {
-      step: 1,
-      topLabel: "Under Review",
-      bottomLabel: "Mar 12, 2024",
-      status: "completed",
-    },
-    {
-      step: 2,
-      topLabel: "Service Started",
-      bottomLabel: "Mar 15, 2024",
-      status: "completed",
-    },
-    {
-      step: 3,
-      topLabel: "Payment Received",
-      bottomLabel: "Mar 16, 2024",
-      status: "completed",
-    },
-    {
-      step: 4,
-      topLabel: "Documents Uploaded",
-      bottomLabel: "Mar 17, 2024",
-      status: "completed",
-    },
-    { step: 5, topLabel: "App. Submitted", status: "in-progress" },
-    {
-      step: 6,
-      topLabel: "App. In Progress",
-      estimated: "Est: 5-6 Days",
-      status: "pending",
-    },
-    {
-      step: 7,
-      topLabel: "Service Completed",
-      estimated: "Est: 1-2 Days",
-      status: "pending",
-    },
-  ];
+  // const servicesProgessSteps = [
+  //   {
+  //     step: 1,
+  //     topLabel: "Under Review",
+  //     bottomLabel: "Mar 12, 2024",
+  //     status: "completed",
+  //   },
+  //   {
+  //     step: 2,
+  //     topLabel: "Service Started",
+  //     bottomLabel: "Mar 15, 2024",
+  //     status: "completed",
+  //   },
+  //   {
+  //     step: 3,
+  //     topLabel: "Payment Received",
+  //     bottomLabel: "Mar 16, 2024",
+  //     status: "completed",
+  //   },
+  //   {
+  //     step: 4,
+  //     topLabel: "Documents Uploaded",
+  //     bottomLabel: "Mar 17, 2024",
+  //     status: "completed",
+  //   },
+  //   { step: 5, topLabel: "App. Submitted", status: "in-progress" },
+  //   {
+  //     step: 6,
+  //     topLabel: "App. In Progress",
+  //     estimated: "Est: 5-6 Days",
+  //     status: "pending",
+  //   },
+  //   {
+  //     step: 7,
+  //     topLabel: "Service Completed",
+  //     estimated: "Est: 1-2 Days",
+  //     status: "pending",
+  //   },
+  // ];
   // console.log(totalCount,"12DATTE1");
   // console.log( morePage,"12DATE@");
-  const calculateCompletionStatus = (expectedCompletionDate) => {
-    const today = new Date();
-    const expectedDate = new Date(expectedCompletionDate);
-    const differenceInMilliseconds = expectedDate - today;
-    const differenceInDays = Math.ceil(
-      differenceInMilliseconds / (1000 * 3600 * 24)
-    );
+  // const calculateCompletionStatus = (expectedCompletionDate) => {
+  //   const today = new Date();
+  //   const expectedDate = new Date(expectedCompletionDate);
+  //   const differenceInMilliseconds = expectedDate - today;
+  //   const differenceInDays = Math.ceil(
+  //     differenceInMilliseconds / (1000 * 3600 * 24)
+  //   );
 
-    if (differenceInDays > 0) {
-      return { status: "On Time", delay: null };
-    } else if (differenceInDays < 0) {
-      return { status: "Delayed", delay: Math.abs(differenceInDays) };
-    } else {
-      return { status: "On Time", delay: null };
-    }
-  };
+  //   if (differenceInDays > 0) {
+  //     return { status: "On Time", delay: null };
+  //   } else if (differenceInDays < 0) {
+  //     return { status: "Delayed", delay: Math.abs(differenceInDays) };
+  //   } else {
+  //     return { status: "On Time", delay: null };
+  //   }
+  // };
   return (
     <>
       <div className="flex flex-col md:flex-row justify-between gap-4">
@@ -175,8 +169,9 @@ const ServiceprogressViewAll = () => {
         </Heading>
       </div>
 
-      {fetching ? <ServiceProgressShimmer /> : ""}
-      {dataUpdate?.total > 0 ? (
+{/*    
+      {dataUpdate?.total> 0 ? (
+
         // <div className="flex flex-col gap-4">
         //   {dataUpdate?.data?.map((data, index) => {
         //     const { status, delay } = calculateCompletionStatus(
@@ -205,7 +200,7 @@ const ServiceprogressViewAll = () => {
         //                   src="/icons/dashboard/service-error.svg"
         //                   width={15}
         //                   alt=""
-        //                 /> */}
+        //                 /> 
         //             </div>
         //             <div className="flex flex-row gap-2">
         //               <h6 className="font-medium text-sm text-[#7C7D80]">
@@ -300,9 +295,11 @@ const ServiceprogressViewAll = () => {
         //       )
         //     }
         //   ></InfiniteScroll>
-        // </div>
+        // </div> */}
         <div className="flex flex-col gap-4">
-          <ServiceCard data={dataUpdate?.data} />
+         
+             {fetching ? <ServiceProgressShimmer count={8} className={"p-2"}/> :    <ServiceCard data={dataUpdate?.data} />}
+       
           <InfiniteScroll
             dataLength={dataUpdate?.data?.length || 0}
             next={() => dispatch(getMoreServiceUpdate({ page: morePage + 1 }))}
@@ -322,14 +319,14 @@ const ServiceprogressViewAll = () => {
             }
           ></InfiniteScroll>
         </div>
-      ) : (
-        <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
-          <img src="/images/service-prgress.svg" alt="" />
-          <p className="font-bold text-xl text-[#000000]">No Services</p>
-        </div>
-      )}
+      {/* // ) : (
+      //   <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
+      //     <img src="/images/service-prgress.svg" alt="" />
+      //     <p className="font-bold text-xl text-[#000000]">No Services</p>
+      //   </div>
+      // )} */}
 
-      <ConfirmationModal
+      {/* <ConfirmationModal
         isOpen={confirmationModal}
         onClose={onConfirmationModalClose}
         modalClassName={"sm:max-w-xl lg:min-w-[32rem]"}
@@ -509,7 +506,7 @@ const ServiceprogressViewAll = () => {
             </Button>
           </div>
         </form>
-      </ConfirmationModal>
+      </ConfirmationModal> */}
       {/* {dataUpdate?.total > 0 ? (
         <ServicesProgress data={servicesProgress} />
       ) : (

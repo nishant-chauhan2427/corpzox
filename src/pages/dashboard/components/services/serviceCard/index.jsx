@@ -16,11 +16,10 @@ import { GoTriangleDown } from "react-icons/go";
 import { GoDotFill } from "react-icons/go";
 
 export const ServiceCard = ({ data }) => {
-  //console.log(data,"datadashboard");
+
   const { dataUpdate } = useSelector((state) => state.user);
-  const [dropdownStates, setDropdownStates] = useState(data?.map(() => false));
+  const [dropdownStates, setDropdownStates] = useState(dataUpdate?.data?.map(() => false));
   const [confirmationModal, setConfirmationModal] = useState(false);
-  const [otherValue, setOtherVsalue] = useState("");
   const [serviceId, setServiceId] = useState("");
   const [transactionId, setTransactionId] = useState("");
   const dispatch = useDispatch();
@@ -28,7 +27,15 @@ export const ServiceCard = ({ data }) => {
 
   const { isRatingAdding } = useSelector((state) => state.serviceDetails);
 
+useEffect(()=>{
+  setDropdownStates(dataUpdate?.data?.map((_,i)=>{
+    if(dropdownStates[i]==true) return true;
+    else return false;
+  }))
+},[dataUpdate?.data])
+
   const handleServiceDropdown = (index) => {
+    console.log(index,"Dropdown Index");
     setDropdownStates((prevState) =>
       prevState.map((state, i) => (i === index ? !state : state))
     );
@@ -240,12 +247,194 @@ export const ServiceCard = ({ data }) => {
               </div>
             </div>
             <Dropdown
-              isOpen={dropdownStates?.[index]}
+            
+              isOpen={dropdownStates[index]}
               servicesProgessSteps={servicesProgessSteps}
             />
           </div>
         );
       })}
+      <ConfirmationModal
+        isOpen={confirmationModal}
+        onClose={onConfirmationModalClose}
+        modalClassName={"sm:max-w-xl lg:min-w-[32rem]"}
+      >
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col justify-between"
+        >
+          <p className="p-2 text-xl text-[#232323] font-semibold">
+            Rate Your Experience!
+          </p>
+
+          <div className="p-2 max-h-[75vh] overflow-y-auto">
+            <div className="flex justify-between items-center pb-5">
+              <label className="text-sm font-semibold text-gray-600">
+                Service Quality
+              </label>
+              <Controller
+                name="serviceQualityRating"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <div className="flex flex-col gap-4">
+                    <Rating
+                      {...field}
+                      rating={field.value}
+                      setRating={field.onChange}
+                      size={30}
+                    />
+                    {fieldState.error && (
+                      <p className="text-red-500 text-sm">
+                        {fieldState.error.message}
+                      </p>
+                    )}
+                  </div>
+                )}
+              />
+            </div>
+            <div className="flex justify-between items-center pb-5">
+              <label className="text-sm font-semibold text-gray-600">
+                Professional Behavior
+              </label>
+              <Controller
+                name="professionalBehaviourRating"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <div className="flex flex-col gap-4">
+                    <Rating
+                      {...field}
+                      rating={field.value}
+                      setRating={field.onChange}
+                      size={30}
+                    />
+                    {fieldState.error && (
+                      <p className="text-red-500 text-sm">
+                        {fieldState.error.message}
+                      </p>
+                    )}
+                  </div>
+                )}
+              />
+            </div>
+            <div className="flex justify-between items-center pb-5">
+              <label className="text-sm font-semibold text-gray-600">
+                On-Time Delivery
+              </label>
+              <Controller
+                name="onTimeDeliveryRating"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <div className="flex flex-col gap-4">
+                    <Rating
+                      {...field}
+                      rating={field.value}
+                      setRating={field.onChange}
+                      size={30}
+                    />
+                    {fieldState.error && (
+                      <p className="text-red-500 text-sm">
+                        {fieldState.error.message}
+                      </p>
+                    )}
+                  </div>
+                )}
+              />
+            </div>
+            <div className="flex justify-between items-center pb-5">
+              <label className="text-sm font-semibold text-gray-600">
+                Transparent pricing
+              </label>
+              <Controller
+                name="transparentPricingRating"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <div className="flex flex-col gap-4">
+                    <Rating
+                      {...field}
+                      rating={field.value}
+                      setRating={field.onChange}
+                      size={30}
+                    />
+                    {fieldState.error && (
+                      <p className="text-red-500 text-sm">
+                        {fieldState.error.message}
+                      </p>
+                    )}
+                  </div>
+                )}
+              />
+            </div>
+            <div className="flex justify-between items-center pb-5">
+              <label className="text-sm font-semibold text-gray-600">
+                Value for Money
+              </label>
+              <Controller
+                name="valueForMoneyRating"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <div className="flex flex-col gap-4">
+                    <Rating
+                      {...field}
+                      rating={field.value}
+                      setRating={field.onChange}
+                      size={30}
+                    />
+                    {fieldState.error && (
+                      <p className="text-red-500 text-sm">
+                        {fieldState.error.message}
+                      </p>
+                    )}
+                  </div>
+                )}
+              />
+            </div>
+            <div className="pt-4 pb-5">
+              <label
+                htmlFor="Review"
+                className="flex text-lg font-bold text-[#0A1C40]"
+              >
+                Review
+              </label>
+              <Controller
+                name="review"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <>
+                    <TextArea
+                      {...field}
+                      className="min-h-20 placeholder:text-xl border bg-white border-[#D9D9D9]"
+                      placeholder="Add Review"
+                    />
+                    {fieldState.error && (
+                      <p className="text-red-500 text-sm">
+                        {fieldState.error.message}
+                      </p>
+                    )}
+                  </>
+                )}
+              />
+            </div>
+          </div>
+
+          <div className="p-2 flex justify-end gap-4">
+            <Button
+              outline={true}
+              type="button"
+              onClick={onConfirmationModalClose}
+            >
+              Maybe Later
+            </Button>
+            <Button
+              disabled={!isValid}
+              isLoading={isRatingAdding}
+              primary={true}
+              type="submit"
+            >
+              Submit
+            </Button>
+          </div>
+        </form>
+      </ConfirmationModal>
     </>
   );
 };

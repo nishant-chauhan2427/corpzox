@@ -57,25 +57,26 @@ export const SignIn = () => {
     }
   };
 
-  const phoneRegex = /^[6-9]\d{9}$/; // Regex for a valid 10-digit mobile number
+  const phoneRegex = /^[1-9]\d{9}$/; 
+
   const emailOrPhone = watch("email"); // Watch the 'email' field
-
+ 
   const onSubmit = async (data) => {
+  
     setIsSubmit(true);
-
-    // Check if the input is a phone number or email
+    let transformedData={};
     const isPhoneNumber = phoneRegex.test(emailOrPhone);
     if (isPhoneNumber) {
-      data.phone = emailOrPhone; // Send phone number to the server
-      delete data.email; // Remove email if it's a phone number
+      transformedData.phone = emailOrPhone; 
+      transformedData.password = data.password;
     } else {
-      data.email = emailOrPhone; // Send email to the server
-      delete data.phone; // Remove phone if it's an email
+      transformedData.email = emailOrPhone; 
+      transformedData.password = data.password;
     }
 
     const token = await recaptchaRef.current.executeAsync().then((res) => {
       console.log("check response ", res);
-      data = { ...data, recaptchaToken: res, userType: "end_user" };
+      data = { ...transformedData, recaptchaToken: res, userType: "end_user" };
       //console.log(data, "data from form");
       dispatch(loginUser(data));
     });
@@ -86,6 +87,7 @@ export const SignIn = () => {
     if (!isLoggingIn && isSubmit) {
       setIsSubmit(false);
       if (error) {
+        toast.dismiss();
         toast.error(error);
       } else {
         if (profile?.source == "GOOGLE") {
@@ -215,7 +217,7 @@ export const SignIn = () => {
 
               >
                 {phoneRegex.test(emailOrPhone)
-                  ? "Get an OTP on your Phone No."
+                  ? "Sign in"
                   : "Sign in"}
               </Button>
 
@@ -250,7 +252,7 @@ export const SignIn = () => {
               </div>
               <div className="text-center flex justify-center gap-2 font-normal text-[#6C6C6C]">
                 <p>
-                  Need an account?
+                Don’t have an account yet?
                   <Link
                     to={"/sign-up"}
                     className="p-2 text-[#F1359C] font-semibold "

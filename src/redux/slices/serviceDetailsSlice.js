@@ -1,5 +1,5 @@
 import { createSlice, current } from "@reduxjs/toolkit";
-import { getServiceDetails, getStates, ratingReview, getStateWiseServiceCharge, talkToAdvisor, verifyCoupon, paymentStatus, availService } from "../actions/servicesDetails-actions";
+import { getServiceDetails, getStates, ratingReview, getStateWiseServiceCharge, talkToAdvisor, verifyCoupon, paymentStatus, availService, verifyOffer } from "../actions/servicesDetails-actions";
 import { getRatingReviews } from "../actions/dashboard-action";
 import toast from "react-hot-toast";
 import { act } from "react";
@@ -43,7 +43,9 @@ const serviceDetailSlice = createSlice({
     appliedOffer: 0,
     priceBeforeCoupanAplled: 0,
     isOfferRemoved: false,
-    callBackMessage : ""
+    callBackMessage : "",
+    isOfferVerifying : false,
+    applyOffer : false,
   },
   reducers: {
     clearState: (state) => {
@@ -102,6 +104,16 @@ const serviceDetailSlice = createSlice({
         appliedCoupan : state.appliedOfferArray
       }
     },
+    updateOriginalPrice : (state, action)=>{
+      
+      if(action.payload === "quotation"){
+        state.originalPrice = state.originalPrice = state.success?.quotations[0]?.amount;
+      }else if(action.payload === "subscription"){
+        state.originalPrice = state.originalPrice = state.success?.subscription[0]?.amount;
+      }else if(action.payload === "regular"){
+        state.originalPrice = state.success?.cost;
+      }
+    },
     addCoupons: (state, action) => {
       const couponData = action.payload;
       console.log(couponData, "couponData");
@@ -134,7 +146,7 @@ const serviceDetailSlice = createSlice({
 
       // Find the coupon that needs to be removed
       const couponToRemove = state.appliedCoupons.find((coupon) => coupon.couponId === id);
-
+      console.log(JSON.parse(JSON.stringify(couponToRemove)), "coupon to remove")
       // If coupon is not found, just return
       if (!couponToRemove) {
         console.warn("Coupon not found for removal.");
@@ -147,7 +159,11 @@ const serviceDetailSlice = createSlice({
       // Calculate the coupon discount
       let couponDiscount = 0;
       if (couponToRemove && couponToRemove.cost && state.priceBeforeCoupanAplled) {
-        couponDiscount = (state.priceBeforeCoupanAplled * couponToRemove.cost) / 100;
+        if(couponToRemove.discountType && (couponToRemove.discountType === "fixed" || couponToRemove.discountType === "amount")){
+          couponDiscount = couponToRemove.cost
+        }else{
+          couponDiscount = (state.priceBeforeCoupanAplled * couponToRemove.cost) / 100;
+        }
       }
 
       console.log(couponDiscount, "couponDiscount")
@@ -220,9 +236,9 @@ const serviceDetailSlice = createSlice({
 
         console.log(selectedSubscription, "selectedSubscription")
         // Set the original amount if a subscription is found, else use the amount in the object
-        const initialAmount = selectedSubscription ? selectedSubscription.amount : action.payload.cost;
+        // const initialAmount = selectedSubscription ? selectedSubscription.amount : action.payload.cost;
 
-        state.originalPrice = initialAmount;
+        // state.originalPrice = initialAmount;
         if (!state.cost && action.payload.cost) {
           state.cost = action.payload.cost;
         }
@@ -245,11 +261,11 @@ const serviceDetailSlice = createSlice({
         console.log(state.subscription, "service");
 
         // Check if a quotation is available and set cost
-        if (action.payload.quotations && action.payload.quotations.length > 0) {
-          state.isQuotationAvailable = true;
-          state.cost = action.payload.quotations[0].amount;
-          state.originalPrice = action.payload.quotations[0].amount;
-        }
+        // if (action.payload.quotations && action.payload.quotations.length > 0) {
+        //   state.isQuotationAvailable = true;
+        //   state.cost = action.payload.quotations[0].amount;
+        //   state.originalPrice = action.payload.quotations[0].amount;
+        // }
 
         console.log(action.payload, "acion pa")
 
@@ -387,7 +403,13 @@ const serviceDetailSlice = createSlice({
           state.tempCost = state.finalPrice; // This already includes the offer's discount
           let discount = 0;
           let costToSend = 0
-          if (couponData.cost && state.tempCost) {
+          if(action.payload.discountType === "amount" || action.payload.discountType === "fixed"){
+            console.log("inside hehe ",state.finalPrice, couponData.cost)
+            discount = couponData.cost;
+            state.finalPrice = state.tempCost- discount;
+            state.couponDiscount = discount;
+            console.log(`Discount mila of ${discount} applied. New cost: ${state.cost}`);
+          }else if (couponData.cost && state.tempCost) {
             discount = (state.tempCost * couponData.cost) / 100;
             state.finalPrice = state.tempCost - discount;
             costToSend = state.tempCost - discount
@@ -401,8 +423,8 @@ const serviceDetailSlice = createSlice({
           const coupanDetails = {
             couponId: couponData.couponId,
             amount: discount,
-            discountType: "percentage",
-            usage: "Multi Use",
+            discountType: couponData.discountType,
+            usage: couponData?.usageType,
             couponDiscount: couponData.cost,
           }
   
@@ -423,8 +445,9 @@ const serviceDetailSlice = createSlice({
             state.appliedOfferArray.push(coupanDetails); // Example logic
           }
           console.log("finalDaa2", JSON.parse(JSON.stringify(state.appliedOfferArray)));
-  
-          console.log(JSON.parse(JSON.stringify(state.appliedOfferArray)), "appliedOfferArray")
+          const newTotalCouponDiscount = discount +  state.totalCouponDiscount || 0; // Subtract old discount if any
+          // state.totalCouponDiscount = newTotalCouponDiscount;
+          console.log(newTotalCouponDiscount, "appliedOfferArray")
           state.availServiceData = {
             ...state.availServiceData,
             appliedCoupan: JSON.parse(JSON.stringify(state.appliedOfferArray)),
@@ -432,7 +455,7 @@ const serviceDetailSlice = createSlice({
           state.availServiceData = {
             ...state.availServiceData,
             amount: state.cost,
-            totalCouponDiscount: discount + (state.totalCouponDiscount), // Safeguard against undefined
+            totalCouponDiscount: newTotalCouponDiscount, // Safeguard against undefined
           };
   
           // state.totalCouponDiscount += discount
@@ -496,6 +519,7 @@ const serviceDetailSlice = createSlice({
         console.log(action.payload, "talk to")
         state.isPaymentSuccessful = true
         state.appliedOfferArray = []
+        state.totalCouponDiscount = 0
 
       })
       .addCase(paymentStatus.rejected, (state, action) => {
@@ -524,8 +548,17 @@ const serviceDetailSlice = createSlice({
         state.isRatingAdding = false;
         toast.error(action.payload)
       })
+      .addCase(verifyOffer.pending, (state)=>{
+        state.isOfferVerifying = true
+      })
+      .addCase(verifyOffer.fulfilled, (state)=>{
+        state.isOfferVerifying = false
+      })
+      .addCase(verifyOffer.rejected, (state)=>{
+        state.isOfferVerifying = false
+      })
   },
 });
 
-export const { clearState, addCoupons, updateOfferDetails, removeCoupon, setAppliedOffer, stePaymentDetails } = serviceDetailSlice.actions;
+export const { clearState, addCoupons,updateOriginalPrice, updateOfferDetails, removeCoupon, setAppliedOffer, stePaymentDetails } = serviceDetailSlice.actions;
 export default serviceDetailSlice.reducer;

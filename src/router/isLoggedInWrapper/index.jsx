@@ -25,6 +25,19 @@ export const IsLoggedInWrapper = () => {
 
 const isSignedIn = localStorage.getItem('signedIn')
 console.log(localStorage.getItem('signedIn'))
+
+
+// useEffect(() => {
+  //   if (!isSignedIn) {
+  //     let userInfo = null;
+  //     try {
+  //       userInfo = JSON.parse(localStorage.getItem('userInfo'))?.token;
+  //       localStorage.removeItem('userInfo');
+  //     } catch (error) {
+  //       userInfo = null;
+  //     }
+  //   }
+  // }, [isSignedIn]);
   useEffect(() => {
     let userInfo = null;
     try {

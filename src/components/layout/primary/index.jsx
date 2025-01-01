@@ -12,11 +12,34 @@ export const PrimaryLayout = () => {
   // const sidebarClassName = useSelector((state) => state.theme.sidebarClassName);
   const sidebarClassName = "";
   // profile = //useSelector((state) => state.auth);
+
+  
+  // const isSignedIn = localStorage.getItem('signedIn')
+  // if (!isSignedIn){
+  //   window.addEventListener('beforeunload', function (e) {
+  //     e.preventDefault();
+  //     e.returnValue = '';
+  //   });
+  //   let userInfo = null;
+  //   userInfo = JSON.parse(localStorage.getItem('userInfo'))?.token;
+  //   localStorage.removeItem('userInfo');
+  //   }
+
+    
   let userInfo = localStorage.getItem("userInfo");
   if (!userInfo) {
     return <Navigate to="/sign-in" />;
   }
-
+ // const isSignedIn = localStorage.getItem('signedIn')
+  // if (!isSignedIn){
+  //   window.addEventListener('beforeunload', function (e) {
+  //     e.preventDefault();
+  //     e.returnValue = '';
+  //   });
+  //   let userInfo = null;
+  //   userInfo = JSON.parse(localStorage.getItem('userInfo'))?.token;
+  //   localStorage.removeItem('userInfo');
+  //   }
   // 
 
   return (

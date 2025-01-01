@@ -4,8 +4,9 @@ import { setServicesMainTab } from "../../../../../redux/slices/appSlice";
 import { setSelectedCategory } from "../../../../../redux/slices/serviceListingSlice";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa"; // Importing the arrow icons
-import { getUserServicesCatagory, getUserServicesSubCatagory } from "../../../../../redux/actions/servicesListing-action";
+import { getMoreUserServices, getUserServicesCatagory, getUserServicesSubCatagory } from "../../../../../redux/actions/servicesListing-action";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { getUserServices } from "../../../../../redux/actions/dashboard-action";
 
 export const MainTab = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -66,51 +67,15 @@ export const MainTab = () => {
   
   const handleMainTab = (index) => {
     searchParams.delete("subCategory");
-    navigate(`/services?categoryId=${category?.list[index]?._id}`);
+    // navigate(`/services?categoryId=${category?.list[index]?._id}`);
     if (category?.list?.[index]) {
       dispatch(setSelectedCategory(category?.list[index]));
       setSearchParams({ categoryId: category?.list[index]?._id });
       setActiveTabIndex(index); // Set the active tab index on click
       callSubCat(category?.list[index]?._id, index)
-      // dispatch(getUserServicesSubCatagory({ categoryId :category?.list[index]?._id  }))
-      //   .unwrap()
-      //   .then((response) => {
-      //     if (response?.data?.length > 0) {
-      //       const firstSubCategoryId = response?.data[0]?._id;
-
-      //       // Only update subCategoryId if it was not set or changed
-      //       setSearchParams((prev) => {
-      //         const params = new URLSearchParams(prev);
-      //         params.set("categoryId", category?.list[index]?._id ) // Set subCategoryId to the first one
-      //         params.set("subCategoryId", firstSubCategoryId);
-      //         return params;
-      //       });
-
-      //       // setIsSubCategorySet(true);
-      //     } else {
-      //       setSearchParams((prev) => {
-      //         const params = new URLSearchParams(prev);
-      //         params.delete("subCategoryId"); // Delete subCategoryId if no sub-categories found
-      //         return params;
-      //       });
-
-      //       // setIsSubCategorySet(false);
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     console.error("Error fetching sub-categories:", error);
-      //     // setIsSubCategorySet(false);
-      //   })
     }
   };
-  useEffect(() => {
-    const subCategoryIdFromParams = searchParams.get("categoryId");
-    if (subCategoryIdFromParams && category?.list && category?.list.length === 0) {
-      // Call callSubCat only once when the page reloads
-      // dispatch(getUserServicesSubCatagory({ categoryId: subCategoryIdFromParams}))
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  
   const callSubCat = (categoryId, index) => {
     dispatch(getUserServicesSubCatagory({ categoryId: categoryId}))
       .unwrap()
@@ -131,10 +96,13 @@ export const MainTab = () => {
         } else {
           setSearchParams((prev) => {
             const params = new URLSearchParams(prev);
-            params.delete("subCategoryId"); // Delete subCategoryId if no sub-categories found
+            params.delete("subCategoryId"); 
+            params.set("categoryId", category?.list[index]?._id)// Delete subCategoryId if no sub-categories found
             return params;
           });
-
+          dispatch(getMoreUserServices({
+            categoryId,
+          }))
           // setIsSubCategorySet(false);
         }
       })
