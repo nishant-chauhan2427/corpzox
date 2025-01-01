@@ -288,7 +288,7 @@ const ServicesListing = () => {
       <div className="w-full flex justify-center flex-col overflow-hidden">
         <MetaTitle title={"Service"} />
         <div className="w-full space-y-4">
-          {category.categoryLoading || subCategory?.subCategoryLoading ? (
+          {category.categoryLoading ? (
               <CategorySubCategoryTabLoader />
            
           ) : (
