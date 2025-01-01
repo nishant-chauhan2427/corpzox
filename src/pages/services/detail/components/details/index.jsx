@@ -20,16 +20,20 @@ export const Details = ({
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { subscriptionId } = useParams()
+  const { subscriptionId } = useParams();
   const [buttonClicked, setButtonClicked] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(false);
   // const navigateToService = () => {
   //   navigate(`/payment/${serviceId}`);
   // };
 
-  const { success, serviceDetailLoading, callBackMessage, quotationDetails, isTalkToAdvisorLoading } = useSelector(
-    (state) => state.serviceDetails
-  );
+  const {
+    success,
+    serviceDetailLoading,
+    callBackMessage,
+    quotationDetails,
+    isTalkToAdvisorLoading,
+  } = useSelector((state) => state.serviceDetails);
 
   // Safely retrieve data
   const subscriptionAmount =
@@ -42,21 +46,26 @@ export const Details = ({
   const discountedPrice =
     discountPercent > 0
       ? (
-        Number(subscriptionAmount) -
-        (Number(subscriptionAmount) * discountPercent) / 100
-      ).toFixed(2)
+          Number(subscriptionAmount) -
+          (Number(subscriptionAmount) * discountPercent) / 100
+        ).toFixed(2)
       : Number(subscriptionAmount).toFixed(2);
 
   // const { id: serviceId } = useParams();
 
-  const subscription = success?.subscription?.[0] || null
-  const ratingDetails = success?.total_rating_count?.length > 0 ? success.total_rating_count[0] : null;
+  const subscription = success?.subscription?.[0] || null;
+  const ratingDetails =
+    success?.total_rating_count?.length > 0
+      ? success.total_rating_count[0]
+      : null;
 
   const navigateToService = () => {
     if (subscription) {
-      console.log(success?.subscription?.[0], "success?.subscription?.[0]")
+      console.log(success?.subscription?.[0], "success?.subscription?.[0]");
       // navigate(`/payment/${serviceId}/${data?._id}?paymentType=subscription`);
-      navigate(`/payment/${serviceId}/${subscription._id}?paymentType=subscription`);
+      navigate(
+        `/payment/${serviceId}/${subscription._id}?paymentType=subscription`
+      );
     } else {
       navigate(`/payment/${serviceId}?paymentType=regular`);
     }
@@ -86,7 +95,10 @@ export const Details = ({
         <p className="font-normal text-3xl uppercase text-[#0A1C40]">
           {data?.name}
         </p>
-        <p className="font-medium text-sm text-[#0A1C40]" dangerouslySetInnerHTML={{__html : data?.about}}></p>
+        <p
+          className="font-medium text-sm text-[#0A1C40]"
+          dangerouslySetInnerHTML={{ __html: data?.about }}
+        ></p>
       </div>
       <div className="pt-4 flex flex-col md:flex-row items-center gap-4">
         {!pricing && (
@@ -111,9 +123,11 @@ export const Details = ({
           </div>
         )}
         <div
-          style={{
-            // backgroundImage: `url(/images/services/service-dummy.svg)`,
-          }}
+          style={
+            {
+              // backgroundImage: `url(/images/services/service-dummy.svg)`,
+            }
+          }
           className="w-full min-h-[420px] md:w-3/5 rounded-3xl bg-no-repeat bg-cover"
         >
           {/* {success?.delivrableVideoUrl || success?.documentVideoUrl || success?.stepsVideoUrl ? (
@@ -132,7 +146,9 @@ export const Details = ({
           )} */}
           {serviceDetailLoading ? (
             <ServiceDetailVideoShimmer />
-          ) : success?.delivrableVideoUrl || success?.documentVideoUrl || success?.stepsVideoUrl ? (
+          ) : success?.delivrableVideoUrl ||
+            success?.documentVideoUrl ||
+            success?.stepsVideoUrl ? (
             <video controls autoPlay>
               <source
                 src={
@@ -146,8 +162,6 @@ export const Details = ({
           ) : (
             <Features />
           )}
-
-
         </div>
         {/* {pricing && (
           <div className="w-full md:w-2/5 bg-[#EEEFF3] box-sg rounded-lg px-5 py-6 gap-2 flex flex-col">
@@ -224,23 +238,25 @@ export const Details = ({
         )} */}
 
         {pricing && (
-          <div className="w-full md:w-2/5 bg-[#EEEFF3] box-sg rounded-lg px-5 py-6 gap-2 flex flex-col">
+          <div className="w-full md:w-2/5 bg-[#EEEFF3] box-sg rounded-lg px-5 py-6 gap-2 flex flex-col shadow-md">
             {serviceDetailLoading ? (
               <ServiceDetailPricingShimmer />
             ) : (
               <>
                 <div>
-                  <div className="font-extrabold text-2xl text-[#0A1C40] flex gap-2">
+                  <div className="font-extrabold text-2xl text-[#0A1C40] flex flex-row gap-2">
                     ₹ {subscriptionAmount}
                     {discountPercent > 0 && (
-                      <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2">
-                        {discountPercent} %
-                      </p>
+                      <div>
+                        <p className="flex font-medium rounded-full text-[11px] text-white bg-[#28A745] px-3   ">
+                          {discountPercent} %
+                        </p>
+                      </div>
                     )}
                   </div>
                   {stateWiseServiceCharge && (
-                    <p className="text-xs text-[#0A1C40]">
-                      {stateWiseServiceCharge} + Applicable govt. fees
+                    <p className="text-xs font-normal text-[#0A1C40]">
+                     ₹{stateWiseServiceCharge} + Applicable govt. fees
                     </p>
                   )}
                 </div>
@@ -249,20 +265,31 @@ export const Details = ({
                   <p className="text-[11px] text-[#0A1C40]" dangerouslySetInnerHTML={{__html : data?.about}}></p>
                 </div> */}
                 <div className="py-2">
-                  <p className="font-bold text-xs text-[#0A1C40]">Service Details</p>
-                  <p className="text-[11px] text-[#0A1C40]" dangerouslySetInnerHTML={{__html : data?.details}}></p>
+                  <p className="font-bold text-xs text-[#0A1C40]">
+                    Service Details
+                  </p>
+                  <p
+                    className="text-[11px] text-[#0A1C40]"
+                    dangerouslySetInnerHTML={{ __html: data?.details }}
+                  ></p>
                 </div>
                 <div className="py-4 flex justify-between items-center">
                   {ratingDetails && (
                     <div className="flex flex-col gap-1">
-                      <p className="font-extrabold text-xl text-[#0A1C40]">{ratingDetails?.average}/5</p>
+                      <p className="font-extrabold text-xl text-[#0A1C40]">
+                        {ratingDetails?.average}/5
+                      </p>
                       <Rating rating={ratingDetails?.average} />
-                      <p className="text-[11px]">{`Based on ${ratingDetails?.count ? ratingDetails?.count : 0} reviews`}</p>
+                      <p className="text-[11px]">{`Based on ${
+                        ratingDetails?.count ? ratingDetails?.count : 0
+                      } reviews`}</p>
                     </div>
                   )}
                   <div className="flex flex-col">
                     <div className="flex items-end gap-2 font-medium text-[13px] text-[#0A1C40]">
-                      <strong className="text-lg leading-6">{data?.duration} </strong>
+                      <strong className="text-lg leading-6">
+                        {data?.duration}{" "}
+                      </strong>
                       <span>Months</span>
                     </div>
                     <p className="text-xs text-[#0A1C40]">Estimated Time</p>
@@ -271,7 +298,7 @@ export const Details = ({
                 <div className="pt-2 flex justify-between items-center gap-2">
                   <Button
                     onClick={navigateToService}
-                    className={"text-xs px-2 py-1 rounded-sm"}
+                    // className={"text-xs px-2 py-1 rounded-sm"}
                     outline={true}
                   >
                     Avail services
@@ -279,7 +306,7 @@ export const Details = ({
                   <Button
                     isLoading={isLoading}
                     onClick={handleTalkTouOurAdvisors}
-                    className={"text-xs px-2 py-1 rounded-sm"}
+                    // className={"text-xs px-2 py-1 rounded-sm"}
                     primary={true}
                   >
                     Talk to our Advisors

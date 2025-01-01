@@ -107,8 +107,6 @@ export const Pricing = ({ pricing = true, data, serviceId, offer }) => {
               onChange={handleStateChange}
             />
             </div>
-            
-            
           </div>
         )}
         {pricing ? (
@@ -179,7 +177,6 @@ const PricingCard = ({ data, serviceId, navigate, dispatch, offer }) => {
               ? ` ${data?.stateWiseServiceCharge} + applicable govt. fees`
               : `--`}
           </p>
-
         </div>
         <p className="pt-6 font-bold uppercase text-sm text-[#565657]">
           {data.title}
