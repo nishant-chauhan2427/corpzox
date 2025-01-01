@@ -31,9 +31,11 @@ export const MainTab = () => {
       tabRefs.current[activeTabIndex].scrollIntoView({
         behavior: "smooth",
         inline: "center",
+        block: "nearest", // Prevent vertical scrolling
       });
     }
   }, [activeTabIndex]);
+  
   useEffect(() => {
     const categoryIdFromParams = searchParams.get("categoryId");
     if (category?.list?.length && categoryIdFromParams) {
@@ -117,7 +119,6 @@ export const MainTab = () => {
       {isOverflowing && category?.list.length > 0 && activeTabIndex !==0 &&<button onClick={scrollLeft} className="z-10">
         <IoIosArrowBack  size={20} />
       </button>}
-
       <div
         className="flex items-center gap-4 overflow-x-auto scrollbar-hide whitespace-nowrap border-b"
         ref={scrollContainerRef}

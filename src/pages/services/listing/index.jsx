@@ -26,7 +26,6 @@ import {
   resetService,
   onChangeSelectAll,
   resetCheckBox,
-
 } from "../../../redux/slices/serviceListingSlice";
 import toast from "react-hot-toast";
 import { Offers } from "../../../components/offers";
@@ -133,7 +132,7 @@ const ServicesListing = () => {
   
   useEffect(() => {
     //  dispatch(clearUser())
-  }, [])
+  }, []);
   // useEffect(() => {
   //   if (categoryId) {
   //     dispatch(getUserServicesSubCatagory({ categoryId }));
@@ -200,7 +199,6 @@ const ServicesListing = () => {
   //   });
   // }
   // }, [categoryId, dispatch]);
-
 
   useEffect(() => {
     if (
@@ -286,27 +284,26 @@ const ServicesListing = () => {
   };
 
   return (
-    <section className="flex sm:flex-row flex-col gap-4 sm:pt-4 pt-2 bg-white">
+    <section className="sm:pt-4 pt-2 flex sm:flex-row flex-col gap-4 bg-white">
       <div className="w-full flex justify-center flex-col overflow-hidden">
         <MetaTitle title={"Service"} />
         <div className="w-full space-y-4">
-          {category.categoryLoading ? (
-            <div className="pt-4">
+          {category.categoryLoading || subCategory?.subCategoryLoading ? (
               <CategorySubCategoryTabLoader />
-            </div>
+           
           ) : (
             <MainTab />
           )}
           {category.categoryLoading || subCategory?.subCategoryLoading ? (
-            <div className="pt-4">
               <CategorySubCategoryTabLoader />
-            </div>
           ) : (
             <Filtertab />
           )}
         </div>
         <>
-          {category.categoryLoading || subCategory?.subCategoryLoading || loading ? (
+          {category.categoryLoading ||
+          subCategory?.subCategoryLoading ||
+          loading ? (
             <div className="py-4 grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-4">
               {Array.from({ length: 9 }).map((_, index) => (
                 <div key={index}>
@@ -326,25 +323,23 @@ const ServicesListing = () => {
               }
               endMessage={
                 totalCount &&
-                totalCount > 0 && list?.length > 6 && (
+                totalCount > 0 &&
+                list?.length > 6 && (
                   <p className="text-center py-4">
                     <b>Yay! You have seen it all</b>
                   </p>
                 )
               }
             >
-              
               <ServicesCard
                 data={list}
                 onClick={(service) => onClickWishList(service)}
                 onCheckedChange={(val) => onCheckHandler(val)}
               />
-       
             </InfiniteScroll>
           ) : (
             <NoData />
           )}
-
           {/* {list && list.length > 5 && (
             <div className="mt-10 flex justify-center">
               {list.length == totalCount ? (
