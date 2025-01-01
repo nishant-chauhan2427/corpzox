@@ -14,10 +14,17 @@ export const MainTab = () => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [isOverflowing, setIsOverflowing] = useState(false);
   const scrollContainerRef = useRef(null); // Ref for the container of the buttons
   const tabRefs = useRef([]); // Ref to hold the individual tab buttons
  const {list} = useSelector((state)=> state.service)
 
+ const checkOverflow = () => {
+  if (scrollContainerRef.current) {
+    const isOverflow = scrollContainerRef.current.scrollWidth > scrollContainerRef.current.clientWidth;
+    setIsOverflowing(isOverflow);
+  }
+};
   useEffect(() => {
     if (tabRefs.current[activeTabIndex]) {
       // Scroll the active tab into view smoothly
@@ -40,6 +47,7 @@ export const MainTab = () => {
         setSearchParams({ categoryId: category.list[0]._id });
       }
     }
+    checkOverflow();
   }, [searchParams, category?.list, dispatch, setSearchParams]);
   
   const handleMainTab = (index) => {
@@ -106,7 +114,7 @@ export const MainTab = () => {
   return (
     <div className="relative flex items-center gap-2">
       {/* Left Arrow Button */}
-      {category?.list.length > 0 && activeTabIndex !== 0 && <button onClick={scrollLeft} className="z-10">
+      {isOverflowing && category?.list.length > 0 && activeTabIndex !==0 &&<button onClick={scrollLeft} className="z-10">
         <IoIosArrowBack  size={20} />
       </button>}
 
@@ -130,7 +138,7 @@ export const MainTab = () => {
       </div>
 
       {/* Right Arrow Button */}
-      {category?.list.length > 0 && activeTabIndex !== category?.list.length -1 && <button onClick={scrollRight} className="z-10">
+      {isOverflowing &&  category?.list.length > 0 && activeTabIndex !== category?.list.length -1 && <button onClick={scrollRight} className="z-10">
         <IoIosArrowForward  size={20} />
       </button>}
     </div>
