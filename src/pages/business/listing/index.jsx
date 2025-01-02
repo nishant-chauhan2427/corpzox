@@ -128,10 +128,10 @@ const BusinessListing = () => {
           <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
             <img src="/images/business/no-business.svg" alt="" />
             <p className="font-bold text-xl text-[#000000]">
-              No Business Created
+              {searchValue?"No Such Business Found":"No Business Created"}
             </p>
             <p className="font-normal text-[#797979]">
-              Create one to start your services
+              {searchValue?"Try searching with different keyword":"Create a new business to get started"}
             </p>
           </div>
         )}

@@ -105,6 +105,53 @@ if (!/^[0-9]$/.test(e.key) && !validKey.includes(e.key)) {
 }
 };
 
+export const validateProfitValue = (e) => {
+  const inputValue = e.target.value;
+  const key = e.key;
+
+  // Allow control keys (Backspace, Arrow keys, Delete, etc.)
+  const validKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab'];
+  if (validKeys.includes(key)) {
+    return; // Allow control keys
+  }
+
+  // Allow one negative sign at the start
+  if (key === '-' && inputValue.length === 0) {
+    return; // Allow negative sign if it's the first character
+  }
+
+  // Prevent typing negative sign anywhere but the start
+  if (key === '-' && inputValue.length > 0) {
+    e.preventDefault();
+    return;
+  }
+
+  // Prevent typing non-numeric characters
+  if (!/^[0-9]$/.test(key)) {
+    e.preventDefault();
+    return;
+  }
+
+  // Prevent leading zeros if the first character is already '0'
+  if (inputValue === '0' && key === '0') {
+    e.preventDefault();
+    return;
+  }
+
+  // Prevent input if the value is '-0'
+  if (inputValue === '-' && key === '0') {
+    e.preventDefault();
+    return;
+  }
+
+  // Prevent more than 10 digits (including negative sign)
+  const maxDigits = inputValue.startsWith('-') ? 11 : 10; // 10 digits + 1 negative sign
+  if (inputValue.length >= maxDigits) {
+    e.preventDefault();
+    return;
+  }
+};
+
 export const dateFormated = (originalDate) => {
   const dateObj = new Date(originalDate);
 
