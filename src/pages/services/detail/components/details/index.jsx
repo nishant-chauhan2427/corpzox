@@ -234,7 +234,7 @@ export const Details = ({
                     ₹ {subscriptionAmount}
                     {discountPercent > 0 && (
                       <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2">
-                        {discountPercent} %
+                        {discountPercent} { success?.offerservices?.[0]?.offers?.[0]?.discountType && success?.offerservices?.[0]?.offers?.[0]?.discountType === "fixed" ? "₹" : "%"}
                       </p>
                     )}
                   </div>
