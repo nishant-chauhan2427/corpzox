@@ -25,7 +25,8 @@ export const Signup = () => {
     handleSubmit,
     formState: { errors, isValid },
     trigger,
-    setFieldValue,
+    setValue,
+    setError,
     reset,
   } = useForm({
     resolver: yupResolver(signUpValidationSchema),
@@ -46,7 +47,7 @@ export const Signup = () => {
 
   const googleLogin = (data) => {
     setIsSubmit(true);
-    console.log(data,"GOOGLE");
+    //console.log(data,"GOOGLE");
     dispatch(
       thirdPartyLogin({
         email: data?.profileObj?.email,
@@ -57,7 +58,7 @@ export const Signup = () => {
     reset();
   };
 
-  const [error, setError] = useState("");
+  const [error, setSubmitError] = useState("");
   const [isSubmit, setIsSubmit] = useState(false);
   const [emailSignUp, setEmailSignUp] = useState("");
 
@@ -67,32 +68,25 @@ export const Signup = () => {
   const onSubmit = async (data) => {
     
     setIsSubmit(true);
-    // if (data?.phone) {
-    //  // console.log(data?.phone,"data?.phone");
-    //   console.log(data?.phone,"data?.phone");
-    //   data.countryCode = `+${data.phone.toString().slice(0, 2)}`;
-    //   data.phone = +data.phone.toString().slice(2);
-    // }
-    //console.log(data);
-    // Reset error message
-    setError("");
+    setSubmitError("");
 
-    // const token = await recaptchaRef.current.executeAsync().then((res) => {
-    //   console.log("check response ", res);
-    //   data = { ...data, recaptchaToken: res, userType: "end_user" };
-    //   console.log(data, "data from form");
-    //   dispatch(loginUser(data));
-    // });
     const token = await recaptchaRef.current.executeAsync().then((res) => {
+      const transformData={
+        full:data.full,
+        phone:data.phone,
+        email:data.email,
+        password:data.password
+      }
       const userData = {
-        ...data,
+
+        ...transformData,
         countryCode:`+${data.phone.toString().slice(0, 2)}`,
         phone:+data.phone.toString().slice(2),
         firstName: data.full,
         recaptchaToken: res,
       };
       // console.log("data?.phone",data?.phone);
-      // console.log(userData,"userData");
+      //console.log(userData,"userData");
       delete userData.full;
       setEmailSignUp(data.email);
       dispatch(updateEmail(data.email));
@@ -162,18 +156,18 @@ export const Signup = () => {
                       touched={true}
                       errorContent={errors?.phone?.message}
                       onBlur={() => handleBlur("phone")}
-                      // onChange={(value, country) => {
-                      //   // console.log("check country value", country?.dialCode,value);
-                      //   if (country?.dialCode === value) {
-                      //     setFieldError(
-                      //       "phone",
-                      //       "Please input Phone number"
-                      //     );
-                      //   }else{
-                      //     setFieldValue("phone", value);
-                      //   }
+                      onChange={(value, country) => {
+                         //console.log("check country value", country?.dialCode,value);
+                        if (country?.dialCode === value) {
+                          setError(
+                            "phone",
+                            "Please input Phone number"
+                          );
+                        }else{
+                          setValue("phone", value);
+                        }
                        
-                      // }}
+                      }}
                     />
                    
                   )}
@@ -214,6 +208,23 @@ export const Signup = () => {
                     />
                   )}
                 />
+                <Controller
+                name="confirmPassword"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    label={"Confirm Password"}
+                    type={"password"}
+                    className={"border-[#D9D9D9] border"}
+                    placeholder={"Re-enter Password"}
+                    errorContent={errors.confirmPassword?.message}
+                    onBlur={() => handleBlur("password")}
+                  />
+                )}
+                // rules={{ required: "Password is required" }}
+              />
 
                 <ReCAPTCHA
                   ref={recaptchaRef}
@@ -249,6 +260,7 @@ export const Signup = () => {
                       onError={() => console.log("Errors")}
                       cookiePolicy={"single_host_origin"}
                       scope="openid profile email"
+                      prompt="select_account"
                       render={(renderProps) => (
                         <button
                           onClick={renderProps.onClick}

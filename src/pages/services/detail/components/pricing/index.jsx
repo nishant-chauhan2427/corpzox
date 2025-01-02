@@ -12,11 +12,10 @@ import { formatMillisecondsToDate } from "../../../../../utils";
 
 export const Pricing = ({ pricing = true, data, serviceId, offer }) => {
   const [isInitialDispatchMade, setIsInitialDispatchMade] = useState(false);
-  const { subscription, quotationDetails } = useSelector(
+  const { subscription, quotationDetails, success } = useSelector(
     (state) => state.serviceDetails
   );
-
-  console.log(quotationDetails, "quotationDetails")
+const discountType = success?.offerservices?.[0]?.offers?.[0]?.discountType;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { statesList } = useSelector((state) => state.serviceDetails);
@@ -32,29 +31,6 @@ export const Pricing = ({ pricing = true, data, serviceId, offer }) => {
     };
   });
 
-  const formattedSubscriptions = subscription?.map((subscription) => {
-    return {
-      title: subscription.title,
-      price: subscription.amount,
-      additional_cost: "+ applicable govt. ₹500",
-      features: [
-        "Fast Application",
-        "Application within 5 working days or your money back.",
-      ],
-    }
-  })
-
-  // const quotations = [
-  //   {
-  //     date: "Nov 5, 2024",
-  //     referenceNumber: "CUST-20241108-0015",
-  //     service: "Fractional CFO Services",
-  //     message:
-  //       "Thank you for reaching out to Corpzo. We are pleased to provide you with a revised price for the requested services as per our recent discussion. Please find the details below",
-  //     planPrice: "₹3,999",
-  //     buttonText: "Avail Now",
-  //   },
-  // ];
 
   const handleStateChange = (data) => {
     dispatch(
@@ -121,6 +97,7 @@ export const Pricing = ({ pricing = true, data, serviceId, offer }) => {
                 navigate={navigate}
                 dispatch={dispatch}
                 offer={offer}
+                discountType={discountType}
               />
             ))}
           </div>
@@ -150,8 +127,8 @@ export const Pricing = ({ pricing = true, data, serviceId, offer }) => {
   );
 };
 
-const PricingCard = ({ data, serviceId, navigate, dispatch, offer }) => {
-  console.log(data, "subscription data");
+const PricingCard = ({ data, serviceId, navigate, dispatch, offer, discountType }) => {
+  console.log(offer, "subscription data");
   const handleServicePayment = (cost, stateWiseServiceCharge) => {
     navigate(`/payment/${serviceId}/${data?._id}?paymentType=subscription`);
     // dispatch(
@@ -171,7 +148,7 @@ const PricingCard = ({ data, serviceId, navigate, dispatch, offer }) => {
           <div className="font-bold flex gap-2 text-[#0A1C40] text-[22px] ">
             {data?.amount}
             {offer && <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1 ">
-              {offer} %
+              {offer} {discountType && discountType === "fixed" ? "₹" : "%"}
             </p>}
           </div>
           <p className="font-semibold text-xs text-[#038624]">
