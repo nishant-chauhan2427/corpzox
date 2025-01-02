@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Input } from '../inputs';
 
 function InputField({ index, field, className, onChange }) {
-  console.log({ index, field });
   // console.log("field.error",field.error);
   
   const handleOnChange = (e)=>{
@@ -13,19 +12,6 @@ function InputField({ index, field, className, onChange }) {
     onChange(index, e.target?.value,isError);
   }
 
-  // useEffect(() => {
-  //   if (field.isValidationRequired) {
-
-  //     if (field.inputSubType === "text") {
-  //       textFieldValidation();
-  //     }else if (field.inputSubType === "number") {
-  //       numberFieldValidation();
-  //     }else if (field.inputSubType === "regax") {
-  //       regexValidation()
-  //     }else if (field.inputSubType === "length") {
-  //       lengthFieldValidation()
-  //     }
-  //   }
   // }, [field.value[0]])
 
 
