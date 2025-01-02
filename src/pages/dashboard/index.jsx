@@ -67,6 +67,10 @@ const Dashboard = () => {
     email,
   } = useSelector((state) => state.auth);
 
+  const {
+    isSignedIn
+     } = useSelector((state) => state.app);
+
   const { recommendedServiceList, isRecommendedServiceLoading } = useSelector(
     (state) => state.service
   );
@@ -96,6 +100,7 @@ const Dashboard = () => {
   //   }
   // }, [isSignedIn]);
 
+  console.log(isSignedIn, "Session...");
   
   
 

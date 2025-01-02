@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   pin: false,
   servicesMainTab: 0,
-  redirectedTo: ""
+  redirectedTo: "",
+  isSignedIn : false
 };
 
 const appSlice = createSlice({
@@ -20,9 +21,13 @@ const appSlice = createSlice({
       console.log(action, "redirect slice");
       state.redirectedTo = action.payload;
     },
+    setIsSignedIn: (state, action) =>{
+      state.isSignedIn = action.payload
+      console.log(state.isSignedIn , 'asd');
+    }
   },
 });
 
-export const { setPin, setServicesMainTab, setRedirectTo } = appSlice.actions;
+export const { setPin, setServicesMainTab, setRedirectTo, setIsSignedIn } = appSlice.actions;
 
 export default appSlice.reducer;
