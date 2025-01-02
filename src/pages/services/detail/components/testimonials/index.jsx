@@ -34,7 +34,7 @@ export const Testimonials = ({ serviceId }) => {
   useEffect(() => {
     dispatch(getRatingReviews(serviceId))
   }, [])
-  console.log(formattedTestimonials, "formattedTestimonial")
+  console.log(ratingDetails, "formattedTestimonial")
   const testimonials = [
     {
       company: "EcoWave Solutions",
@@ -104,13 +104,18 @@ export const Testimonials = ({ serviceId }) => {
 
   return (
     <div className="bg-white py-10">
-      <h4 className="font-bold text-2xl uppercase mb-2">
+      {!ratingDetails=== null && <h4 className="font-bold text-2xl uppercase mb-2">
         Trusted by entrepreneurs Like you
-      </h4>
+      </h4>}
 
       {/* Rating Section */}
-      {isRatingLoading  ?<ServiceDetailsRatingCard/>:<div className="bg-[#0E38BD] rounded-md p-5 flex flex-col md:flex-row justify-between gap-4 items-center mb-8">
-        <div className="flex flex-wrap justify-center">
+      {isRatingLoading  ?<ServiceDetailsRatingCard/>
+      :
+      <>
+      {
+        !ratingDetails=== null &&
+      <div className="bg-[#0E38BD] rounded-md p-5 flex flex-col md:flex-row justify-between gap-4 items-center mb-8">
+        {<div className="flex flex-wrap justify-center">
           {ratings.map((rating, index) => (
             <div
               key={index}
@@ -130,7 +135,7 @@ export const Testimonials = ({ serviceId }) => {
               </p>
             </div>
           ))}
-        </div>
+        </div>}
         <div className="flex flex-col items-start">
           <div className="flex items-center gap-2 text-xl ">
            { <p className="font-bold text-white">{ratingDetails?.average ? ratingDetails?.average : "--"}/5</p>}
@@ -138,7 +143,10 @@ export const Testimonials = ({ serviceId }) => {
           </div>
          { <p className="font-semibold text-[11px] text-white">{`Based on ${ratingDetails?.count ? ratingDetails?.count : 0} reviews`}</p>}
         </div>
-      </div>}
+      </div>
+      }
+      </>
+      }
 
       {/* Testimonial Cards */}
       <div className="w-full overflow-hidden">

@@ -22,9 +22,11 @@ export const Pricing = ({ pricing = true, data, serviceId, offer }) => {
   const { statesList } = useSelector((state) => state.serviceDetails);
   const formattedStates = statesList?.map((state) => {
     const { _id, name } = state;
-
+    const capitalizeLabel = name?.split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
     return {
-      label: name,
+      label: capitalizeLabel,
       value: name,
       id: _id,
     };
@@ -82,27 +84,30 @@ export const Pricing = ({ pricing = true, data, serviceId, offer }) => {
   return (
     <section>
       <div className="flex flex-col gap-4">
-        <h4 className="font-bold uppercase text-2xl text-[#0A1C40]">
+        <h4 className="font-bold uppercase text-[20px] text-[#0A1C40]">
           your business, your price
         </h4>
         {pricing && (
           <div className="flex flex-col md:flex-row justify-between gap-4">
-            <div className="flex flex-col gap-1">
+            <div className="flex w-[50%] flex-col gap-1">
               <p className="font-medium text-sm txt-[#0A1C40]">
                 Select your state to view the applicable govt. fees*
               </p>
-              <p className="text-xs text-[#0A1C40]">
+              <p className="text-xs font-normal text-[#0A1C40]">
                 *Subject to fluctuate at the time of application
               </p>
             </div>
+            <div className="w-[50%]">
             <Selector
               defaultValue={defaultObject}
               isSearchable={true}
-              className={"lg:min-w-60"}
+              className={"lg:min-w-60 border border-[#D9D9D9]"}
               placeholder={"Select State"}
               options={formattedStates}
               onChange={handleStateChange}
             />
+            </div>
+            
             
           </div>
         )}

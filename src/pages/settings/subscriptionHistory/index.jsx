@@ -14,21 +14,23 @@ import { NoData } from "../../../components/errors/noData";
 import Pagination from "../../../components/Pagination";
 import { formatDate } from "../../../utils";
 
-const columns = [
-  { header: "Subscription", accessor: "subscription" },
-  { header: "Status", accessor: "status" },
-  { header: "Amount", accessor: "amount" },
-  { header: "Payment Method", accessor: "paymentMethod" },
-  { header: "Renew Date", accessor: "renewDate" },
-  { header: "Subscription Type", accessor: "type" },
-];
+
 
 const SubscriptionHistory = () => {
   const [packageType, setPackageType] = useState("");
   const [packageIndex, setPackageIndex] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
-
+  const subscriptionType = searchParams.get("subscriptionType");
+  const columns = [
+    { header: "Subscription", accessor: "subscription" },
+    { header: "Status", accessor: "status" },
+    { header: "Amount", accessor: "amount" },
+    { header: "Payment Method", accessor: "paymentMethod" },
+    { header: "Renew Date", accessor: "renewDate" },
+    { header: "Subscription Type", accessor: "type" },
+    ...(subscriptionType === "expired" ? [{ header: "Actions", accessor: "actions" }] : []),
+  ];
   const dispatch = useDispatch();
   const {
     activeCount,
@@ -41,7 +43,6 @@ const SubscriptionHistory = () => {
     subscriptionTotal,
     isSubScriptionLoading,
   } = useSelector((state) => state.settings);
-  console.log(subscriptionsData, "subscriptionsData");
 
   const FormattedSubscriptions = subscriptionsData?.map((subscription) => {
     const {
@@ -52,10 +53,17 @@ const SubscriptionHistory = () => {
       service_data,
       subscriptionDetails,
       serviceDetails,
+      serviceId
     } = subscription;
 
     console.log(subscriptionDetails?.title, "subscriptionDetails");
     return {
+      id: {
+        serviceId:serviceId,
+      },
+      _id: {
+        serviceId:serviceId,
+      },
       subscription: subscriptionDetails ? subscriptionDetails?.title : "N/A",
       status: active ? "Active" : "",
       amount: amount,
@@ -101,7 +109,18 @@ const SubscriptionHistory = () => {
     // Dispatch with the correct type
     dispatch(getSubscriptions({ page: 1, type }));
   };
-
+  const navigateToServiceDetail = (id) => {
+    navigate(`/services/detail/${id}`)
+  };
+  const actionMenu = (id, _id) => {
+    return (
+      <div className="flex py-2 justify-evenly items-center">
+        <Button primary={true}  onClick={() => navigateToServiceDetail(id)}>
+          Renew Subscription
+        </Button>
+      </div>
+    );
+  };
   const subscriptionPackage = [
     {
       number: activeCount ? activeCount : 0,
@@ -133,7 +152,6 @@ const SubscriptionHistory = () => {
     }
     setPackageType(label);
     const index = subscriptionPackage.findIndex((pkg) => pkg.label === label);
-    console.log(data, "subscriptionPackage");
 
     setPackageIndex(index);
     setSearchParams({
@@ -159,11 +177,6 @@ const SubscriptionHistory = () => {
     );
   };
 
-  // useEffect(()=>{
-  //   const subscriptionType = searchParams.get("subscriptionType")
-  //   if(subscriptionType === "" || subscriptionType ===  undefined ) return
-  //    dispatch(getSubscriptions({ page: 1, type: subscriptionType}))
-  // }, [searchParams])
   useEffect(() => {
     const subscriptionType = searchParams.get("subscriptionType");
 
@@ -212,6 +225,7 @@ const SubscriptionHistory = () => {
                     data={currentPackage.data}
                     isExpandable={false}
                     isExpandableData={currentPackage?.description}
+                    actionMenu={subscriptionType === "expired" ? actionMenu : null}
                   />
                 </>
               )}

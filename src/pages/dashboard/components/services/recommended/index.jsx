@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { resetService } from "../../../../../redux/slices/serviceListingSlice";
 import { Heading } from "../../../../../components/heading";
 import { useEffect } from "react";
+import { recommendedServiceListing } from "../../../../../redux/actions/servicesListing-action";
 
 export const RecommendedServices = ({ data, total }) => {
   let navigate = useNavigate();
@@ -16,6 +17,7 @@ export const RecommendedServices = ({ data, total }) => {
   }
   // test dev branch
   console.log(total,"ˇTotal Service");
+  
   return (
     <div className="">
       <div className="py-2 flex flex-row sm:flex-row justify-between gap-2">

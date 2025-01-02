@@ -26,7 +26,6 @@ import {
   resetService,
   onChangeSelectAll,
   resetCheckBox,
-
 } from "../../../redux/slices/serviceListingSlice";
 import toast from "react-hot-toast";
 import { Offers } from "../../../components/offers";
@@ -37,6 +36,7 @@ import { MetaTitle } from "../../../components/metaTitle";
 import { CategorySubCategoryTabLoader } from "../../../components/loader/CategorySubCategoryTabLoader";
 import { BusinessCardShimmer } from "../../../components/loader/ProfileShimmer";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { LinkButton } from "../../../components/link";
 const ServicesListing = () => {
   const dispatch = useDispatch();
   const { servicesMainTab } = useSelector((state) => state.app);
@@ -62,37 +62,77 @@ const ServicesListing = () => {
   const searchValue = queryParams.get("search");
   const [isSubmit, setIsSubmit] = useState(false);
   const [isServicesFetched, setIsServicesFetched] = useState(false);
-  const [isSubCategorySet, setIsSubCategorySet] = useState(false);
+  const [initialized, setInitialized] = useState(false); 
+  
   // console.log("list", list);
   // console.log("service totalCount:", totalCount);
   // console.log("service page:", page);
   console.log("searchValue", searchValue);
 
+  // useEffect(() => {
+  //   // dispatch(resetService({}));
+
+  //   const categoryId = searchParams.get("categoryId")
+  //   const subCategoryId = searchParams.get("subCategoryId");
+
+  //   if (categoryId && subCategoryId) {
+  //     return; 
+  //   }
+  //   dispatch(getInitialServicesCatagory({})).unwrap().then((res) => {
+  //     const data = res?.data
+  //     const firstCategory = data[0]._id
+  //     console.log(firstCategory, "data")
+
+  //     dispatch(getInitialServicesSubCatagory({ categoryId: firstCategory })).unwrap().then((res) => {
+  //       const data = res?.data;
+  //       const firstSubCat = data?.[0]._id
+  //       if (categoryId || subCategoryId) {
+  //         return
+  //       }
+  //       setSearchParams({ categoryId: firstCategory, subCategoryId: firstSubCat })
+  //     })
+  //   });
+
+  // }, []);
+
   useEffect(() => {
-    // dispatch(resetService({}));
-
-    const categoryId = searchParams.get("categoryId")
+    const categoryId = searchParams.get("categoryId");
     const subCategoryId = searchParams.get("subCategoryId");
-
-    dispatch(getInitialServicesCatagory({})).unwrap().then((res) => {
-      const data = res?.data
-      const firstCategory = data[0]._id
-      console.log(firstCategory, "data")
-
-      dispatch(getInitialServicesSubCatagory({ categoryId: firstCategory })).unwrap().then((res) => {
+  
+    if (categoryId) {
+      // If categoryId exists in searchParams, fetch subcategories for it
+      category?.list == 0 && dispatch(getInitialServicesCatagory({}))
+      dispatch(getInitialServicesSubCatagory({ categoryId })).unwrap().then((res) => {
         const data = res?.data;
-        const firstSubCat = data?.[0]._id
-        if (categoryId || subCategoryId) {
-          return
+        if (!subCategoryId) {
+          // If subCategoryId is missing, set the first subcategory from the fetched data
+          const firstSubCat = data?.[0]?._id;
+          if (firstSubCat) {
+            setSearchParams({ categoryId, subCategoryId: firstSubCat });
+          }
         }
-        setSearchParams({ categoryId: firstCategory, subCategoryId: firstSubCat })
-      })
-    });
+      });
+    } else {
+      // If categoryId is missing, fetch the initial categories and subcategories
+      dispatch(getInitialServicesCatagory({})).unwrap().then((res) => {
+        const data = res?.data;
+        const firstCategory = data?.[0]?._id;
+        if (firstCategory) {
+          dispatch(getInitialServicesSubCatagory({ categoryId: firstCategory })).unwrap().then((res) => {
+            const subCategoryData = res?.data;
+            const firstSubCat = subCategoryData?.[0]?._id;
+            setSearchParams({ categoryId: firstCategory, subCategoryId: firstSubCat });
+            setInitialized(true); // Mark initialization as complete
+          });
+        }
+      });
+    }
+  }, [dispatch]);
 
-  }, []);
+  
   useEffect(() => {
     //  dispatch(clearUser())
-  }, [])
+  }, []);
   // useEffect(() => {
   //   if (categoryId) {
   //     dispatch(getUserServicesSubCatagory({ categoryId }));
@@ -159,7 +199,6 @@ const ServicesListing = () => {
   //   });
   // }
   // }, [categoryId, dispatch]);
-
 
   useEffect(() => {
     if (
@@ -245,27 +284,26 @@ const ServicesListing = () => {
   };
 
   return (
-    <section className="flex sm:flex-row flex-col gap-4 sm:pt-4 pt-2 bg-white">
+    <section className="sm:pt-4 pt-2 flex sm:flex-row flex-col gap-4 bg-white">
       <div className="w-full flex justify-center flex-col overflow-hidden">
         <MetaTitle title={"Service"} />
         <div className="w-full space-y-4">
           {category.categoryLoading ? (
-            <div className="pt-4">
               <CategorySubCategoryTabLoader />
-            </div>
+           
           ) : (
             <MainTab />
           )}
           {category.categoryLoading || subCategory?.subCategoryLoading ? (
-            <div className="pt-4">
               <CategorySubCategoryTabLoader />
-            </div>
           ) : (
             <Filtertab />
           )}
         </div>
         <>
-          {category.categoryLoading || subCategory?.subCategoryLoading || loading ? (
+          {category.categoryLoading ||
+          subCategory?.subCategoryLoading ||
+          loading ? (
             <div className="py-4 grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-4">
               {Array.from({ length: 9 }).map((_, index) => (
                 <div key={index}>
@@ -285,7 +323,8 @@ const ServicesListing = () => {
               }
               endMessage={
                 totalCount &&
-                totalCount > 0 && list?.length > 6 && (
+                totalCount > 0 &&
+                list?.length > 6 && (
                   <p className="text-center py-4">
                     <b>Yay! You have seen it all</b>
                   </p>
@@ -301,7 +340,6 @@ const ServicesListing = () => {
           ) : (
             <NoData />
           )}
-
           {/* {list && list.length > 5 && (
             <div className="mt-10 flex justify-center">
               {list.length == totalCount ? (

@@ -1,62 +1,43 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { setSelectedSubCategory } from "../../../../../redux/slices/serviceListingSlice";
-import { useSearchParams } from "react-router-dom";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa"; // Importing arrow icons
+import React, { useEffect, useRef, useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
+import { setSelectedSubCategory } from "../../../../../redux/slices/serviceListingSlice";
 
 function Filtertab() {
-  const { subCategory } = useSelector((state) => state.service);
+  const { subCategory, category } = useSelector((state) => state.service);
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
-  const [categoryactiveTab, setcategoryActiveTab] = useState(0);
   const [activeTabIndex, setActiveTabIndex] = useState(0);
-
+  const [isOverflowing, setIsOverflowing] = useState(false);
   const scrollContainerRef = useRef(null); // Ref for the scroll container
   const tabRefs = useRef([]); // Ref for individual tab buttons
 
-  // useEffect(() => {
-  //   const subCategoryIdFromParams = searchParams.get("subCategoryId");
+  const checkOverflow = () => {
+    if (scrollContainerRef.current) {
+      const isOverflow = scrollContainerRef.current.scrollWidth > scrollContainerRef.current.clientWidth;
+      setIsOverflowing(isOverflow);
+    }
+  };
 
-  //   if (subCategory?.list?.length > 0) {
-  //     if (subCategoryIdFromParams) {
-  //       const foundIndex = subCategory.list.findIndex(
-  //         (tab) => tab._id === subCategoryIdFromParams
-  //       );
-  //       if (foundIndex !== -1) {
-  //         setActiveTabIndex(foundIndex);
-  //         dispatch(setSelectedSubCategory(subCategory.list[foundIndex]));
-  //       } else {
-  //         setActiveTabIndex(0);
-  //         dispatch(setSelectedSubCategory(subCategory.list[0]));
-  //         setSearchParams({
-  //           categoryId: searchParams.get("categoryId") || "",
-  //           subCategoryId: subCategory.list[0]._id,
-  //         });
-  //       }
-  //     } else {
-  //       setActiveTabIndex(0);
-  //       dispatch(setSelectedSubCategory(subCategory.list[0]));
-  //       setSearchParams({
-  //         categoryId: searchParams.get("categoryId") || "",
-  //         subCategoryId: subCategory.list[0]._id,
-  //       });
-  //     }
-  //   }
-  // }, [searchParams, subCategory?.list, dispatch]);
   useEffect(() => {
     const subCategoryIdFromParams = searchParams.get("subCategoryId");
-
-    if (subCategoryIdFromParams && subCategory?.list?.length > 0) {
+    console.log(subCategoryIdFromParams, "this is runnning")
+    if (!category.categoryLoading && subCategoryIdFromParams && subCategory?.list?.length > 0) {
+      console.log("went inside if")
+      console.log(subCategory.list, "foud list")
       const foundIndex = subCategory.list.findIndex(
         (tab) => tab._id === subCategoryIdFromParams
       );
       if (foundIndex !== -1) {
+        console.log("found index")
         setActiveTabIndex(foundIndex);
         dispatch(setSelectedSubCategory(subCategory.list[foundIndex]));
       }
     }
+    checkOverflow();
   }, [searchParams, subCategory?.list, dispatch]);
+
   const handleTab = (tab) => {
     dispatch(setSelectedSubCategory(tab));
     setSearchParams({ categoryId: searchParams.get("categoryId") || "", subCategoryId: tab._id });
@@ -85,8 +66,8 @@ function Filtertab() {
   return (
     <div className="relative flex items-center gap-2">
       {/* Left Arrow Button */}
-     {subCategory?.list?.length > 0 && activeTabIndex !== 0 && <button onClick={scrollLeft} className="z-10">
-        <IoIosArrowBack  size={20} />
+      {isOverflowing && subCategory?.list?.length > 0  && activeTabIndex !== 0 && <button onClick={scrollLeft} className="z-10">
+        <IoIosArrowBack size={20} />
       </button>}
 
       <div
@@ -97,11 +78,10 @@ function Filtertab() {
           <button
             key={index}
             ref={(el) => (tabRefs.current[index] = el)} // Assign tab button refs
-            className={`${
-              activeTabIndex === index
+            className={`${activeTabIndex === index
                 ? "text-[#0A1C40] text-sm font-bold border-b-4 py-1 border-[#004BBC] rounded"
                 : "font-normal text-sm py-1 text-[#7E7E7E]"
-            }`}
+              }`}
             onClick={() => handleTab(tab)}
           >
             {tab.subSectionTitle}
@@ -110,8 +90,8 @@ function Filtertab() {
       </div>
 
       {/* Right Arrow Button */}
-     {subCategory?.list?.length > 0 &&  activeTabIndex !== subCategory?.list?.length - 1 &&<button onClick={scrollRight} className="z-10">
-        <IoIosArrowForward  size={20} />
+      {isOverflowing && subCategory?.list?.length > 0 && activeTabIndex !== subCategory?.list.length -1 && <button onClick={scrollRight} className="z-10">
+        <IoIosArrowForward size={20} />
       </button>}
     </div>
   );

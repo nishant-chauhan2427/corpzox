@@ -2,19 +2,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import { Input } from "../../../components/inputs";
 import { Button } from "../../../components/buttons";
-import { Heading } from "../../../components/heading";
 import { MetaTitle } from "../../../components/metaTitle";
 import { signUpValidationSchema } from "../../../validation/authValidatiorSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { MdOutlineHorizontalRule } from "react-icons/md";
-import { FaFacebookSquare, FaGoogle, FaInstagramSquare } from "react-icons/fa";
 import { DualHeadingTwo } from "../components/dualHeading/dualHeadingTwo";
 import { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ReCAPTCHA from "react-google-recaptcha";
-import { setUser } from "../../../redux/slices/userLoginSlice";
-import { Checkbox } from "../../../components/inputs/checkbox";
-import { ThemeSwitch } from "../../../components/theme/switch";
 import { AuthLayout } from "../../../components/layout/auth";
 import { PhoneNumberInput } from "../../../components/inputs/phoneInput";
 import {
@@ -31,6 +25,7 @@ export const Signup = () => {
     handleSubmit,
     formState: { errors, isValid },
     trigger,
+    setFieldValue,
     reset,
   } = useForm({
     resolver: yupResolver(signUpValidationSchema),
@@ -45,10 +40,8 @@ export const Signup = () => {
     profile,
   } = useSelector((state) => state.auth);
 
-  // Corrected handleBlur function
   const handleBlur = async (field) => {
-    //console.log("field", field);
-    await trigger(field); // This will trigger validation for the field that is blurred
+    await trigger(field); 
   };
 
   const googleLogin = (data) => {
@@ -61,7 +54,6 @@ export const Signup = () => {
         profilePicture: data?.profileObj?.imageUrl,
       })
     );
-   // setIsSubmit(false);
     reset();
   };
 
@@ -105,11 +97,7 @@ export const Signup = () => {
       setEmailSignUp(data.email);
       dispatch(updateEmail(data.email));
       dispatch(registerUser(userData));
-      // dispatch(registerUser(data));
-
       dispatch(setRedirectTo("verify"));
-      //navigate("/verify", { state: { emailSign: data.email } })
-      //console.log(data, "user data");
     });
   };
 
@@ -120,7 +108,6 @@ export const Signup = () => {
         toast.dismiss();
         toast.error(registeringError);
       } else {
-        // reset();
         if (profile?.source == "GOOGLE") {
           navigate("/dashboard");
         } else {
@@ -160,6 +147,7 @@ export const Signup = () => {
                       className={"border-[#D9D9D9] border"}
                       errorContent={errors?.full?.message}
                       onBlur={() => handleBlur("full")}
+                      maxLength={60}
                     />
                   )}
                 />
@@ -174,7 +162,20 @@ export const Signup = () => {
                       touched={true}
                       errorContent={errors?.phone?.message}
                       onBlur={() => handleBlur("phone")}
+                      // onChange={(value, country) => {
+                      //   // console.log("check country value", country?.dialCode,value);
+                      //   if (country?.dialCode === value) {
+                      //     setFieldError(
+                      //       "phone",
+                      //       "Please input Phone number"
+                      //     );
+                      //   }else{
+                      //     setFieldValue("phone", value);
+                      //   }
+                       
+                      // }}
                     />
+                   
                   )}
                 />
               </div>
