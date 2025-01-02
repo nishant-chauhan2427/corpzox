@@ -4,10 +4,10 @@ import toast from "react-hot-toast";
 
 export const getUserServicesCatagory = createAsyncThunk("getUserServicesCatagory", async ({page,sort_by,query,categoryId,subCategoryId}, { rejectWithValue }) => {
     try {
-        const response = await client.get(`/user/service-category`,{
+        const response = await client.get(`/user/service-category?active=true&onlyService=true`,{
             params: { active: true }, 
             headers: {
-              Accept: "application/json",
+              Accept: "application/json",   
               "Content-Type": "application/json",
               'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
             },
@@ -249,8 +249,8 @@ export const recommendedServiceListing = createAsyncThunk("recommendedServiceLis
 
 export const getInitialServicesCatagory = createAsyncThunk("getUserServicesCatagory", async ({page,sort_by,query,categoryId,subCategoryId}, { rejectWithValue }) => {
     try {
-        const response = await client.get(`/user/service-category`,{
-            params: { active: true }, 
+        const response = await client.get(`/user/service-category?active=true&onlyService=true`,{
+             
             headers: {
               Accept: "application/json",
               "Content-Type": "application/json",

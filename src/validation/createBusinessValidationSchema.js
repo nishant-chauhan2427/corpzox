@@ -102,8 +102,9 @@ export const financialSchema = Yup.object().shape({
         .typeError('Invalid value'),
       profit: Yup.number()
         .required('Profit is required')
-        .positive('Profit must be a positive number')
-        .test('len', 'Must be between 6 to 10 digits', val => val.toString().length >= 6 &&  val.toString().length <= 10)
+        // .positive('Profit must be a positive number')
+        .test('len', 'Must be between 6 to 10 digits', val =>   val.toString().length <= 10)
+        // .test('len', 'Must be between 6 to 10 digits', val => val.toString().length >= 6 &&  val.toString().length <= 10)
         .typeError('Invalid value'),
   }),
 });
