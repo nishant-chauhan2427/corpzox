@@ -14,7 +14,7 @@ import { DebitCard } from "../makeAPayment/components/debitCard";
 import { UPI } from "../makeAPayment/components/upi";
 import { NetBanking } from "./components/netBanking";
 import { useDispatch, useSelector } from "react-redux";
-import { availService, getServiceDetails, talkToAdvisor, verifyCoupon } from "../../../redux/actions/servicesDetails-actions";
+import { availService, getServiceDetails, talkToAdvisor, verifyCoupon, verifyOffer } from "../../../redux/actions/servicesDetails-actions";
 import { addCoupons, removeCoupon, setAppliedOffer, updateOfferDetails, updateOriginalPrice } from "../../../redux/slices/serviceDetailsSlice";
 import { ConfirmationModal } from "../../../components/modal/confirmationModal";
 import { PricingDetailShimmer } from "../../../components/loader/PricingDetailShimmer";
@@ -36,13 +36,30 @@ const MakeAPayment = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate()
 
+  const [isOfferValid, setIsOfferValid] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const { success, offerPrice, couponDiscount, serviceDetailLoading, isOfferRemoved, finalPrice, isCouponVerifiedLoading, quotationDetails, cost, originalPrice, appliedCoupons, coupons, availServiceData, isServiceAvailing, totalSavings, serviceCost, serviceCharge } = useSelector((state) => state.serviceDetails);
   useEffect(() => {
     // PASS DYNAMIC ID HERE
-    dispatch(getServiceDetails({ serviceId: serviceId }));
-  }, [dispatch])
+    //  dispatch(verifyOffer({offerId : ""}))
+    dispatch(getServiceDetails({ serviceId: serviceId })).unwrap().then((res) => { 
+      const offerId = res?.offerservices?.[0]?.offers?.[0]?._id
+      if(offerId){
+        dispatch(verifyOffer({ offerId })).unwrap().then((res) => {  
+          if(res.isCouponValid === true){
+            console.log("Offer apllied")
+            setIsOfferValid(true)
+          }else{
+            setIsOfferValid(false) ;
+          }
+         }).catch((err) => {
+          setIsOfferValid(false);
+         })
+      } 
 
+     });
+  }, [dispatch])
+//  const offerId =  success?.offerservices?.[0]?.offers?.[0]?._id
   const transformedCouponArray = coupons[0]?.map((item) => {
     const { couponTitle, discount, _id, discountType, usageType } = item;
     return {
@@ -151,12 +168,12 @@ const MakeAPayment = () => {
 
     // Check if success is valid and contains the subscription property
     if (type === 'subscription' && success && success.subscription && success.subscription.length > 0) {
-      const pricingData = calculateFinalPriceByType(success, type, subscriptionId);
+      const pricingData = calculateFinalPriceByType(success, type, subscriptionId, isOfferValid);
       console.log(pricingData, "subscription data");
       dispatch(updateOriginalPrice("subscription"))
       setSubscriptionData(pricingData.subscription)
       dispatch(setAppliedOffer({ offerPrice: pricingData.discountAmount, finalPrice: pricingData.finalPrice }))
-      if (success.offerservices[0]?.offers) {
+      if (success.offerservices[0]?.offers && isOfferValid) {
         dispatch(updateOfferDetails(pricingData.offerDetails))
       }
     }
@@ -174,7 +191,7 @@ const MakeAPayment = () => {
       console.log(pricingData, "pricingData for cost regular");
       dispatch(updateOriginalPrice("regular"))
       dispatch(setAppliedOffer({ offerPrice: pricingData.discountAmount, finalPrice: pricingData.finalPrice }));
-      if (success.offerservices[0]?.offers) {
+      if (success.offerservices[0]?.offers && isOfferValid) {
         dispatch(updateOfferDetails(pricingData.offerDetails))
       }
     }

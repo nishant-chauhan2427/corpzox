@@ -112,7 +112,7 @@ export const ServicesCard = ({
                       service?.offerservices?.[0]?.offers?.[0]
                         ?.discountPercent && (
                         <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1">
-                          {service.offerservices[0].offers[0].discountPercent} %
+                          {service.offerservices[0].offers[0].discountPercent} {service.offerservices[0].offers[0].discountPercent && service.offerservices[0].offers[0].discountType === "fixed" ? "₹" : "%"}
                         </p>
                       )}
                     {url.includes("wishlist") &&
