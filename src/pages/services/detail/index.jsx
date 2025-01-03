@@ -3,7 +3,7 @@ import { LinkButton } from "../../../components/link";
 import { Steps } from "./components/steps";
 import { Details } from "./components/details";
 import { Pricing } from "./components/pricing";
-import { Features } from "./components/features";
+// import { Features } from "./components/featuresTop";
 import { Advisor } from "./components/advisor";
 import { Testimonials } from "./components/testimonials";
 import { FAQs } from "./components/faq";
@@ -12,6 +12,7 @@ import { getRatingDetails, getServiceDetails, getStates, talkToAdvisor, verifyOf
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { clearState } from "../../../redux/slices/serviceDetailsSlice";
+import { FeaturesBottom } from "./components/featuresBottom";
 
 const ServiceDetail = () => {
   const { serviceId } = useParams()
@@ -43,7 +44,7 @@ const ServiceDetail = () => {
             <LinkButton leftIcon="/icons/services/call.svg" primary={true}>Contact</LinkButton>
           </div>
           <Details data={success} stateWiseServiceCharge={stateWiseServiceCharge?.estimatedTotal}  pricing={true} serviceId={serviceId} offer={success?.offerservices?.[0]?.offers?.[0]?.discountPercent} handleRequest={handleTalkTouOurAdvisors} isLoading={isTalkToAdvisorLoading} />
-          {/* <Features /> */}
+          {/* <FeaturesBottom /> */}
           <Pricing data={subscription} pricing={!isQuotationAvailable} serviceId={serviceId} offer={success?.offerservices?.[0]?.offers?.[0]?.discountPercent}/>
           <Advisor
             handleRequest={handleTalkTouOurAdvisors}

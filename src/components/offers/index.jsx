@@ -35,11 +35,10 @@ export const Offers = () => {
         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
         const token = userInfo?.token;
         // console.log(token, "token")
-  
+
         // if (!token) {
         //   return rejectWithValue("No token found");
         // }
-  
         const response = await client.get("/admin/offer", {
           headers: {
             Accept: "application/json",
@@ -67,7 +66,7 @@ export const Offers = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 ">
         <div className="flex justify-between items-center ">
           <p className="font-semibold text-[16px] text-[#004BBC]">Offers</p>
           <Link

@@ -104,7 +104,7 @@ export const Testimonials = ({ serviceId }) => {
 
   return (
     <div className="bg-white py-10">
-      {!ratingDetails=== null && <h4 className="font-bold text-2xl uppercase mb-2">
+      {!ratingDetails=== null && <h4 className="font-bold text-xl uppercase mb-2">
         Trusted by entrepreneurs Like you
       </h4>}
 

@@ -62,8 +62,8 @@ const ServicesListing = () => {
   const searchValue = queryParams.get("search");
   const [isSubmit, setIsSubmit] = useState(false);
   const [isServicesFetched, setIsServicesFetched] = useState(false);
-  const [initialized, setInitialized] = useState(false); 
-  
+  const [initialized, setInitialized] = useState(false);
+
   // console.log("list", list);
   // console.log("service totalCount:", totalCount);
   // console.log("service page:", page);
@@ -76,7 +76,7 @@ const ServicesListing = () => {
   //   const subCategoryId = searchParams.get("subCategoryId");
 
   //   if (categoryId && subCategoryId) {
-  //     return; 
+  //     return;
   //   }
   //   dispatch(getInitialServicesCatagory({})).unwrap().then((res) => {
   //     const data = res?.data
@@ -98,38 +98,48 @@ const ServicesListing = () => {
   useEffect(() => {
     const categoryId = searchParams.get("categoryId");
     const subCategoryId = searchParams.get("subCategoryId");
-  
+
     if (categoryId) {
       // If categoryId exists in searchParams, fetch subcategories for it
-      category?.list == 0 && dispatch(getInitialServicesCatagory({}))
-      dispatch(getInitialServicesSubCatagory({ categoryId })).unwrap().then((res) => {
-        const data = res?.data;
-        if (!subCategoryId) {
-          // If subCategoryId is missing, set the first subcategory from the fetched data
-          const firstSubCat = data?.[0]?._id;
-          if (firstSubCat) {
-            setSearchParams({ categoryId, subCategoryId: firstSubCat });
+      category?.list == 0 && dispatch(getInitialServicesCatagory({}));
+      dispatch(getInitialServicesSubCatagory({ categoryId }))
+        .unwrap()
+        .then((res) => {
+          const data = res?.data;
+          if (!subCategoryId) {
+            // If subCategoryId is missing, set the first subcategory from the fetched data
+            const firstSubCat = data?.[0]?._id;
+            if (firstSubCat) {
+              setSearchParams({ categoryId, subCategoryId: firstSubCat });
+            }
           }
-        }
-      });
+        });
     } else {
       // If categoryId is missing, fetch the initial categories and subcategories
-      dispatch(getInitialServicesCatagory({})).unwrap().then((res) => {
-        const data = res?.data;
-        const firstCategory = data?.[0]?._id;
-        if (firstCategory) {
-          dispatch(getInitialServicesSubCatagory({ categoryId: firstCategory })).unwrap().then((res) => {
-            const subCategoryData = res?.data;
-            const firstSubCat = subCategoryData?.[0]?._id;
-            setSearchParams({ categoryId: firstCategory, subCategoryId: firstSubCat });
-            setInitialized(true); // Mark initialization as complete
-          });
-        }
-      });
+      dispatch(getInitialServicesCatagory({}))
+        .unwrap()
+        .then((res) => {
+          const data = res?.data;
+          const firstCategory = data?.[0]?._id;
+          if (firstCategory) {
+            dispatch(
+              getInitialServicesSubCatagory({ categoryId: firstCategory })
+            )
+              .unwrap()
+              .then((res) => {
+                const subCategoryData = res?.data;
+                const firstSubCat = subCategoryData?.[0]?._id;
+                setSearchParams({
+                  categoryId: firstCategory,
+                  subCategoryId: firstSubCat,
+                });
+                setInitialized(true); // Mark initialization as complete
+              });
+          }
+        });
     }
   }, [dispatch]);
 
-  
   useEffect(() => {
     //  dispatch(clearUser())
   }, []);
@@ -295,7 +305,7 @@ const ServicesListing = () => {
             <MainTab />
           )}
           {category.categoryLoading || subCategory?.subCategoryLoading ? (
-              <CategorySubCategoryTabLoader />
+            <CategorySubCategoryTabLoader />
           ) : (
             <Filtertab />
           )}

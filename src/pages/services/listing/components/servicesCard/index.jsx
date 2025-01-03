@@ -78,110 +78,133 @@ export const ServicesCard = ({
       <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-4">
         {data &&
           data.map((service, index) => {
-            const text =
-              url.includes("services")
+            const text = url.includes("services")
+              ? service?.details
                 ? service?.details
-                  ? service?.details
-                  : "___"
-                : service?.service[0]?.details
-                ? service?.service[0]?.details
-                : "___";
-
+                : "___"
+              : service?.service[0]?.details
+              ? service?.service[0]?.details
+              : "___";
             const truncatedText =
-              text.length > 100 ? text.slice(0, 100) + "..Read more" : text;
+              text.length > 100 ? text.slice(0, 100) + "..." : text;
 
             return (
               <div
                 key={index}
-                className="flex flex-col gap-2 bg-[#F3F7FF] px-4 py-4 pb-6 rounded-lg sm:gap-4 justify-between cursor-pointer"
+                className="max-w-[451px] flex flex-col gap-2 border-[#DFEAF2] border bg-white px-4 py-4 rounded-[14px] sm:gap-4 justify-between cursor-pointer"
                 onClick={() => navigateToServiceDetail(service?._id)}
               >
-                <div className="flex justify-between items-center">
-                  <div className="flex gap-2">
-                    <p className="font-bold text-[#0A1C40]">
-                      {url.includes("services")
-                        ? service?.name
-                          ? service?.name
-                          : "___"
-                        : service?.service?.[0]?.name
-                        ? service?.service[0]?.name
-                        : "___"}
-                    </p>
+                <div className=" bg-[#F3F7FF] rounded-[14px] px-3 py-4 flex flex-col gap-4 min-h-[250px]">
+                  <div className="w-full">
+                    <div className="flex items-start gap-2">
+                      <div className="max-w-16 overflow-hidden">
+                        <img
+                          src="/images/services/service-default.svg"
+                          alt=""
+                          className="min-w-16 min-h-16 object-cover object-center"
+                        />
+                      </div>
+                      <div className="w-full flex justify-between items-center">
+                        <h4 className="max-w-32 sm:max-w-52 font-bold text-[#0A1C40] line-clamp-2">
+                          {url.includes("services")
+                            ? service?.name
+                              ? service?.name
+                              : "___"
+                            : service?.service?.[0]?.name
+                            ? service?.service[0]?.name
+                            : "___"}
+                        </h4>
+                        <div>
+                          {url.includes("services") &&
+                            service?.offerservices?.[0]?.offers?.[0]
+                              ?.discountPercent && (
+                              <p className="font-medium rounded-full text-[12px] text-white bg-[#28A745] px-3 py-1">
+                                {
+                                  service.offerservices[0].offers[0]
+                                    .discountPercent
+                                }{" "}
+                                {service.offerservices[0].offers[0]
+                                  .discountPercent &&
+                                service.offerservices[0].offers[0]
+                                  .discountType === "fixed"
+                                  ? "%"
+                                  : "%"}
+                              </p>
+                            )}
+                          {url.includes("wishlist") &&
+                            service?.service?.[0]?.offerservices?.[0]
+                              ?.offers?.[0]?.discountPercent && (
+                              <p className="font-medium rounded-full text-[12px] text-white bg-[#28A745] px-2 py-1">
+                                {
+                                  service?.service?.[0]?.offerservices?.[0]
+                                    ?.offers?.[0]?.discountPercent
+                                }{" "}
+                                % Off
+                              </p>
+                            )}
+                        </div>
+                      </div>
+                    </div>
 
-                    {url.includes("services") &&
-                      service?.offerservices?.[0]?.offers?.[0]
-                        ?.discountPercent && (
-                        <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1">
-                          {service.offerservices[0].offers[0].discountPercent} {service.offerservices[0].offers[0].discountPercent && service.offerservices[0].offers[0].discountType === "fixed" ? "₹" : "%"}
+                    {/* {url.includes("services") ? (
+                      <Checkbox
+                        className="service-checkbox"
+                        checked={checkListSet.has(service?._id)} //O(n)
+                        onChange={() => onCheckedChange(service)}
+                      />
+                    ) : (
+                      <></>
+                    )} */}
+                  </div>
+                  <p
+                    className="text-xs leading-[22px] font-normal text-[#7C7C7C]"
+                    dangerouslySetInnerHTML={{ __html: truncatedText }}
+                  ></p>
+                  <div className="flex flex-col gap-1 pt-1">
+                    <div className="flex justify-between sm:w-4/5">
+                      <p className="font-semibold text-sm text-[#7E7E7E]">
+                        Estimated Time(Month(s))
+                      </p>
+                      <div className="flex !justify-start !items-start">
+                        <p className="font-bold text-[12px]  text-[#000000] !text-start">
+                          {url.includes("services")
+                            ? service?.duration
+                              ? service?.duration
+                              : "___"
+                            : service?.service[0]?.duration
+                            ? service?.service[0]?.duration
+                            : "___"}
                         </p>
-                      )}
-                    {url.includes("wishlist") &&
-                      service?.service?.[0]?.offerservices?.[0]?.offers?.[0]
-                        ?.discountPercent && (
-                        <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1">
-                          {
-                            service?.service?.[0]?.offerservices?.[0]?.offers?.[0]
-                              ?.discountPercent
-                          }{" "}
-                          %
+                      </div>
+                    </div>
+                    <div className="flex justify-between sm:w-4/5">
+                      <p className="font-semibold text-sm text-[#7E7E7E] flex items-center">
+                        Price (<FaRupeeSign className="ml-1" />)
+                      </p>
+                      <div className="flex justify-start items-start ">
+                        <p className="font-bold text-[12px] text-[#000000] ">
+                          {url.includes("services")
+                            ? service?.cost
+                              ? service?.cost
+                              : "___"
+                            : service?.service[0]?.cost
+                            ? service?.service[0]?.cost
+                            : "___"}
                         </p>
-                      )}
-                  </div>
-
-                  {url.includes("services") ? (
-                    <Checkbox
-                      className="service-checkbox"
-                      checked={checkListSet.has(service?._id)} //O(n)
-                      onChange={() => onCheckedChange(service)}
-                    />
-                  ) : (
-                    <></>
-                  )}
-                </div>
-                <p className="text-base leading-[22px] font-normal text-[#7C7C7C]" dangerouslySetInnerHTML={{__html : truncatedText}}>
-                </p>
-
-                <div className="flex flex-col gap-1 pt-1">
-                  <div className="flex justify-between sm:w-4/5">
-                    <p className="font-semibold text-sm text-[#7E7E7E]">
-                      Estimated Time(Month(s))
-                    </p>
-                    <p className="font-bold text-[12px] text-[#000000]">
-                      {url.includes("services")
-                        ? service?.duration
-                          ? service?.duration
-                          : "___"
-                        : service?.service[0]?.duration
-                        ? service?.service[0]?.duration
-                        : "___"}
-                    </p>
-                  </div>
-
-                  <div className="flex justify-between sm:w-4/5">
-                    <p className="font-semibold text-sm text-[#7E7E7E] flex items-center">
-                      Price (<FaRupeeSign className="ml-1" />)
-                    </p>
-                    <p className="font-bold text-[12px] text-[#000000]">
-                      {url.includes("services")
-                        ? service?.cost
-                          ? service?.cost
-                          : "___"
-                        : service?.service[0]?.cost
-                        ? service?.service[0]?.cost
-                        : "___"}
-                    </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="flex justify-end pt-5 items-end">
+                <div className="flex justify-end items-end">
                   <div className="flex items-center  justify-center gap-2">
                     {addLoading[service._id] ||
-                      removeLoading[service._id] ||
-                      childLoading[service.serviceId] ?
-                      (<CiHeart size={30} color="#777777" />)
-                    //    (
-                    //   <img src="/icons/wishlist/grey-heart.svg" alt="Red Heart" />
-                    // ) 
-                    : (
+                    removeLoading[service._id] ||
+                    childLoading[service.serviceId] ? (
+                      <CiHeart size={30} color="#777777" />
+                    ) : (
+                      //    (
+                      //   <img src="/icons/wishlist/grey-heart.svg" alt="Red Heart" />
+                      // )
                       <button
                         data-tooltip-content={
                           service.wishlistCount === 1
@@ -199,7 +222,8 @@ export const ServicesCard = ({
                             src="/icons/wishlist/red-heart.svg"
                             alt="Red Heart"
                           />
-                        ) : service?.wishlistCount && service.wishlistCount === 1 ? (
+                        ) : service?.wishlistCount &&
+                          service.wishlistCount === 1 ? (
                           <img
                             src="/icons/wishlist/red-heart.svg"
                             alt="Red Heart"
@@ -209,7 +233,6 @@ export const ServicesCard = ({
                         )}
                       </button>
                     )}
-
                     <LinkButton
                       type="submit"
                       to={`/services/detail/${service?._id}`}

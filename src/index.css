@@ -22,3 +22,10 @@ input::-webkit-inner-spin-button {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+@font-face {
+  font-family: 'MarsCondensed';
+  src: url('./fonts/marscondensed-regular-TRIAL.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
