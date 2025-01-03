@@ -8,7 +8,7 @@ import { Advisor } from "./components/advisor";
 import { Testimonials } from "./components/testimonials";
 import { FAQs } from "./components/faq";
 import { useDispatch, useSelector } from "react-redux";
-import { getRatingDetails, getServiceDetails, getStates, talkToAdvisor } from "../../../redux/actions/servicesDetails-actions";
+import { getRatingDetails, getServiceDetails, getStates, talkToAdvisor, verifyOffer } from "../../../redux/actions/servicesDetails-actions";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { clearState } from "../../../redux/slices/serviceDetailsSlice";
@@ -20,7 +20,6 @@ const ServiceDetail = () => {
 
   console.log(success, "from component")
   useEffect(() => {
-    
     dispatch(getServiceDetails({ serviceId: serviceId }));
     dispatch(getRatingDetails({ serviceId: serviceId, page : 1}))
   }, [dispatch])

@@ -249,7 +249,7 @@ export const Details = ({
                     {discountPercent > 0 && (
                       <div>
                         <p className="flex font-medium rounded-full text-[11px] text-white bg-[#28A745] px-3   ">
-                          {discountPercent} %
+                          {discountPercent} { success?.offerservices?.[0]?.offers?.[0]?.discountType && success?.offerservices?.[0]?.offers?.[0]?.discountType === "fixed" ? "₹" : "%"}
                         </p>
                       </div>
                     )}

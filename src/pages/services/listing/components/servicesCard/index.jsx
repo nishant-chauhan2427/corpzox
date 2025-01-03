@@ -94,6 +94,66 @@ export const ServicesCard = ({
                 className="flex flex-col gap-1  px-4 py-4 pb-6 rounded-[14px] sm:gap-4 justify-between cursor-pointer border-[#DFEAF2] border bg-white"
                 onClick={() => navigateToServiceDetail(service?._id)}
               >
+                <div className="flex justify-between items-center">
+                  <div className="flex gap-2">
+                    <p className="font-bold text-[#0A1C40]">
+                      {url.includes("services")
+                        ? service?.name
+                          ? service?.name
+                          : "___"
+                        : service?.service?.[0]?.name
+                        ? service?.service[0]?.name
+                        : "___"}
+                    </p>
+
+                    {url.includes("services") &&
+                      service?.offerservices?.[0]?.offers?.[0]
+                        ?.discountPercent && (
+                        <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1">
+                          {service.offerservices[0].offers[0].discountPercent} {service.offerservices[0].offers[0].discountPercent && service.offerservices[0].offers[0].discountType === "fixed" ? "₹" : "%"}
+                        </p>
+                      )}
+                    {url.includes("wishlist") &&
+                      service?.service?.[0]?.offerservices?.[0]?.offers?.[0]
+                        ?.discountPercent && (
+                        <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1">
+                          {
+                            service?.service?.[0]?.offerservices?.[0]?.offers?.[0]
+                              ?.discountPercent
+                          }{" "}
+                          %
+                        </p>
+                      )}
+                  </div>
+
+                  {url.includes("services") ? (
+                    <Checkbox
+                      className="service-checkbox"
+                      checked={checkListSet.has(service?._id)} //O(n)
+                      onChange={() => onCheckedChange(service)}
+                    />
+                  ) : (
+                    <></>
+                  )}
+                </div>
+                <p className="text-base leading-[22px] font-normal text-[#7C7C7C]" dangerouslySetInnerHTML={{__html : truncatedText}}>
+                </p>
+
+                <div className="flex flex-col gap-1 pt-1">
+                  <div className="flex justify-between sm:w-4/5">
+                    <p className="font-semibold text-sm text-[#7E7E7E]">
+                      Estimated Time(Month(s))
+                    </p>
+                    <p className="font-bold text-[12px] text-[#000000]">
+                      {url.includes("services")
+                        ? service?.duration
+                          ? service?.duration
+                          : "___"
+                        : service?.service[0]?.duration
+                        ? service?.service[0]?.duration
+                        : "___"}
+                    </p>
+                  </div>
                 <div className="bg-[#F3F7FF] px-3 py-3 rounded-[14px]">
                   <div className="flex justify-between items-center">
                     <div className="flex gap-2 justify-between">

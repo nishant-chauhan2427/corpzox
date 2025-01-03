@@ -139,6 +139,7 @@ import toast from 'react-hot-toast';
 import { body } from 'framer-motion/client';
 import axios from 'axios';
 import { RouteProgressBar } from '../../../components/progressBar/routeBased';
+import { Selector } from '../../../components/select';
 
 function SelectBusiness() {
 
@@ -155,16 +156,15 @@ function SelectBusiness() {
 
   const [allBusiness, setAllBusiness] = useState(null);
   const [selectedBusinessId, setSelectedBusinessId] = useState(null);
+  
 
-  const handleBusinessChange = (event) => {
-    setSelectedBusinessId(event.target.value);
-  };
+  
   // console.log("selectedBusinessId",dynamicForm?dynamicForm[0]?.userapplications[0]?.businessId :"no id");
   // console.log("selectedBusinessId",selectedBusinessId);
 
 
   // console.log("loading", loading);
-  // console.log("dynamicForm", dynamicForm);
+  // console.log("dynamicForm", dynamicForm);  
 
 
 
@@ -194,7 +194,7 @@ function SelectBusiness() {
         setSelectedBusinessId(response.data?.data ? response.data?.data[0]?.userapplications[0]?.businessId : null)
 
       } catch (err) {
-        console.log(err, "get offer list error");
+        // console.log(err, "get offer list error");
         setError(err);
       } finally {
         setLoading(false);
@@ -221,7 +221,7 @@ function SelectBusiness() {
 
     setDynamicForm([...dynamicForm]);
   }
-  const handleFileValueChange = (index, {fileUrl,filename,fileType}) => {
+  const handleFileValueChange = (index, { fileUrl, filename, fileType }) => {
 
     const field = dynamicForm[index];
     field.value[0] = fileUrl;
@@ -305,7 +305,7 @@ function SelectBusiness() {
       const savePromises = Object.entries(formData).map(([key, payload]) => {
         // console.log("saved:payload",payload);
 
-        return  client.put(`/application/form-value`, payload, {
+        return client.put(`/application/form-value`, payload, {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
@@ -338,7 +338,7 @@ function SelectBusiness() {
 
     } catch (error) {
       toast.error("Error while saving form")
-      console.error("Error while saving form:", error);
+      // console.error("Error while saving form:", error);
     } finally {
       setIsSaving(false);
     }
@@ -362,9 +362,14 @@ function SelectBusiness() {
             'Authorization': `Bearer ${token}`,
           },
         });
-        setAllBusiness(response.data?.data);
+
+        const formattedOptions = response.data?.data?.map((business) => ({
+          label: business.businessName, // The display text
+          value: business._id,          // The unique identifier
+        }));
+        setAllBusiness(formattedOptions);
       } catch (err) {
-        console.log(err, "get business list error");
+        // console.log(err, "get business list error");
         setError(err);
       } finally {
       }
@@ -382,7 +387,7 @@ function SelectBusiness() {
       <RouteProgressBar currStep={2} totalSteps={3} />
 
       <div className='w-full my-2'>
-        <select
+        {/* <select
           name="businessDropdown"
           id="businessDropdown"
           className='w-full p-3 border hover:shadow-md'
@@ -395,7 +400,18 @@ function SelectBusiness() {
               {business.businessName}
             </option>
           ))}
-        </select>
+        </select> */}
+        <Selector
+          className={"w-full p-1 border hover:shadow-md"}
+          label={"Select business"}
+          placeholder={"Select business"}
+          // errorContent={errors.registration?.typeOfBusiness?.message}
+          options={allBusiness} 
+          required={true}
+          // Ensure only the value is passed to the Selector
+          value={allBusiness?.find((business) => business.value === selectedBusinessId) || null}
+          onChange={(selectedValue)=>setSelectedBusinessId(selectedValue.value)}
+        />
       </div>
 
       <hr />
@@ -423,7 +439,7 @@ function SelectBusiness() {
         outline={true}
         primary={true}
         // disabled={(dynamicForm?.some((field,idx) => {return field.error === true})) }
-        disabled={!dynamicForm || dynamicForm.length <= 0 || isSaving || (dynamicForm?.some((field, idx) => 
+        disabled={!dynamicForm || dynamicForm.length <= 0 || isSaving || (dynamicForm?.some((field, idx) =>
           field?.isRequiredMsg || field?.error === true || (field?.isRequired === true && !field?.value[0])))}
         className={" py-2 "}
         onClick={handleSubmit}

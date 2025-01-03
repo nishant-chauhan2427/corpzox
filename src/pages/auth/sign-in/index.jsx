@@ -5,8 +5,6 @@ import { useForm, Controller } from "react-hook-form";
 import { Input } from "../../../components/inputs";
 import { Button } from "../../../components/buttons";
 import { MetaTitle } from "../../../components/metaTitle";
-import { MdOutlineHorizontalRule } from "react-icons/md";
-import { FaFacebookSquare, FaGoogle, FaInstagramSquare } from "react-icons/fa";
 import { DualHeadingTwo } from "../components/dualHeading/dualHeadingTwo";
 import { Checkbox } from "../../../components/inputs/checkbox";
 import { AuthLayout } from "../../../components/layout/auth";
@@ -20,7 +18,7 @@ import { signinValidationSchema } from "../../../validation/authValidatiorSchema
 import { GoogleLogin } from "react-google-login";
 import { gapi } from "gapi-script";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { setRedirectTo } from "../../../redux/slices/appSlice";
+import { setIsSignedIn, setRedirectTo } from "../../../redux/slices/appSlice";
 
 export const SignIn = () => {
   const {
@@ -36,33 +34,39 @@ export const SignIn = () => {
   const RECAPTCHA_SITE_KEY = "6LemSE0qAAAAADhn4nN770nVLBJxAGRz_LoFXP6h";
   const [isSubmit, setIsSubmit] = useState(false);
 
+
   const {
     isLoggingIn = false,
     error,
     loginMessage,
     profile,
   } = useSelector((state) => state.auth);
-  console.log(profile,1234567891);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [checkedCheckbox, setCheckedCheckbox] = useState(false);
+  console.log(checkedCheckbox, "prev");
 
   const handleCheckbox = (e) => {
     e.preventDefault();
-    setCheckedCheckbox(!checkedCheckbox);
-    if (checkedCheckbox) {
-      localStorage.removeItem("signedIn");
-    } else {
-      localStorage.setItem("signedIn", true);
-    }
+    // console.log(checkedCheckbox, "check 1");
+    setCheckedCheckbox((prev)=> !prev);
+  
+    
+    // if (checkedCheckbox) {
+    //   localStorage.removeItem("signedIn");
+    //   setIsSignedIn(true)
+    // } else {
+    //   localStorage.setItem("signedIn", true);
+    //   // setIsSignedIn(true)
+    // }
   };
 
-  const phoneRegex = /^[1-9]\d{9}$/; 
+  console.log(checkedCheckbox, "checkbox");
 
+  const phoneRegex =  /^[1-9][0-9]{8,11}$/;
   const emailOrPhone = watch("email"); // Watch the 'email' field
  
   const onSubmit = async (data) => {
-  
     setIsSubmit(true);
     let transformedData={};
     const isPhoneNumber = phoneRegex.test(emailOrPhone);
@@ -75,11 +79,10 @@ export const SignIn = () => {
     }
 
     const token = await recaptchaRef.current.executeAsync().then((res) => {
-      console.log("check response ", res);
       data = { ...transformedData, recaptchaToken: res, userType: "end_user" };
-      //console.log(data, "data from form");
       dispatch(loginUser(data));
     });
+    dispatch( setIsSignedIn(checkedCheckbox))
     dispatch(setRedirectTo("verify"))
   };
 
@@ -97,7 +100,6 @@ export const SignIn = () => {
         }
       }
     }
-    console.log(isLoggingIn, isSubmit, profile);
   }, [isLoggingIn]);
 
   const googleLogin = (data) => {
@@ -120,8 +122,6 @@ export const SignIn = () => {
       });
     });
   });
-
- 
 
   return (
     <>
@@ -152,7 +152,7 @@ export const SignIn = () => {
                     className="border-[#D9D9D9] border"
                     errorContent={errors?.email?.message}
                    // maxLength={50}
-                    maxLength={phoneRegex.test(emailOrPhone) ? 10 : 50}
+                    maxLength={phoneRegex.test(emailOrPhone) ? 12 : 50}
                   />
                 )}
               />
@@ -216,9 +216,10 @@ export const SignIn = () => {
                 isLoading={isSubmit}
 
               >
-                {phoneRegex.test(emailOrPhone)
+                {/* {phoneRegex.test(emailOrPhone)
                   ? "Sign in"
-                  : "Sign in"}
+                  : "Sign in"} */}
+                  Sign in
               </Button>
 
               <div className="flex gap-2 items-center">
@@ -234,6 +235,7 @@ export const SignIn = () => {
                   onError={() => console.log("Errors")}
                   cookiePolicy={"single_host_origin"}
                   scope="openid profile email"
+                  prompt="select_account"
                   render={(renderProps) => (
                     <button
                       onClick={renderProps.onClick}

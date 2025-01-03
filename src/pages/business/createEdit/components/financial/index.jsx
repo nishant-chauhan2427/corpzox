@@ -2,7 +2,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Input } from "../../../../../components/inputs";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { validateNumber } from "../../../../../utils";
+import { validateNumber, validateProfitValue } from "../../../../../utils";
 import { Button } from "../../../../../components/buttons";
 import { useNavigate } from "react-router-dom";
 import { updateFinancialDetails, updateRegistrationDetails } from "../../../../../redux/actions/business-action";
@@ -12,7 +12,7 @@ import { financialSchema } from "../../../../../validation/createBusinessValidat
 export const FinancialDetails = ({ isEdit }) => {
 
 
-  const { business, businessId ,loading} = useSelector((state) => state.business);
+  const { business, businessId, loading } = useSelector((state) => state.business);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   // console.log("business,businessId",business,businessId);
@@ -163,16 +163,33 @@ export const FinancialDetails = ({ isEdit }) => {
                   required={true}
                   // onBlur={handleFieldBlur(`financial.profit`)} // Trigger validation on blur
                   onChange={handleFieldChange(`financial.profit`, field, trigger)} // Trigger validation on change
-                  onKeyDown={validateNumber}
+                  onKeyDown={validateProfitValue}
 
+
+                  // onInput={(e) => {
+                  //   let value = e.target.value;
+
+                  //   // Allow negative sign only at the beginning
+                  //   if (value.startsWith('-')) {
+                  //     value = '-' + value.slice(1).replace(/[^0-9]/g, ''); // Keep digits after the negative sign
+                  //   } else {
+                  //     value = value.replace(/[^0-9]/g, ''); // Allow only digits
+                  //   }
+
+                  //   // Limit to at most 10 characters (including the negative sign)
+                  //   if (value.startsWith('-')) {
+                  //     value = value.slice(0, 11); // 10 digits + 1 negative sign
+                  //   } else {
+                  //     value = value.slice(0, 10); // 10 digits max for positive numbers
+                  //   }
+
+                  //   e.target.value = value; // Update the input value
+                  //   field.onChange(value); // Trigger React Hook Form's onChange
+                  // }}
 
                   onInput={(e) => {
                     const value = e.target.value;
-                    // Prevent invalid characters and limit input length to 10
-                    e.target.value = value
-                      .replace(/[^0-9]/g, "") // Allow only digits
-                      .slice(0, 10); // Limit to 10 characters
-                    field.onChange(e); // Trigger React Hook Form's onChange
+                    e.target.value = value.slice(0, 10); // Enforce max length on paste
                   }}
                 />
               )}
@@ -186,7 +203,7 @@ export const FinancialDetails = ({ isEdit }) => {
           Prev
         </Button>
         <Button type="submit" primary disabled={!isValid || loading} isLoading={loading} >
-          {loading?"saving...":"Save & Next"}
+          {loading ? "saving..." : "Save & Next"}
         </Button>
       </div>
     </form>

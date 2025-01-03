@@ -188,12 +188,12 @@ const serviceListingSlice = createSlice({
     builder
       .addCase(getMoreUserServices.pending, (state, action) => {
         // console.log("getMoreUserServices.pending");
-        
+        state.loading = true
         state.loadingMore = true;
       })
       .addCase(getMoreUserServices.fulfilled, (state, action) => {
         // console.log("getMoreUserServices.fulfilled",action.payload?.data);
-        
+        state.loading = false
         state.loadingMore = false;
         state.error = action.payload.message;
         state.totalCount = action.payload.total;
@@ -206,7 +206,7 @@ const serviceListingSlice = createSlice({
       })
       .addCase(getMoreUserServices.rejected, (state, action) => {
         // console.log("getMoreUserServices.rejected");
-        
+        state.loading = false
         state.loadingMore = false;
         state.error = action.payload;
       });

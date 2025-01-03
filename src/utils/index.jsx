@@ -105,6 +105,53 @@ if (!/^[0-9]$/.test(e.key) && !validKey.includes(e.key)) {
 }
 };
 
+export const validateProfitValue = (e) => {
+  const inputValue = e.target.value;
+  const key = e.key;
+
+  // Allow control keys (Backspace, Arrow keys, Delete, etc.)
+  const validKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab'];
+  if (validKeys.includes(key)) {
+    return; // Allow control keys
+  }
+
+  // Allow one negative sign at the start
+  if (key === '-' && inputValue.length === 0) {
+    return; // Allow negative sign if it's the first character
+  }
+
+  // Prevent typing negative sign anywhere but the start
+  if (key === '-' && inputValue.length > 0) {
+    e.preventDefault();
+    return;
+  }
+
+  // Prevent typing non-numeric characters
+  if (!/^[0-9]$/.test(key)) {
+    e.preventDefault();
+    return;
+  }
+
+  // Prevent leading zeros if the first character is already '0'
+  if (inputValue === '0' && key === '0') {
+    e.preventDefault();
+    return;
+  }
+
+  // Prevent input if the value is '-0'
+  if (inputValue === '-' && key === '0') {
+    e.preventDefault();
+    return;
+  }
+
+  // Prevent more than 10 digits (including negative sign)
+  const maxDigits = inputValue.startsWith('-') ? 11 : 10; // 10 digits + 1 negative sign
+  if (inputValue.length >= maxDigits) {
+    e.preventDefault();
+    return;
+  }
+};
+
 export const dateFormated = (originalDate) => {
   const dateObj = new Date(originalDate);
 
@@ -905,7 +952,7 @@ export function calculateFinalPrice(data, subscriptionId, state) {
   };
 }
 
-function calculatePriceRegular(data, state) {
+function calculatePriceRegular(data, isOfferValid) {
 
   console.log(data, "Invalid data for regular calculation");
   if (typeof data !== 'object' || data === null) {
@@ -918,8 +965,8 @@ function calculatePriceRegular(data, state) {
 
   let offerDetails = {}
   // Check if there are valid offers and apply them
-  if (data?.offerservices[0]?.offers) {
-    const result = applyOfferToPrice(cost, data, state);
+  if (data?.offerservices[0]?.offers && isOfferValid) {
+    const result = applyOfferToPrice(cost, data);
     cost = result.finalPrice;
     discountAmount = result.discountAmount;
     offerDetails = result.offerDetails
@@ -932,7 +979,7 @@ function calculatePriceRegular(data, state) {
   return { finalPrice: cost, discountAmount, offerDetails };
 }
 
-function calculatePriceSubscription(data, subscriptionId) {
+function calculatePriceSubscription(data, subscriptionId, isOfferValid) {
   console.log(data, "from subscription component")
   if (!data || !data?.subscription.length > 0) {
     console.error("Invalid data for subscription calculation");
@@ -953,7 +1000,7 @@ function calculatePriceSubscription(data, subscriptionId) {
   let offerDetails = {}
   console.log(data?.offerservices[0]?.offers, "offer from function")
   // Check if there are valid offers and apply them
-  if (data?.offerservices[0]?.offers) {
+  if (data?.offerservices[0]?.offers && isOfferValid) {
     const result = applyOfferToPrice(subscriptionPrice, data);
     subscriptionPrice = result.finalPrice;
     discountAmount = result.discountAmount;
@@ -991,14 +1038,14 @@ function calculatePriceQuotation(data, quotationId) {
   return { finalPrice: quotationPrice, discountAmount: 0 }; // No discounts for quotations
 }
 
-export function calculateFinalPriceByType(data, type, id = null) {
+export function calculateFinalPriceByType(data, type, id = null,isOfferValid) {
   console.log(type, "from function")
   switch (type) {
     case "regular":
-      return calculatePriceRegular(data);
+      return calculatePriceRegular(data, isOfferValid);
 
     case "subscription":
-      return calculatePriceSubscription(data, id);
+      return calculatePriceSubscription(data, id, isOfferValid);
 
     case "quotation":
       return calculatePriceQuotation(data, id);

@@ -2,7 +2,6 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 const PricingDetail = ({totalCost, offer,serviceCost,totalSavings,data,originalPrice,availServiceData, serviceCharge}) => {
-  console.log( availServiceData, "from componenet")
   const { success, serviceDetailLoading, appliedCoupons, couponDiscount } = useSelector(
     (state) => state.serviceDetails
   );
