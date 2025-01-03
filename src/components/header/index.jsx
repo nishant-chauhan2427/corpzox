@@ -73,6 +73,8 @@ export const Header = ({ className, collapse, setCollapse }) => {
     switch (true) {
       case pathname.includes("dashboard"):
         return "Dashboard";
+        case pathname.includes("wishlist"):
+        return "Wishlist";
       case pathname.includes("business"):
         return "Business";
       case pathname.includes("fundraise"):
@@ -213,6 +215,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
             !pathname.includes("offersDetails") &&
             !pathname.includes("dashboard") &&
             !pathname.includes("payment") &&
+            !pathname.includes("wishlist") &&
             !pathname.includes("services/detail") &&
             !pathname.includes("services/serviceprogressdetail") &&
              pathname !== "/documents" &&
