@@ -51,7 +51,7 @@ const ServiceDetail = () => {
             isLoading={isTalkToAdvisorLoading}
             message={callBackMessage}
             />
-          <Testimonials serviceId={serviceId} />
+          {/* <Testimonials  serviceId={serviceId} /> */}
           <Steps data={success?.servicesteps}/>
           <FAQs />
           <Advisor

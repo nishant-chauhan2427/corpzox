@@ -43,10 +43,7 @@ export const Steps = ({ data }) => {
 
   return (
     <section>
-      <h4
-     
-        className="pb-4 font-bold uppercase text-[20px] leading-[18px] text-[#0A1C40]"
-      >
+      <h4 className="pb-4 font-bold uppercase text-[20px] leading-[18px] text-[#0A1C40]">
         getting started is as simple as 1.. 2.. 3
       </h4>
       <div className="px-5 pb-4 bg-[#0E38BD] rounded-md flex flex-col sm:flex-row justify-between gap-4 ">
@@ -71,7 +68,7 @@ export const Steps = ({ data }) => {
               <img
                 src="/icons/services/arrow-step.svg"
                 alt="arrow step"
-                className="sm: -mt-16 w-72"
+                className="sm:-mt-16 w-72"
               />
             )}
           </>
@@ -84,13 +81,13 @@ export const Steps = ({ data }) => {
 
         <div className="space-y-4">
           {data?.map((faq, index) => (
-            <div key={index} className=" rounded-lg shadow-sm">
+            <div key={index} className="">
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full flex justify-between items-center px-5 py-3 text-left text-gray-700 font-bold text-sm"
+                className="w-full flex justify-between items-center py-3 text-left text-[#0A1C40] font-bold text-sm"
               >
                 {faq.title}
-                <span className="text-gray-500">
+                <span className="text-[#0A1C40]">
                   {expandedIndex === index ? (
                     <img
                       className="rotate-180"
@@ -102,7 +99,7 @@ export const Steps = ({ data }) => {
                 </span>
               </button>
               {expandedIndex === index && (
-                <div className="px-5 py-3 text-xs font-medium text-gray-600">
+                <div className=" text-xs font-normal text-[#0A1C40]">
                   {faq.details}
                 </div>
               )}
