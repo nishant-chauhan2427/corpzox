@@ -52,7 +52,7 @@ export const FAQs = () => {
       <h2 style={{ fontFamily: 'MarsCondensed, sans-serif' }} className="text-[30px] leading-3 font-normal uppercase  text-center mb-4">
         Frequently Asked Questions
       </h2>
-      <p className="font-semibold text-[#0A1C40] text-sm  text-center mb-8">
+      <p className="font-semibold text-[#0A1C40] text-sm  text-center mb-8 ">
         Find answers to common questions about our corporate services and client
         concerns.
       </p>

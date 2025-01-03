@@ -34,7 +34,6 @@ export const SignIn = () => {
   const RECAPTCHA_SITE_KEY = "6LemSE0qAAAAADhn4nN770nVLBJxAGRz_LoFXP6h";
   const [isSubmit, setIsSubmit] = useState(false);
 
-
   const {
     isLoggingIn = false,
     error,
@@ -49,9 +48,8 @@ export const SignIn = () => {
   const handleCheckbox = (e) => {
     e.preventDefault();
     // console.log(checkedCheckbox, "check 1");
-    setCheckedCheckbox((prev)=> !prev);
-  
-    
+    setCheckedCheckbox((prev) => !prev);
+
     // if (checkedCheckbox) {
     //   localStorage.removeItem("signedIn");
     //   setIsSignedIn(true)
@@ -63,18 +61,18 @@ export const SignIn = () => {
 
   console.log(checkedCheckbox, "checkbox");
 
-  const phoneRegex =  /^[1-9][0-9]{8,11}$/;
+  const phoneRegex = /^[1-9][0-9]{8,11}$/;
   const emailOrPhone = watch("email"); // Watch the 'email' field
- 
+
   const onSubmit = async (data) => {
     setIsSubmit(true);
-    let transformedData={};
+    let transformedData = {};
     const isPhoneNumber = phoneRegex.test(emailOrPhone);
     if (isPhoneNumber) {
-      transformedData.phone = emailOrPhone; 
+      transformedData.phone = emailOrPhone;
       transformedData.password = data.password;
     } else {
-      transformedData.email = emailOrPhone; 
+      transformedData.email = emailOrPhone;
       transformedData.password = data.password;
     }
 
@@ -82,8 +80,8 @@ export const SignIn = () => {
       data = { ...transformedData, recaptchaToken: res, userType: "end_user" };
       dispatch(loginUser(data));
     });
-    dispatch( setIsSignedIn(checkedCheckbox))
-    dispatch(setRedirectTo("verify"))
+    dispatch(setIsSignedIn(checkedCheckbox));
+    dispatch(setRedirectTo("verify"));
   };
 
   useEffect(() => {
@@ -151,7 +149,7 @@ export const SignIn = () => {
                     placeholder="Email Id / Phone No."
                     className="border-[#D9D9D9] border"
                     errorContent={errors?.email?.message}
-                   // maxLength={50}
+                    // maxLength={50}
                     maxLength={phoneRegex.test(emailOrPhone) ? 12 : 50}
                   />
                 )}
@@ -175,10 +173,13 @@ export const SignIn = () => {
               />
               <Link
                 to={"/forgot-password"}
-                state={{ email: emailOrPhone }}  // Passing email/phone as state
-                className="flex font-medium cursor-default text-base text-[#0A1C40]"
+                state={{ email: emailOrPhone }} // Passing email/phone as state
+                className="font-medium text-base text-[#0A1C40]"
               >
-                <div className="cursor-default"> <p className="cursor-pointer">Forgot Password?</p> </div>
+                <div>
+                  {" "}
+                  <a>Forgot Password?</a>
+                </div>
               </Link>
               <ReCAPTCHA
                 ref={recaptchaRef}
@@ -214,12 +215,11 @@ export const SignIn = () => {
                 }
                 disabled={!isValid}
                 isLoading={isSubmit}
-
               >
                 {/* {phoneRegex.test(emailOrPhone)
                   ? "Sign in"
                   : "Sign in"} */}
-                  Sign in
+                Sign in
               </Button>
 
               <div className="flex gap-2 items-center">
@@ -254,7 +254,7 @@ export const SignIn = () => {
               </div>
               <div className="text-center flex justify-center gap-2 font-normal text-[#6C6C6C]">
                 <p>
-                Don’t have an account yet?
+                  Don’t have an account yet?
                   <Link
                     to={"/sign-up"}
                     className="p-2 text-[#F1359C] font-semibold "

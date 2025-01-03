@@ -101,7 +101,7 @@ export const ServicesCard = ({
                         <img
                           src="/images/services/service-default.svg"
                           alt=""
-                          className="min-w-16 min-h-16 object-cover object-center"
+                          className="min-w-16 min-h-16 rounded-md object-cover object-center"
                         />
                       </div>
                       <div className="w-full flex justify-between items-center">
