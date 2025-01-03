@@ -35,11 +35,10 @@ export const Offers = () => {
         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
         const token = userInfo?.token;
         // console.log(token, "token")
-  
+
         // if (!token) {
         //   return rejectWithValue("No token found");
         // }
-  
         const response = await client.get("/admin/offer", {
           headers: {
             Accept: "application/json",

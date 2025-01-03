@@ -12,7 +12,6 @@ import {
   onChangeSelectAll,
   updateServiceWishlistFlag,
 } from "../../../../../redux/slices/serviceListingSlice";
-import { div } from "framer-motion/client";
 
 export const ServicesCard = ({
   data,
@@ -25,9 +24,11 @@ export const ServicesCard = ({
   const { isLoading, heartloading, childLoading } = useSelector(
     (state) => state.wishlist
   );
+
   const { wishList, list, recommendedServiceList } = useSelector(
     (state) => state.service
   );
+
   const [selectAllChecked, setSelectAllChecked] = useState(false);
   const [expandedServices, setExpandedServices] = useState({});
   let checkListSet = new Set(wishList?.list?.map((service) => service._id)); //checkListSet :["serviceId1","serviceId2",....]
@@ -91,116 +92,56 @@ export const ServicesCard = ({
             return (
               <div
                 key={index}
-                className="flex flex-col gap-1  px-4 py-4 pb-6 rounded-[14px] sm:gap-4 justify-between cursor-pointer border-[#DFEAF2] border bg-white"
+                className="flex flex-col gap-2 border-[#DFEAF2] border bg-white px-4 py-4 rounded-[14px] sm:gap-4 justify-between cursor-pointer"
                 onClick={() => navigateToServiceDetail(service?._id)}
               >
-                <div className="flex justify-between items-center">
-                  <div className="flex gap-2">
-                    <p className="font-bold text-[#0A1C40]">
-                      {url.includes("services")
-                        ? service?.name
-                          ? service?.name
-                          : "___"
-                        : service?.service?.[0]?.name
-                        ? service?.service[0]?.name
-                        : "___"}
-                    </p>
-
-                    {url.includes("services") &&
-                      service?.offerservices?.[0]?.offers?.[0]
-                        ?.discountPercent && (
-                        <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1">
-                          {service.offerservices[0].offers[0].discountPercent} {service.offerservices[0].offers[0].discountPercent && service.offerservices[0].offers[0].discountType === "fixed" ? "₹" : "%"}
-                        </p>
-                      )}
-                    {url.includes("wishlist") &&
-                      service?.service?.[0]?.offerservices?.[0]?.offers?.[0]
-                        ?.discountPercent && (
-                        <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1">
-                          {
-                            service?.service?.[0]?.offerservices?.[0]?.offers?.[0]
-                              ?.discountPercent
-                          }{" "}
-                          %
-                        </p>
-                      )}
-                  </div>
-
-                  {url.includes("services") ? (
-                    <Checkbox
-                      className="service-checkbox"
-                      checked={checkListSet.has(service?._id)} //O(n)
-                      onChange={() => onCheckedChange(service)}
-                    />
-                  ) : (
-                    <></>
-                  )}
-                </div>
-                <p className="text-base leading-[22px] font-normal text-[#7C7C7C]" dangerouslySetInnerHTML={{__html : truncatedText}}>
-                </p>
-
-                <div className="flex flex-col gap-1 pt-1">
-                  <div className="flex justify-between sm:w-4/5">
-                    <p className="font-semibold text-sm text-[#7E7E7E]">
-                      Estimated Time(Month(s))
-                    </p>
-                    <p className="font-bold text-[12px] text-[#000000]">
-                      {url.includes("services")
-                        ? service?.duration
-                          ? service?.duration
-                          : "___"
-                        : service?.service[0]?.duration
-                        ? service?.service[0]?.duration
-                        : "___"}
-                    </p>
-                  </div>
-                <div className="bg-[#F3F7FF] px-3 py-3 rounded-[14px]">
+                <div className=" bg-[#F3F7FF] rounded-[14px] px-3 py-4">
                   <div className="flex justify-between items-center">
-                    <div className="flex gap-2 justify-between">
+                    <div className="flex gap-2">
                       <div>
                         <img
-                          className="rounded-sm"
                           src="/images/services/service-default.svg"
                           alt=""
                         />
                       </div>
-                      <div className="flex w-[100%]">
-                        <p className="font-bold text-lg  text-[#0A1C40] w-[80%]">
-                          {url.includes("services")
+                      <p className="font-bold text-[#0A1C40]">
+                        {url.includes("services")
+                          ? service?.name
                             ? service?.name
-                              ? service?.name
-                              : "___"
-                            : service?.service?.[0]?.name
-                            ? service?.service[0]?.name
-                            : "___"}
-                        </p>
-                        <div className="w-[20%]">
-                          {url.includes("services") &&
-                            service?.offerservices?.[0]?.offers?.[0]
-                              ?.discountPercent && (
-                              <p className=" flex  items-center justify-center font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1">
-                                {
-                                  service.offerservices[0].offers[0]
-                                    .discountPercent
-                                }{" "}
-                                %
-                              </p>
-                            )}
-                          {url.includes("wishlist") &&
-                            service?.service?.[0]?.offerservices?.[0]
-                              ?.offers?.[0]?.discountPercent && (
-                              <span className="font-medium  rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1 ">
-                                {
-                                  service?.service?.[0]?.offerservices?.[0]
-                                    ?.offers?.[0]?.discountPercent
-                                }{" "}
-                                %
-                              </span>
-                            )}
-                        </div>
-                      </div>
+                            : "___"
+                          : service?.service?.[0]?.name
+                          ? service?.service[0]?.name
+                          : "___"}
+                      </p>
                     </div>
-                    {url.includes("services") ? (
+                    <div>
+                      {url.includes("services") &&
+                        service?.offerservices?.[0]?.offers?.[0]
+                          ?.discountPercent && (
+                          <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1">
+                            {service.offerservices[0].offers[0].discountPercent}{" "}
+                            {service.offerservices[0].offers[0]
+                              .discountPercent &&
+                            service.offerservices[0].offers[0].discountType ===
+                              "fixed"
+                              ? "%"
+                              : "%"}
+                          </p>
+                        )}
+                      {url.includes("wishlist") &&
+                        service?.service?.[0]?.offerservices?.[0]?.offers?.[0]
+                          ?.discountPercent && (
+                          <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1">
+                            {
+                              service?.service?.[0]?.offerservices?.[0]
+                                ?.offers?.[0]?.discountPercent
+                            }{" "}
+                            % Off
+                          </p>
+                        )}
+                    </div>
+
+                    {/* {url.includes("services") ? (
                       <Checkbox
                         className="service-checkbox"
                         checked={checkListSet.has(service?._id)} //O(n)
@@ -208,18 +149,19 @@ export const ServicesCard = ({
                       />
                     ) : (
                       <></>
-                    )}
+                    )} */}
                   </div>
                   <p
-                    className="text-xs leading-[22px] font-normal text-[#7C7C7C]"
+                    className="text-base leading-[22px] font-normal text-[#7C7C7C]"
                     dangerouslySetInnerHTML={{ __html: truncatedText }}
                   ></p>
+
                   <div className="flex flex-col gap-1 pt-1">
                     <div className="flex justify-between sm:w-4/5">
                       <p className="font-semibold text-sm text-[#7E7E7E]">
-                        Estimated Time
+                        Estimated Time(Month(s))
                       </p>
-                      <p className="font-bold text-[12px] text-[#0A1C40]">
+                      <p className="font-bold text-[12px] text-[#000000]">
                         {url.includes("services")
                           ? service?.duration
                             ? service?.duration
@@ -234,7 +176,7 @@ export const ServicesCard = ({
                       <p className="font-semibold text-sm text-[#7E7E7E] flex items-center">
                         Price (<FaRupeeSign className="ml-1" />)
                       </p>
-                      <p className="font-bold text-[12px] text-[#0A1C40]">
+                      <p className="font-bold text-[12px] text-[#000000]">
                         {url.includes("services")
                           ? service?.cost
                             ? service?.cost
@@ -284,7 +226,6 @@ export const ServicesCard = ({
                         )}
                       </button>
                     )}
-
                     <LinkButton
                       type="submit"
                       to={`/services/detail/${service?._id}`}
