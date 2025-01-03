@@ -87,7 +87,7 @@ export const ServicesCard = ({
               : "___";
 
             const truncatedText =
-              text.length > 100 ? text.slice(0, 100) + "..Read more" : text;
+              text.length > 100 ? text.slice(0, 100) + "..." : text;
 
             return (
               <div
