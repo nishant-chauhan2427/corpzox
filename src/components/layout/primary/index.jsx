@@ -50,7 +50,7 @@ export const PrimaryLayout = () => {
         setCollapse={setCollapse}
       />
       <div
-        className={`w-full flex page-body-wrapper lg:px-4 md:px-2 sm:px-2 dark:dark:bg-slate-800`}
+        className={`w-full max-w-[100rem] mx-auto flex page-body-wrapper lg:px-4 md:px-2 sm:px-2 dark:dark:bg-slate-800`}
       >
         <Sidebar
           className={`${
