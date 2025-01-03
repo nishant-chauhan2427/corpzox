@@ -43,10 +43,13 @@ export const Steps = ({ data }) => {
 
   return (
     <section>
-      <h4 className="pb-4 font-bold uppercase text-2xl text-[#0A1C40]">
+      <h4
+     
+        className="pb-4 font-bold uppercase text-[20px] leading-[18px] text-[#0A1C40]"
+      >
         getting started is as simple as 1.. 2.. 3
       </h4>
-      <div className="p-4 bg-[#0E38BD] rounded-md flex flex-col sm:flex-row justify-between gap-4">
+      <div className="px-5 pb-4 bg-[#0E38BD] rounded-md flex flex-col sm:flex-row justify-between gap-4 ">
         {stepsData.map((data, index) => (
           <>
             <Step
@@ -61,29 +64,30 @@ export const Steps = ({ data }) => {
                   : ""
               }
             />
+
             {index == 2 ? (
               <></>
             ) : (
-              <img src="/icons/services/arrow-step.svg" alt="arrow step" />
+              <img
+                src="/icons/services/arrow-step.svg"
+                alt="arrow step"
+                className="sm: -mt-16 w-72"
+              />
             )}
-
           </>
         ))}
       </div>
       <div className="pt-10">
-        <h4 className="pb-4 font-bold uppercase text-2xl text-[#0A1C40]">
+        <h4 className="pb-4 font-bold uppercase text-[20px] leading-[22px] text-[#0A1C40]">
           Everything You Need to Know About Private Limited Company Registration
         </h4>
 
         <div className="space-y-4">
           {data?.map((faq, index) => (
-            <div
-              key={index}
-              className="border border-gray-200 rounded-lg shadow-sm"
-            >
+            <div key={index} className=" rounded-lg shadow-sm">
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full flex justify-between items-center px-5 py-3 text-left text-gray-700 font-bold text-sm hover:bg-gray-100"
+                className="w-full flex justify-between items-center px-5 py-3 text-left text-gray-700 font-bold text-sm"
               >
                 {faq.title}
                 <span className="text-gray-500">
@@ -98,7 +102,7 @@ export const Steps = ({ data }) => {
                 </span>
               </button>
               {expandedIndex === index && (
-                <div className="px-5 py-3 text-xs bg-gray-50 text-gray-600">
+                <div className="px-5 py-3 text-xs font-medium text-gray-600">
                   {faq.details}
                 </div>
               )}
@@ -113,9 +117,11 @@ export const Steps = ({ data }) => {
 const Step = ({ label, description, index }) => {
   return (
     <div className="flex flex-col gap-2 text-center">
-      <p className="font-medium text-5xl  text-white">{index}</p>
-      <p className="font-bold  text-xs  text-[#F8F8F8]">{label}</p>
-      <p className="font-normal text-[8px] text-white ">{description}</p>
+      <p className="font-medium text-[70px]  text-white">{index}</p>
+      <p className="font-bold  text-xs  text-start text-[#F8F8F8]">{label}</p>
+      <p className="font-normal text-[11px] text-start text-white ">
+        {description}
+      </p>
     </div>
   );
 };

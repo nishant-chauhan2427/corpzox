@@ -66,7 +66,7 @@ export const Offers = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 ">
         <div className="flex justify-between items-center ">
           <p className="font-semibold text-[16px] text-[#004BBC]">Offers</p>
           <Link

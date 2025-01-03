@@ -166,7 +166,7 @@ export const Selector = ({
         //   }}
         className={` my-react-select-container ${
           lefticon ? `pl-6` : `pl-2`
-        }  ${ringColor} ${className} peer block w-full text-sm text-black dark:text-white bg-white dark:bg-gray-950 rounded-lg appearance-none placeholder-transparent focus:outline-none`}
+        }  ${ringColor} ${className} peer block w-full text-sm text-black dark:text-white bg-white dark:bg-gray-950 rounded-lg appearance-none placeholder-transparent focus:outline-none border border-[#D9D9D9]`}
         classNamePrefix="my-react-select"
         components={{
           // Option: CustomSelectOption,

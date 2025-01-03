@@ -85,7 +85,6 @@ export const ServicesCard = ({
               : service?.service[0]?.details
               ? service?.service[0]?.details
               : "___";
-
             const truncatedText =
               text.length > 100 ? text.slice(0, 100) + "..." : text;
 
@@ -106,7 +105,7 @@ export const ServicesCard = ({
                         />
                       </div>
                       <div className="w-full flex justify-between items-center">
-                        <h4 className="max-w-36 sm:max-w-52 font-bold text-[#0A1C40] line-clamp-2">
+                        <h4 className="max-w-32 sm:max-w-52 font-bold text-[#0A1C40] line-clamp-2">
                           {url.includes("services")
                             ? service?.name
                               ? service?.name
@@ -114,7 +113,6 @@ export const ServicesCard = ({
                             : service?.service?.[0]?.name
                             ? service?.service[0]?.name
                             : "___"}
-                          
                         </h4>
                         <div>
                           {url.includes("services") &&

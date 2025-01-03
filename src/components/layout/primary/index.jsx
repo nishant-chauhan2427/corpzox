@@ -74,7 +74,7 @@ export const PrimaryLayout = () => {
             </div>
             <RightSidebar
               className={
-                "w-full md:w-1/4 hidden lg:flex flex-col gap-4 md:sticky top-0 right-0"
+                "w-full h-fit md:w-1/4 hidden lg:flex flex-col gap-4 sticky top-0 right-0"
               }
             />
           </motion.div>

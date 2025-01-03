@@ -48,11 +48,11 @@ export const FAQs = () => {
     },
   ];
   return (
-    <div className="max-w-xl mx-auto py-10 px-5">
-      <h2 className="text-2xl font-bold text-center mb-4">
+    <div className="max-w-xl mx-auto pt-10 px-5">
+      <h2 style={{ fontFamily: 'MarsCondensed, sans-serif' }} className="text-[30px] leading-3 font-normal uppercase  text-center mb-4">
         Frequently Asked Questions
       </h2>
-      <p className="font-semibold text-[#0A1C40] text-sm text-center mb-8">
+      <p className="font-semibold text-[#0A1C40] text-sm  text-center mb-8">
         Find answers to common questions about our corporate services and client
         concerns.
       </p>
@@ -103,17 +103,17 @@ export const FAQs = () => {
             {transformedFaqArray.map((faq, index) => (
               <div
                 key={index}
-                className="border border-gray-300 rounded-lg shadow-md"
+                className="border border-[#DFEAF2] rounded-[10px]"
               >
                 <button
                   onClick={() => toggleFAQ(index)}
-                  className="w-full flex justify-between items-center px-5 py-4 bg-[#DFEAF2] hover:bg-gray-200 text-left font-medium"
+                  className="w-full flex justify-between items-center px-3 py-3 bg-[#DFEAF2] text-left font-medium"
                 >
                   <span className="flex items-center font-semibold text-sm">
-                    <span className="text-blue-500 mr-2">{faq.icon}</span>
+                    <span className="text-[#0A1C40] font-bold text-2xl mr-2">{faq.icon}</span>
                     {faq.question}
                   </span>
-                  <span className="text-gray-500">
+                  <span className="!text-[#0A1C40] !bg-[#DFEAF2]">
                     {openIndex === index ? (
                       <img
                         className="rotate-180"
@@ -126,9 +126,9 @@ export const FAQs = () => {
                   </span>
                 </button>
                 {openIndex === index && (
-                  <div className="px-5 py-3 text-gray-600 bg-[#DFEAF2]">
+                  <div className="px-5 pb-3 text-[#0A1C40] text-base font-medium !bg-[#DFEAF2]">
                     {faq.answer.split("\n").map((line, idx) => (
-                      <p key={idx} className="mb-2" dangerouslySetInnerHTML={{__html : line}}>
+                      <p key={idx} className="mb-2 !text-[#0A1C40] !bg-[#DFEAF2] " dangerouslySetInnerHTML={{__html : line}}>
                         {/* {line.trim()} */}
                       </p>
                     ))}
