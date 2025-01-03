@@ -77,14 +77,12 @@ const discountType = success?.offerservices?.[0]?.offers?.[0]?.discountType;
             <Selector
               defaultValue={defaultObject}
               isSearchable={true}
-              className={"lg:min-w-60 border border-[#D9D9D9]"}
+              className={"lg:min-w-60 "}
               placeholder={"Select State"}
               options={formattedStates}
               onChange={handleStateChange}
             />
             </div>
-            
-            
           </div>
         )}
         {pricing ? (
@@ -145,9 +143,9 @@ const PricingCard = ({ data, serviceId, navigate, dispatch, offer, discountType 
     <div className="w-full flex gap-10 justify-center">
       <div className="w-full flex flex-col gap-2 drop-shadow-lg hover:drop-shadow-2xl bg-white px-5 py-6">
         <div>
-          <div className="font-bold flex gap-2 text-[#0A1C40] text-[22px] ">
+          <div className="flex font-bold  gap-2 text-[#0A1C40] text-[22px] ">
             {data?.amount}
-            {offer && <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1 ">
+            {offer && <p className="flex items-center justify-center  font-medium rounded-full text-[12px] text-white bg-[#28A745] px-2  ">
               {offer} {discountType && discountType === "fixed" ? "₹" : "%"}
             </p>}
           </div>
@@ -156,22 +154,22 @@ const PricingCard = ({ data, serviceId, navigate, dispatch, offer, discountType 
               ? ` ${data?.stateWiseServiceCharge} + applicable govt. fees`
               : `--`}
           </p>
-
         </div>
-        <p className="pt-6 font-bold uppercase text-sm text-[#565657]">
+        <p className="pt-4 font-bold uppercase text-sm text-[#565657]">
           {data.title}
         </p>
-        {/* <div>
+        <div>
           <p className="font-bold text-xs text-[#565657]">Fast Application</p>
-          <p className="text-[10px] text-[#525252]">
+          <p className="text-[10px] font-normal text-[#525252]">
             Application within 5 working days or your money back.
           </p>
-        </div> */}
+        </div>
         {data.includes && (
           <div>
             <p className="font-bold text-xs text-[#565657]">Includes:</p>
-            <div className="py-2 flex flex-col gap-1">
+            <div className="py-2 flex flex-col gap-1 font-medium text-[11px]">
               {data.includes && data?.includes.map((data) => IconLabel(data))}
+              2 x DIN and Digital Signatures
             </div>
           </div>
         )}

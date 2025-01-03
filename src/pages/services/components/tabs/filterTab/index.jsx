@@ -67,7 +67,7 @@ function Filtertab() {
     <div className="relative flex items-center gap-2">
       {/* Left Arrow Button */}
       {isOverflowing && subCategory?.list?.length > 0  && activeTabIndex !== 0 && <button onClick={scrollLeft} className="z-10">
-        <IoIosArrowBack size={20} />
+        <IoIosArrowBack color="#534f4f" size={20} />
       </button>}
 
       <div
@@ -91,7 +91,7 @@ function Filtertab() {
 
       {/* Right Arrow Button */}
       {isOverflowing && subCategory?.list?.length > 0 && activeTabIndex !== subCategory?.list.length -1 && <button onClick={scrollRight} className="z-10">
-        <IoIosArrowForward size={20} />
+        <IoIosArrowForward color="#534f4f" size={20} />
       </button>}
     </div>
   );
