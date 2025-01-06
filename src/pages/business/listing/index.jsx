@@ -32,7 +32,7 @@ const BusinessListing = () => {
   const { business, isLoading, totalCount, page, error, loadingMore } =
     useSelector((state) => state.businessList);
 
-  console.log("businessData", business, totalCount, isLoading, error, page);
+  console.log("businessData", business);
 
   useEffect(() => {
     dispatch(getAllBusiness({ query: searchValue, page: 1 }));
