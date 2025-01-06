@@ -131,7 +131,7 @@ export const SignIn = () => {
             <DualHeadingTwo
               containerClassName={"text-left pt-2"}
               heading={"Sign in"}
-              subHeading={"Please Sign in to continue to your account."}
+              subHeading={"Please sign in to continue to your account."}
             />
             <form
               onSubmit={handleSubmit(onSubmit)}
@@ -171,44 +171,50 @@ export const SignIn = () => {
                 )}
                 rules={{ required: "Password is required" }}
               />
-              <a>
-                <Link
-                  to={"/forgot-password"}
-                  state={{ email: emailOrPhone }} // Passing email/phone as state
-                  className="font-medium text-base text-[#0A1C40]"
-                >
-                  <a>
-                    {" "}
-                    <a>Forgot Password?</a>
-                  </a>
-                </Link>
-              </a>
+              <div className="flex justify-between">
+                <p>
+                  <p
+                    onClick={handleCheckbox}
+                    className="!inline-flex items-center font-normal text-[14px] text-[#a5a3a3] -mt-2 gap-2"
+                  >
+                    <Checkbox
+                      checked={checkedCheckbox}
+                      onClick={(e) => e.stopPropagation()}
+                      onChange={handleCheckbox}
+                    />
+                    <p>
+                      <a
+                        className={`${
+                          checkedCheckbox
+                            ? "text-[#000] cursor-pointer "
+                            : "text-[#a5a3a3] cursor-pointer"
+                        }`}
+                      >
+                        Keep me signed in
+                      </a>
+                    </p>
+                  </p>
+                </p>
+
+                <a>
+                  <Link
+                    to={"/forgot-password"}
+                    state={{ email: emailOrPhone }} // Passing email/phone as state
+                    className="font-medium text-[14px] text-[#0A1C40]"
+                  >
+                    <a>
+                      {" "}
+                      <a>Forgot Password?</a>
+                    </a>
+                  </Link>
+                </a>
+              </div>
               <ReCAPTCHA
                 ref={recaptchaRef}
                 size="invisible"
                 sitekey={RECAPTCHA_SITE_KEY}
               />
-              <p
-                onClick={handleCheckbox}
-                className="flex items-center font-normal text-[14px] text-[#a5a3a3] -mt-2 gap-2"
-              >
-                <Checkbox
-                  checked={checkedCheckbox}
-                  onClick={(e) => e.stopPropagation()}
-                  onChange={handleCheckbox}
-                />
-                <a>
-                  <a
-                    className={`${
-                      checkedCheckbox
-                        ? "text-[#000] cursor-pointer "
-                        : "text-[#a5a3a3] cursor-pointer"
-                    }`}
-                  >
-                    Keep me Signed in
-                  </a>
-                </a>
-              </p>
+
               <Button
                 type={"submit"}
                 primary={true}
@@ -230,7 +236,7 @@ export const SignIn = () => {
                 <div className="border-t w-full border-[#D9D9D9]" />
               </div>
 
-              <div className="flex items-center justify-center rounded-[10px] p-2 text-center !text-[#232323] !hover:bg-black font-semibold border border-[#E6E8E7] !bg-white">
+              <div className="flex items-center justify-center rounded-[10px] p-2 text-center text-[#232323] hover:bg-gray-100 font-semibold border border-[#E6E8E7] bg-white">
                 <GoogleLogin
                   clientId="1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com"
                   onSuccess={googleLogin}

@@ -137,7 +137,7 @@ export const CreateNewPassword = () => {
                 render={({ field }) => (
                   <Input
                     {...field}
-                    label={"Password"}
+                    label={"New Password"}
                     type={"password"}
                     className={"border-[#D9D9D9] border"}
                     placeholder={"Password"}
