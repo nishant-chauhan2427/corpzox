@@ -65,7 +65,7 @@ const discountType = success?.offerservices?.[0]?.offers?.[0]?.discountType;
         </h4>
         {pricing && (
           <div className="flex flex-col md:flex-row justify-between gap-4">
-            <div className="flex w-[50%] flex-col gap-1">
+            <div className="flex sm:w-[50%] flex-col gap-1">
               <p className="font-medium text-sm txt-[#0A1C40]">
                 Select your state to view the applicable govt. fees*
               </p>
@@ -73,7 +73,7 @@ const discountType = success?.offerservices?.[0]?.offers?.[0]?.discountType;
                 *Subject to fluctuate at the time of application
               </p>
             </div>
-            <div className="w-[50%]">
+            <div className="sm:w-[50%]">
             <Selector
               defaultValue={defaultObject}
               isSearchable={true}
@@ -144,7 +144,7 @@ const PricingCard = ({ data, serviceId, navigate, dispatch, offer, discountType 
       <div className="w-full flex flex-col gap-2 drop-shadow-lg hover:drop-shadow-2xl bg-white px-5 py-6">
         <div>
           <div className="flex font-bold  gap-2 text-[#0A1C40] text-[22px] ">
-            {data?.amount}
+            {/* {data?.amount} */}
             {offer && <p className="flex items-center justify-center  font-medium rounded-full text-[12px] text-white bg-[#28A745] px-2  ">
               {offer} {discountType && discountType === "fixed" ? "₹" : "%"}
             </p>}

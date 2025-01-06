@@ -37,7 +37,7 @@ export const AccountManager = ({ manager, sidebar }) => {
       <div className="flex items-center">
         <img
           className={`${sidebar ? "w-8 h-8" : "w-12 h-20"} rounded-full`}
-          src="/images/dashboard/asuthosh-gupta.svg"
+          src="/images/dashboard/user-default.jpg"
           alt=""
         />
       </div>
@@ -60,32 +60,32 @@ export const AccountManager = ({ manager, sidebar }) => {
           </p>
         </div>
 
-        {/* <div className="pt-2 flex gap-2">
-          <Link
-            to="mailto:example@example.com"
-            className="bg-[#D9D9D9] rounded-full px-1 py-1"
-          >
-            <BiSolidMessageRounded />
-          </Link>
-          <a
-            href="tel:+1234567890"
-            className="bg-[#D9D9D9] rounded-full px-1 py-1"
-          >
-            <IoMdCall />
-          </a>
-          <button
-            data-tooltip-content={user?.agent_data?.[0]?.manager_data?.[0]?.name ? "Request to change manager?" : "Request to add manager"}
-            data-tooltip-id="my-tooltip"
-            onClick={requestManagerChange}
-            className="bg-[#D9D9D9] rounded-full px-1 py-1"
-          >
-            {user?.agent_data?.[0]?.manager_data?.[0]?.name ? (
-              <FaExchangeAlt />
-            ) : (
-              <IoAdd />
-            )}
-          </button>
-        </div> */}
+          <div className="pt-2 flex gap-2">
+            <Link
+              to="mailto:example@example.com"
+              className="bg-[#D9D9D9] rounded-full px-1 py-1"
+            >
+              <BiSolidMessageRounded />
+            </Link>
+            <a
+              href="tel:+1234567890"
+              className="bg-[#D9D9D9] rounded-full px-1 py-1"
+            >
+              <IoMdCall />
+            </a>
+            <button
+              data-tooltip-content={user?.agent_data?.[0]?.manager_data?.[0]?.name ? "Request to change manager?" : "Request to add manager"}
+              data-tooltip-id="my-tooltip"
+              onClick={requestManagerChange}
+              className="bg-[#D9D9D9] rounded-full px-1 py-1"
+            >
+              {user?.agent_data?.[0]?.manager_data?.[0]?.name ? (
+                <FaExchangeAlt />
+              ) : (
+                <IoAdd />
+              )}
+            </button>
+          </div>
       </div>
       {/* <div className={`${sidebar ? "absolute top-2 right-2" : "ps-10"}`}>
         <div>

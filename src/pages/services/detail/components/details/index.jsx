@@ -91,8 +91,8 @@ export const Details = ({
   }, [isTalkToAdvisorLoading, buttonClicked]);
   return (
     <>
-      <section className="flex flex-row gap-4">
-        <div className="flex flex-col w-[60%]">
+      <section className="flex sm:flex-row flex-col gap-4">
+        <div className="flex flex-col sm:w-[60%]">
           <div className="flex flex-col text-start gap-2">
             <p style={{ fontFamily: 'MarsCondensed, sans-serif' }} className="font-normal text-[30px] leading-[33px] uppercase text-[#0A1C40]">
               {data?.name}
@@ -167,7 +167,7 @@ export const Details = ({
             </div>
           </div>
         </div>
-        <div className="flex flex-row w-[40%]">
+        <div className="flex flex-row sm:w-[40%]">
           {pricing && (
             <div className="w-full bg-[#EEEFF3] box-sg rounded-lg px-5 py-6 gap-2 flex flex-col shadow-md">
               {serviceDetailLoading ? (
