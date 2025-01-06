@@ -12,22 +12,28 @@ export const RecommendedServices = ({ data, total }) => {
     dispatch(resetService({}));
     navigate("/services");
   };
-  const navigateToDetail =(serviceId)=>{
-    navigate(`/services/detail/${serviceId}`)
-  }
+  const navigateToDetail = (serviceId) => {
+    navigate(`/services/detail/${serviceId}`);
+  };
   // test dev branch
-  console.log(total,"ˇTotal Service");
-  
+  console.log(total, "ˇTotal Service");
+
   return (
     <div className="">
       <div className="py-2 flex flex-row sm:flex-row justify-between gap-2">
         <Heading title={"Dashboard"} className={"py-0"} tourButton={true}>
-        
           Recommended Services {total ? `(${total})` : ""}
         </Heading>
-        {data?.length>2 ? <Link className="font-medium text-sm text-[#797979]" to={"/services/recommended-services-view-all"}>
+        {data?.length > 2 ? (
+          <Link
+            className="font-medium text-sm text-[#797979]"
+            to={"/services/recommended-services-view-all"}
+          >
             View All
-          </Link>:""}
+          </Link>
+        ) : (
+          ""
+        )}
       </div>
       <div
         className="grid grid-cols-1 sm:grid-cols-2 rounded-lg 
@@ -35,18 +41,20 @@ export const RecommendedServices = ({ data, total }) => {
       >
         {data?.slice(0, 2).map((data, index) => (
           <button
-          onClick={()=>navigateToDetail(data._id)}
+            onClick={() => navigateToDetail(data._id)}
             key={index}
             className="flex justify-between items-center bg-[#f3f7ff] stroke-[#dfeaf2] stroke-1 gap-2 w-full p-2 rounded-lg"
           >
             <div className="flex items-center gap-2">
               <img
-              className="w-8"
+                className="w-8"
                 src="/images/dashboard/recommended-services.svg"
                 alt="recommended-services"
               />
               <div className="flex  flex-col text-start">
-                <p className="font-semibold text-sm text-[#0a1c40]">{data.name}</p>
+                <p className="font-semibold text-sm text-[#0a1c40]">
+                  {data.name}
+                </p>
                 <p className="font- text-[12px]">
                   {data?.details?.length > 50
                     ? data?.details?.slice(0, 40) + "..."
