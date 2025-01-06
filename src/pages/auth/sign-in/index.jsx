@@ -123,14 +123,14 @@ export const SignIn = () => {
 
   return (
     <>
-      <MetaTitle title={"Sign In"} />
+      <MetaTitle title={"Sign in"} />
       <AuthLayout>
         <img className="sm:w-32 w-36" src="logo.svg" alt="CORPZO Logo" />
         <div className="w-full flex">
           <div className="w-full flex flex-col ">
             <DualHeadingTwo
               containerClassName={"text-left pt-2"}
-              heading={"Sign In"}
+              heading={"Sign in"}
               subHeading={"Please Sign in to continue to your account."}
             />
             <form
@@ -171,22 +171,24 @@ export const SignIn = () => {
                 )}
                 rules={{ required: "Password is required" }}
               />
-              <Link
-                to={"/forgot-password"}
-                state={{ email: emailOrPhone }} // Passing email/phone as state
-                className="font-medium text-base text-[#0A1C40]"
-              >
-                <div>
-                  {" "}
-                  <a>Forgot Password?</a>
-                </div>
-              </Link>
+              <a>
+                <Link
+                  to={"/forgot-password"}
+                  state={{ email: emailOrPhone }} // Passing email/phone as state
+                  className="font-medium text-base text-[#0A1C40]"
+                >
+                  <a>
+                    {" "}
+                    <a>Forgot Password?</a>
+                  </a>
+                </Link>
+              </a>
               <ReCAPTCHA
                 ref={recaptchaRef}
                 size="invisible"
                 sitekey={RECAPTCHA_SITE_KEY}
               />
-              <div
+              <p
                 onClick={handleCheckbox}
                 className="flex items-center font-normal text-[14px] text-[#a5a3a3] -mt-2 gap-2"
               >
@@ -195,8 +197,8 @@ export const SignIn = () => {
                   onClick={(e) => e.stopPropagation()}
                   onChange={handleCheckbox}
                 />
-                <div>
-                  <span
+                <a>
+                  <a
                     className={`${
                       checkedCheckbox
                         ? "text-[#000] cursor-pointer "
@@ -204,9 +206,9 @@ export const SignIn = () => {
                     }`}
                   >
                     Keep me Signed in
-                  </span>
-                </div>
-              </div>
+                  </a>
+                </a>
+              </p>
               <Button
                 type={"submit"}
                 primary={true}
@@ -228,7 +230,7 @@ export const SignIn = () => {
                 <div className="border-t w-full border-[#D9D9D9]" />
               </div>
 
-              <div className="flex items-center justify-center rounded p-2 text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
+              <div className="flex items-center justify-center rounded-[10px] p-2 text-center !text-[#232323] !hover:bg-black font-semibold border border-[#E6E8E7] !bg-white">
                 <GoogleLogin
                   clientId="1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com"
                   onSuccess={googleLogin}

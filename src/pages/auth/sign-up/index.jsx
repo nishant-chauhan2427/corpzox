@@ -113,14 +113,14 @@ export const Signup = () => {
 
   return (
     <>
-      <MetaTitle title={"Sign Up"} />
+      <MetaTitle title={"Sign up"} />
       <AuthLayout>
         <img className="sm:w-32 w-36" src="logo.svg" alt="CORPZO Logo" />
         <div className="w-full  flex  ">
           <div className="w-full flex flex-col">
             <DualHeadingTwo
               containerClassName={"text-left pt-2"}
-              heading={"Sign Up"}
+              heading={"Sign up"}
               subHeading={"Welcome to CorpZO. Please sign up here!"}
             />
             <form
@@ -233,7 +233,7 @@ export const Signup = () => {
                 />
               </div>
 
-              <div className="flex flex-col gap-4 sm:pt-4">
+              <div className="flex flex-col gap-4">
                 <Button
                   type={"submit"}
                   v2={true}
@@ -252,7 +252,7 @@ export const Signup = () => {
                   <div className="border-t w-full border-[#D9D9D9]"></div>
                 </div>
 
-                <div className="flex items-center justify-center rounded p-2 text-center !text-[#0A1C40] font-semibold border border-[#E6E8E7] !bg-white">
+                <div className="flex items-center justify-center rounded-[10px] p-2 text-center !text-[#0A1C40] font-semibold border border-[#E6E8E7] !bg-white">
                   <div className="flex gap-2">
                     <GoogleLogin
                       clientId="1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com"
