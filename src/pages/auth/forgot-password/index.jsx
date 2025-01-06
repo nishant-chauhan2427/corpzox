@@ -19,6 +19,7 @@ export const ForgotPassword = () => {
   const emailOrPhone = location.state?.email;
   const [otp, setOtp] = useState("");
   const [timer, setTimer] = useState(30);
+  const [focusedIndex, setFocusedIndex] = useState(0);  
   const [isResendDisabled, setIsResendDisabled] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -167,26 +168,32 @@ export const ForgotPassword = () => {
                           numInputs={6}
                           renderSeparator={<span></span>}
                           renderInput={(props, index) => {
+                            const isActive = focusedIndex === index;
                             return (
                               <input
                                 {...props}
                                 autoFocus={index === 0}
                                 onPaste={handlePaste}
+                                onFocus={() => setFocusedIndex(index)} // Set focusedIndex when this input is focused
+                                onBlur={() => setFocusedIndex(null)} // Reset focusedIndex when this input loses focus
+                                style={{
+                                  border: isActive
+                                    ? "1px solid #FFD700"
+                                    : "1px solid #DFEAF2", // Apply red border only if focused
+                                  width: "4rem",
+                                  height: "4rem",
+                                  fontWeight: "600",
+                                  textAlign: "center",
+                                  fontSize: "1.5rem",
+                                  display:"flex",
+                                  gap:"2px",
+                                  borderRadius: "12px",
+                                  margin:"4px"
+                                }}
                               />
                             );
                           }}
-                          inputStyle={{
-                            // This border css when apply when user active on that input field 
-                            // border: "1px solid #FFD700",
-                            
-                            border: "1px solid #DFEAF2",
-                            width: "4rem",
-                            height: "4rem",
-                            fontWeight: "600",
-                            textAlign: "center",
-                            fontSize: "1.5rem",
-                            borderRadius: "12px",
-                          }}
+                          
                           containerStyle={
                             "flex w-full justify-between items-start"
                           }
