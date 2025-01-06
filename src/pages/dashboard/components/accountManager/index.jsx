@@ -37,7 +37,7 @@ export const AccountManager = ({ manager, sidebar }) => {
       <div className="flex items-center">
         <img
           className={`${sidebar ? "w-8 h-8" : "w-12 h-20"} rounded-full`}
-          src="/images/dashboard/asuthosh-gupta.svg"
+          src="/images/dashboard/user-default.jpg"
           alt=""
         />
       </div>

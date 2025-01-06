@@ -10,20 +10,24 @@ import { UpdateProfile } from "./updateProfile";
 
 export const Sidebar = ({ className, collapse, setCollapse }) => {
   const user = useSelector((state) => state.user.user);
-  console.log(user,"USER QWERy");
+  console.log(user, "USER QWERy");
 
   const initialSidebarItems = [
     {
       id: 0,
       title: "Dashboard",
-      icon: <img className="w-[18px]" src="/icons/dashboard/dashboard.svg" alt="" />,
+      icon: (
+        <img className="w-[18px]" src="/icons/dashboard/dashboard.svg" alt="" />
+      ),
       to: "/dashboard",
       isPinned: false,
     },
     {
       id: 1,
       title: "Business",
-      icon: <img className="w-[18px]" src="/icons/dashboard/business.svg" alt="" />,
+      icon: (
+        <img className="w-[18px]" src="/icons/dashboard/business.svg" alt="" />
+      ),
       to: "/business",
       isPinned: false,
     },
@@ -44,28 +48,40 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
     {
       id: 4,
       title: "Services",
-      icon: <img className="w-[18px]" src="/icons/dashboard/services.svg" alt="" />,
+      icon: (
+        <img className="w-[18px]" src="/icons/dashboard/services.svg" alt="" />
+      ),
       to: "/services",
       isPinned: false,
     },
     {
       id: 5,
       title: "Payment History",
-      icon: <img className="w-[18px]" src="/icons/dashboard/payment-history.svg" alt="" />,
+      icon: (
+        <img
+          className="w-[18px]"
+          src="/icons/dashboard/payment-history.svg"
+          alt=""
+        />
+      ),
       to: "/payment/history",
       isPinned: false,
     },
     {
       id: 6,
       title: "Documents",
-      icon: <img className="w-[18px]" src="/icons/dashboard/documents.svg" alt="" />,
+      icon: (
+        <img className="w-[18px]" src="/icons/dashboard/documents.svg" alt="" />
+      ),
       to: "/documents",
       isPinned: false,
     },
     {
       id: 7,
       title: "Settings",
-      icon: <img className="w-[18px]" src="/icons/dashboard/settings.svg" alt="" />,
+      icon: (
+        <img className="w-[18px]" src="/icons/dashboard/settings.svg" alt="" />
+      ),
       to: "/settings",
       isPinned: false,
     },
@@ -87,28 +103,33 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
   const [items, setItems] = useState(initialSidebarItems);
   const [percentage, setPercentage] = useState(100);
 
-  let fieldsKey = ['name', 'email', 'busniessEmail', 'phone', 'profile_picture_url']
-  
+  let fieldsKey = [
+    "name",
+    "email",
+    "busniessEmail",
+    "phone",
+    "profile_picture_url",
+  ];
+
   let calculatePercentageHandler = () => {
-    let count = 0;  
+    let count = 0;
     console.log(user, "Percentage");
-  
+
     Object.keys(user).forEach((data) => {
       if (fieldsKey.indexOf(data) !== -1) {
-        count++;  
+        count++;
       }
     });
     let percentage = Math.floor((count / fieldsKey.length) * 100);
-    
-    setPercentage(percentage);  
+
+    setPercentage(percentage);
   };
-  
-  
+
   useEffect(() => {
     if (user) {
-      calculatePercentageHandler()
+      calculatePercentageHandler();
     }
-  }, [user])
+  }, [user]);
 
   // Handler to toggle the pin status of an item
   const handlePinToggle = (title) => {
@@ -140,7 +161,9 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
         initial={{ left: "-50%" }}
         animate={{ left: 10, transition: { duration: 0.3 } }}
         exit={{ left: "-50%", transition: { duration: 0.3 } }}
-        className={`${className ? className : ""} overflow-hidden shadow-xl dark:bg-slate-900`}
+        className={`${
+          className ? className : ""
+        } overflow-hidden shadow-xl dark:bg-slate-900`}
       >
         {/* <div
           className={`${
@@ -159,7 +182,6 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
 
         <div className="py-4 flex justify-center items-center gap-6">
           <Link to={"/dashboard"}>
-            
             <img
               width={0}
               height={0}
@@ -207,9 +229,7 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
             {items?.map((item, index) => (
               <IconBox
                 containerClassName="px-4 py-2"
-                titleClassName={
-                  item.to == null && "bg-[#FFD700] shadow-lg"
-                }
+                titleClassName={item.to == null && "bg-[#FFD700] shadow-lg"}
                 key={index}
                 to={item.to}
                 icon={item.icon}
@@ -224,11 +244,7 @@ export const Sidebar = ({ className, collapse, setCollapse }) => {
             {/*  */}
             <AccountManager sidebar={true} />
             {/* <UpdateProfile /> */}
-            {percentage !== 100 ? (
-          <UpdateProfile />
-        ) : (
-          ""
-        )}
+            {percentage !== 100 ? <UpdateProfile /> : ""}
           </div>
         </div>
       </motion.div>
