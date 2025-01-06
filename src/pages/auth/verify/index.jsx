@@ -14,6 +14,7 @@ export const Verify = () => {
   //const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [otp, setOtp] = useState("");
   const [timer, setTimer] = useState(0);
+  const [focusedIndex, setFocusedIndex] = useState(0);
   const [isResendDisabled, setIsResendDisabled] = useState(false);
   const [isVerify, setIsVerify] = useState(false);
   const [otpMessage, setOtpMessage] = useState("");
@@ -33,6 +34,7 @@ export const Verify = () => {
   const inputRefs = useRef([]);
   const { profile } = useSelector((state) => state.auth);
 
+  const [isActiveIndex, setActiveIndex] = useState(0);
   useEffect(() => {
     if (inputRefs.current && inputRefs.current[0]) {
       inputRefs.current[0].focus();
@@ -81,7 +83,7 @@ export const Verify = () => {
         if (email) {
           toast.success("Welcome to CorpZo!");
         } else {
-         // toast.success(verifyMessage);
+          // toast.success(verifyMessage);
         }
         navigate("/dashboard");
       }
@@ -150,7 +152,7 @@ export const Verify = () => {
       <AuthLayout>
         <img className="sm:w-32 w-36" src="logo.svg" alt="CORPZO Logo" />
         <div className="w-full flex">
-          <div className="w-full flex">
+          <div className="w-full">
             <div className="flex flex-col justify-between">
               <div>
                 <DualHeadingTwo
@@ -170,29 +172,33 @@ export const Verify = () => {
                         numInputs={6}
                         renderSeparator={<span></span>}
                         renderInput={(props, index) => {
+                          const isActive = focusedIndex === index; // Check if this input is focused
+
                           return (
                             <input
                               {...props}
                               autoFocus={index === 0}
                               onPaste={handlePaste}
+                              onFocus={() => setFocusedIndex(index)} // Set focusedIndex when this input is focused
+                              onBlur={() => setFocusedIndex(null)} // Reset focusedIndex when this input loses focus
+                              style={{
+                                border: isActive
+                                  ? "1px solid #FFD700"
+                                  : "1px solid #DFEAF2", // Apply red border only if focused
+                                width: "4rem",
+                                height: "4rem",
+                                fontWeight: "600",
+                                textAlign: "center",
+                                fontSize: "1.5rem",
+                                display:"flex",
+                                gap:"2px",
+                                borderRadius: "12px",
+                                margin:"4px"
+                              }}
                             />
                           );
                         }}
-                        inputStyle={{
-                         // This border css when apply when user active on that input field 
-                            // border: "1px solid #FFD700",
-                            
-                            border: "1px solid #DFEAF2",
-                            width: "4rem",
-                            height: "4rem",
-                            fontWeight: "600",
-                            textAlign: "center",
-                            fontSize: "1.5rem",
-                            borderRadius: "12px",
-                        }}
-                        containerStyle={
-                          "flex w-full justify-between items-start"
-                        }
+                        containerStyle="flex w-full justify-between items-start"
                         inputType="number"
                       />
                     </div>
