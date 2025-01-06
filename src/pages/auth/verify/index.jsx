@@ -179,12 +179,16 @@ export const Verify = () => {
                           );
                         }}
                         inputStyle={{
-                          border: "1px solid #DFEAF2",
-                          width: "3.5rem",
-                          height: "3.5rem",
-                          fontWeight: "600",
-                          textAlign: "center",
-                          fontSize: "1.5rem",
+                         // This border css when apply when user active on that input field 
+                            // border: "1px solid #FFD700",
+                            
+                            border: "1px solid #DFEAF2",
+                            width: "4rem",
+                            height: "4rem",
+                            fontWeight: "600",
+                            textAlign: "center",
+                            fontSize: "1.5rem",
+                            borderRadius: "12px",
                         }}
                         containerStyle={
                           "flex w-full justify-between items-start"
