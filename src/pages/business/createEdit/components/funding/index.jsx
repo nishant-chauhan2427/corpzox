@@ -158,12 +158,12 @@ export const FundingDetails = ({ isEdit }) => {
       </div>
       {/* Navigation Buttons */}
       <div className="flex justify-between items-center gap-4 m-2">
-        <Button type="button" primary onClick={() => navigate(-1)}>
-          Prev
+        <Button type="button" className="flex items-center gap-2" onClick={() => navigate(-1)}>
+        <span> &lt;&lt; </span>Back
         </Button>
 
         <Button type="submit" primary disabled={!isValid || loading} isLoading={loading} >
-         {loading?"saving...": isEdit ? "Save & Continue" : "Save & Preview"}
+         {loading?"Saving...": isEdit ? "Save & Continue" : "Save & Preview"}
         </Button>
       </div>
     </form>
