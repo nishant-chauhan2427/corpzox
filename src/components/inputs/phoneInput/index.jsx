@@ -57,7 +57,7 @@ export const PhoneNumberInput = ({
               // } w-full border-none`}
               inputClass={`${
                 inputClass && inputClass
-              } !w-full h-12 border-[#D9D9D9] border rounded-md shadow-sm dark:text-white ${
+              } !w-full h-12 border-[#D9D9D9] border rounded-[10px] shadow-sm dark:text-white ${
                 errorContent && touched ? "" : "border-[#D6D6D6]"
               }`}
               searchClass={`${
@@ -73,10 +73,10 @@ export const PhoneNumberInput = ({
               inputProps={inputProps}
             />
             {errorContent && (
-            <p className="absolute top-1/2 -translate-y-1/2 right-2">
-              <img src="/validation-icon.svg" alt="" />
-            </p>
-          )}
+              <p className="absolute top-1/2 -translate-y-1/2 right-2">
+                <img src="/validation-icon.svg" alt="" />
+              </p>
+            )}
           </div>
         </div>
         <div className=" h-1 mb-4">

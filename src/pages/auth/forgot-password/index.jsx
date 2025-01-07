@@ -19,6 +19,7 @@ export const ForgotPassword = () => {
   const emailOrPhone = location.state?.email;
   const [otp, setOtp] = useState("");
   const [timer, setTimer] = useState(30);
+  const [focusedIndex, setFocusedIndex] = useState(0);  
   const [isResendDisabled, setIsResendDisabled] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -95,7 +96,6 @@ export const ForgotPassword = () => {
     }
   }, [otpMessage]);
 
-
   const handlePaste = (e) => {
     e.preventDefault(); // Prevent paste event
     toast.dismiss();
@@ -120,7 +120,7 @@ export const ForgotPassword = () => {
   //   setIsVerify(true);
   //   dispatch(verifyUser({ otp: enteredOtp, id: profile?.[0]?.id }));
   // };
-  const  handleOtpSubmit = (e) => {
+  const handleOtpSubmit = (e) => {
     e.preventDefault();
     //const enteredOtp = otp.join("");
     setIsVerify(true);
@@ -146,8 +146,8 @@ export const ForgotPassword = () => {
       <MetaTitle title={isOtpScreen ? "Verify OTP" : "Forgot Password"} />
       <AuthLayout>
         <img className="sm:w-32 w-36" src="logo.svg" alt="CORPZO Logo" />
-        <div className="w-full flex">
-          <div className="w-full flex">
+        <div className="w-full ">
+          <div className="w-full">
             <div className="flex flex-col justify-between">
               {isOtpScreen ? (
                 <div>
@@ -155,7 +155,6 @@ export const ForgotPassword = () => {
                     containerClassName={"text-left pt-2"}
                     heading={"Verification Code"}
                     subHeading={`We have sent you an OTP on your registered Email Id ${profile?.[0]?.email}`}
-
                   />
                   <form
                     onSubmit={handleOtpSubmit}
@@ -169,22 +168,32 @@ export const ForgotPassword = () => {
                           numInputs={6}
                           renderSeparator={<span></span>}
                           renderInput={(props, index) => {
+                            const isActive = focusedIndex === index;
                             return (
                               <input
                                 {...props}
                                 autoFocus={index === 0}
                                 onPaste={handlePaste}
+                                onFocus={() => setFocusedIndex(index)} // Set focusedIndex when this input is focused
+                                onBlur={() => setFocusedIndex(null)} // Reset focusedIndex when this input loses focus
+                                style={{
+                                  border: isActive
+                                    ? "1px solid #FFD700"
+                                    : "1px solid #DFEAF2", // Apply red border only if focused
+                                  width: "4rem",
+                                  height: "4rem",
+                                  fontWeight: "600",
+                                  textAlign: "center",
+                                  fontSize: "1.5rem",
+                                  display:"flex",
+                                  gap:"2px",
+                                  borderRadius: "12px",
+                                  margin:"4px"
+                                }}
                               />
                             );
                           }}
-                          inputStyle={{
-                            border: "1px solid #DFEAF2",
-                            width: "3.5rem",
-                            height: "3.5rem",
-                            fontWeight: "600",
-                            textAlign: "center",
-                            fontSize: "1.5rem",
-                          }}
+                          
                           containerStyle={
                             "flex w-full justify-between items-start"
                           }
@@ -249,7 +258,11 @@ export const ForgotPassword = () => {
                     <Controller
                       name="email"
                       control={control}
-                      defaultValue={profile?.[0]?.email ? profile?.[0]?.email : profile?.[0]?.phone}
+                      defaultValue={
+                        profile?.[0]?.email
+                          ? profile?.[0]?.email
+                          : profile?.[0]?.phone
+                      }
                       render={({ field }) => (
                         <Input
                           {...field}
@@ -271,14 +284,12 @@ export const ForgotPassword = () => {
                       }
                       //disabled={!isValid}
                       isLoading={resendingOtp}
-
                     >
                       Continue
                     </Button>
                   </form>
                 </div>
               )}
-
             </div>
           </div>
         </div>

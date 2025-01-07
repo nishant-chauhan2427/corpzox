@@ -46,12 +46,12 @@ export const ProgressBar = ({ steps }) => {
             </div>
             <div className="absolute top-[-10px] left-1/2 transform -translate-x-1/2 -translate-y-1/2">
               <span
-                className={`w-fit px-1 py-0.5 rounded ${
+                className={`w-fit  py-1 px-1 rounded ${
                   status === "completed"
-                    ? "bg-green-600"
+                    ? "bg-[#34A853]"
                     : status === "in-progress"
-                    ? "bg-yellow-600"
-                    : "bg-gray-600"
+                    ? "bg-[#FBBC05]"
+                    : "bg-[#CCCCCC]"
                 } font-normal text-[10px] text-white whitespace-nowrap`}
               >
                 {topLabel}

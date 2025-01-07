@@ -31,10 +31,10 @@ export const Advisor = ({
   }, [isLoading, buttonClicked]);
 
   return (
-    <div className="py-4 flex flex-col justify-center items-center text-center gap-3">
+    <div className="pt-4 pb-10 flex flex-col justify-center items-center text-center gap-3">
       <div>
-        <h4 className="font-bold text-lg">{label}</h4>
-        <p className="text-[11px]">{description}</p>
+        <h4 className="font-bold text-sm tex-[#0A1C40]">{label}</h4>
+        <p className="text-[12px] font-normal text-[#0A1C40]">{description}</p>
       </div>
       <Button
         isLoading={isLoading}

@@ -45,7 +45,7 @@ const CreateBusiness = ({ isEdit=false }) => {
           </div> */}
 
           {/* Step Components */}
-          <div className="p-4 h-[60vh] overflow-y-auto">
+          <div className="p-4 max-h-[80vh] overflow-y-auto">
             <Outlet />
             {/* {steps[currentStep]?.component} */}
           </div>

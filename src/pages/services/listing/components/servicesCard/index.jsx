@@ -85,60 +85,65 @@ export const ServicesCard = ({
               : service?.service[0]?.details
               ? service?.service[0]?.details
               : "___";
-
             const truncatedText =
-              text.length > 100 ? text.slice(0, 100) + "..Read more" : text;
+              text.length > 100 ? text.slice(0, 100) + "..." : text;
 
             return (
               <div
                 key={index}
-                className="flex flex-col gap-2 border-[#DFEAF2] border bg-white px-4 py-4 rounded-[14px] sm:gap-4 justify-between cursor-pointer"
+                className="max-w-[451px] flex flex-col gap-2 border-[#DFEAF2] border bg-white px-4 py-4 rounded-[14px] sm:gap-4 justify-between cursor-pointer"
                 onClick={() => navigateToServiceDetail(service?._id)}
               >
-                <div className=" bg-[#F3F7FF] rounded-[14px] px-3 py-4">
-                  <div className="flex justify-between items-center">
-                    <div className="flex gap-2">
-                      <div>
+                <div className=" bg-[#F3F7FF] rounded-[14px] px-3 py-4 flex flex-col gap-4 min-h-[250px]">
+                  <div className="w-full">
+                    <div className="flex items-start gap-2">
+                      <div className="max-w-16 overflow-hidden">
                         <img
                           src="/images/services/service-default.svg"
                           alt=""
+                          className="min-w-16 min-h-16 rounded-md object-cover object-center"
                         />
                       </div>
-                      <p className="font-bold text-[#0A1C40]">
-                        {url.includes("services")
-                          ? service?.name
+                      <div className="w-full flex justify-between items-center">
+                        <h4 className="max-w-32 sm:max-w-52 font-bold text-[#0A1C40] line-clamp-2">
+                          {url.includes("services")
                             ? service?.name
-                            : "___"
-                          : service?.service?.[0]?.name
-                          ? service?.service[0]?.name
-                          : "___"}
-                      </p>
-                    </div>
-                    <div>
-                      {url.includes("services") &&
-                        service?.offerservices?.[0]?.offers?.[0]
-                          ?.discountPercent && (
-                          <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1">
-                            {service.offerservices[0].offers[0].discountPercent}{" "}
-                            {service.offerservices[0].offers[0]
-                              .discountPercent &&
-                            service.offerservices[0].offers[0].discountType ===
-                              "fixed"
-                              ? "%"
-                              : "%"}
-                          </p>
-                        )}
-                      {url.includes("wishlist") &&
-                        service?.service?.[0]?.offerservices?.[0]?.offers?.[0]
-                          ?.discountPercent && (
-                          <p className="font-medium rounded-full text-[12px] text-[#15580B] bg-[#B5FFBC] px-2 py-1">
-                            {
-                              service?.service?.[0]?.offerservices?.[0]
-                                ?.offers?.[0]?.discountPercent
-                            }{" "}
-                            % Off
-                          </p>
-                        )}
+                              ? service?.name
+                              : "___"
+                            : service?.service?.[0]?.name
+                            ? service?.service[0]?.name
+                            : "___"}
+                        </h4>
+                        <div>
+                          {url.includes("services") &&
+                            service?.offerservices?.[0]?.offers?.[0]
+                              ?.discountPercent && (
+                              <p className="font-medium rounded-full text-[12px] text-white bg-[#28A745] px-3 py-1">
+                                {
+                                  service.offerservices[0].offers[0]
+                                    .discountPercent
+                                }{" "}
+                                {service.offerservices[0].offers[0]
+                                  .discountPercent &&
+                                service.offerservices[0].offers[0]
+                                  .discountType === "fixed"
+                                  ? "%"
+                                  : "%"}
+                              </p>
+                            )}
+                          {url.includes("wishlist") &&
+                            service?.service?.[0]?.offerservices?.[0]
+                              ?.offers?.[0]?.discountPercent && (
+                              <p className="font-medium rounded-full text-[12px] text-white bg-[#28A745] px-2 py-1">
+                                {
+                                  service?.service?.[0]?.offerservices?.[0]
+                                    ?.offers?.[0]?.discountPercent
+                                }{" "}
+                                % Off
+                              </p>
+                            )}
+                        </div>
+                      </div>
                     </div>
 
                     {/* {url.includes("services") ? (
@@ -152,39 +157,41 @@ export const ServicesCard = ({
                     )} */}
                   </div>
                   <p
-                    className="text-base leading-[22px] font-normal text-[#7C7C7C]"
+                    className="text-xs leading-[22px] font-normal text-[#7C7C7C]"
                     dangerouslySetInnerHTML={{ __html: truncatedText }}
                   ></p>
-
                   <div className="flex flex-col gap-1 pt-1">
                     <div className="flex justify-between sm:w-4/5">
                       <p className="font-semibold text-sm text-[#7E7E7E]">
                         Estimated Time(Month(s))
                       </p>
-                      <p className="font-bold text-[12px] text-[#000000]">
-                        {url.includes("services")
-                          ? service?.duration
+                      <div className="flex !justify-start !items-start">
+                        <p className="font-bold text-[12px]  text-[#000000] !text-start">
+                          {url.includes("services")
                             ? service?.duration
-                            : "___"
-                          : service?.service[0]?.duration
-                          ? service?.service[0]?.duration
-                          : "___"}
-                      </p>
+                              ? service?.duration
+                              : "___"
+                            : service?.service[0]?.duration
+                            ? service?.service[0]?.duration
+                            : "___"}
+                        </p>
+                      </div>
                     </div>
-
                     <div className="flex justify-between sm:w-4/5">
                       <p className="font-semibold text-sm text-[#7E7E7E] flex items-center">
                         Price (<FaRupeeSign className="ml-1" />)
                       </p>
-                      <p className="font-bold text-[12px] text-[#000000]">
-                        {url.includes("services")
-                          ? service?.cost
+                      <div className="flex justify-start items-start ">
+                        <p className="font-bold text-[12px] text-[#000000] ">
+                          {url.includes("services")
                             ? service?.cost
-                            : "___"
-                          : service?.service[0]?.cost
-                          ? service?.service[0]?.cost
-                          : "___"}
-                      </p>
+                              ? service?.cost
+                              : "___"
+                            : service?.service[0]?.cost
+                            ? service?.service[0]?.cost
+                            : "___"}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>

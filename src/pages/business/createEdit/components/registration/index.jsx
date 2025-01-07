@@ -98,7 +98,7 @@ export const RegistrationDetails = ({ isEdit }) => {
 
   const fundingOption = [
     { label: "Funded", value: "funded" },
-    { label: "Bootstrap", value: "bootstrap" },
+    { label: "Bootstraped", value: "bootstrap" },
   ];
 
   const industryOption = [
@@ -229,7 +229,7 @@ export const RegistrationDetails = ({ isEdit }) => {
               return (
                 <Selector
                   {...field}
-                  label={"Business Type"}
+                  label={"Enter your business type"}
                   placeholder={"Enter your business type"}
                   errorContent={errors.registration?.typeOfBusiness?.message}
                   options={businessType}
@@ -484,7 +484,7 @@ export const RegistrationDetails = ({ isEdit }) => {
           disabled={!isValid || loading}
           isLoading={loading}
         >
-          {loading ? "saving..." : "Save & Next"}
+          {loading ? "Saving..." : "Save & Next"}
         </Button>
       </div>
     </form>
