@@ -13,6 +13,7 @@ import {
 import { addressSchema } from "../../../../../validation/createBusinessValidationSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Checkbox } from "../../../../../components/inputs/checkbox";
+import { isEqualObject } from "../../../../../utils";
 
 export const AddressDetails = ({ isEdit }) => {
   const [isCheckedBox, setIsCheckedBox] = useState(false);
@@ -147,6 +148,14 @@ export const AddressDetails = ({ isEdit }) => {
       // console.log("No businessId exist is in business Store");
       return;
     }
+    const { address } = business;
+    const isChanged = address && !isEqualObject(address, payload);
+    if (!isChanged) {
+      isEdit
+        ? navigate("/business/edit/financial")
+        : navigate("/business/create/financial");
+      return;
+    }
 
     //PUT API to update changes
     payload.businessId = businessId;
@@ -154,9 +163,8 @@ export const AddressDetails = ({ isEdit }) => {
       //  console.log("Response", response?.payload);
       // const newBusinessId = response.payload;
       // dispatch(setBusinessId(newBusinessId));
-      isEdit
-        ? navigate("/business/edit/financial")
-        : navigate("/business/create/financial");
+      if (!response?.error)
+        isEdit ? navigate("/business/edit/financial") : navigate("/business/create/financial");
     });
 
     // navigate("/business/create/financial");
@@ -258,7 +266,7 @@ export const AddressDetails = ({ isEdit }) => {
                       );
                       // trigger("address.businessAddressState"); // Manually trigger validation
                     }}
-                    // onBlur={() => handleFieldBlur("address.businessAddressState")}
+                  // onBlur={() => handleFieldBlur("address.businessAddressState")}
                   />
                 );
               }}

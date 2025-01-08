@@ -2,7 +2,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Input } from "../../../../../components/inputs";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { validateNumber, validateProfitValue } from "../../../../../utils";
+import { isEqualObject, validateNumber, validateProfitValue } from "../../../../../utils";
 import { Button } from "../../../../../components/buttons";
 import { useNavigate } from "react-router-dom";
 import {
@@ -62,7 +62,16 @@ export const FinancialDetails = ({ isEdit }) => {
     // console.log("Submitted Data:", data);
     const payload = data?.financial;
     if (!businessId) {
-      console.log("No businessId exist is in business Store");
+      // console.log("No businessId exist is in business Store");
+      return;
+    }
+
+    const { financial } = business;
+    const isChanged = financial && !isEqualObject(financial, payload);
+    // console.log("isChanged", isChanged);
+
+    if (!isChanged) {
+      isEdit ? navigate("/business/edit/kyc") : navigate("/business/create/kyc");
       return;
     }
 
@@ -72,9 +81,8 @@ export const FinancialDetails = ({ isEdit }) => {
       //  console.log("Response", response?.payload);
       // const newBusinessId = response.payload;
       // dispatch(setBusinessId(newBusinessId));
-      isEdit
-        ? navigate("/business/edit/kyc")
-        : navigate("/business/create/kyc");
+      if (!response?.error)
+        isEdit ? navigate("/business/edit/kyc") : navigate("/business/create/kyc");
     });
 
     // navigate("/business/create/kyc");

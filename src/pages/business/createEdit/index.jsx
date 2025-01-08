@@ -24,6 +24,18 @@ const CreateBusiness = ({ isEdit=false }) => {
     window.addEventListener("beforeunload", unloadCallback);
     return () => window.removeEventListener("beforeunload", unloadCallback);
   }, []);
+
+  useEffect(() => {
+    // Add overflow hidden when component renders
+    document.body.style.overflow = 'hidden';
+    
+    return () => {
+      // Remove overflow hidden when component unmounts
+      document.body.style.overflow = '';
+    };
+  }, []);
+
+  
   
   return (
     <div>
