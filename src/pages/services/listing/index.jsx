@@ -248,7 +248,6 @@ const ServicesListing = () => {
       dispatch(updateServiceWishlist({ serviceId: service?._id }));
     }
   };
- 
 
   const loadMoreServices = () => {
     if (
@@ -270,15 +269,13 @@ const ServicesListing = () => {
       );
     }
   };
-
   return (
     <section className="sm:pt-4 pt-2 flex sm:flex-row flex-col gap-4 bg-white">
       <div className="w-full flex justify-center flex-col overflow-hidden">
         <MetaTitle title={"Service"} />
         <div className="w-full space-y-4">
           {category.categoryLoading ? (
-              <CategorySubCategoryTabLoader />
-           
+            <CategorySubCategoryTabLoader />
           ) : (
             <MainTab />
           )}

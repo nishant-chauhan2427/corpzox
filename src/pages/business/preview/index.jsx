@@ -65,6 +65,7 @@ const BusinessPreview = ({ isEdit }) => {
         toast.success("Business details updated");
         navigate(-8); //this will delete last 6 from browser history stack
       } else {
+        setFormModal(false);
         //  toast.success("Business created successfully!");
         setConfirmationModal(true);
       }
@@ -264,7 +265,11 @@ const BusinessPreview = ({ isEdit }) => {
           onClose={onConfirmationModalClose}
         >
           <div className="flex flex-col text-center justify-center items-center gap-2 sm:px-10  sm:py-8">
-            <img src="/images/business/congratulations.svg" width={120} alt="" />
+            <img
+              src="/images/business/congratulations.svg"
+              width={120}
+              alt=""
+            />
             <h5 className="font-bold  text-3xl text-[#232323]">
               Congratulation
             </h5>

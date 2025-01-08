@@ -84,7 +84,7 @@ export const Header = ({ className, collapse, setCollapse }) => {
       case pathname.includes("services"):
         return "Services";
       case pathname.includes("payment"):
-        return "Payment";
+        return "Under Service";
       case pathname.includes("document"):
         return "Document";
       case pathname.includes("settings"):

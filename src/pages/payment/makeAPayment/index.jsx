@@ -38,6 +38,7 @@ import { ConfirmationModal } from "../../../components/modal/confirmationModal";
 import { PricingDetailShimmer } from "../../../components/loader/PricingDetailShimmer";
 import { RouteProgressBar } from "../../../components/progressBar/routeBased";
 import { calculateFinalPriceByType } from "../../../utils";
+import { ModalWrapper } from "../../../components/wrappers/modal";
 
 const MakeAPayment = () => {
   const dispatch = useDispatch();
@@ -401,87 +402,98 @@ const MakeAPayment = () => {
                     />
                   )}
                   <div>
-                    <ReactModal
-                      isOpen={modalOpen}
-                      crossButton={true}
-                      onRequestClose={closeModal}
-                      button={
-                        showAddIcon && (
-                          <FaPlus
-                            size={25}
-                            color="#abaaaa"
-                            className="bg-[#D9D9D9] px-1 py-1 rounded-full"
-                          />
-                        )
-                      }
-                    >
-                      <div className="text-start">
-                        <p className="text-2xl pl-3 text-[#232323] font-semibold">
-                          All Coupons
-                        </p>
-                        <NavLink
-                          to={"/offersDetails"}
-                          className="font-medium pl-3 text-sm pb-2 text-[#595959]"
-                        >
-                          Check all offers!
-                        </NavLink>
-                        <div className="h-[60vh] overflow-y-scroll">
-                          {transformedCouponArray?.map((data, index) => (
-                            <div
-                              key={index}
-                              className="flex flex-row justify-between sm:flex-row gap-4 bg-white m-4 rounded-sm"
-                            >
-                              <div className="flex gap-2">
-                                <p className="text-xl text-center flex justify-cener items-center px-3 py-2 font-semibold bg-[#007AFF26] text-[#272727]">
-                                  {data.off}{" "}
-                                  {data.discountType === "fixed" ||
-                                  data.discountType === "amount"
-                                    ? "₹"
-                                    : "%"}
-                                </p>
-                                <div className="py-3 flex flex-col gap-1">
-                                  <p className="font-medium text-[#080808] text-lg">
-                                    {data.title}
+                    <button onClick={() => setModalOpen(!modalOpen)}>
+                      <FaPlus
+                        size={25}
+                        color="#abaaaa"
+                        className="bg-[#D9D9D9] px-1 py-1 rounded-full"
+                      />
+                    </button>
+                    {modalOpen && (
+                      <ModalWrapper
+                        onClick={() => setModalOpen(false)}
+                        isOpen={modalOpen}
+                        crossButton={true}
+                        onRequestClose={() => setModalOpen(false)}
+                        button={
+                          showAddIcon && (
+                            <FaPlus
+                              size={25}
+                              color="#abaaaa"
+                              className="bg-[#D9D9D9] px-1 py-1 rounded-full"
+                            />
+                          )
+                        }
+                      >
+                        {" "}
+                        <div className="text-start px-20 py-10">
+                          <p className="text-2xl pl-3 text-[#232323] font-semibold">
+                            All Coupons
+                          </p>
+                          <NavLink
+                            to={"/offersDetails"}
+                            className="font-medium pl-3 text-sm pb-2 text-[#595959]"
+                          >
+                            Check all offers!
+                          </NavLink>
+                          <div className="h-[60vh] overflow-y-scroll">
+                            {transformedCouponArray?.map((data, index) => (
+                              <div
+                                key={index}
+                                className="flex flex-row justify-between sm:flex-row gap-4 bg-white m-4 rounded-sm"
+                              >
+                                <div className="flex gap-2">
+                                  <p className="text-xl text-center flex justify-cener items-center px-3 py-2 font-semibold bg-[#007AFF26] text-[#272727]">
+                                    {data.off}{" "}
+                                    {data.discountType === "fixed" ||
+                                    data.discountType === "amount"
+                                      ? "₹"
+                                      : "%"}
                                   </p>
-                                  <p className="font-normal text-xs text-[#4D4D4D]">
-                                    {data.description}
-                                  </p>
-                                  {/* <Link className="underline text-[#5E63FF] font-normal text-sm">
+                                  <div className="py-3 flex flex-col gap-1">
+                                    <p className="font-medium text-[#080808] text-lg">
+                                      {data.title}
+                                    </p>
+                                    <p className="font-normal text-xs text-[#4D4D4D]">
+                                      {data.description}
+                                    </p>
+                                    {/* <Link className="underline text-[#5E63FF] font-normal text-sm">
                                 More
                               </Link> */}
+                                  </div>
                                 </div>
-                              </div>
-                              <div className="flex flex-col gap-1 text-center items-center px-2 justify-center">
-                                {isCouponVerifiedLoading ? (
-                                  <ImSpinner2 className="animate-spin text-gray hover:text-white !text-xl" />
-                                ) : (
-                                  <Button
-                                    primary={true}
-                                    isLoading={isServiceAvailing}
-                                    onClick={() =>
-                                      handleApplyCoupon({
-                                        id: data.id,
-                                        offerCost: data.off,
-                                        title: data.title,
-                                        discountType: data.discountType,
-                                        usageType: data.usageType,
-                                      })
-                                    }
-                                  >
-                                    Apply
-                                  </Button>
-                                )}
+                                <div className="flex flex-col gap-1 text-center items-center px-2 justify-center">
+                                  {isCouponVerifiedLoading ? (
+                                    <ImSpinner2 className="animate-spin text-gray hover:text-white !text-xl" />
+                                  ) : (
+                                    <Button
+                                      primary={true}
+                                      isLoading={isServiceAvailing}
+                                      onClick={() =>
+                                        handleApplyCoupon({
+                                          id: data.id,
+                                          offerCost: data.off,
+                                          title: data.title,
+                                          discountType: data.discountType,
+                                          usageType: data.usageType,
+                                        })
+                                      }
+                                    >
+                                      Apply
+                                    </Button>
+                                  )}
 
-                                {/* <p className="flex font-medium text-sm text-[#000000]">
+                                  {/* <p className="flex font-medium text-sm text-[#000000]">
                                 <img src="/images/payment/coupon.svg" alt="" />
                                 Coupon Applicable
                               </p> */}
+                                </div>
                               </div>
-                            </div>
-                          ))}
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    </ReactModal>
+                      </ModalWrapper>
+                    )}
                   </div>
                 </div>
               </div>

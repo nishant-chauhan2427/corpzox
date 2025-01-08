@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Pagination from "../Pagination";
+import { IoIosCheckmarkCircle } from "react-icons/io";
+import { FaCircleMinus } from "react-icons/fa6";
 
 // Table component
 export const Table = ({
@@ -54,7 +56,7 @@ export const Table = ({
                     {key == "id" || key == "_id" ? (
                       <></>
                     ) : (
-                      <span
+                      <div
                         className={`${
                           cell === "Active" || cell === "In progress"
                             ? "bg-green-200 text-green-700"
@@ -66,7 +68,7 @@ export const Table = ({
                               cell === "Under-Review" ||
                               cell === "Inactive" ||
                               cell === "Not leased"
-                            ? "bg-[#FFF4D4] text-yellow-700"
+                            ? "bg-[#FFEAEA] text-[#B83131]"
                             : cell === "PENDING"
                             ? "bg-[#FFF4D4] text-[#FBBC05]"
                             : cell === "EXPIRED"
@@ -82,10 +84,15 @@ export const Table = ({
                             : cell === "Resubmitted"
                             ? " bg-purple-200 text-purple-700"
                             : " dark:text-white "
-                        } px-3 py-1 rounded-full`}
+                        } px-1 py-1.5 rounded flex justify-center items-center gap-2`}
                       >
-                        {cell}
-                      </span>
+                        {cell === "Active" || cell === "CAPTURED" ? (
+                          <IoIosCheckmarkCircle size={16} fill="#165E3D" />
+                        ) : cell === "Inactive" ? (
+                          <FaCircleMinus size={16} fill="#B83131" />
+                        ) : null}
+                        <span className="font-medium text-xs">{cell}</span>
+                      </div>
                     )}
                   </td>
                 ))}
