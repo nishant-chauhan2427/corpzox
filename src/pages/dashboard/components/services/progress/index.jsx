@@ -50,7 +50,7 @@ export const ServicesProgress = ({ data }) => {
                 No Services Availed
               </p>
 
-              {business.length > 0 && (
+              {business?.length > 0 && (
                 <LinkButton
                   className={"px-4 py-1"}
                   onClick={() => {

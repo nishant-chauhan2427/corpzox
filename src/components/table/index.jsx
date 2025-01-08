@@ -20,14 +20,14 @@ export const Table = ({
   };
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto ">
       <table className="min-w-full table-auto border-collapse bg-white shadow-md">
         <thead className="bg-[#9DE5D2]">
           <tr>
             {columns?.map((col, idx) => (
               <th
                 key={idx}
-                className="px-4 py-2 text-left text-sm font-semibold text-gray-700 whitespace-nowrap"
+                className="px-4 py-2 text-center text-sm font-semibold text-gray-700 whitespace-nowrap "
               >
                 {col.header}
               </th>
@@ -49,7 +49,7 @@ export const Table = ({
                     key={cellIndex}
                     className={`${
                       (key == "id" || key == "_id") && "hidden"
-                    } py-4 px-1 whitespace-nowrap text-xs capitalize`}
+                    } py-4 px-1 whitespace-nowrap text-xs capitalize text-center`}
                   >
                     {key == "id" || key == "_id" ? (
                       <></>
@@ -72,7 +72,7 @@ export const Table = ({
                             : cell === "EXPIRED"
                             ? " bg-pink-200 text-pink-700"
                             : cell === "Vacant"
-                            ? " bg-green-200 text-green-700"
+                            ? " bg-[#EDFFEA] text-[#165E3D]"
                             : cell === "CAPTURED"
                             ? " bg-green-200 text-green-700"
                             : cell === "Started"

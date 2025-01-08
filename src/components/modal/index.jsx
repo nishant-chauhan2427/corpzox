@@ -84,7 +84,7 @@ export const ReactModal = ({
       {
         <Modal
           overlayClassName={
-            "w-full h-full bg-black bg-opacity-50 fixed top-0 bottom-0 left-0 right-0 z-[1005]"
+            "fixed top-0 left-0 bg-black bg-opacity-20 backdrop-blur-sm w-full h-screen flex justify-center items-center z-[1001]"
           }
           className={`${className ? className : "w-11/12 sm:w-8/12 lg:w-1/2"} ${isOpen ? "animate-ease-in-y" : "animate-ease-in-y-reverse"
             }  bg-white dark:bg-darkPrimary border border-gray-200 dark:border-gray-700 p-0 overflow-hidden rounded-lg shadow-2xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[1010] outline-none`}
