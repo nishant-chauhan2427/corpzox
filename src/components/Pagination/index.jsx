@@ -36,26 +36,24 @@ const Pagination = ({ totalItems = 10, itemsPerPage = 10 }) => {
       marginPagesDisplayed={2}
       pageRangeDisplayed={3}
       onPageChange={handlePageChange}
-      containerClassName={"flex justify-end justify-en item-end space-x-1 mt-4"}
+      containerClassName={"flex justify-center item-center space-x-1 px-2 py-2"}
       pageClassName={"block"}
       pageLinkClassName={
-        "px-3 py-2 border border-[#525252] rounded-md text-[#4B5563] font-medium hover:bg-[#F3F7FF]"
+        " px-3 py-2 rounded-md border border-[#525252] font-medium "
       }
       previousClassName={
         currentPage === 1 ? " opacity-50 cursor-not-allowed" : "block"
       }
-      previousLinkClassName={
-        "px-5 py-2 border  border-[#525252] rounded-md text-[#4B5563] hover:bg-[#F3F7FF]"
-      }
+      previousLinkClassName={"px-5 py-2 border  border-[#525252] rounded-md  "}
       nextClassName={
         currentPage === pageCount ? "opacity-50 cursor-not-allowed" : "block"
       }
-      nextLinkClassName={
-        "px-5 py-2 border border-[#525252] rounded-md text-[#4B5563] hover:bg-[#F3F7FF]"
-      }
+      nextLinkClassName={"px-3 py-2 border border-[#525252] rounded-md"}
       breakClassName={"block"}
-      breakLinkClassName={"px-3 py-2 border rounded-md text-gray-700"}
-      activeClassName={" text-white"} // Active page styling
+      breakLinkClassName={"px-3 py-2 border rounded-md "}
+      activeClassName={
+        "!border -mt-2 !border-none  rounded-md py-2  text-white bg-[#007AFF]"
+      } // Active page styling
       forcePage={currentPage - 1} // ReactPaginate is 0-indexed, so adjust for 1-based pages
       disabledClassName={"opacity-50 cursor-not-allowed"} // Disable the buttons
     />

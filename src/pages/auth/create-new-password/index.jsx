@@ -119,7 +119,8 @@ export const CreateNewPassword = () => {
     <>
       <MetaTitle title={isOtpScreen ? "Verify OTP" : "Create New Password"} />
       <AuthLayout>
-        <img className="sm:w-32 w-36" src="logo.svg" alt="CORPZO Logo" />
+      {/* className="sm:w-32 w-36" */}
+        <img  src="logo.svg" alt="CORPZO Logo"width={120} />
         <div className="flex flex-col justify-between">
           <DualHeadingTwo
             containerClassName={"text-left pt-5"}
