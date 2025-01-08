@@ -7,13 +7,36 @@ function FileField({ index, field, className, onChange }) {
   const { lebel, isRequired } = field;
   const [uploading, setUploading] = useState(false);
   const [uploadedUrl, setUploadedUrl] = useState(field?.value[0] || '');
+  const [uploadedFileName, setUploadedFileName] = useState(field?.fileName || '');
   //   console.log("uploadedUrl",uploadedUrl);
+  // console.log("field",field);
+  // console.log("field", field);
 
 
   const handleChange = async (event) => {
     const file = event.target.files[0];
 
     if (!file) return;
+
+    const maxSizeInBytes = (field?.maxSize || 1) * 1024 * 1024;
+
+
+    // Check file type (image or PDF)
+    const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+    if (!allowedTypes.includes(file.type)) {
+      toast.error('Only images (JPEG, PNG) and PDFs are allowed');
+      event.target.value = ''; // Clear the input
+      return;
+    }
+
+    // Check file size
+    if (file.size > maxSizeInBytes) {
+      toast.error(`File size exceeds ${field?.maxSize || 1}MB limit`);
+      event.target.value = ''; // Clear the input
+      return;
+    }
+
+
 
     setUploading(true); // Set uploading state
 
@@ -38,17 +61,17 @@ function FileField({ index, field, className, onChange }) {
       }
 
       // console.log("fileType",fileType);
-      
+
 
 
       // Axios POST request to upload the file
       const userInfo = (localStorage.getItem('userInfo'));
       const token = JSON.parse(localStorage.getItem('userInfo'))?.token;
-      
+
       if (!token) {
         // return rejectWithValue("No token found");
         toast.error("Token not found");
-        return ;
+        return;
       }
 
       const response = await client.put('/user/auth/upload-file', formData, {
@@ -64,7 +87,8 @@ function FileField({ index, field, className, onChange }) {
 
       const fileUrl = response.data?.data?.url; // Adjust based on your API's response structure
       setUploadedUrl(fileUrl);
-      onChange(index, { fileUrl: fileUrl, filename: formData.get("files")?.name,fileType:fileType }); // Pass the uploaded file URL to the parent
+      setUploadedFileName(formData.get("files")?.name);
+      onChange(index, { fileUrl: fileUrl, filename: formData.get("files")?.name, fileType: fileType }); // Pass the uploaded file URL to the parent
     } catch (error) {
       console.error('Upload error:', error);
     } finally {
@@ -78,8 +102,19 @@ function FileField({ index, field, className, onChange }) {
       <input
         type="file"
         onChange={handleChange}
-        className="w-full p-2"
+        className="w-full p-2 hidden"
+        accept="image/*,application/pdf"
+        id={`file-upload${index}`}
       />
+      {/* Custom Upload Button */}
+
+      <div className="flex flex-col items-center justify-center">
+        <label htmlFor={`file-upload${index}`} className="cursor-pointer w-full p-3 border rounded-md bg-gray-200 text-gray-700 hover:bg-green-400 text-center">
+          {uploadedUrl ? 'Change File' : 'Choose File'}
+        </label>
+        
+      </div>
+
       {uploading && (
         <p className="mt-2 text-sm text-blue-600">
           Uploading...
@@ -87,7 +122,7 @@ function FileField({ index, field, className, onChange }) {
       )}
       {uploadedUrl && (
         <p className="mt-2 text-sm text-green-600">
-          File uploaded: <a href={uploadedUrl} target="_blank" rel="noopener noreferrer">{uploadedUrl}</a>
+          File uploaded: <a href={uploadedUrl} target="_blank" rel="noopener noreferrer">{uploadedFileName}</a>
         </p>
       )}
     </div>

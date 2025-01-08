@@ -38,11 +38,8 @@ export const registrationSchema = Yup.object().shape({
       .required("Industry Type is required."),
     subIndustry: Yup.string()
       .required("Sub Industry Type is required."),
-      sizeOfCompany: Yup.number()
-      .transform((value, originalValue) => (originalValue === "" ? undefined : value)) // Treat empty string as `undefined`
+      sizeOfCompany: Yup.string()
       .required("Size of the Company is required.")
-      .min(1, "Size must be at least 1 employee.")
-      .max(100000, "Size cannot exceed 100,000 employees.")
     ,
     funded: Yup.string()
       .required("Funding Status is required.")

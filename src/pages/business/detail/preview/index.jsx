@@ -225,7 +225,7 @@ const BusinessPreview = () => {
         onClose={onConfirmationModalClose}
       >
         <div className="flex flex-col text-center justify-center items-center gap-2 sm:px-10  sm:py-8">
-          <img src="/images/payment/payment-done.svg" width={120} alt="" />
+          <img src="/images/business/congratulations.svg" width={120} alt="" />
           <h5 className="font-bold  text-3xl text-[#232323]">Congratulation</h5>
           <p className="text-base text-[#595959] font-medium">
             Your business has been created.

@@ -176,9 +176,9 @@ const businessSlice = createSlice({
 
       }).addCase( updateRegistrationDetails.fulfilled, (state,action)=>{
         // console.log("updateRegistrationDetails.fulfilled",action.payload?.data);
+        toast.success("Registration details saved")
         state.loading = false;
         state.business.registration = action.payload?.data;
-        toast.success("Registration details saved")
       })
 
 

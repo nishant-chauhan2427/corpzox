@@ -24,6 +24,18 @@ const CreateBusiness = ({ isEdit=false }) => {
     window.addEventListener("beforeunload", unloadCallback);
     return () => window.removeEventListener("beforeunload", unloadCallback);
   }, []);
+
+  useEffect(() => {
+    // Add overflow hidden when component renders
+    document.body.style.overflow = 'hidden';
+    
+    return () => {
+      // Remove overflow hidden when component unmounts
+      document.body.style.overflow = '';
+    };
+  }, []);
+
+  
   
   return (
     <div>
@@ -45,7 +57,7 @@ const CreateBusiness = ({ isEdit=false }) => {
           </div> */}
 
           {/* Step Components */}
-          <div className="p-4 h-[60vh] overflow-y-auto">
+          <div className="p-4 max-h-[80vh] overflow-y-auto">
             <Outlet />
             {/* {steps[currentStep]?.component} */}
           </div>

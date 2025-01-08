@@ -699,7 +699,7 @@ export const formatReadableDate = (timestamp) => {
 };
 
 export function mergeArrays(couponArray = [], offerArray = []) {
-  console.log(couponArray, "from function")
+  // console.log(couponArray, "from function")
   // Filter out objects with no data (empty objects) from both arrays
   const validCouponArray = couponArray.filter(obj => Object.keys(obj).length > 0);
   const validOfferArray = offerArray.filter(obj => Object.keys(obj).length > 0);
@@ -855,22 +855,22 @@ export function mergeArrays(couponArray = [], offerArray = []) {
 // }
 
 export function calculateFinalPrice(data, subscriptionId, state) {
-  console.log(data, "Input data");
+  // console.log(data, "Input data");
 
   // Validate if the data array exists and has elements
   if (!data || !data.length) {
-    console.error("Invalid data");
+    // console.error("Invalid data");
     return { finalPrice: 0, discountAmount: 0 }; // Return default values
   }
 
   let finalPrice = data[0]?.cost || 0; // Start with the original cost
   let discountAmount = 0; // Initialize discount amount
-  console.log(finalPrice, "Initial cost from data");
+  // console.log(finalPrice, "Initial cost from data");
 
   // Case 1: Handle Quotation (offers will not be applied)
   if (data[0]?.quotation) {
     finalPrice = data[0]?.quotation.amount || 0;
-    console.log("Quotation amount used:", finalPrice);
+    // console.log("Quotation amount used:", finalPrice);
 
     // No offer should be applied in case of quotation
     return {
@@ -884,9 +884,9 @@ export function calculateFinalPrice(data, subscriptionId, state) {
     const subscription = data[0]?.subscription?.find((sub) => sub._id === subscriptionId);
     if (subscription) {
       finalPrice = subscription.amount;
-      console.log("Using subscription amount:", finalPrice);
+      // console.log("Using subscription amount:", finalPrice);
     } else {
-      console.error("Subscription ID not found");
+      // console.error("Subscription ID not found");
     }
   }
 
@@ -899,7 +899,7 @@ export function calculateFinalPrice(data, subscriptionId, state) {
       discountAmount = finalPrice * (offer.discountPercent / 100);
       state.totalCouponDiscount = (state.totalCouponDiscount || 0) + discountAmount;
       finalPrice -= discountAmount;
-      console.log(`Applied percentage discount: ${offer.discountPercent}%, Discount Amount: ${discountAmount}`);
+      // console.log(`Applied percentage discount: ${offer.discountPercent}%, Discount Amount: ${discountAmount}`);
     }
 
     if (offer.discountPrice) {
@@ -907,7 +907,7 @@ export function calculateFinalPrice(data, subscriptionId, state) {
       discountAmount = offer.discountPrice;
       state.totalCouponDiscount = (state.totalCouponDiscount || 0) + discountAmount;
       finalPrice -= discountAmount;
-      console.log(`Applied direct discount: ${offer.discountPrice}`);
+      // console.log(`Applied direct discount: ${offer.discountPrice}`);
     }
 
     // Store offer details
@@ -927,9 +927,9 @@ export function calculateFinalPrice(data, subscriptionId, state) {
     if (!foundOffer && offerDetails.offerId) {
       state.appliedOfferArray = state.appliedOfferArray || [];
       state.appliedOfferArray.push(offerDetails);
-      console.log("Added new offer:", offerDetails);
+      // console.log("Added new offer:", offerDetails);
     } else {
-      console.log("Offer already exists or invalid.");
+      // console.log("Offer already exists or invalid.");
     }
   }
 
@@ -943,7 +943,7 @@ export function calculateFinalPrice(data, subscriptionId, state) {
   // Save the final price to localStorage
   finalPrice = Math.max(0, finalPrice); // Ensure the price is not negative
   localStorage.setItem("finalPrice", finalPrice.toFixed(2));
-  console.log(`Final price calculated and saved: ${finalPrice.toFixed(2)}`);
+  // console.log(`Final price calculated and saved: ${finalPrice.toFixed(2)}`);
 
   // Return both final price and discount amount
   return {
@@ -954,9 +954,9 @@ export function calculateFinalPrice(data, subscriptionId, state) {
 
 function calculatePriceRegular(data, isOfferValid) {
 
-  console.log(data, "Invalid data for regular calculation");
+  // console.log(data, "Invalid data for regular calculation");
   if (typeof data !== 'object' || data === null) {
-    console.error("Invalid data for regular calculation");
+    // console.error("Invalid data for regular calculation");
     return { finalPrice: 0, discountAmount: 0 }; // Default to 0 if no data is provided
   }
 
@@ -971,18 +971,18 @@ function calculatePriceRegular(data, isOfferValid) {
     discountAmount = result.discountAmount;
     offerDetails = result.offerDetails
   } else {
-    console.log("No offers to apply for regular cost.");
+    // console.log("No offers to apply for regular cost.");
   }
 
   
-  console.log(`Final regular price: ${cost}, Discount: ${discountAmount}`);
+  // console.log(`Final regular price: ${cost}, Discount: ${discountAmount}`);
   return { finalPrice: cost, discountAmount, offerDetails };
 }
 
 function calculatePriceSubscription(data, subscriptionId, isOfferValid) {
-  console.log(data, "from subscription component")
+  // console.log(data, "from subscription component")
   if (!data || !data?.subscription.length > 0) {
-    console.error("Invalid data for subscription calculation");
+    // console.error("Invalid data for subscription calculation");
     return { finalPrice: 0, discountAmount: 0 };
   }
 
@@ -991,14 +991,14 @@ function calculatePriceSubscription(data, subscriptionId, isOfferValid) {
   );
 
   if (!subscription) {
-    console.error("Subscription ID not found");
+    // console.error("Subscription ID not found");
     return { finalPrice: 0, discountAmount: 0, subscription };
   }
 
   let subscriptionPrice = subscription.amount || 0;
   let discountAmount = 0;
   let offerDetails = {}
-  console.log(data?.offerservices[0]?.offers, "offer from function")
+  // console.log(data?.offerservices[0]?.offers, "offer from function")
   // Check if there are valid offers and apply them
   if (data?.offerservices[0]?.offers && isOfferValid) {
     const result = applyOfferToPrice(subscriptionPrice, data);
@@ -1006,40 +1006,40 @@ function calculatePriceSubscription(data, subscriptionId, isOfferValid) {
     discountAmount = result.discountAmount;
     offerDetails = result.offerDetails
   } else {
-    console.log("No offers to apply for subscription price.");
+    // console.log("No offers to apply for subscription price.");
   }
 
-  console.log(
-    `Final subscription price: ${subscriptionPrice}, Discount: ${discountAmount}`
-  );
+  // console.log(
+  //   `Final subscription price: ${subscriptionPrice}, Discount: ${discountAmount}`
+  // );
   return { finalPrice: subscriptionPrice, discountAmount, subscription, offerDetails };
 }
 
 function calculatePriceQuotation(data, quotationId) {
-  console.log(data, "isnide quotation block from function")
+  // console.log(data, "isnide quotation block from function")
   if (typeof data !== 'object' || data === null) {
-    console.error("Invalid data for quotation calculation");
+    // console.error("Invalid data for quotation calculation");
     return { finalPrice: 0, discountAmount: 0 };
   }
 
-  console.log(data.quotations,quotationId, "quotations")
+  // console.log(data.quotations,quotationId, "quotations")
   const quotation = data?.quotations?.find(
     (quote) => quote._id === quotationId
   );
 
-  console.log(quotation, "foiund quotaTION")
+  // console.log(quotation, "foiund quotaTION")
   if (!quotation) {
-    console.error("Quotation ID not found");
+    // console.error("Quotation ID not found");
     return { finalPrice: 0, discountAmount: 0 };
   }
 
   const quotationPrice = quotation.amount || 0;
-  console.log(`Quotation price calculated: ${quotationPrice}`);
+  // console.log(`Quotation price calculated: ${quotationPrice}`);
   return { finalPrice: quotationPrice, discountAmount: 0 }; // No discounts for quotations
 }
 
 export function calculateFinalPriceByType(data, type, id = null,isOfferValid) {
-  console.log(type, "from function")
+  // console.log(type, "from function")
   switch (type) {
     case "regular":
       return calculatePriceRegular(data, isOfferValid);
@@ -1051,18 +1051,18 @@ export function calculateFinalPriceByType(data, type, id = null,isOfferValid) {
       return calculatePriceQuotation(data, id);
 
     default:
-      console.error("Invalid type specified");
+      // console.error("Invalid type specified");
       return { finalPrice: 0, discountAmount: 0 };
   }
 }
 function applyOfferToPrice(price, data) {
   if (!data?.offerservices[0]?.offers) {
-    console.log("No offers available for this service.");
+    // console.log("No offers available for this service.");
     return { finalPrice: price, discountAmount: 0 }; // No discount applied
   }
 
   const offer = data?.offerservices[0]?.offers[0]; // Assume one offer
-  console.log(offer , "offer from the function")
+  // console.log(offer , "offer from the function")
   let discountAmount = 0;
 
   // Apply discount percentage if present
@@ -1095,6 +1095,39 @@ function applyOfferToPrice(price, data) {
     amount: discountAmount,
   };
 
-  console.log(`Price after applying offer: ${price}`);
+  // console.log(`Price after applying offer: ${price}`);
   return { finalPrice: price, discountAmount, offerDetails };
 }
+
+
+//This function will return true if two objects (obj1={}, obj2={}) are equal
+
+export const isEqualObject = (obj1, obj2) => {
+  // Check if both are strictly equal (edge case)
+  if (obj1 === obj2) return true;
+
+  // Check if either is not an object or is null
+  if (typeof obj1 !== 'object' || obj1 === null || typeof obj2 !== 'object' || obj2 === null) {
+    return false;
+  }
+
+  // Get keys of both objects
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+
+  // Check if the number of keys is different
+  if (keys1.length !== keys2.length) return false;
+
+  // Compare values for each key
+  for (let key of keys1) {    
+    if(key === "yearOfStablish"){  //special case
+      if(new Date(obj1[key]).getDate() !== new Date(obj2[key]).getDate()){
+        return false;
+      }
+    }else  if (obj1[key] !== obj2[key]) return false;
+  }
+
+  return true;
+};
+
+

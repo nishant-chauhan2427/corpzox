@@ -3,7 +3,7 @@ import { Link, useRouteError } from "react-router-dom";
 export const ErrorComponent = ({ containerClassName, imageClassName }) => {
   const error = useRouteError();
 
-  console.log(error, "fassa");
+  // console.log(error, "fassa");
 
   return (
     <div
