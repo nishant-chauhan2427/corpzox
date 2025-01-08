@@ -12,6 +12,10 @@ import {
   updateRegistrationDetails,
 } from "../../../../../redux/actions/business-action";
 import { setBusinessId } from "../../../../../redux/slices/businessSlice";
+import { isEqualObject } from "../../../../../utils";
+import { a, use } from "framer-motion/client";
+import client from "../../../../../redux/axios-baseurl";
+import toast from "react-hot-toast";
 
 
 export const businessType = [
@@ -28,10 +32,18 @@ export const businessType = [
 ];
 
 export const RegistrationDetails = ({ isEdit }) => {
+  const [industryOptions, setIndustryOptions] = useState([]);
+  const [isIndustryLoading, setIsIndustryLoading] =  useState(false);
+
   const [subIndustryOptions, setSubIndustryOptions] = useState([]);
+  const [isSubIndustryLoading, setIsSubIndustryLoading] =  useState(false);
+
   const { business, businessId, loading } = useSelector(
     (state) => state.business
   );
+
+
+
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -39,6 +51,37 @@ export const RegistrationDetails = ({ isEdit }) => {
   // console.log("businessStore", business);
   // console.log("subIndustryOptions", subIndustryOptions);
   // console.log("loading",loading);
+  // console.log("industryOptions", industryOptions);
+
+
+  useEffect(() => {
+    //API call to get industry options
+    const getIndustryOptions = async () => {
+      try {
+        setIsIndustryLoading(true);
+        const response = await client.get("/user/industry", {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+          },
+        });
+        const res = response?.data?.data;
+        //filter res in {label:res.name, value:res._id}
+        const filteredRes = res.map((item) => { return { label: item.name, value: item._id } });
+        setIndustryOptions(filteredRes);
+        setIsIndustryLoading(false);
+      } catch (error) {
+        // console.error("Error fetching industry options", error?.response?.data?.message || error?.message);
+        error?.response?.data?.message ? toast.error("Industry list : " + error?.response?.data?.message) : toast.error(error?.message);
+
+        setIsIndustryLoading(false);
+      }
+    }
+    getIndustryOptions();
+  }, []);
+
+
 
   const {
     handleSubmit,
@@ -64,31 +107,56 @@ export const RegistrationDetails = ({ isEdit }) => {
     defaultValue: "",
   });
 
+  const selectedSubIndustry = useWatch({
+    control,
+    name: "registration.subIndustry",
+    defaultValue: "",
+  });
+  // console.log("selectedSubIndustry:", watch("registration.subIndustry"));
+  
+
   // console.log("selectedIndustry:", selectedIndustry);
 
   useEffect(() => {
-    if (selectedIndustry && subIndustryOption[selectedIndustry]) {
-      // console.log('okokokkok');
+    // if (selectedIndustry && subIndustryOption[selectedIndustry]) {
+    //   // console.log('okokokkok');
 
-      setSubIndustryOptions(subIndustryOption[selectedIndustry]);
-      // setValue("registration.subIndustry", ""); // Reset subIndustry when industry changes
-    } else {
-      setSubIndustryOptions([]);
+    //   setSubIndustryOptions(subIndustryOption[selectedIndustry]);
+    //   // setValue("registration.subIndustry", ""); // Reset subIndustry when industry changes
+    // } else {
+    //   setSubIndustryOptions([]);
+    // }
+
+    if (selectedIndustry) {
+      const getSubIndustryOptions = async () => {
+        try {
+          setIsSubIndustryLoading(true);
+          const response = await client.get(`/user/sub-industry`, {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+            },
+            params: { industryId: selectedIndustry },
+          });
+          const res = response?.data?.data;
+          //filter res in {label:res.name, value:res._id}
+          const filteredRes = res.map((item) => { return { label: item.name, value: item._id } });
+          
+          setSubIndustryOptions(filteredRes);
+          setIsSubIndustryLoading(false);
+        } catch (error) {
+          // console.error("Error fetching industry options", error?.response?.data?.message || error?.message);
+          error?.response?.data?.message ? toast.error("Sub Industry list : " + error?.response?.data?.message) : toast.error(error?.message);
+          setIsSubIndustryLoading(false);
+        }
+      }
+      getSubIndustryOptions();
+
     }
-  }, [selectedIndustry, setValue]);
+  }, [selectedIndustry]);
 
-  // const businessType = [
-  //   { label: "Private Limited", value: "private_limited" },
-  //   { label: "Public Limited", value: "public_limited" },
-  //   { label: "Sole Proprietorship", value: "sole_proprietorship" },
-  //   { label: "LLP", value: "llp" },
-  //   { label: "OPC", value: "opc" },
-  //   { label: "Section 8", value: "section_8" },
-  //   { label: "Partnership", value: "partnership" },
-  //   { label: "Cooperative", value: "cooperative" },
-  //   { label: "Producer Company", value: "producer_company" },
-  //   { label: "Foreign Corporation", value: "foreign_corporation" },
-  // ];
+
 
   const roleOption = [
     { label: "Director/Founder/Owner", value: "director" },
@@ -132,6 +200,17 @@ export const RegistrationDetails = ({ isEdit }) => {
     ],
   };
 
+  const companySizeDropdown = [
+    { label: "1-10", value: "1-10" },
+    { label: "11-50", value: "11-50" },
+    { label: "51-200", value: "51-200" },
+    { label: "201-500", value: "201-500" },
+    { label: "501-1000", value: "501-1000" },
+    { label: "1001-5000", value: "1001-5000" },
+    { label: "5001-10000", value: "5001-10000" },
+    { label: "10000+", value: "10000+" },
+  ];
+
   const handleBlur = async (field) => {
     await trigger(field);
   };
@@ -139,6 +218,15 @@ export const RegistrationDetails = ({ isEdit }) => {
   const onSubmit = (data) => {
     // console.log("Submitted Data:", data?.registration);
     const payload = data?.registration;
+    const { registration } = business;
+    const isChanged = registration && !isEqualObject(registration, payload);
+    if (!isChanged) {
+      isEdit
+        ? navigate("/business/edit/address")
+        : navigate("/business/create/address");
+      return;
+    }
+
 
     if (!businessId) {
       // Perform POST API call here
@@ -146,7 +234,8 @@ export const RegistrationDetails = ({ isEdit }) => {
         // console.log("Response", response?.payload);
         // const newBusinessId = response.payload;
         // dispatch(setBusinessId(newBusinessId));
-        navigate("/business/create/address");
+        if (!response?.error)
+          navigate("/business/create/address");
       });
     } else {
       //PUT API to update changes
@@ -154,12 +243,11 @@ export const RegistrationDetails = ({ isEdit }) => {
 
       payload.businessId = businessId;
       dispatch(updateRegistrationDetails(payload)).then((response) => {
-        // console.log("Response", response?.payload);
+        // console.log("Response", response);
         // const newBusinessId = response.payload;
         // dispatch(setBusinessId(newBusinessId));
-        isEdit
-          ? navigate("/business/edit/address")
-          : navigate("/business/create/address");
+        if (!response?.error)
+          isEdit ? navigate("/business/edit/address") : navigate("/business/create/address");
       });
     }
   };
@@ -187,7 +275,7 @@ export const RegistrationDetails = ({ isEdit }) => {
     // console.log(business?.registration.subIndustry , 'ok' );
 
     setValue("registration.subIndustry", business?.registration.subIndustry);
-  }, [watch("registration.industry")]);
+  }, []);
 
   // console.log(watch("registration.industry"), getValues("registration.subIndustry"), business?.registration.subIndustry, "watch ok");
 
@@ -332,7 +420,7 @@ export const RegistrationDetails = ({ isEdit }) => {
                   min={minDate.toISOString().split("T")[0]}
                   max={new Date().toISOString().split("T")[0]}
                   errorContent={errors.registration?.yearOfStablish?.message}
-                  onBlur={() => handleBlur("registration.yearOfStablish")}
+                // onBlur={() => handleBlur("registration.yearOfStablish")}
                 />
               );
             }}
@@ -364,7 +452,7 @@ export const RegistrationDetails = ({ isEdit }) => {
             name="registration.industry"
             control={control}
             render={({ field }) => {
-              const selectedIndustry = industryOption.find(
+              const selectedIndustry = industryOptions.find(
                 (option) => option.value === field.value
               );
 
@@ -375,17 +463,18 @@ export const RegistrationDetails = ({ isEdit }) => {
                   {...field}
                   label="Industry Type"
                   placeholder="Select industry type"
+                  isLoading={isIndustryLoading}
                   errorContent={errors.registration?.industry?.message}
-                  options={industryOption} // Ensure industryOption is populated correctly
+                  options={industryOptions} // Ensure industryOption is populated correctly
                   value={selectedIndustry || null} // Ensure value matches the options
                   onChange={(selectedValue) => {
-                    // console.log('ok ran');
-
                     field.onChange(selectedValue.value); // Update the form value
+                    
                     setValue("registration.subIndustry", ""); // Reset sub-industry
-                    setSubIndustryOptions(
-                      subIndustryOption[selectedValue.value] || []
-                    ); // Update sub-industry options dynamically
+                    trigger("registration.subIndustry"); // Trigger validation for sub-industry
+                    // setSubIndustryOptions(
+                    //   subIndustryOption[selectedValue.value] || []
+                    // ); // Update sub-industry options dynamically
                   }}
                 />
               );
@@ -404,6 +493,7 @@ export const RegistrationDetails = ({ isEdit }) => {
               return (
                 <Selector
                   {...field}
+                  isLoading = {isSubIndustryLoading}
                   label="Sub Industry Type"
                   placeholder="Select sub industry type"
                   errorContent={errors.registration?.subIndustry?.message}
@@ -417,8 +507,34 @@ export const RegistrationDetails = ({ isEdit }) => {
             }}
           />
 
-          {/* Company Size */}
+          {/* Company Size  dropdown*/}
           <Controller
+            name="registration.sizeOfCompany"
+            control={control}
+            render={({ field }) => {
+              const selectedCompanySize = companySizeDropdown.find(
+                (option) => option.value === field.value
+              );
+
+              return (
+                <Selector
+                  {...field}
+                  label="Size of the company"
+                  placeholder="Select size of the company"
+                  errorContent={errors.registration?.sizeOfCompany?.message}
+                  options={companySizeDropdown}
+                  value={selectedCompanySize || null}
+                  onChange={(selectedValue) =>
+                    field.onChange(selectedValue.value)
+                  }
+                />
+              );
+            }}
+          />
+
+
+          {/* Company Size */}
+          {/* <Controller
             name="registration.sizeOfCompany"
             control={control}
             render={({ field }) => (
@@ -441,7 +557,7 @@ export const RegistrationDetails = ({ isEdit }) => {
                 }}
               />
             )}
-          />
+          /> */}
 
           {/* Funding Status */}
           <Controller
@@ -481,7 +597,7 @@ export const RegistrationDetails = ({ isEdit }) => {
         <Button
           type="submit"
           primary
-          disabled={!isValid || loading}
+          disabled={!isValid || loading || isIndustryLoading || isSubIndustryLoading}
           isLoading={loading}
         >
           {loading ? "Saving..." : "Save & Next"}

@@ -5,18 +5,11 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { LinkButton } from "../../../../../components/link";
 import { useDispatch, useSelector } from "react-redux";
 import { FaRupeeSign } from "react-icons/fa";
-import { SelectAllTabs } from "../../../components/tabs/selectAllTab";
-import { updateServiceQuickWishlist } from "../../../../../redux/actions/servicesListing-action";
 import toast from "react-hot-toast";
-import {
-  onChangeSelectAll,
-  updateServiceWishlistFlag,
-} from "../../../../../redux/slices/serviceListingSlice";
 
 export const ServicesCard = ({
   data,
   onClick = (service) => console.log("Heart icon clicked"),
-  onCheckedChange = () => console.log("checked clicked"),
 }) => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -25,36 +18,9 @@ export const ServicesCard = ({
     (state) => state.wishlist
   );
 
-  const { wishList, list, recommendedServiceList } = useSelector(
-    (state) => state.service
-  );
 
-  const [selectAllChecked, setSelectAllChecked] = useState(false);
-  const [expandedServices, setExpandedServices] = useState({});
-  let checkListSet = new Set(wishList?.list?.map((service) => service._id)); //checkListSet :["serviceId1","serviceId2",....]
 
-  useEffect(() => {
-    setSelectAllChecked(
-      wishList?.list?.length == (list?.length || recommendedServiceList?.length)
-    );
-  }, [wishList]);
 
-  let onClickAddWishlistHandler = () => {
-    const wishlistSelectedData = wishList?.list?.map((item) => item._id);
-    console.log(wishlistSelectedData, "wishlistSelectedData");
-    if (wishlistSelectedData?.length) {
-      dispatch(
-        updateServiceQuickWishlist({ serviceIdArray: wishlistSelectedData })
-      ).then((res) => {
-        // console.log("updateServiceQuickWishlist res",res);
-        dispatch(updateServiceWishlistFlag(Array.from(checkListSet))); //ie: mark there service as wishlist:true
-      });
-    }
-  };
-
-  const onChangeSelectAllHandler = () => {
-    dispatch(onChangeSelectAll());
-  };
 
   const navigate = useNavigate();
   const url = window.location.href;
@@ -65,16 +31,13 @@ export const ServicesCard = ({
 
   return (
     <>
-      {(list.length !== 0 || recommendedServiceList.length !== 0) &&
+      {/* {(list.length !== 0 || recommendedServiceList.length !== 0) &&
         url.includes("services") && (
           <SelectAllTabs
             hideBtn={wishList?.list?.length <= 0}
-            checked={selectAllChecked}
             checkListCount={wishList?.list?.length}
-            onChangeSelectAllHandler={onChangeSelectAllHandler}
-            onClickAddWishlistHandler={onClickAddWishlistHandler}
           />
-        )}
+        )} */}
       <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-4">
         {data &&
           data.map((service, index) => {
