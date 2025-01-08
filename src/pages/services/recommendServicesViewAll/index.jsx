@@ -12,9 +12,7 @@ import {
   getMoreUserServices,
 } from "../../../redux/actions/servicesListing-action";
 import toast from "react-hot-toast";
-import { setToggleToCheckedWishlist, updateServiceWishlistFlag } from "../../../redux/slices/serviceListingSlice";
 import { ServiceCardShimmer } from "../../../components/loader/ServiceCardShimmer";
-import { SelectAllTabs } from "../components/tabs/selectAllTab";
 const RecommendedServicesViewAll = ({ title = "", totalCount = 0, data = [], }) => {
   const {
     category,
@@ -55,7 +53,6 @@ const [isSubmit, setIsSubmit] = useState(false);
 
 
   let onCheckHandler = (service) => {
-    dispatch(setToggleToCheckedWishlist(service));
   };
   
   useEffect(()=>{
@@ -120,15 +117,6 @@ const [isSubmit, setIsSubmit] = useState(false);
           </Heading>
         </div>
         <div>
-        {/* {recommendedServiceList.length !== 0 && url.includes("services") && (
-        <SelectAllTabs
-          hideBtn={wishList?.list?.length <= 0}
-          checked={selectAllChecked}
-          checkListCount={wishList?.list?.length}
-          onChangeSelectAllHandler={onChangeSelectAllHandler}
-          onClickAddWishlistHandler={onClickAddWishlistHandler}
-        />
-      )} */}
           {/* <div
             className="grid grid-cols-1 sm:grid-cols-2 rounded-lg 
      lg:grid-cols-2 gap-4 bg-white"

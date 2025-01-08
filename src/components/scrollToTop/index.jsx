@@ -30,7 +30,7 @@ export const ScrollToTopButton = () => {
     <>
       {isVisible && (
         <button
-          className="scroll-to-top fixed bottom-16 right-2 w-10 h-10 rounded-full bg-primaryBg text-white flex items-center justify-center opacity-70 hover:opacity-100 transition-opacity ease-in duration-1000 "
+          className="scroll-to-top fixed bottom-16 right-2 w-10 h-10 rounded-full flex !bg-[#FDDD33] items-center justify-center opacity-70 hover:opacity-100 transition-opacity ease-in duration-1000 text-black "
           onClick={scrollToTop}
           data-tooltip-id="my-tooltip"
           data-tooltip-content={"Scroll to top"}

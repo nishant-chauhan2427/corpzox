@@ -303,7 +303,7 @@ const Card = ({ number, label, description, onClick, loading }) => {
         <label className="font-semibold text-base">{label}</label>
         <p className="text-sm">{description}</p>
       </div>
-      {!loading && number > 0 && <button className="text-sm">View All</button>}
+      {!loading && number > 0 && <button className="text-sm text-[#808080]">View All</button>}
     </div>
   );
 };
