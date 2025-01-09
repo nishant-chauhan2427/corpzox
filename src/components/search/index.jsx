@@ -22,7 +22,7 @@ export const Search = (props) => {
   
 
   const handleInputChange = (e) => {
-    const value = e.target.value;
+    const value = e.target.value;    
     // Allow only numeric characters
     // if (/^\d*$/.test(value)) {
     setQuery(value);
@@ -31,8 +31,9 @@ export const Search = (props) => {
 
   const handleSearch = () => {
     const params = new URLSearchParams(location.search);
+    if(query.trim() ==="") return;
     if (query) {
-      params.set("search", query);
+      params.set("search", query.trim());
     } else {
       params.delete("search");
     }

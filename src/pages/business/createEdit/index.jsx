@@ -4,15 +4,14 @@ import BusinessListing from "../listing";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setLoaderOff } from "../../../redux/slices/businessSlice";
-const CreateBusiness = ({ isEdit=false }) => {
+const CreateBusiness = ({ isEdit = false }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   // console.log("Create Business");
   useEffect(() => {
     // navigate("/business/edit/registration",{replace:true});
     dispatch(setLoaderOff());
-    
-  },[])
+  }, []);
 
   useEffect(() => {
     const unloadCallback = (event) => {
@@ -27,20 +26,19 @@ const CreateBusiness = ({ isEdit=false }) => {
 
   useEffect(() => {
     // Add overflow hidden when component renders
-    document.body.style.overflow = 'hidden';
-    
+    document.body.style.overflow = "hidden";
     return () => {
       // Remove overflow hidden when component unmounts
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     };
   }, []);
 
-  
-  
   return (
     <div>
       <BusinessListing />
-      <ModalWrapper title={isEdit?"Edit Business Details":"Add Business Details"}>
+      <ModalWrapper
+        title={isEdit ? "Edit Business Details" : "Add Business Details"}
+      >
         <div
           // onSubmit={handleSubmit(onSubmit)}
           className="px-4 my-2  flex flex-col gap-4"

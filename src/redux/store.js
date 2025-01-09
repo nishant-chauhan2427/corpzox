@@ -20,8 +20,9 @@ import paymentHistoryReducer from "./slices/paymentHistorySlice"
 import dashboardReducer from "./slices/dashboardSlice"
 import offerSlice from "./slices/offerSlice"
 import businessPageSlice from "./slices/businessPageSlice";
-
-
+import serviceReducer from "./admin/slices/serviceSlice"
+import stepsReducer from "./admin/slices/stepsSlice"
+import subscriptionsReducer from "./admin/slices/subscriptionSlice"
 // Persist configuration
 const persistConfig = {
   key: "root",
@@ -45,7 +46,10 @@ const rootReducer = combineReducers({
   paymentHistory : paymentHistoryReducer,
   dashboard : dashboardReducer,
   offers: offerSlice,
-  businessList : businessPageSlice
+  businessList : businessPageSlice, 
+  adminService : serviceReducer,
+  adminSteps : stepsReducer,
+  adminSubscriptions : subscriptionsReducer
 });
 
 // Create a persisted reducer

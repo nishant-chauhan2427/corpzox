@@ -84,17 +84,12 @@ const Edit = () => {
     if (imageFile) {
       formData.append("profilePicture", imageFile);
     }
-    console.log(data.fullName,"fullName");
-    formData.append("firstName", data.fullName);
-   
-    formData.append("businessEmail", data.businessEmail);
-    console.log(data,"full1");
-    console.log(formData,"full2");
 
+    formData.append("firstName", data.fullName);   
+    formData.append("businessEmail", data.businessEmail);
     setIsSaving(true);
     await dispatch(submitEditProfile({ formData, navigate }));
     dispatch(getUser())
-    console.log(data,"full3");
     setIsSaving(false);
   };
 
@@ -163,16 +158,17 @@ const Edit = () => {
         setIsSaving(false);
         await dispatch(submitEditProfile({ formData: profileFormData, navigate }));
         dispatch(getUser())
-        //setIsSaving(false);
       }
       setImageSelected(false);
     }
   };
 
   useEffect(() => {
+    console.log(user,"user name");
     setValue("fullName", user?.name);
     setValue("email", user?.email);
     setValue("businessEmail", user?.busniessEmail || "");
+    setValue("phone", user?.phone);
   }, [user]);
 
   useEffect(() => {
@@ -329,6 +325,25 @@ const Edit = () => {
                   )}
                 />
               </div>
+              <div>
+                <Controller
+                  name="phone"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      label={"Phone No"}
+                      type={"phone"}
+                      placeholder={"Phone No"}
+                      className={"border-[#D9D9D9] border"}
+                      errorContent={errors?.phone?.message}
+                      disabled={true}
+                      maxLength={12}
+                    />
+                  )}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -344,8 +359,13 @@ const Edit = () => {
           </Button>
         </div>
       </form>
+      
     </>
+    
   );
+
 };
 
 export default Edit;
+
+

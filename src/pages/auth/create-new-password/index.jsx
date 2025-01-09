@@ -51,60 +51,7 @@ export const CreateNewPassword = () => {
      }
     }
    },[changingPassword])
-  const handleChange = (index, value) => {
-    if (/^\d$/.test(value)) {
-      const newOtp = [...otp];
-      newOtp[index] = value;
-      setOtp(newOtp);
-      if (value !== "" && index < 4) {
-        inputRefs.current[index + 1].focus();
-      }
-    }
-  };
 
-  const handleBackspace = (index, e) => {
-    if (e.key === "Backspace" && index >= 0) {
-      const newOtp = [...otp];
-      newOtp[index] = "";
-      setOtp(newOtp);
-      if (index > 0) {
-        inputRefs.current[index - 1].focus();
-      }
-    }
-  };
-
-  const handlePaste = (e) => {
-    const paste = e.clipboardData.getData("text");
-    if (/^\d{4}$/.test(paste)) {
-      const newOtp = paste.split("");
-      setOtp(newOtp);
-      setTimeout(() => {
-        newOtp.forEach((_, index) => {
-          inputRefs.current[index].focus();
-          inputRefs.current[index].blur();
-        });
-        inputRefs.current[4].focus();
-      }, 0);
-    }
-    e.preventDefault();
-  };
-
-  const handleResendOtp = (event) => {
-    event.preventDefault();
-    setTimer(30);
-    dispatch(
-      resendOtp({
-        email: email,
-      })
-    );
-  };
-
-  const handleOtpSubmit = (e) => {
-    e.preventDefault();
-    const enteredOtp = otp.join("");
-    console.log("Entered OTP:", enteredOtp);
-    // Add further OTP validation logic here
-  };
 
   const handleEmailSubmit = (data) => {
     console.log("Submitted Email:", data,profile);
@@ -175,26 +122,10 @@ export const CreateNewPassword = () => {
             >
               Continue
             </Button>
-            {/* <div className="flex gap-2 items-center  ">
-              <div className="border-t w-full border-[#D9D9D9] "></div>
-              <p className="text-base text-[#6E6E6E] font-medium">or</p>
-              <div className="border-t w-full border-[#D9D9D9]"></div>
-            </div>
-            <div className="flex items-center justify-center rounded p-2 gap-2 text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
-              Sign in with Google <img src="google.svg" alt="" />
-              <img src="" alt="" />
-            </div> */}
+            
           </form>
         </div>
 
-        {/* <div className="text-center flex justify-center gap-2 pt-20 font-normal text-[#6C6C6C]">
-          <p>
-            Need an account?
-            <Link to={"/sign-up"} className="p-2 text-[#F1359C] font-semibold ">
-              Create one
-            </Link>
-          </p>
-        </div> */}
       </AuthLayout>
     </>
   );

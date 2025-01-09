@@ -44,6 +44,9 @@ import { FundingDetails } from "../pages/business/createEdit/components/funding"
 import { ServicesProgress } from "../pages/dashboard/components/services/progress";
 import { RecommendedServices } from "../pages/dashboard/components/services/recommended";
 import  RecommendedServicesViewALl  from "../pages/services/recommendServicesViewAll";
+import Services from "../pages/admin/services";
+import BasicDetails from "../pages/admin/services/BasicDetails";
+import ServiceForm from "../pages/admin/services/serviceForm";
 
 const router = createBrowserRouter([
   {
@@ -332,6 +335,29 @@ const router = createBrowserRouter([
           },
         ],
       },
+      // adminroutes
+      {
+        path: "/admin",
+        element: <PrimaryLayout />,
+        children:[ 
+          {
+            path: "services",
+            element : <Services/>
+          },
+          // {
+          //   path: "services/create-service",
+          //   element : <BasicDetails/>
+          // },
+          {
+            path: "services/create-service",
+            element : <ServiceForm/>
+          },
+          {
+            path: "services/update-service/:id",
+            element : <BasicDetails/>
+          }
+        ]
+      }
     ],
   },
 ]);

@@ -13,13 +13,12 @@ import { resendOtp, verifyUser } from "../../../redux/actions/userAuth-action";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import OTPInput from "react-otp-input";
+import { setRedirectTo } from "../../../redux/slices/appSlice";
 
 export const ForgotPassword = () => {
   const location = useLocation();
   const emailOrPhone = location.state?.email;
-  const [otp, setOtp] = useState("");
-  const [timer, setTimer] = useState(30);
-  const [focusedIndex, setFocusedIndex] = useState(0);  
+  const [timer, setTimer] = useState(30); 
   const [isResendDisabled, setIsResendDisabled] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -44,6 +43,8 @@ export const ForgotPassword = () => {
   } = useSelector((state) => state.auth);
   const [otpMessage, setOtpMessage] = useState("");
 
+
+  localStorage.setItem("forgotPassword", true);
   useEffect(() => {
     if (emailOrPhone) {
       setValue("email", emailOrPhone); // Set the email in the form if passed
@@ -77,10 +78,8 @@ export const ForgotPassword = () => {
     if (isVerify && !isVerifying) {
       setIsVerify(false);
       if (verifyingError) {
-        //toast.error(verifyingError);
         setOtpMessage(verifyingError);
       } else {
-        // toast.success(verifyMessage);
         navigate("/create-new-password");
       }
     }
@@ -95,44 +94,10 @@ export const ForgotPassword = () => {
       return () => clearTimeout(timer);
     }
   }, [otpMessage]);
-
-  const handlePaste = (e) => {
-    e.preventDefault(); // Prevent paste event
-    toast.dismiss();
-    toast.error("Pasting OTP is not allowed. Please enter the OTP manually.");
-  };
-
-  const handleResendOtp = (event) => {
-    event.preventDefault();
-    setTimer(30);
-    setOtp("");
-    dispatch(
-      resendOtp({
-        id: profile?.[0]?.id || profile?.id || profile?.userId,
-      })
-    );
-  };
-
-  // const handleOtpSubmit = (e) => {
-  //   e.preventDefault();
-  //   setIsVerify(true);
-  //   const enteredOtp = otp.join("");
-  //   setIsVerify(true);
-  //   dispatch(verifyUser({ otp: enteredOtp, id: profile?.[0]?.id }));
-  // };
-  const handleOtpSubmit = (e) => {
-    e.preventDefault();
-    //const enteredOtp = otp.join("");
-    setIsVerify(true);
-    dispatch(verifyUser({ otp: otp, id: profile?.[0]?.id }));
-  };
-
+  
   const handleEmailSubmit = (data) => {
-    console.log("Submitted Email:", data.email);
-    // dispatch(updateProfile(data));
-    dispatch(resendOtp(data));
-    // setIsOtpScreen(true);
-    // setTimer(30);
+    dispatch(resendOtp({data,navigate}));
+    dispatch(setRedirectTo("verify"))
   };
   useEffect(() => {
     if (!isOtpScreen && resendingOtp) {
@@ -150,101 +115,7 @@ export const ForgotPassword = () => {
         <div className="w-full ">
           <div className="w-full">
             <div className="flex flex-col justify-between">
-              {isOtpScreen ? (
-                <div>
-                  <DualHeadingTwo
-                    containerClassName={"text-left pt-2"}
-                    heading={"Verification Code"}
-                    subHeading={`We have sent you an OTP on your registered Email Id ${profile?.[0]?.email}`}
-                  />
-                  <form
-                    onSubmit={handleOtpSubmit}
-                    className="w-full sm:w-[100%] sm:mt-5 flex flex-col gap-2"
-                  >
-                    <div className="w-full flex flex-col sm:pb-16 sm:pt-5 gap-4">
-                      <div className="w-full flex justify-between items-start gap-2">
-                        <OTPInput
-                          value={otp}
-                          onChange={setOtp}
-                          numInputs={6}
-                          renderSeparator={<span></span>}
-                          renderInput={(props, index) => {
-                            const isActive = focusedIndex === index;
-                            return (
-                              <input
-                                {...props}
-                                autoFocus={index === 0}
-                                onPaste={handlePaste}
-                                onFocus={() => setFocusedIndex(index)} // Set focusedIndex when this input is focused
-                                onBlur={() => setFocusedIndex(null)} // Reset focusedIndex when this input loses focus
-                                style={{
-                                  border: isActive
-                                    ? "1px solid #FFD700"
-                                    : "1px solid #DFEAF2", // Apply red border only if focused
-                                  width: "4rem",
-                                  height: "4rem",
-                                  fontWeight: "600",
-                                  textAlign: "center",
-                                  fontSize: "1.5rem",
-                                  display:"flex",
-                                  gap:"2px",
-                                  borderRadius: "12px",
-                                  margin:"4px"
-                                }}
-                              />
-                            );
-                          }}
-                          
-                          containerStyle={
-                            "flex w-full justify-between items-start"
-                          }
-                          inputType="number"
-                        />
-                      </div>
-
-                      <div className="text-red-500 mt-2 font-medium text-sm text-center">
-                        {verifyingError ? otpMessage : null}
-                      </div>
-                    </div>
-
-                    <div className="w-full flex flex-col justify-center items-center">
-                      <button
-                        className={`text-xs text-primary disabled:text-[#8D8D8D]`}
-                        onClick={handleResendOtp}
-                        type="button"
-                        disabled={isResendDisabled}
-                      >
-                        {timer > 0 ? (
-                          <p className="!text-[#969696] font-normal text-sm">
-                            Resend Code{" "}
-                            <span className="!font-semibold text-[#FF2C9C] text-sm">
-                              00:{timer}
-                            </span>{" "}
-                          </p>
-                        ) : (
-                          <p className="!font-medium text-[#FF2C9C] text-sm">
-                            {" "}
-                            Resend Code
-                          </p>
-                        )}
-                      </button>
-                      <Button
-                        type="submit"
-                        primary={true}
-                        className={
-                          "mt-2 py-3 w-full rounded-lg  text-[#0A1C40] font-semibold !border-none "
-                        }
-                        // disabled={otp?.[otp.length - 1] == ""}
-                        disabled={otp?.length < 6}
-                        isLoading={isVerifying}
-                      >
-                        Continue
-                      </Button>
-                    </div>
-                  </form>
-                </div>
-              ) : (
-                <div>
+            <div>
                   <DualHeadingTwo
                     containerClassName={"text-left pt-2"}
                     heading={"Forgot Password"}
@@ -283,14 +154,13 @@ export const ForgotPassword = () => {
                       className={
                         "mt-2 py-3 w-full rounded-lg  text-[#0A1C40] font-semibold !border-none "
                       }
-                      //disabled={!isValid}
+                     // disabled={!isValid}
                       isLoading={resendingOtp}
                     >
                       Continue
                     </Button>
                   </form>
                 </div>
-              )}
             </div>
           </div>
         </div>

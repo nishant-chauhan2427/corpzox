@@ -1,36 +1,30 @@
 import * as yup from "yup";
 
-//const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-
 export const profileValidationSchema = yup.object({
     fullName: yup
         .string()
         .required("Full name is required")
         .min(2, "Full name must be at least 2 characters")
-        .max(40,"Full name must be less then 40 characters"),
-    // lastName: yup
-    //     .string()
-    //     .required("Last name is required")
-    //     .min(2, "Last name must be at least 2 characters")
-    //     .max(30,"Last name must be less then 30 characters"),
-    email:yup.string()
-        .email('Invalid email address') 
+        .max(40, "Full name must be less then 40 characters"),
+    email: yup.string()
+        .email('Invalid email address')
         .matches(
-            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,  
+            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
             'Invalid email address'
         ),
-       
-
-        
-        businessEmail: yup
+    businessEmail: yup
         .string()
         .email('Invalid businessEmail address')
         .max(50, 'businessEmail cannot be longer than 50 characters')
         .nullable()
         .notRequired()
         .matches(
-          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,  
-          'Invalid businessEmail address'
+            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+            'Invalid businessEmail address'
         ),
-      
+    phone: yup.string()
+        .required('Phone no is required')
+        .min(9, 'Phone number must be at least 9 characters')
+        .max(15, 'Phone number cannot exceed 15 characters'),
+
 });

@@ -33,7 +33,7 @@ const DocumentDetail = () => {
             </div>
 
 
-            {listData?.length > 0 ? (
+            {listData?.[0]?.value?.[0]?.length> 0 ? (
                 listData.map((item, index) => {
                     if (item?.value && Array.isArray(item.value)) {
                         return item.value.map((docValue, docIndex) => (
