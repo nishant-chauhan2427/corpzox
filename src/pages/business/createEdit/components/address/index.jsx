@@ -13,12 +13,11 @@ import {
 import { addressSchema } from "../../../../../validation/createBusinessValidationSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Checkbox } from "../../../../../components/inputs/checkbox";
+import { isEqualObject } from "../../../../../utils";
 
 export const AddressDetails = ({ isEdit }) => {
   const [isCheckedBox, setIsCheckedBox] = useState(false);
   const isInitialRender = useRef(true);
-  
-
 
   const { business, businessId, loading } = useSelector(
     (state) => state.business
@@ -39,7 +38,6 @@ export const AddressDetails = ({ isEdit }) => {
     // resolver: yupResolver(getValidationSchema(currentStep)),
     defaultValues: business || {},
     resolver: yupResolver(addressSchema), // Apply the validation schema here
-
   });
 
   useEffect(() => {
@@ -59,7 +57,6 @@ export const AddressDetails = ({ isEdit }) => {
     }
   }, [isCheckedBox, getValues, setValue]);
 
-  
   // Subscribe to relevant form fields
   const watchedFields = watch([
     "address.businessAddressL1",
@@ -73,7 +70,7 @@ export const AddressDetails = ({ isEdit }) => {
     "address.communicationAddressCity",
     "address.communicationAddressPin",
   ]);
-  
+
   useEffect(() => {
     if (isInitialRender.current) {
       isInitialRender.current = false; // Skip the first render
@@ -85,7 +82,7 @@ export const AddressDetails = ({ isEdit }) => {
         City: getValues("address.businessAddressCity"),
         Pin: getValues("address.businessAddressPin"),
       };
-  
+
       const communicationAddress = {
         L1: getValues("address.communicationAddressL1"),
         L2: getValues("address.communicationAddressL2"),
@@ -93,12 +90,12 @@ export const AddressDetails = ({ isEdit }) => {
         City: getValues("address.communicationAddressCity"),
         Pin: getValues("address.communicationAddressPin"),
       };
-  
+
       // Compare business and communication addresses
       const isAddressSame = Object.keys(businessAddress).every(
         (key) => businessAddress[key] === communicationAddress[key]
       );
-  
+
       if (!isAddressSame) {
         setIsCheckedBox(false); // Reset the checkbox only if addresses are different
       }
@@ -151,6 +148,14 @@ export const AddressDetails = ({ isEdit }) => {
       // console.log("No businessId exist is in business Store");
       return;
     }
+    const { address } = business;
+    const isChanged = address && !isEqualObject(address, payload);
+    if (!isChanged) {
+      isEdit
+        ? navigate("/business/edit/financial")
+        : navigate("/business/create/financial");
+      return;
+    }
 
     //PUT API to update changes
     payload.businessId = businessId;
@@ -158,9 +163,8 @@ export const AddressDetails = ({ isEdit }) => {
       //  console.log("Response", response?.payload);
       // const newBusinessId = response.payload;
       // dispatch(setBusinessId(newBusinessId));
-      isEdit
-        ? navigate("/business/edit/financial")
-        : navigate("/business/create/financial");
+      if (!response?.error)
+        isEdit ? navigate("/business/edit/financial") : navigate("/business/create/financial");
     });
 
     // navigate("/business/create/financial");
@@ -315,7 +319,6 @@ export const AddressDetails = ({ isEdit }) => {
                     field.onChange(e);
                     trigger("address.businessAddressPin");
                   }}
-
                   onInput={(e) => {
                     const value = e.target.value;
                     // Prevent invalid characters and limit input length to 10
@@ -337,7 +340,7 @@ export const AddressDetails = ({ isEdit }) => {
               Communication Address
             </h5>
             <p className="text-xs">
-            Please provide all necessary details in the form.
+              Please provide all necessary details in the form.
             </p>
             <div
               className=" flex  cursor-pointer items-center gap-2 font-semibold text-sm text-[#4D4D4F]
@@ -485,7 +488,6 @@ export const AddressDetails = ({ isEdit }) => {
                     field.onChange(e);
                     trigger("address.communicationAddressPin");
                   }}
-
                   onInput={(e) => {
                     const value = e.target.value;
                     // Prevent invalid characters and limit input length to 10
@@ -502,8 +504,12 @@ export const AddressDetails = ({ isEdit }) => {
       </div>
       {/* Navigation Buttons */}
       <div className="flex justify-between items-center gap-4 m-2">
-        <Button type="button" primary onClick={() => navigate(-1)}>
-          Prev
+        <Button
+          className="flex items-center gap-2"
+          type="button"
+          onClick={() => navigate(-1)}
+        >
+          <span> &lt;&lt; </span>Back
         </Button>
         <Button
           type="submit"
@@ -511,7 +517,7 @@ export const AddressDetails = ({ isEdit }) => {
           disabled={!isValid || loading}
           isLoading={loading}
         >
-          {loading ? "saving..." : "Save & Next"}
+          {loading ? "Saving..." : "Save & Next"}
         </Button>
       </div>
     </form>

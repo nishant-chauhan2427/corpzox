@@ -62,59 +62,15 @@ const serviceListingSlice = createSlice({
     resetService(state,action){
       state.list=[]
     },
-    resetCheckBox(state,action){
-      console.log("resetCheckBox");
-      state.wishList.list=[]
-    },
-    setToggleToCheckedWishlist(state,action){
-      // console.log("setToggleToCheckedWishlist");
+    // setToggleToCheckedWishlist(state,action){
       
-      let data=state.wishList.list.filter((service)=>service._id==action.payload._id);
-      if(data?.length!=0){
-        state.wishList.list=state.wishList.list.filter((service)=>service._id!=action.payload._id)
-      }else{
-        state.wishList.list=[...state.wishList.list,action.payload]
-      }
-    },
-    onChangeSelectAll(state,action){
-      // console.log("onChangeSelectAll");
-      
-      if(state.list.length==state.wishList.list.length){
-        state.wishList.list=[]
-      }else{
-        state.wishList.list=state.list
-      }
-    },
-    updateServiceWishlistFlag(state,action){
-      // console.log("updatewishlistCount, checkedList",action.payload);
-      const checkedList = action.payload;
-      // Safeguard for state.list being undefined or not an array
-    if (Array.isArray(state.list)) {
-      state.list.forEach((service) => {
-        if (checkedList?.includes(service._id)) {
-          service.wishlistCount = 1; // Set count to 1 if the ID is in checkedList
-        } 
-      //   else {
-      //     service.wishlistCount = 0; // Reset count if the ID is not in checkedList
-      //  }
-      })
-    }
-
-    // else{
-    //   if (Array.isArray(state.recommendedServiceList)) {
-    //   state.recommendedServiceList.forEach((service) => {
-    //     if (checkedList?.includes(service._id)) {
-    //       service.service[0].servicewishlistsSize=1;
-    //     } 
-    //   })
-    //   {console.log("Inside Update");}
-    // }}
-
-    //Reset checkList state to []
-      state.wishList.list=[];
-   //   state.recommendedServiceList=1;
-
-    },
+    //   let data=state.wishList.list.filter((service)=>service._id==action.payload._id);
+    //   if(data?.length!=0){
+    //     state.wishList.list=state.wishList.list.filter((service)=>service._id!=action.payload._id)
+    //   }else{
+    //     state.wishList.list=[...state.wishList.list,action.payload]
+    //   }
+    // },
 
     
     clearUser(state) {
@@ -392,7 +348,7 @@ const serviceListingSlice = createSlice({
 });
 
 // Export actions
-export const { setSelectedCategory,clearUser, setSelectedSubCategory,setToggleToCheckedWishlist,onChangeSelectAll,resetService,updateServiceWishlistFlag,resetCheckBox } =
+export const { setSelectedCategory,clearUser, setSelectedSubCategory,resetService } =
   serviceListingSlice.actions;
 
 // Export the reducer

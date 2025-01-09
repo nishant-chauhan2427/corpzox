@@ -2,21 +2,23 @@ import { Controller, useForm } from "react-hook-form";
 import { Input } from "../../../../../components/inputs";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { validateNumber, validateProfitValue } from "../../../../../utils";
+import { isEqualObject, validateNumber, validateProfitValue } from "../../../../../utils";
 import { Button } from "../../../../../components/buttons";
 import { useNavigate } from "react-router-dom";
-import { updateFinancialDetails, updateRegistrationDetails } from "../../../../../redux/actions/business-action";
+import {
+  updateFinancialDetails,
+  updateRegistrationDetails,
+} from "../../../../../redux/actions/business-action";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { financialSchema } from "../../../../../validation/createBusinessValidationSchema";
 
 export const FinancialDetails = ({ isEdit }) => {
-
-
-  const { business, businessId, loading } = useSelector((state) => state.business);
+  const { business, businessId, loading } = useSelector(
+    (state) => state.business
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
   // console.log("business,businessId",business,businessId);
-
 
   const {
     handleSubmit,
@@ -58,9 +60,18 @@ export const FinancialDetails = ({ isEdit }) => {
 
   const onSubmit = (data) => {
     // console.log("Submitted Data:", data);
-    const payload = data?.financial
+    const payload = data?.financial;
     if (!businessId) {
-      console.log("No businessId exist is in business Store");
+      // console.log("No businessId exist is in business Store");
+      return;
+    }
+
+    const { financial } = business;
+    const isChanged = financial && !isEqualObject(financial, payload);
+    // console.log("isChanged", isChanged);
+
+    if (!isChanged) {
+      isEdit ? navigate("/business/edit/kyc") : navigate("/business/create/kyc");
       return;
     }
 
@@ -69,17 +80,16 @@ export const FinancialDetails = ({ isEdit }) => {
     dispatch(updateFinancialDetails(payload)).then((response) => {
       //  console.log("Response", response?.payload);
       // const newBusinessId = response.payload;
-      // dispatch(setBusinessId(newBusinessId)); 
-      isEdit ? navigate("/business/edit/kyc") : navigate("/business/create/kyc")
+      // dispatch(setBusinessId(newBusinessId));
+      if (!response?.error)
+        isEdit ? navigate("/business/edit/kyc") : navigate("/business/create/kyc");
     });
 
     // navigate("/business/create/kyc");
-
-
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} >
+    <form onSubmit={handleSubmit(onSubmit)}>
       {/* Progress bar */}
       <div className="w-full h-2 bg-gray-200 mb-4 rounded-full">
         <div
@@ -112,9 +122,12 @@ export const FinancialDetails = ({ isEdit }) => {
                   errorContent={errors.financial?.capital?.message}
                   required={true}
                   // onBlur={handleFieldBlur(`financial.capital`)} // Trigger validation on blur
-                  onChange={handleFieldChange(`financial.capital`, field, trigger)} // Trigger validation on change
+                  onChange={handleFieldChange(
+                    `financial.capital`,
+                    field,
+                    trigger
+                  )} // Trigger validation on change
                   onKeyDown={validateNumber}
-
                   onInput={(e) => {
                     const value = e.target.value;
                     // Prevent invalid characters and limit input length to 10
@@ -137,9 +150,12 @@ export const FinancialDetails = ({ isEdit }) => {
                   errorContent={errors.financial?.revenue?.message}
                   required={true}
                   // onBlur={handleFieldBlur(`financial.revenue`)} // Trigger validation on blur
-                  onChange={handleFieldChange(`financial.revenue`, field, trigger)} // Trigger validation on change
+                  onChange={handleFieldChange(
+                    `financial.revenue`,
+                    field,
+                    trigger
+                  )} // Trigger validation on change
                   onKeyDown={validateNumber}
-
                   onInput={(e) => {
                     const value = e.target.value;
                     // Prevent invalid characters and limit input length to 10
@@ -162,10 +178,12 @@ export const FinancialDetails = ({ isEdit }) => {
                   errorContent={errors.financial?.profit?.message}
                   required={true}
                   // onBlur={handleFieldBlur(`financial.profit`)} // Trigger validation on blur
-                  onChange={handleFieldChange(`financial.profit`, field, trigger)} // Trigger validation on change
+                  onChange={handleFieldChange(
+                    `financial.profit`,
+                    field,
+                    trigger
+                  )} // Trigger validation on change
                   onKeyDown={validateProfitValue}
-
-
                   // onInput={(e) => {
                   //   let value = e.target.value;
 
@@ -199,11 +217,20 @@ export const FinancialDetails = ({ isEdit }) => {
       </div>
       {/* Navigation Buttons */}
       <div className="flex justify-between items-center gap-4 m-2">
-        <Button type="button" primary onClick={() => navigate(-1)}>
-          Prev
+        <Button
+          className="flex items-center gap-2"
+          type="button"
+          onClick={() => navigate(-1)}
+        >
+          <span> &lt;&lt; </span>Back
         </Button>
-        <Button type="submit" primary disabled={!isValid || loading} isLoading={loading} >
-          {loading ? "saving..." : "Save & Next"}
+        <Button
+          type="submit"
+          primary
+          disabled={!isValid || loading}
+          isLoading={loading}
+        >
+          {loading ? "Saving..." : "Save & Next"}
         </Button>
       </div>
     </form>

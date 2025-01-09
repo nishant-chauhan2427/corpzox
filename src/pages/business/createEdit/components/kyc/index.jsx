@@ -7,6 +7,7 @@ import { Button } from "../../../../../components/buttons";
 import { kycSchema } from "../../../../../validation/createBusinessValidationSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { updateKYCDetails, updateRegistrationDetails } from "../../../../../redux/actions/business-action";
+import { isEqualObject } from "../../../../../utils";
 
 export const KYCDetails = ({ isEdit }) => {
 
@@ -43,7 +44,16 @@ export const KYCDetails = ({ isEdit }) => {
     // console.log("Submitted Data : KYC details :", data);
     const payload = data?.kyc
     if (!businessId) {
-      console.log("No businessId exist is in business Store");
+      // console.log("No businessId exist is in business Store");
+      return;
+    }
+
+    const { kyc } = business;
+    const isChanged = kyc && !isEqualObject(kyc, payload);
+    // console.log("isChanged", isChanged);
+
+    if (!isChanged) {
+      isEdit ? navigate("/business/edit/funding") : navigate("/business/create/funding")
       return;
     }
 
@@ -53,7 +63,8 @@ export const KYCDetails = ({ isEdit }) => {
       //  console.log("Response", response?.payload);
       // const newBusinessId = response.payload;
       // dispatch(setBusinessId(newBusinessId)); 
-      isEdit ? navigate("/business/edit/funding") : navigate("/business/create/funding")
+      if (!response?.error)
+        isEdit ? navigate("/business/edit/funding") : navigate("/business/create/funding")
     });
   };
 
@@ -142,11 +153,11 @@ export const KYCDetails = ({ isEdit }) => {
       </div>
       {/* Navigation Buttons */}
       <div className="flex justify-between items-center gap-4 m-2">
-        <Button type="button" primary onClick={() => navigate(-1)}>
-          Prev
+        <Button type="button" className="flex items-center gap-2" onClick={() => navigate(-1)}>
+          <span> &lt;&lt; </span>Back
         </Button>
         <Button type="submit" primary disabled={!isValid || loading} isLoading={loading} >
-          {loading?"saving...":"Save & Next"}
+          {loading ? "Saving..." : "Save & Next"}
         </Button>
       </div>
     </form>

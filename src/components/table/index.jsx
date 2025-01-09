@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Pagination from "../Pagination";
+import { IoIosCheckmarkCircle } from "react-icons/io";
+import { FaCircleMinus } from "react-icons/fa6";
 
 // Table component
 export const Table = ({
@@ -20,14 +22,14 @@ export const Table = ({
   };
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto ">
       <table className="min-w-full table-auto border-collapse bg-white shadow-md">
         <thead className="bg-[#9DE5D2]">
           <tr>
             {columns?.map((col, idx) => (
               <th
                 key={idx}
-                className="px-4 py-2 text-left text-sm font-semibold text-gray-700 whitespace-nowrap"
+                className="px-4 py-2 text-center text-sm font-semibold text-gray-700 whitespace-nowrap "
               >
                 {col.header}
               </th>
@@ -49,12 +51,12 @@ export const Table = ({
                     key={cellIndex}
                     className={`${
                       (key == "id" || key == "_id") && "hidden"
-                    } py-4 px-1 whitespace-nowrap text-xs capitalize`}
+                    } py-4 px-1 whitespace-nowrap text-xs capitalize text-center`}
                   >
                     {key == "id" || key == "_id" ? (
                       <></>
                     ) : (
-                      <span
+                      <div
                         className={`${
                           cell === "Active" || cell === "In progress"
                             ? "bg-green-200 text-green-700"
@@ -66,13 +68,13 @@ export const Table = ({
                               cell === "Under-Review" ||
                               cell === "Inactive" ||
                               cell === "Not leased"
-                            ? "bg-[#FFF4D4] text-yellow-700"
+                            ? "bg-[#FFEAEA] text-[#B83131]"
                             : cell === "PENDING"
                             ? "bg-[#FFF4D4] text-[#FBBC05]"
                             : cell === "EXPIRED"
                             ? " bg-pink-200 text-pink-700"
                             : cell === "Vacant"
-                            ? " bg-green-200 text-green-700"
+                            ? " bg-[#EDFFEA] text-[#165E3D]"
                             : cell === "CAPTURED"
                             ? " bg-green-200 text-green-700"
                             : cell === "Started"
@@ -82,10 +84,15 @@ export const Table = ({
                             : cell === "Resubmitted"
                             ? " bg-purple-200 text-purple-700"
                             : " dark:text-white "
-                        } px-3 py-1 rounded-full`}
+                        } px-1 py-1.5 rounded flex justify-center items-center gap-2`}
                       >
-                        {cell}
-                      </span>
+                        {cell === "Active" || cell === "CAPTURED" ? (
+                          <IoIosCheckmarkCircle size={16} fill="#165E3D" />
+                        ) : cell === "Inactive" ? (
+                          <FaCircleMinus size={16} fill="#B83131" />
+                        ) : null}
+                        <span className="font-medium text-xs">{cell}</span>
+                      </div>
                     )}
                   </td>
                 ))}

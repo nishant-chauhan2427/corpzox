@@ -5,7 +5,6 @@ import { MainTab } from "../../../pages/services/components/tabs/mainTab";
 import { ServicesCard } from "./components/servicesCard";
 import { servicesListing } from "../../../database";
 import Filtertab from "../../../pages/services/components/tabs/filterTab";
-import { SelectAllTabs } from "../components/tabs/selectAllTab/index";
 import { useSelector, useDispatch } from "react-redux";
 import { Heading } from "../../../components/heading";
 
@@ -16,17 +15,11 @@ import {
   getUserServices,
   updateServiceWishlist,
   removeServiceWishlist,
-  updateServiceQuickWishlist,
   getMoreUserServices,
   getInitialServicesCatagory,
   getInitialServicesSubCatagory,
 } from "../../../redux/actions/servicesListing-action";
-import {
-  setToggleToCheckedWishlist,
-  resetService,
-  onChangeSelectAll,
-  resetCheckBox,
-} from "../../../redux/slices/serviceListingSlice";
+
 import toast from "react-hot-toast";
 import { Offers } from "../../../components/offers";
 import { updateServiveProgress } from "../../../redux/actions/dashboard-action";
@@ -228,7 +221,6 @@ const ServicesListing = () => {
         })
       );
       setIsServicesFetched(true);
-      dispatch(resetCheckBox());
     }
   }, [
     categoryId,
@@ -256,21 +248,6 @@ const ServicesListing = () => {
       dispatch(updateServiceWishlist({ serviceId: service?._id }));
     }
   };
-  let onCheckHandler = (service) => {
-    dispatch(setToggleToCheckedWishlist(service));
-  };
-
-  //  let onClickAddWishlistHandler = () => {
-  //     const wishlistSelectedData=wishList?.list?.map(item => item._id);
-  //     dispatch(updateServiceQuickWishlist({ serviceIdArray: wishlistSelectedData }));
-  //     toast.success("Wishlist Created")
-  //   };
-  //   let onChangeSelectAllHandler = () => {
-  //     dispatch(onChangeSelectAll());
-  //     // document.getElementsByClassName('service-checkbox').forEach(element => {
-
-  //     // });
-  //   };
 
   const loadMoreServices = () => {
     if (
@@ -292,15 +269,13 @@ const ServicesListing = () => {
       );
     }
   };
-
   return (
     <section className="sm:pt-4 pt-2 flex sm:flex-row flex-col gap-4 bg-white">
       <div className="w-full flex justify-center flex-col overflow-hidden">
         <MetaTitle title={"Service"} />
         <div className="w-full space-y-4">
           {category.categoryLoading ? (
-              <CategorySubCategoryTabLoader />
-           
+            <CategorySubCategoryTabLoader />
           ) : (
             <MainTab />
           )}
@@ -344,7 +319,6 @@ const ServicesListing = () => {
               <ServicesCard
                 data={list}
                 onClick={(service) => onClickWishList(service)}
-                onCheckedChange={(val) => onCheckHandler(val)}
               />
             </InfiniteScroll>
           ) : (

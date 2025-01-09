@@ -47,7 +47,7 @@ const Profile = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 pb-4">
         <ProfileCard userData={user} loading={loading} />
         {businessLoading ? (<BusinessCardShimmer />) : (<Business data={business?.list} total={business?.totalPage} />)}
 
