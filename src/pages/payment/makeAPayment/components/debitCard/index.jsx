@@ -150,6 +150,7 @@ export const DebitCard = ({ control, errors }) => {
                           containerClassName={"w-full"}
                           className={"border-[#D9D9D9] border"}
                           errorContent={errors?.number?.message}
+                          maxLength={16}
                         />
                       )}
                     />
@@ -171,6 +172,7 @@ export const DebitCard = ({ control, errors }) => {
                           containerClassName={"w-full"}
                           className={"border-[#D9D9D9] border"}
                           errorContent={errors?.name?.message}
+                          maxLength={50}
                         />
                       )}
                     />
