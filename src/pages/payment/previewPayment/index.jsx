@@ -23,7 +23,6 @@ const PreviewPayment = () => {
 
   const navigate = useNavigate();
 
-
   const { applicationId } = useParams();
 
   // console.log("isPaymentDetailsLoading:", isPaymentDetailsLoading);
@@ -32,14 +31,10 @@ const PreviewPayment = () => {
   // console.log("businessDetails", businessDetails);
   // console.log("servicePayment", servicePayment);
 
-
   // console.log("dynamicForm", dynamicForm);
   // console.log("pdfList",pdfList);
 
   // console.log("loading", loading);
-
-
-
 
   const {
     handleSubmit,
@@ -67,42 +62,52 @@ const PreviewPayment = () => {
 
   useEffect(() => {
     if (paymentDetails) {
-      setBusinessDetails(paymentDetails?.businessdetails ? paymentDetails?.businessdetails[0] : null);
-      setServicePayment(paymentDetails?.servicepayments ? paymentDetails?.servicepayments[0] : null);
+      setBusinessDetails(
+        paymentDetails?.businessdetails
+          ? paymentDetails?.businessdetails[0]
+          : null
+      );
+      setServicePayment(
+        paymentDetails?.servicepayments
+          ? paymentDetails?.servicepayments[0]
+          : null
+      );
     }
-  }, [paymentDetails])
+  }, [paymentDetails]);
 
   //Get PDF List from dynamic Form
   useEffect(() => {
     if (dynamicForm) {
       const docs = dynamicForm?.filter((data) => data.inputType === "file");
-      setPDFList(docs)
+      setPDFList(docs);
     }
-  }, [dynamicForm])
-
+  }, [dynamicForm]);
 
   //get Payment Details API Call
   useEffect(() => {
     const fetchPaymentDetails = async () => {
       try {
         setIsPaymentDetailsLoading(true);
-        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
         const token = userInfo?.token;
 
         if (!token) {
           return rejectWithValue("No token found");
         }
 
-        const response = await client.get("/application/payment-preview-details", {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            'Authorization': `Bearer ${token}`,
-          },
-          params: {
-            applicationId: applicationId
+        const response = await client.get(
+          "/application/payment-preview-details",
+          {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            params: {
+              applicationId: applicationId,
+            },
           }
-        });
+        );
         setPaymentDetails(response.data?.data[0]);
       } catch (err) {
         // console.log(err, "Error while GET payment details");
@@ -110,40 +115,43 @@ const PreviewPayment = () => {
       } finally {
         setIsPaymentDetailsLoading(false);
       }
-    }
+    };
 
     fetchPaymentDetails();
-  }, [])
+  }, []);
 
   //Get Form data from this API Call
   useEffect(() => {
     const fetchDynamicForm = async () => {
       try {
         setLoading(true);
-        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
         const token = userInfo?.token;
 
         if (!token) {
           return rejectWithValue("No token found");
         }
 
-        const response = await client.get("/application/application-purchased-form", {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            'Authorization': `Bearer ${token}`,
-          },
-          params: {
-            applicationId: applicationId
+        const response = await client.get(
+          "/application/application-purchased-form",
+          {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            params: {
+              applicationId: applicationId,
+            },
           }
-        });
+        );
         setDynamicForm(response.data?.data);
       } catch (err) {
         // console.log(err, "get offer list error");
       } finally {
         setLoading(false);
       }
-    }
+    };
 
     fetchDynamicForm();
   }, []);
@@ -151,78 +159,90 @@ const PreviewPayment = () => {
   // console.log("data", dynamicForm);
   // console.log("pdfList", pdfList);
 
-
-
   return (
     <>
       <div className="py-5">
         <RouteProgressBar currStep={3} totalSteps={3} />
-        <h1 className="font-semibold text-[#0A1C40] text-base">Form Details (Documents)</h1>
+        <h1 className="font-semibold text-[#0A1C40] text-base">
+          Form Details (Documents)
+        </h1>
         <hr />
-        {loading ? <FormShimmer count={3} className={"mt-3"} /> :
+        {loading ? (
+          <FormShimmer count={3} className={"mt-3"} />
+        ) : (
           <div className="">
-          {/* Document Preview Section */}
-          <div className="grid sm:grid-cols-3 grid-cols-2 md:grid-cols-4 gap-6 justify-center items-end w-full py-6">
-            {pdfList?.map((data, index) => {
-              const isFileUploaded = data?.value && data?.value[0];
-              const contentView = isFileUploaded ? (
-                <Link
-                  to={data?.value[0]}
-                  className="text-blue-600 font-medium text-sm underline hover:text-blue-800"
-                >
-                  View
-                </Link>
-              ) : (
-                <p className="text-gray-500 text-sm">File not uploaded</p>
-              );
-        
-              const previewSrc =
-                data?.type === "image" ? data?.value?.[0] : "/images/payment/pdf-preview.svg";
-        
-              // Trim file name for better readability
-              const trimmedFileName =
-                data?.fileName?.length > 20
-                  ? `${data.fileName.substring(0, 20)}...`
-                  : data?.fileName || "Untitled";
-        
-              return (
-                <div key={index} className="flex flex-col items-center h-full ">
-                  <div className="bg-gray-100 rounded-lg p-2 shadow-sm hover:shadow-md transition-shadow w-full h-full flex flex-col justify-between items-center ">
-                    {/* File Name */}
-                    <p className="font-semibold text-gray-700 text-base mb-3 text-center">
-                      {trimmedFileName}
-                    </p>
-        
-                    {/* File Preview */}
-                    <img
-                      src={previewSrc}
-                      width={150}
-                      height={170}
-                      className="object-cover mb-4"
-                      alt={data?.type || "file"}
-                    />
-        
-                    {/* File View Link */}
-                    <div className="mt-2">{contentView}</div>
-                  </div>
-        
-                  {/* Label displayed below the card */}
-                  {data?.lebel && (
-                    <p className="text-gray-600 text-sm mt-2 text-center truncate">
-                      {data.lebel?.length > 30 ? `${data.lebel.substring(0, 30)}...` : data.lebel}
-                    </p>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        
-        }
+            {/* Document Preview Section */}
+            <div className="grid sm:grid-cols-3 grid-cols-2 md:grid-cols-4 gap-6 justify-center items-end w-full py-6">
+              {pdfList?.map((data, index) => {
+                const isFileUploaded = data?.value && data?.value[0];
+                const contentView = isFileUploaded ? (
+                  <Link
+                    to={data?.value[0]}
+                    className="text-blue-600 font-medium text-sm underline hover:text-blue-800"
+                  >
+                    View
+                  </Link>
+                ) : (
+                  <p className="text-gray-500 text-sm">File not uploaded</p>
+                );
 
-        {isPaymentDetailsLoading ? <FormShimmer count={2} className={"mt-3"} /> :
+                const previewSrc =
+                  data?.type === "image"
+                    ? data?.value?.[0]
+                    : "/images/payment/pdf-preview.svg";
+
+                // Trim file name for better readability
+                const trimmedFileName =
+                  data?.fileName?.length > 20
+                    ? `${data.fileName.substring(0, 20)}...`
+                    : data?.fileName || "Untitled";
+
+                return (
+                  <div
+                    key={index}
+                    className="flex flex-col items-center h-full "
+                  >
+                    <div className="bg-gray-100 rounded-lg p-2 shadow-sm hover:shadow-md transition-shadow w-full h-full flex flex-col justify-between items-center ">
+                      {/* File Name */}
+                      <p className="font-semibold text-gray-700 text-base mb-3 text-center">
+                        {trimmedFileName}
+                      </p>
+
+                      {/* File Preview */}
+                      <img
+                        src={previewSrc}
+                        width={150}
+                        height={170}
+                        className="object-cover mb-4"
+                        alt={data?.type || "file"}
+                      />
+
+                      {/* File View Link */}
+                      <div className="mt-2">{contentView}</div>
+                    </div>
+
+                    {/* Label displayed below the card */}
+                    {data?.lebel && (
+                      <p className="text-gray-600 text-sm mt-2 text-center truncate">
+                        {data.lebel?.length > 30
+                          ? `${data.lebel.substring(0, 30)}...`
+                          : data.lebel}
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {isPaymentDetailsLoading ? (
+          <FormShimmer count={2} className={"mt-3"} />
+        ) : (
           <div className="flex sm:flex-col flex-col gap-5 mt-10">
-            <h1 className="font-semibold text-[#0A1C40] text-base">Business Details</h1>
+            <h1 className="font-semibold text-[#0A1C40] text-base">
+              Business Details
+            </h1>
             <hr />
 
             {/* {previewDetail.map((data, index) => (
@@ -254,8 +274,9 @@ const PreviewPayment = () => {
               </p>
               <p className="font-semibold text-[#0A1C40] text-base">
                 {/* {businessDetails?.typeOfBusiness ||". . ."} */}
-                {businessType?.filter((el) => el.value === businessDetails?.typeOfBusiness)[0]?.label || "N/A"}
-
+                {businessType?.filter(
+                  (el) => el.value === businessDetails?.typeOfBusiness
+                )[0]?.label || "N/A"}
               </p>
             </div>
 
@@ -291,20 +312,22 @@ const PreviewPayment = () => {
                 Year of stablish :
               </p>
               <p className="font-semibold text-[#0A1C40] text-base">
-                {new Date(businessDetails?.yearOfStablish).getFullYear() || ". . ."}
+                {new Date(businessDetails?.yearOfStablish).getFullYear() ||
+                  ". . ."}
               </p>
             </div>
             <div className="flex sm:flex-row flex-col sm:justify-between sm:w-[70%]">
-              <p className="text-[#525252] font-medium text-base">
-                Status :
-              </p>
+              <p className="text-[#525252] font-medium text-base">Status :</p>
               <p className="font-semibold text-[#0A1C40] text-base">
-                {businessDetails?.active ? <span className="text-green-600">Active</span> : <span className="text-red-600">Inactive</span>}
+                {businessDetails?.active ? (
+                  <span className="text-green-600">Active</span>
+                ) : (
+                  <span className="text-red-600">Inactive</span>
+                )}
               </p>
             </div>
-
           </div>
-        }
+        )}
         {/* <div className="mt-4 flex gap-2 flex-col">
           <p className="font-medium text-lg  text-[#525252] ">
             Business Description
@@ -320,55 +343,79 @@ const PreviewPayment = () => {
           </div>
         </div> */}
 
-        {isPaymentDetailsLoading ? <FormShimmer count={2} className={"mt-3"} /> :
-
+        {isPaymentDetailsLoading ? (
+          <FormShimmer count={2} className={"mt-3"} />
+        ) : (
           <div className="flex sm:flex-col flex-col gap-5 mt-10">
-            <h1 className="font-semibold text-[#0A1C40] text-base">Payment & Service Details</h1>
+            <h1 className="font-semibold text-[#0A1C40] text-base">
+              Payment & Service Details
+            </h1>
             <hr />
             <div className="flex sm:flex-row flex-col sm:justify-between sm:w-[70%]">
               <p className="text-[#525252] font-medium text-base">Amount:</p>
               <p className="font-semibold text-[#0A1C40] text-base flex justify-center items-center">
-                <FaRupeeSign className="ml-1" />{servicePayment?.amount || ". . ."}
+                <FaRupeeSign className="ml-1" />
+                {servicePayment?.amount || ". . ."}
               </p>
             </div>
             <div className="flex sm:flex-row flex-col sm:justify-between sm:w-[70%]">
-              <p className="text-[#525252] font-medium text-base">Service Name:</p>
+              <p className="text-[#525252] font-medium text-base">
+                Service Name:
+              </p>
               <p className="font-semibold text-[#0A1C40] text-base">
                 {servicePayment?.serviceDetails?.name || ". . ."}
               </p>
             </div>
             <div className="flex sm:flex-row flex-col sm:justify-between sm:w-[70%]">
-              <p className="text-[#525252] font-medium text-base">Payment Mode:</p>
+              <p className="text-[#525252] font-medium text-base">
+                Payment Mode:
+              </p>
               <p className="font-semibold text-[#0A1C40] text-base">
                 {servicePayment?.paymentMode || ". . ."}
               </p>
             </div>
             <div className="flex sm:flex-row flex-col sm:justify-between sm:w-[70%]">
-              <p className="text-[#525252] font-medium text-base">Payment Status:</p>
+              <p className="text-[#525252] font-medium text-base">
+                Payment Status:
+              </p>
               <p className="font-semibold text-green-600 text-base">
                 {servicePayment?.paymentStatus || ". . ."}
               </p>
             </div>
             <div className="flex sm:flex-row flex-col sm:justify-between sm:w-[70%]">
-              <p className="text-[#525252] font-medium text-base">Transaction ID:</p>
+              <p className="text-[#525252] font-medium text-base">
+                Transaction ID:
+              </p>
               <p className="font-semibold text-[#0A1C40] text-base">
                 {servicePayment?.transactionId || ". . ."}
               </p>
             </div>
             <div className="flex sm:flex-row flex-col sm:justify-between sm:w-[70%]">
-              <p className="text-[#525252] font-medium text-base">Payment Date:</p>
+              <p className="text-[#525252] font-medium text-base">
+                Payment Date:
+              </p>
               <p className="font-semibold text-[#0A1C40] text-base">
-                {new Date(servicePayment?.paymentDate).toLocaleString() || ". . ."}
+                {new Date(servicePayment?.paymentDate).toLocaleString() ||
+                  ". . ."}
               </p>
             </div>
           </div>
-        }
+        )}
 
         <div className=" mt-5 flex justify-between items-center">
-          <Button primary={true} onClick={() => navigate(-1)}>Prev</Button>
-          <Button disabled={isPaymentDetailsLoading} onClick={() => navigate("/business")} primary={true}> Confirm</Button>
+          <Button primary={true} onClick={() => navigate(-1)}>
+            Prev
+          </Button>
+          <Button
+            disabled={isPaymentDetailsLoading}
+            onClick={() => navigate("/business")}
+            primary={true}
+          >
+            {" "}
+            Confirm
+          </Button>
         </div>
-      </div >
+      </div>
     </>
   );
 };

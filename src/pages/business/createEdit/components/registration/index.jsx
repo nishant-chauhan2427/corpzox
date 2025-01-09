@@ -16,7 +16,7 @@ import { isEqualObject } from "../../../../../utils";
 import { a, use } from "framer-motion/client";
 import client from "../../../../../redux/axios-baseurl";
 import toast from "react-hot-toast";
-
+import { ReactDatePicker } from "../../../../../components/inputs/datepicker";
 
 export const businessType = [
   { label: "Private Limited", value: "private_limited" },
@@ -33,17 +33,14 @@ export const businessType = [
 
 export const RegistrationDetails = ({ isEdit }) => {
   const [industryOptions, setIndustryOptions] = useState([]);
-  const [isIndustryLoading, setIsIndustryLoading] =  useState(false);
+  const [isIndustryLoading, setIsIndustryLoading] = useState(false);
 
   const [subIndustryOptions, setSubIndustryOptions] = useState([]);
-  const [isSubIndustryLoading, setIsSubIndustryLoading] =  useState(false);
+  const [isSubIndustryLoading, setIsSubIndustryLoading] = useState(false);
 
   const { business, businessId, loading } = useSelector(
     (state) => state.business
   );
-
-
-
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -52,7 +49,6 @@ export const RegistrationDetails = ({ isEdit }) => {
   // console.log("subIndustryOptions", subIndustryOptions);
   // console.log("loading",loading);
   // console.log("industryOptions", industryOptions);
-
 
   useEffect(() => {
     //API call to get industry options
@@ -63,25 +59,29 @@ export const RegistrationDetails = ({ isEdit }) => {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("userInfo"))?.token
+            }`,
           },
         });
         const res = response?.data?.data;
         //filter res in {label:res.name, value:res._id}
-        const filteredRes = res.map((item) => { return { label: item.name, value: item._id } });
+        const filteredRes = res.map((item) => {
+          return { label: item.name, value: item._id };
+        });
         setIndustryOptions(filteredRes);
         setIsIndustryLoading(false);
       } catch (error) {
         // console.error("Error fetching industry options", error?.response?.data?.message || error?.message);
-        error?.response?.data?.message ? toast.error("Industry list : " + error?.response?.data?.message) : toast.error(error?.message);
+        error?.response?.data?.message
+          ? toast.error("Industry list : " + error?.response?.data?.message)
+          : toast.error(error?.message);
 
         setIsIndustryLoading(false);
       }
-    }
+    };
     getIndustryOptions();
   }, []);
-
-
 
   const {
     handleSubmit,
@@ -113,7 +113,6 @@ export const RegistrationDetails = ({ isEdit }) => {
     defaultValue: "",
   });
   // console.log("selectedSubIndustry:", watch("registration.subIndustry"));
-  
 
   // console.log("selectedIndustry:", selectedIndustry);
 
@@ -135,28 +134,33 @@ export const RegistrationDetails = ({ isEdit }) => {
             headers: {
               Accept: "application/json",
               "Content-Type": "application/json",
-              'Authorization': `Bearer ${JSON.parse(localStorage.getItem('userInfo'))?.token}`,
+              Authorization: `Bearer ${
+                JSON.parse(localStorage.getItem("userInfo"))?.token
+              }`,
             },
             params: { industryId: selectedIndustry },
           });
           const res = response?.data?.data;
           //filter res in {label:res.name, value:res._id}
-          const filteredRes = res.map((item) => { return { label: item.name, value: item._id } });
-          
+          const filteredRes = res.map((item) => {
+            return { label: item.name, value: item._id };
+          });
+
           setSubIndustryOptions(filteredRes);
           setIsSubIndustryLoading(false);
         } catch (error) {
           // console.error("Error fetching industry options", error?.response?.data?.message || error?.message);
-          error?.response?.data?.message ? toast.error("Sub Industry list : " + error?.response?.data?.message) : toast.error(error?.message);
+          error?.response?.data?.message
+            ? toast.error(
+                "Sub Industry list : " + error?.response?.data?.message
+              )
+            : toast.error(error?.message);
           setIsSubIndustryLoading(false);
         }
-      }
+      };
       getSubIndustryOptions();
-
     }
   }, [selectedIndustry]);
-
-
 
   const roleOption = [
     { label: "Director/Founder/Owner", value: "director" },
@@ -227,15 +231,13 @@ export const RegistrationDetails = ({ isEdit }) => {
       return;
     }
 
-
     if (!businessId) {
       // Perform POST API call here
       dispatch(registrationDetails(payload)).then((response) => {
         // console.log("Response", response?.payload);
         // const newBusinessId = response.payload;
         // dispatch(setBusinessId(newBusinessId));
-        if (!response?.error)
-          navigate("/business/create/address");
+        if (!response?.error) navigate("/business/create/address");
       });
     } else {
       //PUT API to update changes
@@ -247,7 +249,9 @@ export const RegistrationDetails = ({ isEdit }) => {
         // const newBusinessId = response.payload;
         // dispatch(setBusinessId(newBusinessId));
         if (!response?.error)
-          isEdit ? navigate("/business/edit/address") : navigate("/business/create/address");
+          isEdit
+            ? navigate("/business/edit/address")
+            : navigate("/business/create/address");
       });
     }
   };
@@ -323,7 +327,7 @@ export const RegistrationDetails = ({ isEdit }) => {
                   options={businessType}
                   required={true}
                   // Ensure only the value is passed to the Selector
-                  value={selectedBusinessType || {}}
+                  value={selectedBusinessType}
                   onChange={(selectedValue) => {
                     // On change, set only the selected value (not the full object)
                     field.onChange(selectedValue.value);
@@ -383,12 +387,12 @@ export const RegistrationDetails = ({ isEdit }) => {
                 <Selector
                   {...field}
                   label={"Role"}
-                  placeholder={"Select role of the company"}
+                  placeholder={"Select role in the company"}
                   errorContent={errors.registration?.roleOfCompany?.message}
                   options={roleOption}
                   required={true}
                   // Ensure only the value is passed to the Selector
-                  value={selectedRole || {}}
+                  value={selectedRole }
                   onChange={(selectedValue) => {
                     // On change, set only the selected value (not the full object)
                     field.onChange(selectedValue.value);
@@ -420,7 +424,7 @@ export const RegistrationDetails = ({ isEdit }) => {
                   min={minDate.toISOString().split("T")[0]}
                   max={new Date().toISOString().split("T")[0]}
                   errorContent={errors.registration?.yearOfStablish?.message}
-                // onBlur={() => handleBlur("registration.yearOfStablish")}
+                  // onBlur={() => handleBlur("registration.yearOfStablish")}
                 />
               );
             }}
@@ -469,7 +473,7 @@ export const RegistrationDetails = ({ isEdit }) => {
                   value={selectedIndustry || null} // Ensure value matches the options
                   onChange={(selectedValue) => {
                     field.onChange(selectedValue.value); // Update the form value
-                    
+
                     setValue("registration.subIndustry", ""); // Reset sub-industry
                     trigger("registration.subIndustry"); // Trigger validation for sub-industry
                     // setSubIndustryOptions(
@@ -493,7 +497,7 @@ export const RegistrationDetails = ({ isEdit }) => {
               return (
                 <Selector
                   {...field}
-                  isLoading = {isSubIndustryLoading}
+                  isLoading={isSubIndustryLoading}
                   label="Sub Industry Type"
                   placeholder="Select sub industry type"
                   errorContent={errors.registration?.subIndustry?.message}
@@ -531,7 +535,6 @@ export const RegistrationDetails = ({ isEdit }) => {
               );
             }}
           />
-
 
           {/* Company Size */}
           {/* <Controller
@@ -578,7 +581,7 @@ export const RegistrationDetails = ({ isEdit }) => {
                   options={fundingOption}
                   required={true}
                   // Ensure that only the value is passed to the Selector
-                  value={selectedFund || {}}
+                  value={selectedFund }
                   onChange={(selectedValue) => {
                     // On change, set only the selected value (not the full object)
                     field.onChange(selectedValue.value);
@@ -597,7 +600,9 @@ export const RegistrationDetails = ({ isEdit }) => {
         <Button
           type="submit"
           primary
-          disabled={!isValid || loading || isIndustryLoading || isSubIndustryLoading}
+          disabled={
+            !isValid || loading || isIndustryLoading || isSubIndustryLoading
+          }
           isLoading={loading}
         >
           {loading ? "Saving..." : "Save & Next"}

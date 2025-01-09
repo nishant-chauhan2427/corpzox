@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 const Payments = () => {
   const { pathname } = useLocation();
-  const { totalTransaction } = useSelector((state) => state.paymentHistory)
+  const { totalTransaction } = useSelector((state) => state.paymentHistory);
 
   function getPageHeading(pathname) {
     switch (true) {
@@ -30,12 +30,12 @@ const Payments = () => {
         pathname === "/payment"
           ? "current"
           : [
-            "/payment/create",
-            "/payment/preview",
-            "/payment/history",
-          ].includes(pathname)
-            ? "completed"
-            : "upcoming",
+              "/payment/create",
+              "/payment/preview",
+              "/payment/history",
+            ].includes(pathname)
+          ? "completed"
+          : "upcoming",
     },
     {
       step: 2,
@@ -44,8 +44,8 @@ const Payments = () => {
         pathname === "/payment/create"
           ? "current"
           : ["/payment/preview", "/payment/history"].includes(pathname)
-            ? "completed"
-            : "upcoming",
+          ? "completed"
+          : "upcoming",
     },
     {
       step: 3,
@@ -54,8 +54,8 @@ const Payments = () => {
         pathname === "/payment/preview"
           ? "current"
           : ["/payment/history"].includes(pathname)
-            ? "completed"
-            : "upcoming",
+          ? "completed"
+          : "upcoming",
     },
   ];
 

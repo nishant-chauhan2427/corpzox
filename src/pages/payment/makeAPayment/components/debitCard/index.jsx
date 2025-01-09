@@ -82,7 +82,7 @@ export const DebitCard = ({ control, errors }) => {
       <p className="font-semibold text-[14px] pb-2 text-[#0A1C40]">
         Debit & Credit card
       </p>
-      <div className="flex flex-col  gap-8">
+      <div className="flex flex-col gap-4">
         <div className=" flex flex-row justify-between items-center gap-2 ">
           <Controller
             name="Debitcard"
@@ -92,17 +92,26 @@ export const DebitCard = ({ control, errors }) => {
               <Input
                 {...field}
                 type={"number"}
-                label={"Debit Card &Credit Card "}
-                placeholder={"Debit Card &Credit Card {}"}
+                label={"Debit Card & Credit Card "}
+                placeholder={"Debit Card & Credit Card {}"}
                 containerClassName={"w-full"}
                 className={"border-[#D9D9D9] border"}
                 errorContent={errors?.email?.message}
               />
             )}
           />
-          <div>
-            <ReactModal
+          <button onClick={() => setModalOpen(!modalOpen)}>
+            <FaPlus
+              size={25}
+              color="#abaaaa"
+              className="bg-[#D9D9D9] px-1 py-1 rounded-full"
+            />
+          </button>
+          {modalOpen && (
+            <ModalWrapper
+              onClick={() => setModalOpen(false)}
               title={" Enter Card Details"}
+              childrenClassName={"overflow-hidden"}
               crossButton={true}
               isOpen={modalOpen}
               onRequestClose={() => setModalOpen(false)}
@@ -116,12 +125,7 @@ export const DebitCard = ({ control, errors }) => {
                 )
               }
             >
-              <form className="flex flex-col justify-center items-center gap-20 px-4 py-4 ">
-                {/* <div>
-                  <p className="font-bold  text-xl  text-[#232323] ">
-                    Enter Card Details
-                  </p>
-                </div> */}
+              <form className="flex flex-col justify-center items-center gap-20 px-4 py-4">
                 <div className="flex justify-start flex-col w-[80%] gap-4 items-start">
                   <div className="items-start flex flex-col">
                     {" "}
@@ -150,6 +154,7 @@ export const DebitCard = ({ control, errors }) => {
                           containerClassName={"w-full"}
                           className={"border-[#D9D9D9] border"}
                           errorContent={errors?.number?.message}
+                          maxLength={16}
                         />
                       )}
                     />
@@ -171,15 +176,16 @@ export const DebitCard = ({ control, errors }) => {
                           containerClassName={"w-full"}
                           className={"border-[#D9D9D9] border"}
                           errorContent={errors?.name?.message}
+                          maxLength={50}
                         />
                       )}
                     />
                   </div>
                   <div className="flex gap-4 w-full items-center">
-                    <p className="font-semibold w-[25%] text-start text-sm text-black">
+                    <p className=" font-semibold w-[20%] text-start text-sm text-black">
                       Expiry date
                     </p>
-                    <div className="flex gap-2">
+                    <div className="flex w-[80%] gap-2">
                       <Controller
                         name="month"
                         control={control}
@@ -240,10 +246,10 @@ export const DebitCard = ({ control, errors }) => {
                   <Button primary={true}>Save & Next</Button>
                 </div>
               </form>
-            </ReactModal>
-          </div>
+            </ModalWrapper>
+          )}
         </div>
-        <div className="flex flex-col sm:flex-row  gap-4">
+        <div className="flex flex-col  gap-4">
           <div
             onClick={() => handleCardClick(1)}
             className={`flex rounded justify-between gap-3 border items-start px-2 py-4 cursor-pointer ${
