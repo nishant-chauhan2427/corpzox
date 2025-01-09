@@ -35,6 +35,8 @@ export const Verify = () => {
   const { profile } = useSelector((state) => state.auth);
 
   const [isActiveIndex, setActiveIndex] = useState(0);
+  console.log(localStorage.getItem("forgotPassword"), "forgotPassword")
+
   useEffect(() => {
     if (inputRefs.current && inputRefs.current[0]) {
       inputRefs.current[0].focus();
@@ -57,8 +59,8 @@ export const Verify = () => {
   const subHeading = isEmail
     ? `We have sent you an OTP on your registered email id ${profileEmail}`
     : profilePhone
-    ? `We have sent you an OTP on your registered phone number ${profilePhone}`
-    : `We have sent you an OTP on your registered email id ${email} `;
+      ? `We have sent you an OTP on your registered phone number ${profilePhone}`
+      : `We have sent you an OTP on your registered email id ${email} `;
 
   const validateOtp = (enteredOtp) => {
     if (enteredOtp.trim().length !== 4) {
@@ -73,6 +75,30 @@ export const Verify = () => {
     setIsVerify(true);
     dispatch(verifyUser({ otp: otp, id: profile?.[0]?.id }));
   };
+  console.log(localStorage.getItem("forgotPassword"), "localStorage.getItem");
+  // useEffect(() => {
+  //   if (isVerify && !isVerifying) {
+  //     setIsVerify(false);
+  //     if (verifyingError) {
+  //       setOtpMessage(verifyingError);
+  //     } else {
+
+  //       if (localStorage.getItem("forgotPassword") === true) {
+  //         navigate("/dashboard")
+  //       }
+  //       else {
+  //         navigate("/create-new-password");
+  //       }
+  //     }
+  //   }
+  // }, [
+  //   isVerifying,
+  //   verifyingError,
+  //   profileEmail,
+  //   profilePhone,
+  //   email,
+  //   navigate,
+  // ]);
 
   useEffect(() => {
     if (isVerify && !isVerifying) {
@@ -80,28 +106,19 @@ export const Verify = () => {
       if (verifyingError) {
         setOtpMessage(verifyingError);
       } else {
-        if (email) {
-          toast.success("Welcome to CorpZo!");
+        
+        const forgotPassword = localStorage.getItem("forgotPassword") === 'true';
+        
+        if (forgotPassword) {
+          navigate("/create-new-password"); 
         } else {
-          // toast.success(verifyMessage);
+          navigate("/dashboard"); 
         }
-        navigate("/dashboard");
+        localStorage.removeItem("forgotPassword")
       }
     }
-  }, [
-    isVerifying,
-    verifyingError,
-    profileEmail,
-    profilePhone,
-    email,
-    navigate,
-  ]);
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setOtpMessage("");
-  //   }, 5000);
-  // }, [verifyingError]);
+  }, [isVerify, isVerifying, verifyingError, navigate]); // Ensure all dependencies are included
+  
   useEffect(() => {
     if (otpMessage) {
       const timer = setTimeout(() => {
@@ -150,7 +167,7 @@ export const Verify = () => {
     <>
       <MetaTitle title={"Verify"} />
       <AuthLayout>
-      {/* className="sm:w-32 w-36" */}
+        {/* className="sm:w-32 w-36" */}
         <img src="logo.svg" alt="CORPZO Logo" width={120} />
         <div className="w-full flex">
           <div className="w-full">
@@ -191,10 +208,10 @@ export const Verify = () => {
                                 fontWeight: "600",
                                 textAlign: "center",
                                 fontSize: "1.5rem",
-                                display:"flex",
-                                gap:"2px",
+                                display: "flex",
+                                gap: "2px",
                                 borderRadius: "12px",
-                                margin:"4px"
+                                margin: "4px"
                               }}
                             />
                           );
@@ -218,7 +235,7 @@ export const Verify = () => {
                       {timer > 0 ? (
                         <p className="!text-[#969696] font-normal text-sm">
                           Resend Code{" "}
-                          <span className="!font-semibold text-[#F1359C] text-sm">
+                          <span className="!font-semibold text-[#040203] text-sm">
                             00:{timer}
                           </span>
                         </p>

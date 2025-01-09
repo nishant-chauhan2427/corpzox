@@ -67,7 +67,7 @@ const DocumentsListing = () => {
       ) : (
         <>
           <div className="flex flex-col md:flex-row justify-between gap-4">
-            <Heading backButton={true} title={"Documents"} tourButton={true}>
+            <Heading title={"Documents"} tourButton={true}>
               Documents {folders?.length ? `(${folders.length})` : ""}
             </Heading>
           </div>

@@ -44,7 +44,7 @@ export const SignIn = () => {
   const navigate = useNavigate();
   const [checkedCheckbox, setCheckedCheckbox] = useState(false);
   console.log(checkedCheckbox, "prev");
-
+  localStorage.setItem("forgotPassword", false);
   const handleCheckbox = (e) => {
     e.preventDefault();
     // console.log(checkedCheckbox, "check 1");

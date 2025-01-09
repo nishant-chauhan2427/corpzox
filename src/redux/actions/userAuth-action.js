@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import client from "../axios-baseurl";
 import toast from "react-hot-toast";
 
+
 export const loginUser = createAsyncThunk("loginUser", async (authInfo, { rejectWithValue }) => {
     try {
         console.log('authInfo......',authInfo);
@@ -66,13 +67,25 @@ export const verifyUser = createAsyncThunk("verifyUser", async (info, { rejectWi
     }
 });
 
-export const resendOtp = createAsyncThunk("resendOtp", async (data, { rejectWithValue }) => {
+export const resendOtp = createAsyncThunk("resendOtp", async ({data,navigate}, { rejectWithValue }) => {
     try {
         const response = await client.post("/user/auth/resend-otp", data, {
             withCredentials: true
-        });
+        });      
+        if(response?.data?.code==201)
+        {
+            navigate('/verify')
+        }
+        else{
+            toast.dismiss()
+            toast.error(response?.data?.message)
+        }
         return response.data;
-    } catch (error) {
+     
+       
+       
+    }
+     catch (error) {
         return rejectWithValue(error?.response?.data?.message || error?.message);
     }
 });

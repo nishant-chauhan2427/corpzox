@@ -23,7 +23,7 @@ const appSlice = createSlice({
     },
     setIsSignedIn: (state, action) =>{
       state.isSignedIn = action.payload
-      console.log(state.isSignedIn , 'asd');
+      console.log(action.payload , 'asd');
     }
   },
 });
