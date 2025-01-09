@@ -8,9 +8,7 @@ import { LinkButton } from "../../../components/link";
 import { TableShimmer } from "../../../components/loader/TableShimmer";
 import { servicesProgress } from "../../../database";
 import { getBusiness } from "../../../redux/actions/business-action";
-import {
-  updateServiveProgress
-} from "../../../redux/actions/dashboard-action";
+import { updateServiveProgress } from "../../../redux/actions/dashboard-action";
 import { resetBusiness } from "../../../redux/slices/businessSlice";
 import { calculateAge } from "../../../utils";
 import { ServicesProgress } from "../../dashboard/components/services/progress";
@@ -21,7 +19,7 @@ const BusinessDetail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { business, loading, error } = useSelector((state) => state.business);
-  const { user,fetching } = useSelector((state) => state.user);
+  const { user, fetching } = useSelector((state) => state.user);
   const queryParams = new URLSearchParams(location.search);
   const businessId = queryParams.get("id");
   // console.log("BUSINESS ID12", business)
@@ -43,15 +41,15 @@ const BusinessDetail = () => {
     dispatch(updateServiveProgress({ page: 1, businessId: businessId }));
   }, [businessId]);
 
-  
   // console.log("businessType",businessType?.filter((el)=>el.value===business?.registration?.typeOfBusiness)[0]?.label);
-  
-  
 
   const businessTableData = [
     {
       label: "Type",
-      value: businessType?.filter((el)=>el.value===business?.registration?.typeOfBusiness)[0]?.label || "-------",
+      value:
+        businessType?.filter(
+          (el) => el.value === business?.registration?.typeOfBusiness
+        )[0]?.label || "-------",
     },
     {
       label: "Registered Office",
@@ -159,7 +157,7 @@ const BusinessDetail = () => {
             </div>
             <div className="w-full  ">
               <table className="min-w-full table-auto border-collapse bg-white ">
-                <tbody>
+                <tbody >
                   {businessTableData.map((item, index) => (
                     <tr key={index}>
                       <td>
@@ -168,7 +166,7 @@ const BusinessDetail = () => {
                         </span>
                       </td>
                       <td>
-                        <span className="px-6 font-semibold text-base text-black whitespace-nowrap">
+                        <span className="px-10 font-semibold text-base text-black whitespace-nowrap">
                           {item.value}
                         </span>
                       </td>
@@ -179,13 +177,10 @@ const BusinessDetail = () => {
             </div>
 
             {fetching ? (
-          <ServiceProgressShimmer />
-
-        ) : (
-          <ServicesProgress
-            data={servicesProgress}
-          />
-        )}
+              <ServiceProgressShimmer />
+            ) : (
+              <ServicesProgress data={servicesProgress} />
+            )}
           </div>
         </section>
       )}

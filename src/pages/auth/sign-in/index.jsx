@@ -5,8 +5,6 @@ import { useForm, Controller } from "react-hook-form";
 import { Input } from "../../../components/inputs";
 import { Button } from "../../../components/buttons";
 import { MetaTitle } from "../../../components/metaTitle";
-import { MdOutlineHorizontalRule } from "react-icons/md";
-import { FaFacebookSquare, FaGoogle, FaInstagramSquare } from "react-icons/fa";
 import { DualHeadingTwo } from "../components/dualHeading/dualHeadingTwo";
 import { Checkbox } from "../../../components/inputs/checkbox";
 import { AuthLayout } from "../../../components/layout/auth";
@@ -20,7 +18,7 @@ import { signinValidationSchema } from "../../../validation/authValidatiorSchema
 import { GoogleLogin } from "react-google-login";
 import { gapi } from "gapi-script";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { setRedirectTo } from "../../../redux/slices/appSlice";
+import { setIsSignedIn, setRedirectTo } from "../../../redux/slices/appSlice";
 
 export const SignIn = () => {
   const {
@@ -42,45 +40,48 @@ export const SignIn = () => {
     loginMessage,
     profile,
   } = useSelector((state) => state.auth);
-  console.log(profile,1234567891);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [checkedCheckbox, setCheckedCheckbox] = useState(false);
+  console.log(checkedCheckbox, "prev");
 
   const handleCheckbox = (e) => {
     e.preventDefault();
-    setCheckedCheckbox(!checkedCheckbox);
-    if (checkedCheckbox) {
-      localStorage.removeItem("signedIn");
-    } else {
-      localStorage.setItem("signedIn", true);
-    }
+    // console.log(checkedCheckbox, "check 1");
+    setCheckedCheckbox((prev) => !prev);
+
+    // if (checkedCheckbox) {
+    //   localStorage.removeItem("signedIn");
+    //   setIsSignedIn(true)
+    // } else {
+    //   localStorage.setItem("signedIn", true);
+    //   // setIsSignedIn(true)
+    // }
   };
 
-  const phoneRegex = /^[1-9]\d{9}$/; 
+  console.log(checkedCheckbox, "checkbox");
 
+  const phoneRegex = /^[1-9][0-9]{8,11}$/;
   const emailOrPhone = watch("email"); // Watch the 'email' field
- 
+
   const onSubmit = async (data) => {
-  
     setIsSubmit(true);
-    let transformedData={};
+    let transformedData = {};
     const isPhoneNumber = phoneRegex.test(emailOrPhone);
     if (isPhoneNumber) {
-      transformedData.phone = emailOrPhone; 
+      transformedData.phone = emailOrPhone;
       transformedData.password = data.password;
     } else {
-      transformedData.email = emailOrPhone; 
+      transformedData.email = emailOrPhone;
       transformedData.password = data.password;
     }
 
     const token = await recaptchaRef.current.executeAsync().then((res) => {
-      console.log("check response ", res);
       data = { ...transformedData, recaptchaToken: res, userType: "end_user" };
-      //console.log(data, "data from form");
       dispatch(loginUser(data));
     });
-    dispatch(setRedirectTo("verify"))
+    dispatch(setIsSignedIn(checkedCheckbox));
+    dispatch(setRedirectTo("verify"));
   };
 
   useEffect(() => {
@@ -97,7 +98,6 @@ export const SignIn = () => {
         }
       }
     }
-    console.log(isLoggingIn, isSubmit, profile);
   }, [isLoggingIn]);
 
   const googleLogin = (data) => {
@@ -121,19 +121,18 @@ export const SignIn = () => {
     });
   });
 
- 
-
   return (
     <>
-      <MetaTitle title={"Sign In"} />
+      <MetaTitle title={"Sign in"} />
       <AuthLayout>
-        <img className="sm:w-32 w-36" src="logo.svg" alt="CORPZO Logo" />
+      {/* className="sm:w-32 w-36" */}
+        <img  src="logo.svg" alt="CORPZO Logo" width={120} />
         <div className="w-full flex">
           <div className="w-full flex flex-col ">
             <DualHeadingTwo
               containerClassName={"text-left pt-2"}
-              heading={"Sign In"}
-              subHeading={"Please Sign in to continue to your account."}
+              heading={"Sign in"}
+              subHeading={"Please sign in to continue to your account."}
             />
             <form
               onSubmit={handleSubmit(onSubmit)}
@@ -151,8 +150,8 @@ export const SignIn = () => {
                     placeholder="Email Id / Phone No."
                     className="border-[#D9D9D9] border"
                     errorContent={errors?.email?.message}
-                   // maxLength={50}
-                    maxLength={phoneRegex.test(emailOrPhone) ? 10 : 50}
+                    // maxLength={50}
+                    maxLength={phoneRegex.test(emailOrPhone) ? 12 : 50}
                   />
                 )}
               />
@@ -173,39 +172,50 @@ export const SignIn = () => {
                 )}
                 rules={{ required: "Password is required" }}
               />
-              <Link
-                to={"/forgot-password"}
-                state={{ email: emailOrPhone }}  // Passing email/phone as state
-                className="flex font-medium cursor-default text-base text-[#0A1C40]"
-              >
-                <div className="cursor-default"> <p className="cursor-pointer">Forgot Password?</p> </div>
-              </Link>
+              <div className="flex justify-between">
+                <p>
+                  <p
+                    onClick={handleCheckbox}
+                    className="!inline-flex items-center font-normal text-[14px] text-[#a5a3a3] -mt-2 gap-2"
+                  >
+                    <Checkbox
+                      checked={checkedCheckbox}
+                      onClick={(e) => e.stopPropagation()}
+                      onChange={handleCheckbox}
+                    />
+                    <p>
+                      <a
+                        className={`${
+                          checkedCheckbox
+                            ? "text-[#000] cursor-pointer "
+                            : "text-[#a5a3a3] cursor-pointer"
+                        }`}
+                      >
+                        Keep me signed in
+                      </a>
+                    </p>
+                  </p>
+                </p>
+
+                <a>
+                  <Link
+                    to={"/forgot-password"}
+                    state={{ email: emailOrPhone }} // Passing email/phone as state
+                    className="font-medium text-[14px] text-[#0A1C40]"
+                  >
+                    <a>
+                      {" "}
+                      <a>Forgot Password?</a>
+                    </a>
+                  </Link>
+                </a>
+              </div>
               <ReCAPTCHA
                 ref={recaptchaRef}
                 size="invisible"
                 sitekey={RECAPTCHA_SITE_KEY}
               />
-              <div
-                onClick={handleCheckbox}
-                className="flex items-center font-normal text-[14px] text-[#a5a3a3] -mt-2 gap-2"
-              >
-                <Checkbox
-                  checked={checkedCheckbox}
-                  onClick={(e) => e.stopPropagation()}
-                  onChange={handleCheckbox}
-                />
-                <div>
-                  <span
-                    className={`${
-                      checkedCheckbox
-                        ? "text-[#000] cursor-pointer "
-                        : "text-[#a5a3a3] cursor-pointer"
-                    }`}
-                  >
-                    Keep me Signed in
-                  </span>
-                </div>
-              </div>
+
               <Button
                 type={"submit"}
                 primary={true}
@@ -214,11 +224,11 @@ export const SignIn = () => {
                 }
                 disabled={!isValid}
                 isLoading={isSubmit}
-
               >
-                {phoneRegex.test(emailOrPhone)
+                {/* {phoneRegex.test(emailOrPhone)
                   ? "Sign in"
-                  : "Sign in"}
+                  : "Sign in"} */}
+                Sign in
               </Button>
 
               <div className="flex gap-2 items-center">
@@ -227,13 +237,14 @@ export const SignIn = () => {
                 <div className="border-t w-full border-[#D9D9D9]" />
               </div>
 
-              <div className="flex items-center justify-center rounded p-2 text-center !text-[#232323] font-semibold border border-[#E6E8E7] !bg-white">
+              <div className="flex items-center justify-center rounded-[10px] p-2 text-center text-[#232323] hover:bg-gray-100 font-semibold border border-[#E6E8E7] bg-white">
                 <GoogleLogin
                   clientId="1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com"
                   onSuccess={googleLogin}
                   onError={() => console.log("Errors")}
                   cookiePolicy={"single_host_origin"}
                   scope="openid profile email"
+                  prompt="select_account"
                   render={(renderProps) => (
                     <button
                       onClick={renderProps.onClick}
@@ -252,7 +263,7 @@ export const SignIn = () => {
               </div>
               <div className="text-center flex justify-center gap-2 font-normal text-[#6C6C6C]">
                 <p>
-                Don’t have an account yet?
+                  Don’t have an account yet?
                   <Link
                     to={"/sign-up"}
                     className="p-2 text-[#F1359C] font-semibold "

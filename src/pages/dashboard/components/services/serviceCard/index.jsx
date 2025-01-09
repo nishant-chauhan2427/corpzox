@@ -16,9 +16,10 @@ import { GoTriangleDown } from "react-icons/go";
 import { GoDotFill } from "react-icons/go";
 
 export const ServiceCard = ({ data }) => {
-
   const { dataUpdate } = useSelector((state) => state.user);
-  const [dropdownStates, setDropdownStates] = useState(dataUpdate?.data?.map(() => false));
+  const [dropdownStates, setDropdownStates] = useState(
+    dataUpdate?.data?.map(() => false)
+  );
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [serviceId, setServiceId] = useState("");
   const [transactionId, setTransactionId] = useState("");
@@ -27,15 +28,17 @@ export const ServiceCard = ({ data }) => {
 
   const { isRatingAdding } = useSelector((state) => state.serviceDetails);
 
-useEffect(()=>{
-  setDropdownStates(dataUpdate?.data?.map((_,i)=>{
-    if(dropdownStates[i]==true) return true;
-    else return false;
-  }))
-},[dataUpdate?.data])
+  useEffect(() => {
+    setDropdownStates(
+      dataUpdate?.data?.map((_, i) => {
+        if (dropdownStates[i] == true) return true;
+        else return false;
+      })
+    );
+  }, [dataUpdate?.data]);
 
   const handleServiceDropdown = (index) => {
-    console.log(index,"Dropdown Index");
+    console.log(index, "Dropdown Index");
     setDropdownStates((prevState) =>
       prevState.map((state, i) => (i === index ? !state : state))
     );
@@ -177,10 +180,10 @@ useEffect(()=>{
                     Service: {data?.service[0]?.name}{" "}
                   </NavLink>
                   {/* <img
-                               src="/icons/dashboard/service-error.svg"
-                               width={15}
-                               alt=""
-                             /> */}
+                    src="/icons/dashboard/service-error.svg"
+                    width={15}
+                    alt=""
+                  /> */}
                 </div>
                 <div className="flex flex-row gap-2">
                   <h6 className="font-medium text-sm text-[#7C7D80]">
@@ -206,7 +209,6 @@ useEffect(()=>{
                     Rate Your Experience
                   </Button>
                 )}
-
                 <LinkButton
                   className={"px-4 py-2 font-medium text-xs text-[#0A1C40]"}
                   to={`/payment/create/${data._id}`}
@@ -247,7 +249,6 @@ useEffect(()=>{
               </div>
             </div>
             <Dropdown
-            
               isOpen={dropdownStates[index]}
               servicesProgessSteps={servicesProgessSteps}
             />

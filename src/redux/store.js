@@ -27,7 +27,7 @@ import subscriptionsReducer from "./admin/slices/subscriptionSlice"
 const persistConfig = {
   key: "root",
   storage,
-  blacklist :['app','service','serviceDetails','wishlist','document','profile','user']
+  blacklist :['service','serviceDetails','wishlist','document','profile','user']
 };
 
 // Combine all slices into a single root reducer

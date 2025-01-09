@@ -25,7 +25,8 @@ export const Signup = () => {
     handleSubmit,
     formState: { errors, isValid },
     trigger,
-    setFieldValue,
+    setValue,
+    setError,
     reset,
   } = useForm({
     resolver: yupResolver(signUpValidationSchema),
@@ -46,7 +47,7 @@ export const Signup = () => {
 
   const googleLogin = (data) => {
     setIsSubmit(true);
-    console.log(data,"GOOGLE");
+    //console.log(data,"GOOGLE");
     dispatch(
       thirdPartyLogin({
         email: data?.profileObj?.email,
@@ -57,7 +58,7 @@ export const Signup = () => {
     reset();
   };
 
-  const [error, setError] = useState("");
+  const [error, setSubmitError] = useState("");
   const [isSubmit, setIsSubmit] = useState(false);
   const [emailSignUp, setEmailSignUp] = useState("");
 
@@ -67,32 +68,25 @@ export const Signup = () => {
   const onSubmit = async (data) => {
     
     setIsSubmit(true);
-    // if (data?.phone) {
-    //  // console.log(data?.phone,"data?.phone");
-    //   console.log(data?.phone,"data?.phone");
-    //   data.countryCode = `+${data.phone.toString().slice(0, 2)}`;
-    //   data.phone = +data.phone.toString().slice(2);
-    // }
-    //console.log(data);
-    // Reset error message
-    setError("");
+    setSubmitError("");
 
-    // const token = await recaptchaRef.current.executeAsync().then((res) => {
-    //   console.log("check response ", res);
-    //   data = { ...data, recaptchaToken: res, userType: "end_user" };
-    //   console.log(data, "data from form");
-    //   dispatch(loginUser(data));
-    // });
     const token = await recaptchaRef.current.executeAsync().then((res) => {
+      const transformData={
+        full:data.full,
+        phone:data.phone,
+        email:data.email,
+        password:data.password
+      }
       const userData = {
-        ...data,
+
+        ...transformData,
         countryCode:`+${data.phone.toString().slice(0, 2)}`,
         phone:+data.phone.toString().slice(2),
         firstName: data.full,
         recaptchaToken: res,
       };
       // console.log("data?.phone",data?.phone);
-      // console.log(userData,"userData");
+      //console.log(userData,"userData");
       delete userData.full;
       setEmailSignUp(data.email);
       dispatch(updateEmail(data.email));
@@ -119,14 +113,15 @@ export const Signup = () => {
 
   return (
     <>
-      <MetaTitle title={"Sign Up"} />
+      <MetaTitle title={"Sign up"} />
       <AuthLayout>
-        <img className="sm:w-32 w-36" src="logo.svg" alt="CORPZO Logo" />
+      {/* className="sm:w-32 w-36" */}
+        <img  src="logo.svg" alt="CORPZO Logo" width={120} />
         <div className="w-full  flex  ">
           <div className="w-full flex flex-col">
             <DualHeadingTwo
               containerClassName={"text-left pt-2"}
-              heading={"Sign Up"}
+              heading={"Sign up"}
               subHeading={"Welcome to CorpZO. Please sign up here!"}
             />
             <form
@@ -162,18 +157,18 @@ export const Signup = () => {
                       touched={true}
                       errorContent={errors?.phone?.message}
                       onBlur={() => handleBlur("phone")}
-                      // onChange={(value, country) => {
-                      //   // console.log("check country value", country?.dialCode,value);
-                      //   if (country?.dialCode === value) {
-                      //     setFieldError(
-                      //       "phone",
-                      //       "Please input Phone number"
-                      //     );
-                      //   }else{
-                      //     setFieldValue("phone", value);
-                      //   }
+                      onChange={(value, country) => {
+                         //console.log("check country value", country?.dialCode,value);
+                        if (country?.dialCode === value) {
+                          setError(
+                            "phone",
+                            "Please input Phone number"
+                          );
+                        }else{
+                          setValue("phone", value);
+                        }
                        
-                      // }}
+                      }}
                     />
                    
                   )}
@@ -214,6 +209,23 @@ export const Signup = () => {
                     />
                   )}
                 />
+                <Controller
+                name="confirmPassword"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    label={"Confirm Password"}
+                    type={"password"}
+                    className={"border-[#D9D9D9] border"}
+                    placeholder={"Re-enter Password"}
+                    errorContent={errors.confirmPassword?.message}
+                    onBlur={() => handleBlur("password")}
+                  />
+                )}
+                // rules={{ required: "Password is required" }}
+              />
 
                 <ReCAPTCHA
                   ref={recaptchaRef}
@@ -222,7 +234,7 @@ export const Signup = () => {
                 />
               </div>
 
-              <div className="flex flex-col gap-4 sm:pt-4">
+              <div className="flex flex-col gap-4">
                 <Button
                   type={"submit"}
                   v2={true}
@@ -241,7 +253,7 @@ export const Signup = () => {
                   <div className="border-t w-full border-[#D9D9D9]"></div>
                 </div>
 
-                <div className="flex items-center justify-center rounded p-2 text-center !text-[#0A1C40] font-semibold border border-[#E6E8E7] !bg-white">
+                <div className="flex items-center justify-center rounded-[10px] p-2 text-center text-[#0A1C40] font-semibold border border-[#E6E8E7] bg-white hover:bg-gray-100">
                   <div className="flex gap-2">
                     <GoogleLogin
                       clientId="1028618978770-l4is0dsn2rtk3ig0k15aqgvvhtfd6qas.apps.googleusercontent.com"
@@ -249,6 +261,7 @@ export const Signup = () => {
                       onError={() => console.log("Errors")}
                       cookiePolicy={"single_host_origin"}
                       scope="openid profile email"
+                      prompt="select_account"
                       render={(renderProps) => (
                         <button
                           onClick={renderProps.onClick}
@@ -274,7 +287,7 @@ export const Signup = () => {
                       to={"/sign-in"}
                       className="p-2 text-[#F1359C] font-semibold "
                     >
-                      Login
+                      Sign in
                     </Link>
                   </p>
                 </div>

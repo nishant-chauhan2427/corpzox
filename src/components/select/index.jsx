@@ -104,6 +104,7 @@ export const Selector = ({
   lefticon,
   labelicon,
   labelClassName,
+  menuClassName,
   ErrorMessage,
   onClick,
   onBlur,
@@ -158,15 +159,15 @@ export const Selector = ({
         }
         styles={customStyles}
         options={options}
-        //  classNames={{
-        //     control: () => "!w-full !min-h-10 !bg-transparent !border-none !rounded-[8px]",
-        //     menu: () => "dark:!bg-gray-900 dark:!text-gray-500 focus:!shadow-none focus:!outline-none",
-        //     option: (state) => `${state.isSelected && "!text-white dark:!text-white"}`,
-        //     singleValue: () => "!text-black dark:!text-white"
-        //   }}
+         classNames={{
+            // control: () => "!w-full !min-h-10 !bg-transparent !border-none !rounded-[8px]",
+            menu: () => `${menuClassName}`,
+            // option: (state) => `${state.isSelected && "!text-white dark:!text-white"}`,
+            // singleValue: () => "!text-black dark:!text-white"
+          }}
         className={` my-react-select-container ${
           lefticon ? `pl-6` : `pl-2`
-        }  ${ringColor} ${className} peer block w-full text-sm text-black dark:text-white bg-white dark:bg-gray-950 rounded-lg appearance-none placeholder-transparent focus:outline-none`}
+        }  ${ringColor} ${className} peer block w-full text-sm text-black dark:text-white bg-white dark:bg-gray-950 rounded-lg appearance-none placeholder-transparent focus:outline-none border border-[#D9D9D9]`}
         classNamePrefix="my-react-select"
         components={{
           // Option: CustomSelectOption,

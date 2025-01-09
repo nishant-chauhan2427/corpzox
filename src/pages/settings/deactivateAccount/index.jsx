@@ -159,8 +159,7 @@ const DeactivateAccount = () => {
               Are you sure you want to deactivate your account?
             </h5>
             <p className="text-xs text-[#828282]">
-              Bear in mind that when you deactivate your account, all your data
-              will also be hidden from the platform.
+            Deactivating your account will make all your data inaccessible.
             </p>
           </div>
           <div className="flex justify-center items-center gap-4">

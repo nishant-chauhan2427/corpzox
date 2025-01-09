@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "../../../../../components/buttons";
 import { updateFundingDetails, updateRegistrationDetails } from "../../../../../redux/actions/business-action";
+import { isEqualObject } from "../../../../../utils";
 
 export const FundingDetails = ({ isEdit }) => {
 
@@ -15,7 +16,7 @@ export const FundingDetails = ({ isEdit }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  console.log("business,businessId", business, businessId);
+  // console.log("business,businessId", business, businessId);
 
 
   const {
@@ -62,7 +63,17 @@ export const FundingDetails = ({ isEdit }) => {
     const payload = data?.funding
 
     if (!businessId) {
-      console.log("No businessId exist is in business Store");
+      // console.log("No businessId exist is in business Store");
+      return;
+    }
+
+
+    const { funding } = business;
+    const isChanged = funding && !isEqualObject(funding, payload);
+    // console.log("isChanged", isChanged);
+
+    if (!isChanged) {
+      isEdit ? navigate(-5) : navigate("/business/preview");
       return;
     }
 
@@ -158,12 +169,12 @@ export const FundingDetails = ({ isEdit }) => {
       </div>
       {/* Navigation Buttons */}
       <div className="flex justify-between items-center gap-4 m-2">
-        <Button type="button" primary onClick={() => navigate(-1)}>
-          Prev
+        <Button type="button" className="flex items-center gap-2" onClick={() => navigate(-1)}>
+          <span> &lt;&lt; </span>Back
         </Button>
 
         <Button type="submit" primary disabled={!isValid || loading} isLoading={loading} >
-         {loading?"saving...": isEdit ? "Save & Continue" : "Save & Preview"}
+          {loading ? "Saving..." : isEdit ? "Save & Continue" : "Save & Preview"}
         </Button>
       </div>
     </form>

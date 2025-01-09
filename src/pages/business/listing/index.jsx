@@ -32,7 +32,7 @@ const BusinessListing = () => {
   const { business, isLoading, totalCount, page, error, loadingMore } =
     useSelector((state) => state.businessList);
 
-  console.log("businessData", business, totalCount, isLoading, error, page);
+  console.log("businessData", business);
 
   useEffect(() => {
     dispatch(getAllBusiness({ query: searchValue, page: 1 }));
@@ -65,23 +65,24 @@ const BusinessListing = () => {
   // return<div>Business page</div>
 
   // if (isLoading) return <BusinessCardShimmer count={8} className={"p-2"} />;
-  if (isLoading) return (<div>
-    <BusinessCardShimmer className={"py-4 h-20"} />
-    <div className="py-4 grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-2 gap-4">
-      {Array.from({ length: 9 }).map((_, index) => (
-        <div key={index}>
-          <BusinessCardShimmer />
+  if (isLoading)
+    return (
+      <div>
+        <BusinessCardShimmer className={"py-4 h-20"} />
+        <div className="py-4 grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-2 gap-4">
+          {Array.from({ length: 9 }).map((_, index) => (
+            <div key={index}>
+              <BusinessCardShimmer />
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
-  </div>
-  )
+      </div>
+    );
 
   const title = location.pathname.includes("profile") ? "Profile" : "Business";
   return (
     <div className="flex flex-col overflow-y-auto pb-4">
       <div className="flex flex-col md:flex-row justify-between gap-4">
-
         <Heading title={title} backButton={true} tourButton={true}>
           Your Business {totalCount ? `(${totalCount})` : ""}
         </Heading>
@@ -113,9 +114,13 @@ const BusinessListing = () => {
           </div>
         }
         endMessage={
-          (totalCount && totalCount > 0 && business?.length > 6) && <p style={{ textAlign: 'center' }}>
-            <b>Yay! You have seen it all</b>
-          </p>
+          totalCount &&
+          totalCount > 0 &&
+          business?.length > 6 && (
+            <p style={{ textAlign: "center" }}>
+              <b>Yay! You have seen it all</b>
+            </p>
+          )
         }
       >
         {business?.length > 0 ? (
@@ -128,10 +133,12 @@ const BusinessListing = () => {
           <div className="flex justify-center gap-2 items-center flex-col h-[80vh]">
             <img src="/images/business/no-business.svg" alt="" />
             <p className="font-bold text-xl text-[#000000]">
-              {searchValue?"No Such Business Found":"No Business Created"}
+              {searchValue ? "No Such Business Found" : "No Business Created"}
             </p>
             <p className="font-normal text-[#797979]">
-              {searchValue?"Try searching with different keyword":"Create a new business to get started"}
+              {searchValue
+                ? "Try searching with different keyword"
+                : "Create a new business to get started"}
             </p>
           </div>
         )}
@@ -141,7 +148,6 @@ const BusinessListing = () => {
 };
 
 export default BusinessListing;
-
 const labelValue = (label, value) => (
   <div className="flex justify-between">
     <p className="font-medium text-sm text-[#000000B2] ">{label}</p>

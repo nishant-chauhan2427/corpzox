@@ -117,7 +117,7 @@ export const MainTab = () => {
     <div className="relative flex items-center gap-2">
       {/* Left Arrow Button */}
       {isOverflowing && category?.list.length > 0 && activeTabIndex !==0 &&<button onClick={scrollLeft} className="z-10">
-        <IoIosArrowBack  size={20} />
+        <IoIosArrowBack color="#534f4f" size={20} />
       </button>}
       <div
         className="flex items-center gap-4 overflow-x-auto scrollbar-hide whitespace-nowrap border-b"
@@ -140,7 +140,7 @@ export const MainTab = () => {
 
       {/* Right Arrow Button */}
       {isOverflowing &&  category?.list.length > 0 && activeTabIndex !== category?.list.length -1 && <button onClick={scrollRight} className="z-10">
-        <IoIosArrowForward  size={20} />
+        <IoIosArrowForward color="#534f4f" size={20} />
       </button>}
     </div>
   );

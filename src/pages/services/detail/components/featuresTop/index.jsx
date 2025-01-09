@@ -11,10 +11,10 @@ const featuresData = [
   },
 ];
 
-export const Features = () => {
+export const FeaturesTop = () => {
   return (
     <div className="my-5 py-[1px] bg-gradient-to-r from-white via-[#BCBCBC] to-white">
-      <div className="py-4 bg-white grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="py-4 bg-white grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-4">
         {featuresData.map((data, index) => (
           <IconBox key={index} image={data.image} label={data.label} />
         ))}

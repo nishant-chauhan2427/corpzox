@@ -48,7 +48,7 @@ const Dashboard = () => {
   const { businessId } = useSelector((state) => state.business);
   const queryParams = new URLSearchParams(location.search);
   const searchValue = queryParams.get("search");
-  const url = window.location.href
+  const url = window.location.href;
 
   const {
     user = {},
@@ -61,11 +61,11 @@ const Dashboard = () => {
     servicesError,
     dataUpdate,
     loading,
-    fetching
+    fetching,
   } = useSelector((state) => state.user);
-  const {
-    email,
-  } = useSelector((state) => state.auth);
+  const { email } = useSelector((state) => state.auth);
+
+  const { isSignedIn } = useSelector((state) => state.app);
 
   const { recommendedServiceList, isRecommendedServiceLoading } = useSelector(
     (state) => state.service
@@ -74,16 +74,15 @@ const Dashboard = () => {
   const formattedRecommendedServices = recommendedServiceList?.map(
     (service) => {
       return {
-        _id : service?._id,
+        _id: service?._id,
         name: service.service[0]?.name,
         details: service.service[0]?.details,
       };
     }
   );
 
-  
   // const isSignedIn = localStorage.getItem('signedIn');
-  
+
   // useEffect(() => {
   //   if (!isSignedIn) {
   //     let userInfo = null;
@@ -96,14 +95,13 @@ const Dashboard = () => {
   //   }
   // }, [isSignedIn]);
 
-  
-  
+  console.log(isSignedIn, "Session...");
 
-  useEffect(()=>{
+  useEffect(() => {
     if (email) {
-      dispatch(clearEmail()); 
+      dispatch(clearEmail());
     }
-  })
+  });
   useEffect(() => {
     dispatch(updateServiveProgress({ page: 1 }));
   }, [dispatch]);
@@ -134,13 +132,21 @@ const Dashboard = () => {
       <section className="py-4 flex flex-col gap-4 ">
         <div className="py-2 flex flex-col md:flex-row justify-between gap-4">
           <div className="flex flex-col sm:flex-row gap-4 w-full">
-            {loading ? (<DashboardProfileCardShimmer />) : (<Profile user={user} />)}
+            {loading ? (
+              <DashboardProfileCardShimmer />
+            ) : (
+              <Profile user={user} />
+            )}
             {/* <Profile user={user} /> */}
             {/* <AccountManager manager={manager} /> */}
           </div>
           {/* <Advertisement /> */}
         </div>
-        {businessLoading ? (<BusinessCardShimmer />) : (<Business data={business?.list} total={business?.totalPage} />)}
+        {businessLoading ? (
+          <BusinessCardShimmer />
+        ) : (
+          <Business data={business?.list} total={business?.totalPage} />
+        )}
         {isRecommendedServiceLoading ? (
           <div className="flex flex-row gap-2">
             {Array.from({ length: 2 }, (_, index) => (
@@ -153,14 +159,10 @@ const Dashboard = () => {
             total={formattedRecommendedServices?.length}
           />
         )}
-
         {fetching ? (
           <ServiceProgressShimmer count={3} className={"p-2"} />
-
         ) : (
-          <ServicesProgress
-            data={servicesProgress}
-          />
+          <ServicesProgress data={servicesProgress} />
         )}
       </section>
     </>
