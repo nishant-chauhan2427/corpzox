@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import ProfileCard from "../profile/components/profileCard";
 import { Business } from "../dashboard/components/business";
-import { ServicesProgress } from "../dashboard/components/services/progress";
 import { servicesProgress, businessListing } from "../../database";
 import { getUser, getUserBusiness, updateServiveProgress } from "../../redux/actions/dashboard-action";
 import { useDispatch, useSelector } from "react-redux";

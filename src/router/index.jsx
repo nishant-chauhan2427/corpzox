@@ -1,52 +1,29 @@
-import App from "../App";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import HomePage from "../pages/home";
-import { SignIn } from "../pages/auth/sign-in";
-import { Verify } from "../pages/auth/verify";
-import { ForgotPassword } from "../pages/auth/forgot-password";
+import App from "../App";
 import { ErrorComponent } from "../components/error";
+import { PrimaryLayout } from "../components/layout/primary";
+import { CreateNewPassword } from "../pages/auth/create-new-password";
+import { ForgotPassword } from "../pages/auth/forgot-password";
+import { SignIn } from "../pages/auth/sign-in";
+import { Signup } from "../pages/auth/sign-up";
+import { Verify } from "../pages/auth/verify";
+import CreateBusiness from "../pages/business/createEdit";
+import { AddressDetails } from "../pages/business/createEdit/components/address";
+import { FinancialDetails } from "../pages/business/createEdit/components/financial";
+import { FundingDetails } from "../pages/business/createEdit/components/funding";
+import { KYCDetails } from "../pages/business/createEdit/components/kyc";
+import { RegistrationDetails } from "../pages/business/createEdit/components/registration";
+import BusinessDetail from "../pages/business/detail";
+import BusinessListing from "../pages/business/listing";
+import BusinessPreview from "../pages/business/preview";
+import Dashboard from "../pages/dashboard";
+import FundraiseListing from "../pages/fundraise/listing";
+import HomePage from "../pages/home";
+import Profile from "../pages/profile";
+import ProfileEdit from "../pages/profile/editProfile";
 import { AuthWrapper } from "./authWrapper";
 import { IsLoggedInWrapper } from "./isLoggedInWrapper";
 import { IsRedirectWrapper } from "./isRedirectWrapper";
-import { PrimaryLayout } from "../components/layout/primary";
-import { Signup } from "../pages/auth/sign-up";
-import { CreateNewPassword } from "../pages/auth/create-new-password";
-import Dashboard from "../pages/dashboard";
-import ServicesListing from "../pages/services/listing";
-import ServiceDetail from "../pages/services/detail";
-import BusinessListing from "../pages/business/listing";
-import BusinessDetail from "../pages/business/detail";
-import MakeAPayment from "../pages/payment/makeAPayment";
-import CreateBusiness from "../pages/business/createEdit";
-import SelectBusiness from "../pages/payment/selectBusiness";
-import BusinessPreview from "../pages/business/preview";
-import FundraiseListing from "../pages/fundraise/listing";
-import InvestmentListing from "../pages/investment/listing";
-import DocumentsListing from "../pages/documents/listing";
-import ChangePassword from "../pages/settings/changePassword";
-import PreviewPayment from "../pages/payment/previewPayment";
-import DeactivateAccount from "../pages/settings/deactivateAccount";
-import SubscriptionHistory from "../pages/settings/subscriptionHistory";
-import Settings from "../pages/settings";
-import History from "../pages/payment/history";
-import Profile from "../pages/profile";
-import ProfileEdit from "../pages/profile/editProfile";
-import Wishlist from "../pages/wishlist";
-import Payments from "../pages/payment";
-import DocumentDetail from "../pages/documents/detail";
-import OffersDetails from "../pages/offers/components";
-import ServiceprogressViewAll from "../pages/services/serviceProgressViewAll";
-import { RegistrationDetails } from "../pages/business/createEdit/components/registration";
-import { AddressDetails } from "../pages/business/createEdit/components/address";
-import { FinancialDetails } from "../pages/business/createEdit/components/financial";
-import { KYCDetails } from "../pages/business/createEdit/components/kyc";
-import { FundingDetails } from "../pages/business/createEdit/components/funding";
-import { ServicesProgress } from "../pages/dashboard/components/services/progress";
-import { RecommendedServices } from "../pages/dashboard/components/services/recommended";
-import  RecommendedServicesViewALl  from "../pages/services/recommendServicesViewAll";
-import Services from "../pages/admin/services";
-import BasicDetails from "../pages/admin/services/BasicDetails";
-import ServiceForm from "../pages/admin/services/serviceForm";
 
 const router = createBrowserRouter([
   {
@@ -177,71 +154,6 @@ const router = createBrowserRouter([
               },
             ],
           },
-          // Services routes
-          {
-            path: "services",
-            children: [
-              {
-                index: true,
-                element: <ServicesListing />,
-              },
-              {
-                path: ":categoryId/:subCategoryId",
-                element: <ServicesListing />,
-              },
-              {
-                path: "create/:serviceId",
-                element: <ServiceDetail />,
-              },
-              {
-                path: "edit/:serviceId",
-                element: <ServiceDetail />,
-              },
-              {
-                path: "detail/:serviceId",
-                element: <ServiceDetail />,
-              },
-              {
-                path: "serviceprogressdetail",
-                element: <ServiceprogressViewAll />,
-              },
-              {
-                path: "recommended-services-view-all",
-                element: <RecommendedServicesViewALl />,
-              },
-            ],
-          },
-          // Payment route
-          {
-            path: "payment",
-            element: <Payments />,
-            children: [
-              {
-                path: ":serviceId/:subscriptionId",
-                element: <MakeAPayment />,
-              },
-              {
-                path: ":serviceId/:quotationId",
-                element: <MakeAPayment />,
-              },
-              {
-                path: ":serviceId",
-                element: <MakeAPayment />,
-              },
-              {
-                path: "create/:applicationId",
-                element: <SelectBusiness />,
-              },
-              {
-                path: "preview/:applicationId",
-                element: <PreviewPayment />,
-              },
-              {
-                path: "history",
-                element: <History />,
-              },
-            ],
-          },
           // Fundraise route
           {
             path: "fundraise",
@@ -252,55 +164,7 @@ const router = createBrowserRouter([
               },
             ],
           },
-          // Investment route
-          {
-            path: "investment",
-            children: [
-              {
-                index: true,
-                element: <InvestmentListing />,
-              },
-            ],
-          },
-          // Documents route
-          {
-            path: "documents",
-            children: [
-              {
-                index: true,
-                element: <DocumentsListing />,
-              },
-
-              {
-                path: "detail/:id",
-                element: <DocumentDetail />,
-              },
-            ],
-          },
-          // Settings route
-          {
-            path: "settings",
-            element: <Settings />,
-            children: [
-              {
-                index: true,
-                element: <ChangePassword />,
-              },
-              {
-                index: "change-password",
-                element: <ChangePassword />,
-              },
-              {
-                path: "deactivate-account",
-                element: <DeactivateAccount />,
-              },
-              {
-                path: "subscription-history",
-                element: <SubscriptionHistory />,
-              },
-            ],
-          },
-          // Profile route
+                    // Profile route
           {
             path: "profile",
             children: [
@@ -315,49 +179,8 @@ const router = createBrowserRouter([
             ],
           },
           // Wishlist route
-          {
-            path: "wishlist",
-            children: [
-              {
-                index: true,
-                element: <Wishlist />,
-              },
-            ],
-          },
-          {
-            path: "offersDetails",
-            children: [
-              {
-                index: true,
-                element: <OffersDetails />,
-              },
-            ],
-          },
         ],
       },
-      // adminroutes
-      {
-        path: "/admin",
-        element: <PrimaryLayout />,
-        children:[ 
-          {
-            path: "services",
-            element : <Services/>
-          },
-          // {
-          //   path: "services/create-service",
-          //   element : <BasicDetails/>
-          // },
-          {
-            path: "services/create-service",
-            element : <ServiceForm/>
-          },
-          {
-            path: "services/update-service/:id",
-            element : <BasicDetails/>
-          }
-        ]
-      }
     ],
   },
 ]);

@@ -8,33 +8,23 @@ import { useLocation } from "react-router-dom";
 // import { businessCard, recommednedDetail,serviceProgressUpdateDetail } from "../../database";
 // import { GoDotFill } from "react-icons/go";
 // import { ImCross } from "react-icons/im";
-import { useState, useEffect } from "react";
-import {
-  getUser,
-  getUserBusiness,
-  getUserServices,
-  updateServiveProgress,
-} from "../../redux/actions/dashboard-action";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  businessListing,
-  recommendedServicesListing,
-  servicesProgress,
-} from "../../database";
-import { Profile } from "./components/profile";
-import { AccountManager } from "./components/accountManager";
-import { Advertisement } from "./components/adverstisement";
-import { RecommendedServices } from "./components/services/recommended";
-import { ServicesProgress } from "./components/services/progress";
-import { Business } from "./components/business";
-import { recommendedServiceListing } from "../../redux/actions/servicesListing-action";
-import { RecommendedServiceCardShimmer } from "../../components/loader/RecommendedServiceCardShimmer";
 import { Heading } from "../../components/heading";
-import { ServiceProgressShimmer } from "../../components/loader/ServiceProgressShimmer";
-import { DashboardProfileCardShimmer } from "../../components/loader/DashboardProfileCardShimmer";
 import { BusinessCardShimmer } from "../../components/loader/BusinessCardShimmer";
-import toast from "react-hot-toast";
+import { DashboardProfileCardShimmer } from "../../components/loader/DashboardProfileCardShimmer";
+import { RecommendedServiceCardShimmer } from "../../components/loader/RecommendedServiceCardShimmer";
+import { ServiceProgressShimmer } from "../../components/loader/ServiceProgressShimmer";
+import {
+  servicesProgress
+} from "../../database";
+import {
+  getUserBusiness,
+  updateServiveProgress
+} from "../../redux/actions/dashboard-action";
 import { clearEmail } from "../../redux/slices/userAuth-slice";
+import { Business } from "./components/business";
+import { Profile } from "./components/profile";
 
 const Dashboard = () => {
   const [accountShowButton, setAccountShowButton] = useState(false);
@@ -45,7 +35,7 @@ const Dashboard = () => {
   );
   const dispatch = useDispatch();
   const location = useLocation();
-  const { businessId } = useSelector((state) => state.business);
+  // const { businessId } = useSelector((state) => state.business);
   const queryParams = new URLSearchParams(location.search);
   const searchValue = queryParams.get("search");
   const url = window.location.href;
@@ -66,20 +56,6 @@ const Dashboard = () => {
   const { email } = useSelector((state) => state.auth);
 
   const { isSignedIn } = useSelector((state) => state.app);
-
-  const { recommendedServiceList, isRecommendedServiceLoading } = useSelector(
-    (state) => state.service
-  );
-
-  const formattedRecommendedServices = recommendedServiceList?.map(
-    (service) => {
-      return {
-        _id: service?._id,
-        name: service.service[0]?.name,
-        details: service.service[0]?.details,
-      };
-    }
-  );
 
   // const isSignedIn = localStorage.getItem('signedIn');
 
@@ -121,11 +97,7 @@ const Dashboard = () => {
     dispatch(getUserBusiness({ query: searchValue ? searchValue : "" }));
     // dispatch(getUserServices({ query: searchValue ? searchValue : "" }));
   }, [searchValue]);
-  useEffect(() => {
-    formattedRecommendedServices &&
-      formattedRecommendedServices.length === 0 &&
-      dispatch(recommendedServiceListing());
-  }, []);
+
   return (
     <>
       <Heading title={"Dashboard"}></Heading>
@@ -146,23 +118,6 @@ const Dashboard = () => {
           <BusinessCardShimmer />
         ) : (
           <Business data={business?.list} total={business?.totalPage} />
-        )}
-        {isRecommendedServiceLoading ? (
-          <div className="flex flex-row gap-2">
-            {Array.from({ length: 2 }, (_, index) => (
-              <RecommendedServiceCardShimmer key={index} />
-            ))}
-          </div>
-        ) : (
-          <RecommendedServices
-            data={formattedRecommendedServices}
-            total={formattedRecommendedServices?.length}
-          />
-        )}
-        {fetching ? (
-          <ServiceProgressShimmer count={3} className={"p-2"} />
-        ) : (
-          <ServicesProgress data={servicesProgress} />
         )}
       </section>
     </>

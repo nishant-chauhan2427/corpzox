@@ -1,34 +1,28 @@
-import { Search } from "../search";
-import { Button } from "../buttons";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { FiLogOut } from "react-icons/fi";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { HiOutlineUser } from "react-icons/hi";
+import { IoSettingsOutline } from "react-icons/io5";
+import { RxCross2, RxHamburgerMenu } from "react-icons/rx";
 import {
   Link,
   useLocation,
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import { FiLogOut } from "react-icons/fi";
 import { headerLinks } from "../../database";
-import { HiOutlineUser } from "react-icons/hi";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { CrossButton } from "../buttons/crossButton";
-import { IoIosArrowDown, IoMdNotificationsOutline } from "react-icons/io";
-import { RxArrowRight, RxCross2, RxHamburgerMenu } from "react-icons/rx";
-import { AnimatePresence, motion } from "framer-motion";
+import { useOutsideClick } from "../../utils";
+import { Button } from "../buttons";
+import { Search } from "../search";
 import { IconWrapper } from "../wrappers/icon-wrapper";
-import { IoSettingsOutline } from "react-icons/io5";
-import { titleCase, useOutsideClick } from "../../utils";
 // import { FullScreenButton } from "../fullScreen";
-import { ThemeSwitch } from "../theme/switch";
-import { capitalize } from "../../utils";
-import { Notification } from "../notification";
 import { useDispatch, useSelector } from "react-redux";
-import { clearUser } from "../../redux/slices/userLoginSlice";
-import { ConfirmationModal } from "../modal/confirmationModal";
-import { persistor } from "../../redux/store";
-import { clearDocumentList } from "../../redux/slices/documentSlice";
 import { getUser } from "../../redux/actions/dashboard-action";
-import { Tooltip } from "../tooltip";
+import { clearUser } from "../../redux/slices/userLoginSlice";
+import { persistor } from "../../redux/store";
+import { capitalize } from "../../utils";
+import { ConfirmationModal } from "../modal/confirmationModal";
 
 export const Header = ({ className, collapse, setCollapse }) => {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);

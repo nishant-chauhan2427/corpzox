@@ -1,28 +1,17 @@
 // redux/store.js
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { persistStore, persistReducer } from "redux-persist";
+import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage
 
 // Import your slices
-import userAuthSlice from "./slices/userAuth-slice";
-import userUtilitySlice from "./slices/utillitySlice";
-import appSlice from "./slices/appSlice";
-import serviceListingSlice from "./slices/serviceListingSlice";
-import businessSlice from './slices/businessSlice';
 import { composeWithDevTools } from "redux-devtools-extension";
-import userSlice from "./slices/userLoginSlice";
-import profileReducer from "./slices/profileSlice"
-import settingsReducer from "./slices/settingsSlice"
-import wishListReducer from "./slices/wishlistSlice"
-import serviceDetailsReducer from "./slices/serviceDetailsSlice"
-import documentSlice from "./slices/documentSlice";
-import paymentHistoryReducer from "./slices/paymentHistorySlice"
-import dashboardReducer from "./slices/dashboardSlice"
-import offerSlice from "./slices/offerSlice"
+import appSlice from "./slices/appSlice";
 import businessPageSlice from "./slices/businessPageSlice";
-import serviceReducer from "./admin/slices/serviceSlice"
-import stepsReducer from "./admin/slices/stepsSlice"
-import subscriptionsReducer from "./admin/slices/subscriptionSlice"
+import dashboardReducer from "./slices/dashboardSlice";
+import profileReducer from "./slices/profileSlice";
+import userAuthSlice from "./slices/userAuth-slice";
+import userSlice from "./slices/userLoginSlice";
+import userUtilitySlice from "./slices/utillitySlice";
 // Persist configuration
 const persistConfig = {
   key: "root",
@@ -36,20 +25,9 @@ const rootReducer = combineReducers({
   auth: userAuthSlice,
   userUtility: userUtilitySlice,
   user: userSlice,
-  service:serviceListingSlice,
-  business:businessSlice,
   profile: profileReducer,
-  settings : settingsReducer,
-  wishlist : wishListReducer,
-  serviceDetails : serviceDetailsReducer,
-  document : documentSlice,
-  paymentHistory : paymentHistoryReducer,
   dashboard : dashboardReducer,
-  offers: offerSlice,
   businessList : businessPageSlice, 
-  adminService : serviceReducer,
-  adminSteps : stepsReducer,
-  adminSubscriptions : subscriptionsReducer
 });
 
 // Create a persisted reducer

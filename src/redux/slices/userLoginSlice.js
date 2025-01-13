@@ -7,7 +7,7 @@ import {
   getUserServices,
   updateServiveProgress,
 } from "../actions/dashboard-action";
-import { ratingReview } from "../actions/servicesDetails-actions";
+
 const initialState = {
   loading: false,
   userLoading: false,
@@ -141,9 +141,7 @@ const userSlice = createSlice({
         state.fetching = false;
         state.error = action.payload;
       })
-      .addCase(ratingReview.pending, (state) => {
 
-      })
       // .addCase(ratingReview.fulfilled, (state, action) => {
       //   state.fetching = false;
       //   const applicationId = action.payload.responseData?.data?.applicationId; 
@@ -154,37 +152,6 @@ const userSlice = createSlice({
       //   console.log(action.payload, "payload data");
 
       // })
-      .addCase(ratingReview.fulfilled, (state, action) => {
-        state.fetching = false;
-        const applicationId = action.payload.responseData?.data?.applicationId;
-    
-       // console.log(action.payload, "data from api")
-       // console.log(JSON.parse(JSON.stringify(state.dataUpdate)), "data from state")
-        // Ensure `dataUpdate` and `data` exist
-        if (state.dataUpdate?.data) {
-            state.dataUpdate.data = state.dataUpdate.data.map((item) => {
-                // Check if applicationId matches the _id of the item
-                if (item._id === applicationId) {
-                    // Update ratingReviewsSize to 1 if it is 0
-                    return {
-                        ...item,
-                        ratingreviewsSize: 1,
-                    };
-                }
-                // Otherwise, return the item unchanged
-                return item;
-            });
-        }
-    
-      
-    })
-    
-
-      .addCase(ratingReview.rejected, (state, action) => {
-        state.fetching = false;
-        state.error = action.payload;
-        //console.log(action.dataUpdate.data, "payload data");
-      })
 
       .addCase(getMoreServiceUpdate.pending, (state) => {
         state.loadingMore = true;

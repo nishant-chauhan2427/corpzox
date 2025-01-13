@@ -11,7 +11,6 @@ import { getBusiness } from "../../../redux/actions/business-action";
 import { updateServiveProgress } from "../../../redux/actions/dashboard-action";
 import { resetBusiness } from "../../../redux/slices/businessSlice";
 import { calculateAge } from "../../../utils";
-import { ServicesProgress } from "../../dashboard/components/services/progress";
 import { businessType } from "../createEdit/components/registration";
 import { ServiceProgressShimmer } from "../../../components/loader/ServiceProgressShimmer";
 const BusinessDetail = () => {
