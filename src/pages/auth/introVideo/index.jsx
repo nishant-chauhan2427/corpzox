@@ -6,6 +6,8 @@ import { ModalWrapper } from "../../../components/wrappers/modal";
 import { introVideo } from "../../../redux/actions/userAuth-action";
 
 const IntroVideo = () => {
+
+    
     const { isVideo,
     } = useSelector((state) => state.auth);
     const navigate= useNavigate();
