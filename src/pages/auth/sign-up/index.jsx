@@ -18,7 +18,7 @@ import {
 import toast from "react-hot-toast";
 import GoogleLogin from "react-google-login";
 import { setRedirectTo } from "../../../redux/slices/appSlice";
-import { updateEmail } from "../../../redux/slices/userAuth-slice";
+import { updateEmail,updateisSignUp } from "../../../redux/slices/userAuth-slice";
 export const Signup = () => {
   const {
     control,
@@ -64,8 +64,9 @@ export const Signup = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  localStorage.setItem("isSignedUpData", true);
   const onSubmit = async (data) => {
+   console.log(data,"data321");
     
     setIsSubmit(true);
     setSubmitError("");
@@ -87,6 +88,7 @@ export const Signup = () => {
       };
       // console.log("data?.phone",data?.phone);
       //console.log(userData,"userData");
+      
       delete userData.full;
       setEmailSignUp(data.email);
       dispatch(updateEmail(data.email));
@@ -94,6 +96,8 @@ export const Signup = () => {
       dispatch(setRedirectTo("verify"));
     });
   };
+
+  
 
   useEffect(() => {
     if (!isRegistering && isSubmit) {

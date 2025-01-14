@@ -75,7 +75,8 @@ const businessSlice = createSlice({
     },
     setLoaderOff(state){
       state.loading = false;
-    }
+    },
+   
   },
   extraReducers: (builder) => {
     builder

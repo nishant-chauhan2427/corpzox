@@ -7,7 +7,8 @@ import {
   resetPassword,
   logOutUser,
   updatePassword,
-  thirdPartyLogin
+  thirdPartyLogin,
+  introVideo
 } from "../actions/userAuth-action";
 let profile=()=>{
   try {
@@ -42,9 +43,14 @@ const initialState = {
   resetPasswordUrl: null,
   isLogoutSuccess: false,
   isUpdatingPassword: false,
+  isVideo:"",
+  isVideoLoading:false,
   isUpdatePasswordSuccessfull: false,
   updatePasswordError: "",
-  email : ""
+  email : "",
+  isSignUp:false,
+
+
 };
 
 const authSlice = createSlice({
@@ -93,7 +99,12 @@ const authSlice = createSlice({
     
     clearEmail: (state) => {
       state.email = ""; // Reset email to the initial empty string
-    }
+    },
+    updateisSignUp:(state) =>
+    {
+      state.isSignUp="";
+    },
+   
   },
   extraReducers: (builder) => {
     //login
@@ -214,6 +225,16 @@ const authSlice = createSlice({
       state.isUpdatingPassword = false;
       state.updatePasswordError = action.payload;
     });
+
+    builder.addCase(introVideo.pending, (state, action) => {
+      state.isVideoLoading= true;
+    }).addCase(introVideo.fulfilled, (state, action) => {
+      state.isVideoLoading= false;
+      console.log(action.payload,"action.payload");
+      state.isVideo=action.payload;
+    }).addCase(introVideo.rejected, (state, action) => {
+      state.isVideoLoading= false;
+    });
   },
 });
 
@@ -228,6 +249,8 @@ export const {
   removeUpdatePasswordError,
   updateProfile,
   updateEmail,
-  clearEmail
+  // clearupdateisSignUp,
+  clearEmail,
+  updateisSignUp
 } = authSlice.actions;
 export default authSlice.reducer;

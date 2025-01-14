@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "../../../components/buttons";
-import { CustomAuthLayout } from "../components/layout";
 import { MetaTitle } from "../../../components/metaTitle";
 import { DualHeadingTwo } from "../components/dualHeading/dualHeadingTwo";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +10,6 @@ import toast from "react-hot-toast";
 import OTPInput from "react-otp-input";
 
 export const Verify = () => {
-  //const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [otp, setOtp] = useState("");
   const [timer, setTimer] = useState(0);
   const [focusedIndex, setFocusedIndex] = useState(0);
@@ -32,10 +30,7 @@ export const Verify = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const inputRefs = useRef([]);
-  const { profile } = useSelector((state) => state.auth);
-
-  const [isActiveIndex, setActiveIndex] = useState(0);
-  console.log(localStorage.getItem("forgotPassword"), "forgotPassword")
+  const { profile, isSignUp } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (inputRefs.current && inputRefs.current[0]) {
@@ -44,81 +39,55 @@ export const Verify = () => {
     if (redirectedTo !== "verify") {
       navigate("/sign-in");
     }
-    setTimer(30);
+    setTimer(5);
   }, []);
 
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
   const phoneRegex = /^\d{10}$/;
-
   const profileEmail = profile?.[0]?.email;
   const profilePhone = profile?.[0]?.phone;
-
   const isEmail = emailRegex.test(profileEmail);
   const isPhone = phoneRegex.test(profilePhone);
 
+  const userId = JSON.parse(localStorage.getItem("auth"));
   const subHeading = isEmail
     ? `We have sent you an OTP on your registered email id ${profileEmail}`
     : profilePhone
-      ? `We have sent you an OTP on your registered phone number ${profilePhone}`
-      : `We have sent you an OTP on your registered email id ${email} `;
+    ? `We have sent you an OTP on your registered phone number ${profilePhone}`
+    : `We have sent you an OTP on your registered email id ${email} `;
 
-  const validateOtp = (enteredOtp) => {
-    if (enteredOtp.trim().length !== 4) {
-      return false;
-    }
-    return true;
-  };
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
-    //const enteredOtp = otp.join("");
     setIsVerify(true);
     dispatch(verifyUser({ otp: otp, id: profile?.[0]?.id }));
   };
-  console.log(localStorage.getItem("forgotPassword"), "localStorage.getItem");
-  // useEffect(() => {
-  //   if (isVerify && !isVerifying) {
-  //     setIsVerify(false);
-  //     if (verifyingError) {
-  //       setOtpMessage(verifyingError);
-  //     } else {
-
-  //       if (localStorage.getItem("forgotPassword") === true) {
-  //         navigate("/dashboard")
-  //       }
-  //       else {
-  //         navigate("/create-new-password");
-  //       }
-  //     }
-  //   }
-  // }, [
-  //   isVerifying,
-  //   verifyingError,
-  //   profileEmail,
-  //   profilePhone,
-  //   email,
-  //   navigate,
-  // ]);
-
+ 
   useEffect(() => {
     if (isVerify && !isVerifying) {
       setIsVerify(false);
       if (verifyingError) {
         setOtpMessage(verifyingError);
       } else {
-        
-        const forgotPassword = localStorage.getItem("forgotPassword") === 'true';
-        
+        const forgotPassword =
+          localStorage.getItem("forgotPassword") === "true";
+        const signUp = localStorage.getItem("isSignedUpData") === "true";
+
         if (forgotPassword) {
-          navigate("/create-new-password"); 
+          navigate("/create-new-password");
         } else {
-          navigate("/dashboard"); 
+          if (localStorage.getItem("isSignedUpData") === "true") {
+            navigate("/intro-video");
+          } else {
+            navigate("/dashboard");
+          }
         }
-        localStorage.removeItem("forgotPassword")
+        localStorage.removeItem("forgotPassword");
+        localStorage.removeItem("isSignedUpData");
       }
     }
   }, [isVerify, isVerifying, verifyingError, navigate]); // Ensure all dependencies are included
-  
+
   useEffect(() => {
     if (otpMessage) {
       const timer = setTimeout(() => {
@@ -131,11 +100,14 @@ export const Verify = () => {
 
   const handleResendOtp = (event) => {
     event.preventDefault();
-    setTimer(30);
+    setTimer(5);
     setOtp("");
+    const data = {
+      id: userId?.[0]?.id,
+    };
     dispatch(
       resendOtp({
-        id: profile?.[0]?.id || profile?.id || profile?.userId,
+        data,
       })
     );
   };
@@ -211,7 +183,7 @@ export const Verify = () => {
                                 display: "flex",
                                 gap: "2px",
                                 borderRadius: "12px",
-                                margin: "4px"
+                                margin: "4px",
                               }}
                             />
                           );
@@ -259,19 +231,6 @@ export const Verify = () => {
                     </Button>
                   </div>
                 </form>
-              </div>
-              <div>
-                {/* <div className="text-center flex justify-center gap-2 pt-4 font-normal text-[#6C6C6C]">
-                  <p>
-                    Need an account?
-                    <Link
-                      to={"/sign-up"}
-                      className="p-2 text-[#F1359C] font-semibold"
-                    >
-                      Create one
-                    </Link>
-                  </p>
-                </div> */}
               </div>
             </div>
           </div>

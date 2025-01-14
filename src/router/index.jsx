@@ -24,6 +24,9 @@ import ProfileEdit from "../pages/profile/editProfile";
 import { AuthWrapper } from "./authWrapper";
 import { IsLoggedInWrapper } from "./isLoggedInWrapper";
 import { IsRedirectWrapper } from "./isRedirectWrapper";
+import IntroVideo from "../pages/auth/introVideo";
+import SelectUserType from "../pages/auth/selectUserType";
+import SelectUserRole from "../pages/auth/selectUserRole";
 
 const router = createBrowserRouter([
   {
@@ -70,6 +73,19 @@ const router = createBrowserRouter([
             path: "verify",
             element: <Verify />,
           },
+          {
+            path: "intro-video",
+            element: <IntroVideo />,
+          },
+          {
+            path: "select-user-role",
+            element: <SelectUserRole/>,
+          },
+          {
+            path: "select-user-type",
+            element: <SelectUserType />,
+          },
+          
         ],
       },
       //redirect check
@@ -178,7 +194,27 @@ const router = createBrowserRouter([
               },
             ],
           },
-          // Wishlist route
+          // Corpzo-X route
+      
+      {
+        path: "/",
+        // element: <AuthLayout />,
+        children: [
+         
+          // {
+          //   path: "intro-video",
+          //   element: <IntroVideo />,
+          // },
+          // {
+          //   path: "select-user",
+          //   element: <SelectUser />,
+          // },
+          // {
+          //   path: "investor-profile",
+          //   element: <InvestorProfile />,
+          // },
+        ],
+      },
         ],
       },
     ],

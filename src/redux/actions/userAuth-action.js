@@ -72,9 +72,11 @@ export const resendOtp = createAsyncThunk("resendOtp", async ({data,navigate}, {
         const response = await client.post("/user/auth/resend-otp", data, {
             withCredentials: true
         });      
-        if(response?.data?.code==201)
+        if(response?.data?.code==200)
         {
+            toast.success(response?.data?.message)
             navigate('/verify')
+            
         }
         else{
             toast.dismiss()
@@ -120,6 +122,17 @@ export const logOutUser = createAsyncThunk("logOutUser", async ( { rejectWithVal
 export const updatePassword = createAsyncThunk("updatePassword", async (info, { rejectWithValue }) => {
     try {
         const response = await client.patch("/user/update-password", info, {
+            withCredentials: true
+        });
+        return response.data;
+    } catch (error) {
+        return rejectWithValue(error?.response?.data?.message || error?.message);
+    }
+});
+
+export const introVideo = createAsyncThunk("introVideo", async (info, { rejectWithValue }) => {
+    try {
+        const response = await client.get(`/user/auth/signup-basic-module?type=CORPZOX`, info, {
             withCredentials: true
         });
         return response.data;

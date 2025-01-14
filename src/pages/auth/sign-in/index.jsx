@@ -43,20 +43,14 @@ export const SignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [checkedCheckbox, setCheckedCheckbox] = useState(false);
-  console.log(checkedCheckbox, "prev");
+
   localStorage.setItem("forgotPassword", false);
+  localStorage.setItem("isSignedUpData", false);
+  
   const handleCheckbox = (e) => {
     e.preventDefault();
-    // console.log(checkedCheckbox, "check 1");
     setCheckedCheckbox((prev) => !prev);
 
-    // if (checkedCheckbox) {
-    //   localStorage.removeItem("signedIn");
-    //   setIsSignedIn(true)
-    // } else {
-    //   localStorage.setItem("signedIn", true);
-    //   // setIsSignedIn(true)
-    // }
   };
 
   console.log(checkedCheckbox, "checkbox");
@@ -78,10 +72,14 @@ export const SignIn = () => {
 
     const token = await recaptchaRef.current.executeAsync().then((res) => {
       data = { ...transformedData, recaptchaToken: res, userType: "end_user" };
+      localStorage.setItem("islogindata",data?.
+      email);
+  
       dispatch(loginUser(data));
     });
     dispatch(setIsSignedIn(checkedCheckbox));
     dispatch(setRedirectTo("verify"));
+    
   };
 
   useEffect(() => {
